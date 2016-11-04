@@ -20,6 +20,7 @@ import ChooseFriends from './components/ChooseFriends'
 import ViewBase64 from './components/ViewBase64'
 import MyFilters from './components/MyFilters'
 import SingleEvent from './components/SingleEvent'
+import TakePhoto from './components/TakePhoto'
 
 // <Router>
   // <Scene key="root" hideNavBar={true}>
@@ -37,13 +38,8 @@ class GeoSnap extends Component {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="welcome" component={Welcome} initial={ true } />
-          <Scene key="dates" component={ChooseDates} />
-          <Scene key="upload" component={UploadFilter}/>
-          <Scene key="createmap" component={CreateMap}/>
-          <Scene key="polygon" component={Polygon}/>
-          <Scene key="friends" component={ChooseFriends}/>
-          <Scene key="myfilters" component={MyFilters} />
+          <Scene key="camera" component={TakePhoto} initial={ true } />
+          <Scene key="applyfilter" component={ApplyFilter} />
         </Scene>
       </Router>
     );

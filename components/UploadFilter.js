@@ -34,6 +34,7 @@ export default class UploadFilter extends Component{
       //   noData: true,
       // };
       const options = {
+        
       };
     ImagePicker.launchImageLibrary(options, (response) => {
         if (response.didCancel) {
