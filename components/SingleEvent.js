@@ -55,6 +55,8 @@ export default class SingleEvent extends Component {
 		// 2) ping API to get filter
 		// 3) start minting $$$ bitchezzzzzzzzz
 
+		// we only need to convert an image to base64 if a user chooses to share it.
+
 	}
 
 	render(){

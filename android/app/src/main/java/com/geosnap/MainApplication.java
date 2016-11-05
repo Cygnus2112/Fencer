@@ -15,6 +15,7 @@ import com.airbnb.android.react.maps.MapsPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import cl.json.RNSharePackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
+import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -36,7 +37,8 @@ public class MainApplication extends Application implements ReactApplication {
           new ReactNativeContacts(),
           new RNSharePackage(),
           new RNViewShotPackage(),
-          new RCTCameraPackage() 
+          new RCTCameraPackage(),
+          new WebViewBridgePackage()
       );
     }
   };

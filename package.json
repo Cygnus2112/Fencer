@@ -14,7 +14,8 @@
     "react-native-maps": "^0.10.0",
     "react-native-router-flux": "^3.36.0",
     "react-native-share": "^1.0.17",
-    "react-native-view-shot": "^1.5.0"
+    "react-native-view-shot": "^1.5.0",
+    "react-native-webview-bridge": "^0.33.0"
   },
   "devDependencies": {},
   "scripts": {

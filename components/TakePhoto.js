@@ -25,7 +25,6 @@ export default class TakePhoto extends Component {
 
 	}
 
-
 	takePicture() {
 	  	this.camera.capture()
 	      .then((data) => {
@@ -41,9 +40,7 @@ export default class TakePhoto extends Component {
 	// 	ImagePicker.launchCamera(options, (response) => {
 	//  		const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
 	//  		Actions.applyfilter({photo: source})
-
 	//  		// will pass filter as prop or do it w/redux
-
 	// 	});
 	// }
 
@@ -61,7 +58,6 @@ export default class TakePhoto extends Component {
       </View>
     );
   }
-
 }
 
 const styles = StyleSheet.create({

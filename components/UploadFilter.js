@@ -34,9 +34,9 @@ export default class UploadFilter extends Component{
       //   noData: true,
       // };
       const options = {
-        
+
       };
-    ImagePicker.launchImageLibrary(options, (response) => {
+     ImagePicker.launchImageLibrary(options, (response) => {
         if (response.didCancel) {
           console.log('User cancelled photo picker');
         } else if (response.error) {

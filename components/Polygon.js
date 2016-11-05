@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   StyleSheet,
   View,
@@ -9,14 +10,18 @@ import {
 
 import MapView from 'react-native-maps';
 
+import WebViewBridge from 'react-native-webview-bridge';
+
 const { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / height;
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
+const LATITUDE = 34.09829365;
+const LONGITUDE = -118.35329142;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
+
+const SPACE = 0.01; 
 
 export default class Polygon extends Component {
   constructor(props) {
@@ -29,7 +34,25 @@ export default class Polygon extends Component {
       longitudeDelta: LONGITUDE_DELTA,
       polygons: [],
       editing: null,
+      currPosition: null,
     };
+  }
+
+  componentDidMount(){
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        
+        let point = {
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        }
+        this.setState({
+          currPosition: point
+        })
+      },
+      (error) => alert(error.message),
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
   }
 
   componentWillReceiveProps(newProps, oldProps){
@@ -72,6 +95,26 @@ export default class Polygon extends Component {
   }
 
   render() {
+
+    if(this.state.editing && this.state.editing.coordinates.length > 2 ){
+
+      // let coordsMap = this.state.editing.coordinates.map((coord) => {
+      //   return [coord.latitude, coord.longitude];
+      // })
+      // let firstCoord = coordsMap[0];
+      // coordsMap.push(firstCoord);
+      // console.log('-------------------------------');
+
+      // console.log('coordsMap in RENDER: ', coordsMap);
+      console.log('this.state.currPosition in RENDER: ', this.state.currPosition)
+
+
+      // GeoFencing.containsLocation(this.state.currPosition, coordsMap)
+      //   .then(() => console.log('point is within polygon'))
+      //   .catch(() => console.log('point is NOT within polygon'))
+
+    }
+
     const mapOptions = {
       scrollEnabled: true,
     };
@@ -101,16 +144,26 @@ export default class Polygon extends Component {
               coordinates={polygon.coordinates}
               strokeColor="#F00"
               fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={2}
-            />
+              strokeWidth={2}/>
           ))}
           {this.state.editing && (
             <MapView.Polygon
               coordinates={this.state.editing.coordinates}
               strokeColor="#000"
               fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={2}
-            />
+              strokeWidth={2}/>
+          )}
+          {this.state.currPosition && (
+            <MapView.Marker
+              onPress={() => {console.log('marker pressed')}}
+              coordinate={{
+                latitude: this.state.currPosition.lat,
+                longitude: this.state.currPosition.lng,
+              }}
+              centerOffset={{ x: -18, y: -60 }}
+              anchor={{ x: 0.69, y: 1 }}>
+              <Text style={{fontSize: 18}}>X</Text>
+            </MapView.Marker>
           )}
         </MapView>
         <View style={styles.buttonContainer}>

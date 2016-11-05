@@ -21,6 +21,10 @@ import ViewBase64 from './components/ViewBase64'
 import MyFilters from './components/MyFilters'
 import SingleEvent from './components/SingleEvent'
 import TakePhoto from './components/TakePhoto'
+import WebBridgeEx from './components/WebBridgeEx'
+
+import BridgeWrapper from './components/WebBridgeEx'
+
 
 // <Router>
   // <Scene key="root" hideNavBar={true}>
@@ -33,18 +37,23 @@ import TakePhoto from './components/TakePhoto'
   //   <Scene key="myfilters" component={MyFilters} />
   // </Scene>
 // </Router>
+
+//<Scene key="bridge" component={WebBridgeEx} initial={ true } />
 class GeoSnap extends Component {
   render() {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="camera" component={TakePhoto} initial={ true } />
-          <Scene key="applyfilter" component={ApplyFilter} />
+          <Scene key="bridge" component={ BridgeWrapper } initial={ true } />
         </Scene>
       </Router>
     );
   }
 }
+
+          // <Scene key="camera" component={ TakePhoto } initial={ true } />
+          // <Scene key="applyfilter" component={ ApplyFilter } />
+          // <Scene key="viewbase" component={ ViewBase64 } />
 
 // const styles = StyleSheet.create({
 //   container: {
