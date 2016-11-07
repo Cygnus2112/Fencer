@@ -1,4 +1,4 @@
-package com.geosnap;
+package com.fencer;
 
 import android.app.Application;
 import android.util.Log;
