@@ -10,7 +10,8 @@ import {
 import WebViewBridge from 'react-native-webview-bridge';
 
 //        document.querySelector('#tryit2').innerText = String( );
-//        let isInsideBounds = new google.maps.geometry.poly.containsLocation(position, polygon);
+   //   let isInsideBounds = new google.maps.geometry.poly.containsLocation(position, polygon);
+
 //let isInsideBounds = "damnit";
 //        let checkPos = new google.maps.geometry.poly.containsLocation(position, polygon);
 
@@ -73,8 +74,8 @@ export default class ContainsPosition extends Component {
 	}
 
 	componentDidMount(){
-		console.log('this.props.polygon in ContainsPosition: ', this.props.polygon)
-		console.log('this.props.position in ContainsPosition: ', this.props.position)
+		//console.log('this.props.polygon in ContainsPosition: ', this.props.polygon)
+		//console.log('this.props.position in ContainsPosition: ', this.props.position)
 		console.log("---------------------------------")
 
 	}
@@ -88,8 +89,8 @@ export default class ContainsPosition extends Component {
 	    switch (message) {
 	      case "success":
 	        //console.log("result in ContainsPosition: ", parsedData);
-	        console.log("parsedData.position in ContainsPosition: ", parsedData.position);
-	        console.log("parsedData.position in ContainsPosition: ", parsedData.polygon);
+	        //console.log("parsedData.position in ContainsPosition: ", parsedData.position);
+	        //console.log("parsedData.position in ContainsPosition: ", parsedData.polygon);
 	        this.setState({
 	        	isInsideBounds: parsedData.isInsideBounds
 	        });

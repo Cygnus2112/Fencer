@@ -58,27 +58,27 @@ export default class Paths extends Component {
 
 	}
 	componentDidMount(){
-		console.log('this.props.position in Paths: ', this.props.position)
-		console.log('this.props.overlayCoords in Paths: ', this.props.overlayCoords)
+		//console.log('this.props.position in Paths: ', this.props.position)
+		//console.log('this.props.overlayCoords in Paths: ', this.props.overlayCoords)
 	}
 
 	onBridgeMessage(data){
     	console.log("---------------------------------")
-    	console.log('JSON.parse(data): ', JSON.parse(data))
+    	//console.log('JSON.parse(data) in Paths: ', JSON.parse(data))
 
     	let parsedData = JSON.parse(data);
     	let message = parsedData.status;
 
 	    switch (message) {
 	      case "success":
-	        console.log("result: ", parsedData.paths);
+	        //console.log("result: ", parsedData.paths);
 	        this.setState({
 	        	paths: parsedData.paths,
 	        	position: parsedData.position
 	        })
 	        break;
 	      case "FML!!!!!!":
-	        console.log("yep, FML indeed.");
+	        console.log("FML in Paths");
 	        break;
 	      default:
 	        console.log('default triggered');
@@ -116,7 +116,7 @@ export default class Paths extends Component {
           			onLoadEnd={() => {
             			const { webviewbridge } = this.refs;
             			let dataToSend = { status: 'data incoming', payload: this.props.overlayCoords, position: {lat: this.props.position.coords.latitude, lng: this.props.position.coords.longitude} };
-            			console.log('JSON.stringify(dataToSend): ', JSON.stringify(dataToSend));
+            			//console.log('JSON.stringify(dataToSend): ', JSON.stringify(dataToSend));
             			webviewbridge.sendToBridge(JSON.stringify(dataToSend))
             		}}/>
 			)

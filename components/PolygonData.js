@@ -13,6 +13,15 @@ import ContainsPosition from './ContainsPosition'
 
 //document.querySelector('#tryit').innerText = String(parsedData.paths);
      //  document.querySelector('#tryit').innerText = String(paths);
+        //     let polygonUtilInspect = util.inspect(polygon);
+
+     //    setTimeout(() => {	
+	    //     let isInsideBounds = String( new google.maps.geometry.poly.containsLocation(position, polygon) );
+	    //     document.querySelector('#tryit').innerText = isInsideBounds;
+	    //     let dataToSend = JSON.stringify({status: "success", isInsideBounds: isInsideBounds });
+	    //     WebViewBridge.send(dataToSend);
+    	// },2000);
+
 const injectScript2 = `
   (function () { 
     if (WebViewBridge) {
@@ -20,21 +29,45 @@ const injectScript2 = `
       WebViewBridge.onMessage = function (data) {
         let parsedData = JSON.parse(data);
         let paths = parsedData.paths;
+        let position = parsedData.position;
+        document.querySelector('#tryit').innerText = String(position);
+        document.querySelector('#tryit2').innerText = String(paths);
+
         let polygon = new google.maps.Polygon({
             paths: paths
          });
-        var dataToSend = JSON.stringify({status: "success", polygon: polygon});
-        WebViewBridge.send(dataToSend);
+
+        let myLatLng;
+
+        setTimeout(() => {
+        	myLatLng = new google.maps.LatLng({lat: position.lat, lng: position.lng}); 
+        	document.querySelector('#tryit2').innerText = String(position.lat);
+
+        },100);
+        let isInsideBounds;
+        setTimeout(() => {
+        	isInsideBounds = google.maps.geometry.poly.containsLocation(myLatLng, polygon);
+        },500);
+        setTimeout(() => {	
+	        document.querySelector('#tryit').innerText = isInsideBounds;
+	        let dataToSend = JSON.stringify({status: "success", isInsideBounds: isInsideBounds });
+	        WebViewBridge.send(dataToSend);
+    	},1000);
+
+
       };
     };  
   }())`
 
+//var dataToSend = JSON.stringify({status: "success", polygon: testPolygon});
+//WebViewBridge.send(dataToSend);
 let ht = `<html>
 <head>
 <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k&libraries=places,drawing,geometry"></script>
 </head>
 <body>
-<h3 id='tryit'>cock</h3>
+<h3 id='tryit'>bleh</h3>
+<h3 id='tryit2'>bleh</h3>
 <div>Hello test html</div>
 </body>
 </html>`
@@ -44,7 +77,7 @@ export default class PolygonData extends Component {
 		super(props);
 		this.onBridgeMessage = this.onBridgeMessage.bind(this);
 		this.state = {
-			renderedPolygon: null
+			isInsideBounds: null
 		}
 	}
 
@@ -55,16 +88,18 @@ export default class PolygonData extends Component {
 
 	onBridgeMessage(data){
     	console.log("---------------------------------")
-    	//console.log('JSON.parse(data) in PolygonData: ', JSON.parse(data))
+    	console.log('string data in PolygonData: ', data)
 
     	let parsedData = JSON.parse(data);
     	let message = parsedData.status;
 
+    	    	console.log("parsedData in PolygonData: ", parsedData);
+
 	    switch (message) {
 	      case "success":
-	        //console.log("result in PolygonData: ", parsedData.polygon);
+	        
 	        this.setState({
-	        	renderedPolygon: parsedData.polygon
+	        	isInsideBounds: parsedData.isInsideBounds
 	        });
 	        break;
 	      case "FML!!!!!!":
@@ -87,9 +122,9 @@ export default class PolygonData extends Component {
 				<Text style={{fontSize:18}}>PolygonData Component</Text>
 			</View>
 			<View style={{flex:2}}>
-			{ this.state.renderedPolygon
+			{ this.state.isInsideBounds !== null && this.state.isInsideBounds !== undefined
 				?
-			(<ContainsPosition polygon={ this.state.renderedPolygon } position={ this.props.position } />)
+			(<Text style={{fontSize: 18}}>isInsideBounds: {String(this.state.isInsideBounds)}</Text>)
 				:
 			(<WebViewBridge
           			ref="webviewbridge"
@@ -99,7 +134,7 @@ export default class PolygonData extends Component {
           			source={{ html: ht }}
           			onLoadEnd={() => {
             			const { webviewbridge } = this.refs;
-            			let dataToSend = { status: 'data incoming', paths: this.props.paths };
+            			let dataToSend = { status: 'data incoming', paths: this.props.paths, position: this.props.position };
             			//console.log('dataToSend in PolygonData: ', JSON.stringify(dataToSend));
             			webviewbridge.sendToBridge(JSON.stringify(dataToSend))
             		}}/>

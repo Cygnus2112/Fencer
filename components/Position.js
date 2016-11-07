@@ -111,7 +111,7 @@ export default class Position extends Component {
       // currentPosition.lng = pos.coords.longitude;
     },
     (error) => console.log("Nav error: ", JSON.stringify(error)),
-    {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000})
+    {enableHighAccuracy: true, timeout: 30000, maximumAge: 1000})
   }
       //   <View style={{flex:1}}>
       //   { this.state.position ? <WebBridgeEx position={ this.state.position }/> : <Text style={{fontSize:16}}>Waiting for data...</Text>  }
