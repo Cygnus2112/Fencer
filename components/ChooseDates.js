@@ -7,10 +7,19 @@ import {
     StyleSheet,
     DatePickerAndroid,
     TimePickerAndroid,
+    Dimensions
 } from 'react-native';
 
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
+
+import UploadNav from './UploadNav';
+
+import Icon from 'react-native-vector-icons/Entypo';
+
+const { width, height } = Dimensions.get('window');
+let screenHeight = height;
+let screenWidth = width;
 
 function _formatTime(hour, minute) {
   return hour + ':' + (minute < 10 ? '0' + minute : minute);
@@ -90,30 +99,37 @@ export default class ChooseDates extends Component{
   // </View>
   render(){
     return (
-      <View style={{flex: 1, flexDirection:'column', justifyContent: 'space-between', alignItems: 'center'}}>
-        <View style={{flex:1,flexDirection:'row',justifyContent: 'center', alignItems:'center'}}>
-          <Text style={{fontSize:26}}>
-            {'Start Date: '}
+      <View style={styles.container}>
+        <UploadNav />
+      <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
+        <View style={{width: 30, marginRight: 35}}>
+          <Icon name="home" size={30} color="#0c12ce" />
+        </View>
+        <View style={styles.dateFieldsContainer}>
+          <Text style={{fontSize:20}}>
+            This filter will become
+          </Text> 
+          <Text style={{fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
           </Text>
-          <View style={{height: 50, width: 175, backgroundColor: 'silver', borderWidth:2, borderColor: 'black', borderRadius: 4}}>
+          <View style={styles.dateBox}>
             <Button
               onPress={()=>(this.launchCal('start', {
                 date: this.state.allDate,
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
               }))}
-              style={{color: 'white',margin: 5,fontSize:26}}>
+              style={{color: 'white',fontSize:22}}>
               { this.state.startText }
             </Button>
           </View>
-        </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent: 'center', alignItems:'center'}}>
-          <Text style={{fontSize:26}}>
-            {'Start Time: '}
+
+
+          <Text style={{fontSize:20}}>
+            at:
           </Text>
-          <View style={{height: 50, width: 175, backgroundColor: 'silver', borderWidth:2, borderColor: 'black', borderRadius: 4}}>
+          <View style={styles.dateBox}>
             <Button
-              style={{flex:1,color: 'white',margin: 5,fontSize:26}}
+              style={{flex:1,color: 'white',fontSize:22}}
               onPress={()=>{
                 this.launchTime('start',{
                   hour: this.state.startHour,
@@ -123,30 +139,29 @@ export default class ChooseDates extends Component{
               { this.state.startTimeText }
             </Button>
           </View>
-        </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent: 'center', alignItems:'center'}}>
-          <Text style={{fontSize:26}}>
-            {'End Date:   '}
+  
+        
+          <Text style={{fontSize:20}}>
+            and <Text style={{fontWeight: 'bold'}}>end</Text> on:
           </Text>
-          <View style={{height: 50, width: 175, backgroundColor: 'silver', borderWidth:2, borderColor: 'black', borderRadius: 4}}>
+          <View style={styles.dateBox}>
             <Button
               onPress={()=>(this.launchCal('end', {
                 date: this.state.allDate,
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
               }))}
-              style={{color: 'white',margin: 5,fontSize:26}}>
+              style={{color: 'white',fontSize:22}}>
               { this.state.endText }
             </Button>
           </View>
-        </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent: 'center', alignItems:'center'}}>
-          <Text style={{fontSize:26}}>
-            {'End Time: '}
+        
+          <Text style={{fontSize:20}}>
+            at:
           </Text>
-          <View style={{height: 50, width: 175, backgroundColor: 'silver', borderWidth:2, borderColor: 'black', borderRadius: 4}}>
+          <View style={styles.dateBox}>
             <Button
-              style={{flex:1,color: 'white',margin: 5,fontSize:26}}
+              style={{flex:1,color: 'white',fontSize:22}}
               onPress={()=>{
                 this.launchTime('end',{
                   hour: this.state.endHour,
@@ -157,17 +172,65 @@ export default class ChooseDates extends Component{
             </Button>
           </View>
         </View>
-        <View style={{flex:1,flexDirection:'row',justifyContent: 'center', alignItems:'center'}}>
-          <View style={{height: 50, width: 175, backgroundColor: 'blue', borderWidth:2, borderColor: 'black', borderRadius: 4}}>
+        <View style={{width: 30,marginLeft:35}}>
+          <Icon name="info" size={30} color="#0c12ce" />
+        </View>
+      </View>
+        <View style={styles.errorBox}>
+          <Text style={{fontSize: 16, color: 'red'}}>Filter can be active for</Text>
+          <Text style={{fontSize: 16, color: 'red'}}>no more than 48 hours.</Text>
+        </View>
+      
+          <View style={styles.buttonBox}>
             <Button
-              style={{flex:1,color: 'white',margin: 5,fontSize:26}}
+              style={{color: 'white',margin: 5,fontSize:16}}
               onPress={this.handleSubmit}>
               Submit
             </Button>
           </View>
-        </View>
+
       </View>
     )
   }
-
 }
+//{height: 50, width: 175, backgroundColor: 'blue', borderWidth:2, borderColor: 'black', borderRadius: 4}
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    height: screenHeight - 25,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f2'
+  },
+   buttonBox:{
+    elevation:3,
+    padding:7,
+    height:40,
+    width: 130,
+    overflow:'hidden',
+    borderRadius:15,
+    backgroundColor: '#0c12ce',
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 10
+  },
+  dateFieldsContainer: {
+    height: screenHeight / 1.7,
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  errorBox: {
+    height: 50,
+  },
+  dateBox:{
+    height: 38, 
+    width: 130, 
+    backgroundColor: 'silver', 
+    borderWidth:2, 
+    borderColor: 'black', 
+    borderRadius: 1, 
+    paddingTop: 1,
+    margin: 5
+  }
+  })

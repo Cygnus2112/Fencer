@@ -45,7 +45,7 @@ class Fencer extends Component {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="upload" component={UploadFilter} initial={true}/>
+          <Scene key="dates" component={ChooseDates} initial={true}/>
         </Scene>
       </Router>
     );

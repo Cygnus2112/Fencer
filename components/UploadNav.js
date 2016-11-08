@@ -23,14 +23,14 @@ export default class UploadNav extends Component {
 
 	render(){
 		return (
-			<View style={{flex:1}}>
+			
 				<View style={{height: 50, flexDirection: 'row', justifyContent: 'center', borderBottomColor: 'black', borderBottomWidth: 2}}>
 					<StepOne/>
 					<StepTwo/>
 					<StepThree/>
 					<StepFour/>
 				</View>
-			</View>
+
 			)
 	}
 
