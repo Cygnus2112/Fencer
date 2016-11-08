@@ -24,6 +24,7 @@ import TakePhoto from './components/TakePhoto'
 //import WebBridgeEx from './components/WebBridgeEx'
 
 import Position from './components/Position'
+import UploadNav from './components/UploadNav'
 
 
 // <Router>
@@ -44,7 +45,7 @@ class Fencer extends Component {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="position" component={ Position } initial={ true } />
+          <Scene key="upload" component={UploadFilter} initial={true}/>
         </Scene>
       </Router>
     );

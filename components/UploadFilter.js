@@ -4,10 +4,20 @@ import {
     Image,
     StyleSheet,
     Text,
+    Dimensions,
 } from 'react-native';
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 var ImagePicker = require('react-native-image-picker');
+
+import Icon from 'react-native-vector-icons/Entypo';
+
+import UploadNav from './UploadNav'
+
+
+const { width, height } = Dimensions.get('window');
+let screenHeight = height;
+let screenWidth = width;
 
 // - User clicks 'upload png' button
 // - Opens camera roll
@@ -20,6 +30,7 @@ export default class UploadFilter extends Component{
       this.state = {
         png: null,
         jpg: null,
+        buttonState: ''
       }
     }
 
@@ -75,36 +86,78 @@ export default class UploadFilter extends Component{
           }
         }
       });
-    }
+    }     
+//height: 1920/4, width: 1080/4
     render(){
       return(
-        <View style={{flex:1,alignItems: 'center',justifyContent: 'center',backgroundColor: 'silver'}}>
-          <Text style={{fontSize: 16}}>
-            Preview:
-          </Text>
-          <View style={{flex: 1,height: 480, width: 274,borderWidth:2, borderColor:'black',backgroundColor: 'white'}}>
-            <Image source={this.state.png} style={{height: 1920/4, width: 1080/4}}/>
+        <View style={ styles.container }>
+          <UploadNav />
+          <View style={{height: 480*.94, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
+            <View style={{width: 30,marginRight:10,marginTop:5}}>
+              <Icon name="home" size={30} color="#0c12ce" />
+            </View>
+            <Image source={require('../assets/png_background.png')} style={styles.preview}>
+              <Image source={this.state.png} style={{height: 480*.94, width: 274*.94}}/>
+            </Image>
+            <View style={{width: 30,marginLeft:10,marginTop:5}}>
+              <Icon name="info" size={28} color="#0c12ce" />
+            </View>
           </View>
-          <View style={{
-             elevation:3,
-             padding:10,
-             margin: 5,
-             height:45,
-             width: 150,
-             overflow:'hidden',
-             borderRadius:4,
-             backgroundColor: 'blue',
-           }}>
-            <Button
-              style={{fontSize: 20, color: 'white',borderRadius:4}}
-              styleDisabled={{color: 'red'}}
-              onPress={this.state.png ? this.handleUpload : this.handlePress }>
-              { this.state.png ? ("Upload") : ("Select PNG") }
-            </Button>
+          <View style={{width: screenWidth-25, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
+            <View style={ styles.buttonBox }>
+              <Button
+                style={{fontSize: 16, color: 'white',borderRadius:4}}
+                styleDisabled={{color: 'red'}}
+                onPress={this.state.png ? this.handleUpload : this.handlePress }>
+                { this.state.png ? ("Upload") : ("Upload Filter") }
+              </Button>
+            </View>
           </View>
         </View>
       )
     }
 }
+
+            // <View style={{width: 50,marginLeft:30, marginBottom: 10}}>
+            //   <Icon name="info" size={25} color="#0c12ce" />
+            // </View>
+//#eb42f4
+
 //<Image source={this.state.jpg} style={{height: 1920/4, width: 1080/4}}>
 //<View style={{flex: 1, alignItems: 'center',justifyContent: 'center',borderColor: 'black',borderRadius:2}}>
+
+const styles = StyleSheet.create({
+  container: {
+    height: screenHeight - 25,
+    flexDirection: 'column',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f2'
+  },
+  preview:{
+    height: 480*.94, 
+    width: 274*.94,
+    borderWidth:2, 
+    borderColor:'black',
+    backgroundColor: 'white',
+    marginBottom: 5
+  },
+  buttonBox:{
+    elevation:3,
+    padding:7,
+    height:40,
+    width: 130,
+    overflow:'hidden',
+    borderRadius:15,
+    backgroundColor: '#0c12ce',
+    marginLeft: 40,
+    marginRight: 40,
+    marginBottom: 10
+  },
+  button: {
+    fontSize: 20,
+    borderRadius:4,
+    color: '#e2d7e2'
+  }
+})
+
+

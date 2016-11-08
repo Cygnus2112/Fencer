@@ -18,6 +18,8 @@ const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 const screenHeight = height;
 
+import UploadNav from './UploadNav'
+
 export default class ApplyFilter extends Component{
     constructor(props){
       super(props);
