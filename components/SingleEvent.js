@@ -22,32 +22,48 @@ export default class SingleEvent extends Component {
 		this.handleEventPress = this.handleEventPress.bind(this);
 		this.state = {
 			eventTitle: "",
-			dates: "",
+			startDate: "",
+			startTime: "",
+			endDate: "",
+			endTime: "",
 			coords: null,
-			id: null
+			eventID: null,
+			filterURI: null
 		}
 	}
 
 	componentDidMount(){
 		this.setState({
+			eventID: this.props.eventID,
 			eventTitle: this.props.eventTitle,
-			dates: this.props.dates,
-			coords: this.props.coords
+			startDate: this.props.startDate,
+			startTime: this.props.startTime,
+			endDate: this.props.endDate,
+			endTime: this.props.endTime,
+			coords: this.props.coords,
+			filterURI: this.props.filterURI
 		})
 	}
 
 	componentWillReceiveProps(newProps,oldProps){
 		if(newProps.eventTitle !== oldProps.eventTitle){
 			this.setState({
-				eventTitle: newProps.eventTitle,
-				dates: newProps.dates,
-				coords: newProps.coords
+				eventID: this.props.eventID,
+				eventTitle: this.props.eventTitle,
+				startDate: this.props.startDate,
+				startTime: this.props.startTime,
+				endDate: this.props.endDate,
+				endTime: this.props.endTime,
+				coords: this.props.coords,
+				filterURI: this.props.filterURI
 			})
 		}
 	}
 
 	handleEventPress(){
-		console.log('event pressed');
+		
+		Actions.camera({filterURI: this.props.filterURI});
+
 		// either load the filter or an 'out of bounds/event not started yet' popup
 
 		// if within bounds and event dates:

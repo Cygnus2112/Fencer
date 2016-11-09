@@ -9,6 +9,8 @@ import {
     Dimensions,
 } from 'react-native';
 
+// WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
+
 var ImagePicker = require('react-native-image-picker');
 import { Actions } from 'react-native-router-flux';
 import Camera from 'react-native-camera';
@@ -20,7 +22,7 @@ export default class TakePhoto extends Component {
 		this.takePicture = this.takePicture.bind(this);
 
 		this.state = {
-			filter: null // will be passed as prop
+			filterURI: null // will be passed as prop
 		}
 
 	}
@@ -28,7 +30,7 @@ export default class TakePhoto extends Component {
 	takePicture() {
 	  	this.camera.capture()
 	      .then((data) => {
-	      	Actions.applyfilter({photoURI: data.path})
+	      	Actions.applyfilter({photoURI: data.path, filterURI: this.props.filterURI})
 	      	//console.log(data) 
 	      }
 	      )

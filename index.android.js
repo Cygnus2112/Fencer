@@ -26,7 +26,6 @@ import TakePhoto from './components/TakePhoto'
 import Position from './components/Position'
 import UploadNav from './components/UploadNav'
 
-
 // <Router>
   // <Scene key="root" hideNavBar={true}>
   //   <Scene key="welcome" component={Welcome} initial={ true } />
@@ -40,12 +39,15 @@ import UploadNav from './components/UploadNav'
 // </Router>
 
 //<Scene key="bridge" component={WebBridgeEx} initial={ true } />
+
 class Fencer extends Component {
   render() {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="createmap" component={CreateMap} initial={true}/>
+          <Scene key="myfilters" component={MyFilters}  initial={true}/>
+          <Scene key="camera" component={ TakePhoto }  />
+          <Scene key="applyfilter" component={ ApplyFilter } />
         </Scene>
       </Router>
     );

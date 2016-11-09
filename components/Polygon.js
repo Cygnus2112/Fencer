@@ -31,12 +31,19 @@ export default class Polygon extends Component {
 
     this.finish = this.finish.bind(this);
     this.startOver = this.startOver.bind(this);
+    this.onRegionChange = this.onRegionChange.bind(this);
 
     this.state = {
       latitude: this.props.lat || LATITUDE,
       longitude: this.props.lng || LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
+      region: {
+        latitude: this.props.lat || LATITUDE,
+        longitude: this.props.lng || LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
       polygons: [],
       editing: null,
       polygonComplete: false,
@@ -67,7 +74,14 @@ export default class Polygon extends Component {
     if(newProps.lat !== oldProps.lat || newProps.lng !== oldProps.lng){
       this.setState({
         latitude: newProps.lat,
-        longitude: newProps.lng
+        longitude: newProps.lng,
+        region: {
+            latitude: newProps.lat,
+            longitude: newProps.lng,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          
+        }
       })
     }
   }
@@ -83,6 +97,11 @@ export default class Polygon extends Component {
   //   }
   //   return true;
   // }
+
+  onRegionChange(region) {
+    console.log('region in onRegionChange: ', region);
+    this.setState({ region });
+  }
 
   finish() {
     console.log('-------------------------------');
@@ -131,14 +150,14 @@ export default class Polygon extends Component {
     }
 
     const { editing } = this.state;
-    if (!editing) {
+    if (!editing && !this.state.polygons.length ) {
       this.setState({
         editing: {
           id: id++,
           coordinates: [e.nativeEvent.coordinate],
         },
       });
-    } else if(this.state.editing.coordinates.length < 4){
+    } else if(!this.state.polygons.length && this.state.editing.coordinates.length < 4){
       this.setState({
         editing: {
           ...editing,
@@ -149,10 +168,6 @@ export default class Polygon extends Component {
         },
       });
     }
-
-    
-
-
   }
 
   render() {
@@ -190,27 +205,18 @@ export default class Polygon extends Component {
           <MapView
             provider={this.props.provider}
             style={styles.map}
-            region={{
-              latitude: this.state.latitude || LATITUDE,
-              longitude: this.state.longitude || LONGITUDE,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }}
+            region={this.state.region}
+            onRegionChange={this.onRegionChange}
             onPress={e => this.onPress(e)}
             {...mapOptions}/>
-
           )
           :
           (        
           <MapView
-            provider={this.props.provider}
-            style={styles.map}
-            region={{
-              latitude: this.state.latitude || LATITUDE,
-              longitude: this.state.longitude || LONGITUDE,
-              latitudeDelta: LATITUDE_DELTA,
-              longitudeDelta: LONGITUDE_DELTA,
-            }}
+            provider={ this.props.provider }
+            style={ styles.map }
+            region={this.state.region}
+            onRegionChange={this.onRegionChange}
             onPress={e => this.onPress(e)}
             {...mapOptions}
           >
