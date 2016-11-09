@@ -29,6 +29,9 @@ export default class Polygon extends Component {
   constructor(props) {
     super(props);
 
+    this.finish = this.finish.bind(this);
+    this.startOver = this.startOver.bind(this);
+
     this.state = {
       latitude: this.props.lat || LATITUDE,
       longitude: this.props.lng || LONGITUDE,
@@ -38,6 +41,7 @@ export default class Polygon extends Component {
       editing: null,
       polygonComplete: false,
       currPosition: null,
+      markerPoints: [],
     };
   }
 
@@ -68,22 +72,20 @@ export default class Polygon extends Component {
     }
   }
 
-  shouldComponentUpdate(nextProps, nextState){
-    if(nextState.editing){
-      if(nextState.editing.coordinates.length === 4){
-        console.log('four coordinates')
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if(nextState.editing){
+  //     if(nextState.editing.coordinates.length >= 4){
+  //       console.log(nextState.editing.coordinates.length + ' coordinates')
 
-        this.finish();
+  //       this.finish();
 
-      }
-    }
-    return true;
-  }
+  //     }
+  //   }
+  //   return true;
+  // }
 
   finish() {
-
     console.log('-------------------------------');
-
     console.log('this.finish called')
 
     const { polygons, editing } = this.state;
@@ -92,9 +94,7 @@ export default class Polygon extends Component {
       polygons: [...polygons, editing],
       editing: null,
     });
-
     console.log('-------------------------------');
-
 
     // setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
     //   //console.log('polygons array (after setTimeout): ', this.state.polygons);
@@ -105,8 +105,31 @@ export default class Polygon extends Component {
     // },500)
   }
 
+  startOver(){
+    this.setState({
+      editing: null,
+      polygons: [],
+      markerPoints: []
+    })
+    this.forceUpdate();
+  }
+
   onPress(e) {
     console.log('e.nativeEvent.coordinate: ', e.nativeEvent.coordinate);
+    console.log('this.state.markerPoints: ', this.state.markerPoints)
+
+    if(this.state.markerPoints.length < 4) {
+
+      let currPoints = this.state.markerPoints;
+      let idx = currPoints.length;
+      currPoints.push({key:idx, lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude})
+
+      this.setState({
+        markerPoints: currPoints
+      })
+
+    }
+
     const { editing } = this.state;
     if (!editing) {
       this.setState({
@@ -115,7 +138,7 @@ export default class Polygon extends Component {
           coordinates: [e.nativeEvent.coordinate],
         },
       });
-    } else {
+    } else if(this.state.editing.coordinates.length < 4){
       this.setState({
         editing: {
           ...editing,
@@ -126,11 +149,13 @@ export default class Polygon extends Component {
         },
       });
     }
+
+    
+
+
   }
 
   render() {
-
-    console.log('this.state.polygons in Render: ', this.state.polygons);
 
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
 
@@ -139,11 +164,8 @@ export default class Polygon extends Component {
       // })
       // let firstCoord = coordsMap[0];
       // coordsMap.push(firstCoord);
-      console.log('-------------------------------');
 
-      // console.log('coordsMap in RENDER: ', coordsMap);
-      //console.log('this.state.currPosition in RENDER: ', this.state.currPosition);
-      //console.log('this.state.editing.coordinates in Render: ', this.state.editing.coordinates);
+      console.log('-------------------------------');
 
       // GeoFencing.containsLocation(this.state.currPosition, coordsMap)
       //   .then(() => console.log('point is within polygon'))
@@ -162,18 +184,36 @@ export default class Polygon extends Component {
 
     return (
       <View style={styles.container}>
-        <MapView
-          provider={this.props.provider}
-          style={styles.map}
-          region={{
-            latitude: this.state.latitude || LATITUDE,
-            longitude: this.state.longitude || LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
-          onPress={e => this.onPress(e)}
-          {...mapOptions}
-        >
+        {(!this.state.editing && !this.state.polygons.length && !this.state.markerPoints.length)
+          ?
+          (
+          <MapView
+            provider={this.props.provider}
+            style={styles.map}
+            region={{
+              latitude: this.state.latitude || LATITUDE,
+              longitude: this.state.longitude || LONGITUDE,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+            onPress={e => this.onPress(e)}
+            {...mapOptions}/>
+
+          )
+          :
+          (        
+          <MapView
+            provider={this.props.provider}
+            style={styles.map}
+            region={{
+              latitude: this.state.latitude || LATITUDE,
+              longitude: this.state.longitude || LONGITUDE,
+              latitudeDelta: LATITUDE_DELTA,
+              longitudeDelta: LONGITUDE_DELTA,
+            }}
+            onPress={e => this.onPress(e)}
+            {...mapOptions}
+          >
           {this.state.polygons.map(polygon => (
             <MapView.Polygon
               key={polygon.id}
@@ -182,38 +222,39 @@ export default class Polygon extends Component {
               fillColor="rgba(255,0,0,0.5)"
               strokeWidth={2}/>
           ))}
-          {this.state.editing && (
+          { this.state.editing && (
             <MapView.Polygon
               coordinates={this.state.editing.coordinates}
               strokeColor="#000"
               fillColor="rgba(255,0,0,0.5)"
               strokeWidth={2}/>
           )}
-          {this.state.currPosition && (
-            <MapView.Marker
-              onPress={() => {console.log('marker pressed')}}
-              coordinate={{
-                latitude: this.state.currPosition.lat,
-                longitude: this.state.currPosition.lng,
-              }}
-              centerOffset={{ x: -18, y: -60 }}
-              anchor={{ x: 0.69, y: 1 }}>
-              <Text style={{fontSize: 18}}>X</Text>
-            </MapView.Marker>
-          )}
+          {this.state.markerPoints.map((point) => { 
+              return(                
+                <MapView.Marker
+                  key={point.key}
+                  onPress={() => {console.log('marker pressed')}}
+                  coordinate={{
+                    latitude: point.lat,
+                    longitude: point.lng
+                  }}
+                  pinColor={'blue'}/>)
+          })}
         </MapView>
+                    )
+        }
           {this.state.editing && this.state.editing.coordinates.length > 2
             ?
             (<View style={styles.buttonContainer}>
               <TouchableOpacity
-                onPress={() => this.finish()}
+                onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
                   <Text style={{fontSize: 18, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.finish()}
                 style={styles.buttonFinish}>
-                  <Text style={{fontSize: 18, color: 'white'}}>Finish</Text>
+                  <Text style={{fontSize: 18, color: 'white'}}>{"Submit"}</Text>
               </TouchableOpacity>
             </View>)
             :
@@ -229,6 +270,7 @@ export default class Polygon extends Component {
             :
             (null)
           }
+
       </View>
     );
   }
