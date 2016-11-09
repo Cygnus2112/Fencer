@@ -21,19 +21,12 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 /*
 		Basic concept:
-			- on component mount, we ping back-end to get the user's events (or whatever we call them)
+			- on component (and/or application) mount, we ping back-end to get the user's events (or whatever we call them)
 				- can also do this on startup/welcome screen (prob should)
 
-			- it will prob be a List View
-
-			- each of the 'events' will be its own component (ie, Event)
-
-			- Event component will need the following props:
-				- event title
-				- event date/time
-				- geocoords (not shown)
-
-			- 
+			- sorting/filtering the events array is going to be a pain. Will need to:
+				- filter out events that have already finished (if they're not deleted on back-end)
+				- sort based on 1) start year, 2) start month, 3) start day, 4) start time, 5) end day, 6) end time
 
 */
 
@@ -46,7 +39,8 @@ let sampleEvents = [
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 1,
-		filterURI: "../event2.png"
+		filterURI: "../event2.png",
+		message: "Let's do this!"
 	},
 	{
 		eventTitle: "SwoleFest 2016",
@@ -56,7 +50,8 @@ let sampleEvents = [
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 2,
-		filterURI: "../event3.png"
+		filterURI: "../event3.png",
+		message: "Time to get your swole on ..."
 	},
 	{
 		eventTitle: "Thanksgiving at the Park house!",
@@ -66,7 +61,8 @@ let sampleEvents = [
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 2,
-		filterURI: "../weho_halloween.png"
+		filterURI: "../weho_halloween.png",
+		message: "Celebrating Turkey Day With the Parks"
 	}
 ]
 
@@ -98,7 +94,6 @@ export default class MyFilters extends Component {
 
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
-			console.log(' newProps ... ')
 			this.setState({
 				dataSource: ds.cloneWithRows( newProps.events )
 			})
@@ -170,11 +165,12 @@ const styles = StyleSheet.create({
     left: 5,
     right: 5,
     bottom: 50,
+    paddingTop: 10,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderColor: 'black',
-    borderWidth: 1
+    backgroundColor: '#f9f9f2',
+    //borderColor: 'black',
+    //borderWidth: 1
   }
 });
 
