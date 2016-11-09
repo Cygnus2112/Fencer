@@ -130,6 +130,7 @@ const styles = StyleSheet.create({
   container: {
     height: screenHeight - 25,
     flexDirection: 'column',
+    justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#f9f9f2'
   },

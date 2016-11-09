@@ -10,9 +10,11 @@ import {
 
 import MapView from 'react-native-maps';
 
-import WebViewBridge from 'react-native-webview-bridge';
+//import WebViewBridge from 'react-native-webview-bridge';
 
 const { width, height } = Dimensions.get('window');
+let screenWidth = width;
+let screenHeight= height;
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 34.09829365;
@@ -34,11 +36,13 @@ export default class Polygon extends Component {
       longitudeDelta: LONGITUDE_DELTA,
       polygons: [],
       editing: null,
+      polygonComplete: false,
       currPosition: null,
     };
   }
 
   componentDidMount(){
+   // console.log('this.props.lat in Polygon component: ', this.props.lat);
     navigator.geolocation.getCurrentPosition(
       (position) => {
         
@@ -64,15 +68,45 @@ export default class Polygon extends Component {
     }
   }
 
+  shouldComponentUpdate(nextProps, nextState){
+    if(nextState.editing){
+      if(nextState.editing.coordinates.length === 4){
+        console.log('four coordinates')
+
+        this.finish();
+
+      }
+    }
+    return true;
+  }
+
   finish() {
+
+    console.log('-------------------------------');
+
+    console.log('this.finish called')
+
     const { polygons, editing } = this.state;
+
     this.setState({
       polygons: [...polygons, editing],
       editing: null,
     });
+
+    console.log('-------------------------------');
+
+
+    // setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
+    //   //console.log('polygons array (after setTimeout): ', this.state.polygons);
+    //   for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
+    //     let coords = this.state.polygons[0].coordinates[i];
+    //     console.log("coords.longitude: ",coords.longitude);
+    //   }
+    // },500)
   }
 
   onPress(e) {
+    console.log('e.nativeEvent.coordinate: ', e.nativeEvent.coordinate);
     const { editing } = this.state;
     if (!editing) {
       this.setState({
@@ -96,6 +130,8 @@ export default class Polygon extends Component {
 
   render() {
 
+    console.log('this.state.polygons in Render: ', this.state.polygons);
+
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
 
       // let coordsMap = this.state.editing.coordinates.map((coord) => {
@@ -103,11 +139,11 @@ export default class Polygon extends Component {
       // })
       // let firstCoord = coordsMap[0];
       // coordsMap.push(firstCoord);
-      // console.log('-------------------------------');
+      console.log('-------------------------------');
 
       // console.log('coordsMap in RENDER: ', coordsMap);
-      console.log('this.state.currPosition in RENDER: ', this.state.currPosition)
-
+      //console.log('this.state.currPosition in RENDER: ', this.state.currPosition);
+      //console.log('this.state.editing.coordinates in Render: ', this.state.editing.coordinates);
 
       // GeoFencing.containsLocation(this.state.currPosition, coordsMap)
       //   .then(() => console.log('point is within polygon'))
@@ -121,7 +157,7 @@ export default class Polygon extends Component {
 
     if (this.state.editing) {
       mapOptions.scrollEnabled = false;
-      mapOptions.onPanDrag = e => this.onPress(e);
+      //mapOptions.onPanDrag = e => this.onPress(e);
     }
 
     return (
@@ -166,32 +202,37 @@ export default class Polygon extends Component {
             </MapView.Marker>
           )}
         </MapView>
-        <View style={styles.buttonContainer}>
-          {this.state.editing && (
-            <View>
+          {this.state.editing && this.state.editing.coordinates.length > 2
+            ?
+            (<View style={styles.buttonContainer}>
               <TouchableOpacity
                 onPress={() => this.finish()}
-                style={[styles.bubble, styles.button]}
-              >
-                <Text>Start Over</Text>
+                style={styles.buttonStartOver}>
+                  <Text style={{fontSize: 18, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.finish()}
-                style={[styles.bubble, styles.button]}
-              >
-                <Text>Finish</Text>
+                style={styles.buttonFinish}>
+                  <Text style={{fontSize: 18, color: 'white'}}>Finish</Text>
               </TouchableOpacity>
-            </View>
-          )}
-        </View>
+            </View>)
+            :
+            this.state.editing 
+            ?
+            (<View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => this.finish()}
+                style={styles.buttonStartOver}>
+                  <Text style={{fontSize: 18, color: 'white'}}>Start Over</Text>
+              </TouchableOpacity>
+            </View>)
+            :
+            (null)
+          }
       </View>
     );
   }
 }
-
-// Polygon.propTypes = {
-//   provider: MapView.ProviderPropType,
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -212,15 +253,31 @@ const styles = StyleSheet.create({
     width: 200,
     alignItems: 'stretch',
   },
-  button: {
-    width: 80,
+  buttonStartOver:{
+    width: 120,
     paddingHorizontal: 12,
     alignItems: 'center',
     marginHorizontal: 10,
+    backgroundColor: 'red',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 15,
+  },
+  buttonFinish:{
+    width: 120,
+    paddingHorizontal: 12,
+    alignItems: 'center',
+    marginHorizontal: 10,
+    backgroundColor: 'green',
+    paddingHorizontal: 18,
+    paddingVertical: 12,
+    borderRadius: 15,
   },
   buttonContainer: {
+    width: screenWidth - 50,
     flexDirection: 'row',
-    marginVertical: 20,
+    justifyContent: 'space-between',
+    marginVertical: 10,
     backgroundColor: 'transparent',
   },
 });

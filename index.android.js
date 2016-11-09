@@ -45,7 +45,7 @@ class Fencer extends Component {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="dates" component={ChooseDates} initial={true}/>
+          <Scene key="createmap" component={CreateMap} initial={true}/>
         </Scene>
       </Router>
     );

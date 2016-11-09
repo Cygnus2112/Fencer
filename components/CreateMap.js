@@ -5,55 +5,66 @@ import {
     Image,
     StyleSheet,
     TouchableNativeFeedback,
+    Dimensions,
+    Text,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
 
 import Polygon from './Polygon'
 
-class MapWithCoords extends Component{
-  constructor(props){
-    super(props);
-    // this.onRegionChange = this.onRegionChange.bind(this);
-    // this.state = {
-    //   region: {
-    //     latitude: 37.78825,
-    //     longitude: -122.4324,
-    //     latitudeDelta: 0.0922,
-    //     longitudeDelta: 0.0421,
-    //   }
-    // }
-  }
-  // onRegionChange(region) {
-  //   this.setState({ region });
-  // }
-  // componentWillReceiveProps(newProps, oldProps){
-  //   console.log('newProps.lat: ', newProps.lat);
-  // }
-  render(){
-    console.log('this.props.polygon: ', this.props.polygon);
-    console.log('this.props.polyCoords: ', this.props.polyCoords);
-    // console.log('this.props.lat ', this.props.lat);
-    // console.log('this.props.lng ', this.props.lng);
+import Icon from 'react-native-vector-icons/Entypo';
 
-    return (
-      <View style={styles.container}>
-        <MapView
-          style={styles.map}
-          region={{
-            latitude: this.props.lat || 37.78825,
-            longitude: this.props.lng || -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421}}
-        >
-        { this.props.polygon ? (<MapView.Polygon strokeWidth={2} fillColor={'#ffff00'} coordinates={this.props.polyCoords}/>) : (null)}
-        </MapView>
-      </View>
-    )
-  }
-}
-// let globalLat;
-// let globalLng;
+import UploadNav from './UploadNav'
+
+const { width, height } = Dimensions.get('window');
+let screenHeight = height;
+let screenWidth = width;
+
+// class MapWithCoords extends Component{
+//   constructor(props){
+//     super(props);
+//     // this.onRegionChange = this.onRegionChange.bind(this);
+//     // this.state = {
+//     //   region: {
+//     //     latitude: 37.78825,
+//     //     longitude: -122.4324,
+//     //     latitudeDelta: 0.0922,
+//     //     longitudeDelta: 0.0421,
+//     //   }
+//     // }
+//   }
+//   // onRegionChange(region) {
+//   //   this.setState({ region });
+//   // }
+//   // componentWillReceiveProps(newProps, oldProps){
+//   //   console.log('newProps.lat: ', newProps.lat);
+//   // }
+//   render(){
+//     console.log('this.props.polygon: ', this.props.polygon);
+//     console.log('this.props.polyCoords: ', this.props.polyCoords);
+//     // console.log('this.props.lat ', this.props.lat);
+//     // console.log('this.props.lng ', this.props.lng);
+
+//     return (
+//       <View style={styles.container}>
+//         <MapView
+//           style={styles.map}
+//           region={{
+//             latitude: this.props.lat || 37.78825,
+//             longitude: this.props.lng || -122.4324,
+//             latitudeDelta: 0.0922,
+//             longitudeDelta: 0.0421}}
+//         >
+//         { this.props.polygon ? (<MapView.Polygon strokeWidth={2} fillColor={'#ffff00'} coordinates={this.props.polyCoords}/>) : (null)}
+//         </MapView>
+//       </View>
+//     )
+//   }
+// }
+
+/********************************************************************/
+
 export default class CreateMap extends Component{
   constructor(props){
     super(props);
@@ -73,26 +84,14 @@ export default class CreateMap extends Component{
   }
 
   getCoords(){
-    navigator.geolocation.getCurrentPosition(
+    navigator.geolocation.getCurrentPosition(     // will DEFINITELY have to redux this one
       (pos) => {
         this.setState({
           lat: pos.coords.latitude,
           lng: pos.coords.longitude
         })
-        // globalLat = pos.coords.latitude;
-        // globalLng = pos.coords.longitude;
-        // console.log('globalLat in getCoords ', globalLat);
-
-        // this.forceUpdate();
-          // this.setState({
-          //   lat: pos.coords.latitude,
-          //   lng: pos.coords.longitude
-          // })
-
-        // var initialPosition = JSON.stringify(pos);
-        // this.setState({initialPosition});
       },
-      (error) => console.log("Nav error: ", JSON.stringify(error)),
+      (error) => console.log("Geolocation error: ", JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     )
   }
@@ -102,29 +101,43 @@ export default class CreateMap extends Component{
   }
 
   render(){
-    let topLeftLat = this.state.lat //- .00001;
-    let topLeftLng = this.state.lng  - .01;// + .00001;
-    let polyCoords = [
-      {latitude: topLeftLat,longitude: topLeftLng },
-      {latitude: topLeftLat - .005, longitude: topLeftLng },
-      {latitude: topLeftLat - .005, longitude: topLeftLng + .009 },
-      {latitude: topLeftLat, longitude: topLeftLng + .009 }
-    ]
 //<MapWithCoords polyCoords={polyCoords} polygon={this.state.polygon} lat={this.state.lat} lng={this.state.lng}/>
+//      <TouchableNativeFeedback onLongPress={this.addPolygon}>
+//      </TouchableNativeFeedback>
+//          <Polygon lat={this.state.lat} lng={this.state.lng} />
     return(
-      <TouchableNativeFeedback onLongPress={this.addPolygon}>
-        <View style={{flex: 1, backgroundColor: 'blue'}}>
-          <Polygon lat={this.state.lat} lng={this.state.lng} />
+        <View style={styles.container}>
+          <UploadNav />
+          <View style={styles.searchBoxContainer}>
+            <View style={{width: 30, marginLeft: 15}}>
+              <Icon name="home" size={30} color="#0c12ce" />
+            </View>
+            <View style={styles.searchBox}>
+              <Text style={{fontSize: 16}}>Search Nearby Places</Text>
+            </View>
+            <View style={{width: 30, marginRight: 15}}>
+              <Icon name="info" size={30} color="#0c12ce" />
+            </View>
+          </View>
+          <View style={styles.mapContainer} >
+            <Polygon lat={this.state.lat} lng={this.state.lng} />
+          </View>
         </View>
-      </TouchableNativeFeedback>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    height: screenHeight - 25,
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f2'
+  },
+  mapContainer: {
     position: 'absolute',
-    top: 5,
+    top: 100,
     left: 5,
     right: 5,
     bottom: 5,
@@ -134,12 +147,51 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1,
   },
+  searchBoxContainer: {
+    height: 45, 
+    position: 'absolute',
+    top: 50,
+    width: screenWidth,
+    marginTop: 2,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+  },
+  searchBox: {
+    height: 40,
+    width: screenWidth - 120,
+    padding: 6,
+    borderColor: 'black',
+    borderWidth: 1,
+  },
   map: {
     position: 'absolute',
     top: 2,
     left: 2,
     right: 2,
-    bottom: 2,
-
+    bottom: 2
   }
 });
+
+// const styles = StyleSheet.create({
+//   container: {
+//     position: 'absolute',
+//     top: 5,
+//     left: 5,
+//     right: 5,
+//     bottom: 5,
+//     justifyContent: 'flex-end',
+//     alignItems: 'center',
+//     backgroundColor: 'white',
+//     borderColor: 'black',
+//     borderWidth: 1,
+//   },
+//   map: {
+//     position: 'absolute',
+//     top: 2,
+//     left: 2,
+//     right: 2,
+//     bottom: 2,
+
+//   }
+// });
