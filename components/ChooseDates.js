@@ -7,7 +7,8 @@ import {
     StyleSheet,
     DatePickerAndroid,
     TimePickerAndroid,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -16,8 +17,8 @@ import { Actions } from 'react-native-router-flux';
 import UploadNav from './UploadNav';
 
 //import Icon from 'react-native-vector-icons/Entypo';
-
-import Icon from 'react-native-vector-icons/SimpleLineIcons'
+//import Icon from 'react-native-vector-icons/SimpleLineIcons'
+import Icon from 'react-native-vector-icons/FontAwesome'
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -99,6 +100,10 @@ export default class ChooseDates extends Component{
   //     { this.state.startText }
   //   </Text>
   // </View>
+
+//                  <Image source={require('../assets/ic_date_range_black_24dp.png')} style={{height:35, width:35}} />
+
+
   render(){
     return (
       <View style={styles.container}>
@@ -113,66 +118,97 @@ export default class ChooseDates extends Component{
           </Text> 
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
           </Text>
-          <View style={styles.dateBox}>
-            <Button
-              onPress={()=>(this.launchCal('start', {
-                date: this.state.allDate,
-                minDate: new Date(),
-                maxDate: new Date(2020, 4, 10),
-              }))}
-              style={{fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}>
-              { this.state.startText }
-            </Button>
-          </View>
 
+            <TouchableOpacity onPress={()=>(
+                  this.launchCal('start', {
+                      date: this.state.allDate,
+                      minDate: new Date(),
+                      maxDate: new Date(2020, 4, 10),
+                  }))} >
+            <View style={styles.dateAndIconContainer}>
+                <View style={[styles.dateBox]}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
+                    { this.state.startText }
+                  </Text>
+                </View>
+                <View style={styles.calendarIcon} >
+                  <Icon name="calendar-o" size={30} color={"black"} />
+                </View>
+            </View>
+          </TouchableOpacity>
 
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             at:
           </Text>
-          <View style={styles.dateBox}>
-            <Button
-              style={{flex:1,color: 'white',fontFamily: 'RobotoCondensed-Regular',fontSize:22}}
-              onPress={()=>{
-                this.launchTime('start',{
-                  hour: this.state.startHour,
-                  minute: this.state.startMinute,
-                })
-              }}>
-              { this.state.startTimeText }
-            </Button>
-          </View>
+
+          <TouchableOpacity onPress={()=>(
+                this.launchCal('start', {
+                  date: this.state.allDate,
+                  minDate: new Date(),
+                  maxDate: new Date(2020, 4, 10),
+                }))} >
+            <View style={styles.dateAndIconContainer}>
+
+              <View style={styles.dateBox}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
+                  { this.state.startTimeText }
+                </Text>
+              </View>
+              <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
+                <Icon name="clock-o" size={32} color={"black"} />
+              </View>
+            </View>
+          </TouchableOpacity>
   
         
-          <Text style={{fontSize:20}}>
-            and <Text style={{fontFamily: 'RobotoCondensed-Regular',fontWeight: 'bold'}}>end</Text> on:
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
+            and <Text style={{fontWeight: 'bold'}}>end</Text> on:
           </Text>
-          <View style={styles.dateBox}>
-            <Button
-              onPress={()=>(this.launchCal('end', {
+
+          <TouchableOpacity onPress={()=>(
+            this.launchCal('start', {
                 date: this.state.allDate,
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
-              }))}
-              style={{fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}>
-              { this.state.endText }
-            </Button>
-          </View>
+            }))} >
+            <View style={styles.dateAndIconContainer}>
+
+              <View style={styles.dateBox}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular', textAlign: 'center',color: 'black',fontSize:22}}>
+                  { this.state.endText }
+                </Text>
+              </View>
+              <View style={styles.calendarIcon} >
+                <Icon name="calendar-o" size={30} color={"black"} />
+              </View>
+
+            </View>
+          </TouchableOpacity>
         
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             at:
           </Text>
-          <View style={styles.dateBox}>
-            <Button
-              style={{flex:1,fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}
-              onPress={()=>{
-                this.launchTime('end',{
-                  hour: this.state.endHour,
-                  minute: this.state.endMinute,
-                })
-              }}>
-              { this.state.endTimeText }
-            </Button>
-          </View>
+
+          <TouchableOpacity onPress={()=>(
+            this.launchCal('start', {
+                date: this.state.allDate,
+                minDate: new Date(),
+                maxDate: new Date(2020, 4, 10),
+            }))} >
+            <View style={styles.dateAndIconContainer}>
+
+              <View style={styles.dateBox}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular', textAlign: 'center',color: 'black',fontSize:22}}>
+                  { this.state.endTimeText }
+                </Text>
+              </View>
+              <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
+                <Icon name="clock-o" size={32} color={"black"} />
+              </View>
+
+            </View>
+          </TouchableOpacity>
+
         </View>
         <View style={{width: 30,marginLeft:35}}>
           <Icon name="info" size={30} color="#0c12ce" />
@@ -185,7 +221,7 @@ export default class ChooseDates extends Component{
       
           <View style={styles.buttonBox}>
             <Button
-              style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:16}}
+              style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
               onPress={this.handleSubmit}>
               Submit
             </Button>
@@ -227,12 +263,32 @@ const styles = StyleSheet.create({
   },
   dateBox:{
     height: 38, 
-    width: 130, 
-    backgroundColor: 'silver', 
+    width: 120, 
+    backgroundColor: 'white', 
     borderWidth:2, 
     borderColor: 'black', 
     borderRadius: 1, 
-    paddingTop: 1,
+    paddingTop: 1
+  },
+  dateAndIconContainer:{
+    height: 38,
+    width: 160,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
     margin: 5
+  },
+  calendarIcon:{
+    borderWidth: 2, 
+    borderColor: 'black', 
+    borderLeftWidth: 0, 
+    paddingBottom:2,
+    height:38, 
+    width:38,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  clockIcon: {
+
   }
-  })
+})
