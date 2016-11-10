@@ -14,7 +14,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 import UploadNav from './UploadNav'
 
-
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
@@ -92,7 +91,7 @@ export default class UploadFilter extends Component{
       return(
         <View style={ styles.container }>
           <UploadNav />
-          <View style={{height: 480*.94, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
+          <View style={{height: 480*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
             <View style={{width: 30,marginRight:10,marginTop:5}}>
               <Icon name="home" size={30} color="#0c12ce" />
             </View>
@@ -106,7 +105,7 @@ export default class UploadFilter extends Component{
           <View style={{width: screenWidth-25, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
             <View style={ styles.buttonBox }>
               <Button
-                style={{fontSize: 16, color: 'white',borderRadius:4}}
+                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
                 styleDisabled={{color: 'red'}}
                 onPress={this.state.png ? this.handleUpload : this.handlePress }>
                 { this.state.png ? ("Upload") : ("Upload Filter") }
@@ -153,11 +152,6 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     marginRight: 40,
     marginBottom: 10
-  },
-  button: {
-    fontSize: 20,
-    borderRadius:4,
-    color: '#e2d7e2'
   }
 })
 

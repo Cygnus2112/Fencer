@@ -29,8 +29,8 @@ export default class StepFour extends Component {
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>4</Text>
 				</View>
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={{fontSize: 14,fontWeight: 'bold'}}>Send To</Text>
-					<Text style={{fontSize: 14,fontWeight: 'bold'}}>Friends</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14,fontWeight: 'bold'}}>Send To</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14,fontWeight: 'bold'}}>Friends</Text>
 				</View>
 			</View>
 			)

@@ -255,12 +255,12 @@ export default class Polygon extends Component {
               <TouchableOpacity
                 onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
-                  <Text style={{fontSize: 18, color: 'white'}}>Start Over</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.finish()}
                 style={styles.buttonFinish}>
-                  <Text style={{fontSize: 18, color: 'white'}}>{"Submit"}</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>{"Submit"}</Text>
               </TouchableOpacity>
             </View>)
             :
@@ -270,7 +270,7 @@ export default class Polygon extends Component {
               <TouchableOpacity
                 onPress={() => this.finish()}
                 style={styles.buttonStartOver}>
-                  <Text style={{fontSize: 18, color: 'white'}}>Start Over</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
             </View>)
             :

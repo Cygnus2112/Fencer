@@ -194,7 +194,7 @@ export default class Welcome extends Component{
              backgroundColor: 'blue',
            }}>
               <Button
-                style={{fontSize: 18, color: 'white'}}
+                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
                 styleDisabled={{color: 'red'}}
                 onPress={ this.handleCreate }>
                 Create New Geofilter
@@ -216,7 +216,7 @@ export default class Welcome extends Component{
              backgroundColor: 'blue',
            }}>
               <Button
-                style={{fontSize: 18, color: 'white'}}
+                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
                 styleDisabled={{color: 'red'}}
                 onPress={ this.loadMyFilters } >
                 My Geofilters

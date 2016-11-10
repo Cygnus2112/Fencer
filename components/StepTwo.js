@@ -29,8 +29,8 @@ export default class StepThree extends Component {
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>2</Text>
 				</View>
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={{fontSize: 14}}>{"Select"}</Text>
-					<Text style={{fontSize: 14}}>Dates</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>{"Select"}</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>Dates</Text>
 				</View>
 			</View>
 			)

@@ -113,7 +113,7 @@ export default class CreateMap extends Component{
               <Icon name="home" size={30} color="#0c12ce" />
             </View>
             <View style={styles.searchBox}>
-              <Text style={{fontSize: 16}}>Search Nearby Places</Text>
+              <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
             </View>
             <View style={{width: 30, marginRight: 15}}>
               <Icon name="info" size={30} color="#0c12ce" />

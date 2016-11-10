@@ -89,23 +89,41 @@ export default class SingleEvent extends Component {
 		//		-- will have extra options (cancel, revise, etc.);
 
 	}
-
+//					<Text style={{fontSize: 14, textAlign: 'center'}}> {this.props.message} </Text>
 	render(){
 		return (
 			<TouchableOpacity onPress={this.handleEventPress} >
-				<View style={styles.container}>		
-					<Text style={{fontSize: 18, textAlign: 'center', fontWeight:'bold'}}> { this.props.eventTitle } </Text>
-					<Text style={{fontSize: 14, textAlign: 'center'}}> {this.props.message} </Text>
-					<View style={styles.statusMessages}>
-					  <View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
-						<View style={styles.greenLight} />
-						<Text style={{fontSize: 14, color: 'green'}}>Active Now</Text>
-					  </View>
-					  <View style={{flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
-						<View style={styles.redLight} />
-						<Text style={{fontSize: 14, color: 'red'}}>Out of Range</Text>
-					  </View>
-					</View>
+				<View style={this.props.isActive ? this.props.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.eventTitle } </Text>
+					  {this.props.isActive
+					  	?
+					  	(<View style={styles.statusMessages}>
+					  		<View style={{marginRight: 5,flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
+								<View style={styles.greenLight} />
+								<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, color: 'green',marginBottom:1}}>Active Now</Text>
+					  		</View>
+					  		
+					  		  {this.props.isInRange
+					  		  	?
+								(<View style={{marginLeft: 5,flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
+									<View style={styles.greenLight} />
+									<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, color: 'green',marginBottom:1}}>In Range</Text>
+								</View>
+
+								)
+								:
+								(<View style={{marginLeft: 5,flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
+									<View style={styles.redLight} />
+									<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 14, color: 'red',marginBottom:1}}>Out of Range</Text>
+								</View>)
+							  }
+
+					  	</View>)
+					  	:
+					  	(<View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
+							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{this.state.startDate}</Text> at <Text style={{fontWeight: 'bold'}}>{this.state.startTime}</Text></Text>
+					  	</View>)
+					  }
 				</View>
 			</TouchableOpacity>	
 		)
@@ -113,8 +131,8 @@ export default class SingleEvent extends Component {
 }
 
 const styles = StyleSheet.create({
-	container:{
-		height: 110, 
+	containerActive:{
+		height: 80, 
 		width: 280, 
 		margin:10, 
 		paddingLeft:5,
@@ -124,11 +142,39 @@ const styles = StyleSheet.create({
 		borderRadius: 4,
 		flexDirection: 'column',
 		justifyContent: 'space-around',
-		backgroundColor: 'white'
+		backgroundColor: 'white',
+		elevation: 5
+	},
+	containerInactive:{
+		height: 80, 
+		width: 280, 
+		margin:10, 
+		paddingLeft:5,
+		paddingRight:5,
+		borderColor: 'black', 
+		borderWidth: 1, 
+		borderRadius: 4,
+		flexDirection: 'column',
+		justifyContent: 'space-around',
+		backgroundColor: '#e3e3e5',
+		elevation: 5
+	},
+	textActive: {
+		fontSize: 18, 
+		color: 'black', 
+		textAlign: 'center', 
+		fontWeight:'bold',
+		fontFamily: 'RobotoCondensed-Regular'
+	},
+	textInactive: {
+		fontSize: 18, 
+		color: "#c6c6c6",
+		textAlign: 'center', 
+		fontWeight:'bold'
 	},
 	statusMessages: {
 		flexDirection: 'row',
-		justifyContent: 'space-between',
+		justifyContent: 'center',
 		alignItems: 'center',
 		padding: 5
 	},
@@ -137,14 +183,18 @@ const styles = StyleSheet.create({
 		width: 15,
 		backgroundColor: 'green',
 		borderRadius: 25,
-		marginRight: 5
+		marginRight: 5,
+		borderColor: 'black',
+		borderWidth:1
 	},
 	redLight:{
 		height: 15,
 		width: 15,
 		backgroundColor: 'red',
 		borderRadius: 25,
-		marginRight: 5
+		marginRight: 5,
+		borderColor: 'black',
+		borderWidth:1
 	}
 })
 

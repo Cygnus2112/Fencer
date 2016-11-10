@@ -45,18 +45,17 @@ class Fencer extends Component {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="myfilters" component={MyFilters}  initial={true}/>
-          <Scene key="camera" component={ TakePhoto }  />
-          <Scene key="applyfilter" component={ ApplyFilter } />
+          <Scene key="dates" component={ChooseDates}initial={true}/>
         </Scene>
       </Router>
     );
   }
 }
 
-          // <Scene key="camera" component={ TakePhoto } initial={ true } />
+          // <Scene key="myfilters" component={MyFilters}  initial={true}/>
+          // <Scene key="camera" component={ TakePhoto }  />
           // <Scene key="applyfilter" component={ ApplyFilter } />
-          // <Scene key="viewbase" component={ ViewBase64 } />
+
 
 // const styles = StyleSheet.create({
 //   container: {

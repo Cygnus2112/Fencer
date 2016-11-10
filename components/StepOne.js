@@ -31,8 +31,8 @@ export default class StepOne extends Component {
 			<View style={styles.container}>
 				<Icon name="check-circle-o" size={25} color="green" />
 				<View style={{alignItems: 'center',marginLeft:5}}>
-					<Text style={{fontSize: 14}}>Upload</Text>
-					<Text style={{fontSize: 14}}>Filter</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>Upload</Text>
+					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>Filter</Text>
 				</View>
 			</View>
 			)

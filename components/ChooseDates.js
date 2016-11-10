@@ -15,7 +15,9 @@ import { Actions } from 'react-native-router-flux';
 
 import UploadNav from './UploadNav';
 
-import Icon from 'react-native-vector-icons/Entypo';
+//import Icon from 'react-native-vector-icons/Entypo';
+
+import Icon from 'react-native-vector-icons/SimpleLineIcons'
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -103,13 +105,13 @@ export default class ChooseDates extends Component{
         <UploadNav />
       <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
         <View style={{width: 30, marginRight: 35}}>
-          <Icon name="home" size={30} color="#0c12ce" />
+          <Icon name="home" size={30} color={"#c7adff"} />
         </View>
         <View style={styles.dateFieldsContainer}>
-          <Text style={{fontSize:20}}>
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             This filter will become
           </Text> 
-          <Text style={{fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
           </Text>
           <View style={styles.dateBox}>
             <Button
@@ -118,18 +120,18 @@ export default class ChooseDates extends Component{
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
               }))}
-              style={{color: 'white',fontSize:22}}>
+              style={{fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}>
               { this.state.startText }
             </Button>
           </View>
 
 
-          <Text style={{fontSize:20}}>
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             at:
           </Text>
           <View style={styles.dateBox}>
             <Button
-              style={{flex:1,color: 'white',fontSize:22}}
+              style={{flex:1,color: 'white',fontFamily: 'RobotoCondensed-Regular',fontSize:22}}
               onPress={()=>{
                 this.launchTime('start',{
                   hour: this.state.startHour,
@@ -142,7 +144,7 @@ export default class ChooseDates extends Component{
   
         
           <Text style={{fontSize:20}}>
-            and <Text style={{fontWeight: 'bold'}}>end</Text> on:
+            and <Text style={{fontFamily: 'RobotoCondensed-Regular',fontWeight: 'bold'}}>end</Text> on:
           </Text>
           <View style={styles.dateBox}>
             <Button
@@ -151,17 +153,17 @@ export default class ChooseDates extends Component{
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
               }))}
-              style={{color: 'white',fontSize:22}}>
+              style={{fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}>
               { this.state.endText }
             </Button>
           </View>
         
-          <Text style={{fontSize:20}}>
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             at:
           </Text>
           <View style={styles.dateBox}>
             <Button
-              style={{flex:1,color: 'white',fontSize:22}}
+              style={{flex:1,fontFamily: 'RobotoCondensed-Regular',color: 'white',fontSize:22}}
               onPress={()=>{
                 this.launchTime('end',{
                   hour: this.state.endHour,
@@ -177,13 +179,13 @@ export default class ChooseDates extends Component{
         </View>
       </View>
         <View style={styles.errorBox}>
-          <Text style={{fontSize: 16, color: 'red'}}>Filter can be active for</Text>
-          <Text style={{fontSize: 16, color: 'red'}}>no more than 48 hours.</Text>
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>Filter can be active for</Text>
+          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>no more than 48 hours.</Text>
         </View>
       
           <View style={styles.buttonBox}>
             <Button
-              style={{color: 'white',margin: 5,fontSize:16}}
+              style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:16}}
               onPress={this.handleSubmit}>
               Submit
             </Button>
