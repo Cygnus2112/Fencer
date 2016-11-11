@@ -11,17 +11,6 @@ import WebViewBridge from 'react-native-webview-bridge';
 
 import ContainsPosition from './ContainsPosition'
 
-//document.querySelector('#tryit').innerText = String(parsedData.paths);
-     //  document.querySelector('#tryit').innerText = String(paths);
-        //     let polygonUtilInspect = util.inspect(polygon);
-
-     //    setTimeout(() => {	
-	    //     let isInsideBounds = String( new google.maps.geometry.poly.containsLocation(position, polygon) );
-	    //     document.querySelector('#tryit').innerText = isInsideBounds;
-	    //     let dataToSend = JSON.stringify({status: "success", isInsideBounds: isInsideBounds });
-	    //     WebViewBridge.send(dataToSend);
-    	// },2000);
-
 const injectScript2 = `
   (function () { 
     if (WebViewBridge) {
@@ -81,11 +70,6 @@ export default class PolygonData extends Component {
 		}
 	}
 
-	componentDidMount(){
-		// console.log('this.props.position in PolygonData: ', this.props.position)
-		// console.log('this.props.paths in PolygonData: ', this.props.paths)
-	}
-
 	onBridgeMessage(data){
     	console.log("---------------------------------")
     	console.log('string data in PolygonData: ', data)
@@ -110,9 +94,6 @@ export default class PolygonData extends Component {
 	        break;
 	    }
   	}
-
-  	//this.props.position;
-  	//this.props.paths
 
 	render(){
 		return (
@@ -141,10 +122,7 @@ export default class PolygonData extends Component {
             
 			)}
 			</View>
-		</View>
-
-			
+		</View>		
 		)
 	}
-
 }

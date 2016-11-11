@@ -46,26 +46,6 @@ const injectScript = `
       WebViewBridge.send(JSON.stringify({status:"ready"}));
     }
   }());`
-
-    // if (WebViewBridge) {
-
-    //   WebViewBridge.send(JSON.stringify({status:"FML!!!!!!"}));
-
-    //   WebViewBridge.onMessage = function (data) {
-
-    //     let parsedData = JSON.parse(data);
-
-    //     let message = parsedData.status;
-
-    //     if (message === "data incoming") {      //parsedData.payload.position.coords.latitude
-    //       document.querySelector('#tryit').innerText = data;
-    //     }
-    //   }
-//Object.keys(parsedData.payload)
-//Object.keys(parsedData.payload.position.coords)
-
-//  let lat = parsedData.payload.position.coords.latitude
-
 const injectScript2 = `
   (function () { 
     document.querySelector('#tryit').innerText = "Work, damn you!";

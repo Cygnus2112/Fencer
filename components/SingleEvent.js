@@ -160,14 +160,14 @@ const styles = StyleSheet.create({
 		elevation: 5
 	},
 	textActive: {
-		fontSize: 18, 
+		fontSize: 20, 
 		color: 'black', 
 		textAlign: 'center', 
 		fontWeight:'bold',
 		fontFamily: 'RobotoCondensed-Regular'
 	},
 	textInactive: {
-		fontSize: 18, 
+		fontSize: 20, 
 		color: "#c6c6c6",
 		textAlign: 'center', 
 		fontWeight:'bold'

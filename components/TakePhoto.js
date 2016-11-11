@@ -37,15 +37,6 @@ export default class TakePhoto extends Component {
 	      .catch(err => console.error(err));
 	}
 
-	// componentDidMount(){
-	// 	let options = {};
-	// 	ImagePicker.launchCamera(options, (response) => {
-	//  		const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-	//  		Actions.applyfilter({photo: source})
-	//  		// will pass filter as prop or do it w/redux
-	// 	});
-	// }
-
   render() {
     return (
       <View style={styles.container}>

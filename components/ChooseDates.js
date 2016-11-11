@@ -17,8 +17,7 @@ import { Actions } from 'react-native-router-flux';
 import UploadNav from './UploadNav';
 
 //import Icon from 'react-native-vector-icons/Entypo';
-//import Icon from 'react-native-vector-icons/SimpleLineIcons'
-import Icon from 'react-native-vector-icons/FontAwesome'
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -34,13 +33,6 @@ export default class ChooseDates extends Component{
     this.launchTime = this.launchTime.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.state = ({
-    //  presetDate: new Date(2020, 4, 5),
-      // allDate: new Date(),
-      // simpleText: 'pick a date',
-      // minText: 'pick a date, no earlier than today',
-      // maxText: 'pick a date, no later than today',
-      // presetText: 'pick a date, preset to 2020/5/5',
-      // allText: 'pick a date between 2020/5/1 and 2020/5/10',
       startDate: new Date(),
       endDate: new Date(),
       startText: (new Date()).toLocaleDateString(),

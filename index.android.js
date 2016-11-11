@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import {
   AppRegistry,
   StyleSheet,
@@ -7,9 +6,7 @@ import {
   View,
   Navigator,
 } from 'react-native';
-
 import {Scene, Router} from 'react-native-router-flux';
-
 import ApplyFilter from './components/ApplyFilter'
 import UploadFilter from './components/UploadFilter'
 import Welcome from './components/Welcome'
@@ -21,11 +18,24 @@ import ViewBase64 from './components/ViewBase64'
 import MyFilters from './components/MyFilters'
 import SingleEvent from './components/SingleEvent'
 import TakePhoto from './components/TakePhoto'
-//import WebBridgeEx from './components/WebBridgeEx'
-
 import Position from './components/Position'
 import UploadNav from './components/UploadNav'
+class Fencer extends Component {
+  render() {
+    return (
+      <Router>
+        <Scene key="root" hideNavBar={true}>
+          <Scene key="myfilters" component={MyFilters} initial={true}/>
+        </Scene>
+      </Router>
+    );
+  }
+}
+AppRegistry.registerComponent('Fencer', () => Fencer);
 
+//import WebBridgeEx from './components/WebBridgeEx'
+
+//<Scene key="bridge" component={WebBridgeEx} initial={ true } />
 // <Router>
   // <Scene key="root" hideNavBar={true}>
   //   <Scene key="welcome" component={Welcome} initial={ true } />
@@ -37,20 +47,6 @@ import UploadNav from './components/UploadNav'
   //   <Scene key="myfilters" component={MyFilters} />
   // </Scene>
 // </Router>
-
-//<Scene key="bridge" component={WebBridgeEx} initial={ true } />
-
-class Fencer extends Component {
-  render() {
-    return (
-      <Router>
-        <Scene key="root" hideNavBar={true}>
-          <Scene key="dates" component={ChooseDates}initial={true}/>
-        </Scene>
-      </Router>
-    );
-  }
-}
 
           // <Scene key="myfilters" component={MyFilters}  initial={true}/>
           // <Scene key="camera" component={ TakePhoto }  />
@@ -76,4 +72,4 @@ class Fencer extends Component {
 //   },
 // });
 
-AppRegistry.registerComponent('Fencer', () => Fencer);
+

@@ -59,24 +59,6 @@ export default class UploadFilter extends Component{
               jpg: source
             })
           } else {
-
-          // let formdata = new FormData();
-          // formdata.append("avatar",response)
-
-          // fetch(globalConfigs.api_url+"/gallery_upload_mobile",{
-          //   method: 'post',
-          //   headers: {
-          //     'Accept': 'application/json',
-          //     'Content-Type': 'application/json'
-          //   },
-          //   body: JSON.stringify(formdata)
-          // }).then(response => {
-          //   console.log("image uploaded")
-          // }).catch(err => {
-          //   console.log(err)
-          // })
-          //const source = {uri: 'data:image/jpeg;base64,' + response.data, isStatic: true};
-
             const source = {uri: response.uri, isStatic: true};
 
             this.setState({

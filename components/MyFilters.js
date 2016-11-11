@@ -18,7 +18,6 @@ let screenWidth = width;
 let screenHeight= height;
 
 import Icon from 'react-native-vector-icons/Entypo';
-
 /*
 		Basic concept:
 			- on component (and/or application) mount, we ping back-end to get the user's events (or whatever we call them)
@@ -60,13 +59,13 @@ let sampleEvents = [
 	{
 		eventTitle: "Kappa Sigma Winter Formal",
 		startDate: "12/1/16",
-		startTime: "12:00AM",
+		startTime: "8:00PM",
 		endDate: "12/2/16",
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 2,
 		filterURI: "../weho_halloween.png",
-		message: "Celebrating Turkey Day With the Parks",
+		message: "",
 		isActive: false,							//  REMEMBER TO REMOVE
 		isInRange: false
 	}
@@ -111,21 +110,28 @@ export default class MyFilters extends Component {
 		//style={{height: 25, borderBottomWidth: 1, borderColor: 'black'
 		//	    <View style={{position: 'absolute', top: 30, left: 10, right: 10, bottom:50, paddingLeft:10, paddingRight:10,borderWidth: 1, borderRadius: 3, borderColor:'black'}}>
         //<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20,color:'#0c12ce'}}>Lenses</Text>
+//				<Text style={{fontFamily: 'RobotoCondensed-Regular',marginLeft: 10, marginBottom: 2,fontSize: 24,  textAlign: 'center', color: 'white'}}>Fencer</Text>
+//				<SvgUri width="200" height="200" source={require('../assets/map.svg')} />
 
+				// 	<View style={{marginLeft: 10}}>
+				// 	<Icon name="menu" size={30} color="white" />
+				// </View>	
 		return (
 		<View style={styles.container}>
 			<View style={styles.fakeNavBar}>
-				<View style={{marginLeft: 10}}>
-					<Icon name="menu" size={30} color="white" />
-				</View>
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',marginLeft: 10, marginBottom: 2,fontSize: 24,  textAlign: 'center', color: 'white'}}>Fencer</Text>
+
+	
+				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
+				</Image>
+
 			</View>
 			<View style={styles.titleContainer}>
             	<View style={{width: 30, marginLeft: 15}}>
               		<Icon name="home" size={30} color="#0c12ce" />
             	</View>
             	<View style={styles.searchBox}>
-              		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My GeoLenses</Text>
+              		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>
               		
             	</View>
             	<View style={{width: 30, marginRight: 15}}>
@@ -145,7 +151,6 @@ export default class MyFilters extends Component {
                		}
               		}/>
               </View>
-
         </View>
         )
     }
@@ -183,8 +188,6 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
-    //borderColor: 'black',
-    //borderWidth: 1
   },
   fakeNavBar:{
   	height: 50,
@@ -193,16 +196,11 @@ const styles = StyleSheet.create({
   	flexDirection: 'row',
   	justifyContent: 'flex-start',
   	alignItems: 'center',
-  	//borderBottomColor: 'white',
-  	//borderBottomWidth: 1,
   	elevation: 4
   },
   searchBox: {
     height: 45,
     width: screenWidth - 120,
-    //padding: 6,
-  //  borderColor: 'black',
-  //  borderWidth: 1,
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center'

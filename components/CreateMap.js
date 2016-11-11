@@ -21,48 +21,6 @@ const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
 
-// class MapWithCoords extends Component{
-//   constructor(props){
-//     super(props);
-//     // this.onRegionChange = this.onRegionChange.bind(this);
-//     // this.state = {
-//     //   region: {
-//     //     latitude: 37.78825,
-//     //     longitude: -122.4324,
-//     //     latitudeDelta: 0.0922,
-//     //     longitudeDelta: 0.0421,
-//     //   }
-//     // }
-//   }
-//   // onRegionChange(region) {
-//   //   this.setState({ region });
-//   // }
-//   // componentWillReceiveProps(newProps, oldProps){
-//   //   console.log('newProps.lat: ', newProps.lat);
-//   // }
-//   render(){
-//     console.log('this.props.polygon: ', this.props.polygon);
-//     console.log('this.props.polyCoords: ', this.props.polyCoords);
-//     // console.log('this.props.lat ', this.props.lat);
-//     // console.log('this.props.lng ', this.props.lng);
-
-//     return (
-//       <View style={styles.container}>
-//         <MapView
-//           style={styles.map}
-//           region={{
-//             latitude: this.props.lat || 37.78825,
-//             longitude: this.props.lng || -122.4324,
-//             latitudeDelta: 0.0922,
-//             longitudeDelta: 0.0421}}
-//         >
-//         { this.props.polygon ? (<MapView.Polygon strokeWidth={2} fillColor={'#ffff00'} coordinates={this.props.polyCoords}/>) : (null)}
-//         </MapView>
-//       </View>
-//     )
-//   }
-// }
-
 /********************************************************************/
 
 export default class CreateMap extends Component{
