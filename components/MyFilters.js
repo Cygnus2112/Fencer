@@ -31,28 +31,28 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 let sampleEvents = [
 	{
-		eventTitle: "Kendra's House Party",
+		eventTitle: "Happy Thanksgiving!",
 		startDate: "11/12/16",
 		startTime: "12:00AM",
 		endDate: "11/13/16",
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 1,
-		filterURI: "../event2.png",
+		filterURI: "../assets/thanksgiving.png",
 		message: "Let's do this!",
 		isActive: true,							//  REMEMBER TO REMOVE
 		isInRange: true
 	},
 	{
-		eventTitle: "SwoleFest 2016",
+		eventTitle: "KaraokeFest 2016",
 		startDate: "11/12/16",
 		startTime: "12:00AM",
 		endDate: "11/13/16",
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 2,
-		filterURI: "../event3.png",
-		message: "Time to get your swole on ...",
+		filterURI: "../assets/event2.png",
+		message: "Time to get your karaoke on ...",
 		isActive: true,							//  REMEMBER TO REMOVE
 		isInRange: false
 	},
@@ -64,7 +64,7 @@ let sampleEvents = [
 		endTime: "2:00AM",
 		coords: null,
 		eventID: 2,
-		filterURI: "../weho_halloween.png",
+		filterURI: "../assets/weho_halloween.png",
 		message: "",
 		isActive: false,							//  REMEMBER TO REMOVE
 		isInRange: false
@@ -94,11 +94,8 @@ export default class MyFilters extends Component {
 
 	componentWillReceiveProps(newProps, oldProps){
 		console.log('newProps.events in componentWillReceiveProps: ', newProps.events)
-
 		if(newProps.events !== oldProps.events){		// THIS COMPARISON PROBABLY DOESN'T WORK
-
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
 			this.setState({
 				dataSource: ds.cloneWithRows( newProps.events )
 			})
@@ -106,12 +103,10 @@ export default class MyFilters extends Component {
 	}
 
 	render(){
-
-		//style={{height: 25, borderBottomWidth: 1, borderColor: 'black'
+		//	style={{height: 25, borderBottomWidth: 1, borderColor: 'black'
 		//	    <View style={{position: 'absolute', top: 30, left: 10, right: 10, bottom:50, paddingLeft:10, paddingRight:10,borderWidth: 1, borderRadius: 3, borderColor:'black'}}>
-        //<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20,color:'#0c12ce'}}>Lenses</Text>
-//				<Text style={{fontFamily: 'RobotoCondensed-Regular',marginLeft: 10, marginBottom: 2,fontSize: 24,  textAlign: 'center', color: 'white'}}>Fencer</Text>
-//				<SvgUri width="200" height="200" source={require('../assets/map.svg')} />
+        //	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20,color:'#0c12ce'}}>Lenses</Text>
+		//	<Text style={{fontFamily: 'RobotoCondensed-Regular',marginLeft: 10, marginBottom: 2,fontSize: 24,  textAlign: 'center', color: 'white'}}>Fencer</Text>
 
 				// 	<View style={{marginLeft: 10}}>
 				// 	<Icon name="menu" size={30} color="white" />
@@ -119,20 +114,16 @@ export default class MyFilters extends Component {
 		return (
 		<View style={styles.container}>
 			<View style={styles.fakeNavBar}>
-
-	
 				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
 					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
 				</Image>
-
 			</View>
 			<View style={styles.titleContainer}>
             	<View style={{width: 30, marginLeft: 15}}>
               		<Icon name="home" size={30} color="#0c12ce" />
             	</View>
             	<View style={styles.searchBox}>
-              		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>
-              		
+              		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
             	</View>
             	<View style={{width: 30, marginRight: 15}}>
               		<Icon name="info" size={30} color="#0c12ce" />
@@ -142,7 +133,8 @@ export default class MyFilters extends Component {
             	<ListView
 
               		dataSource={this.state.dataSource}
-              		renderRow={(rowData) => {										// REMEMBER TO REMOVE
+              		renderRow={(rowData) => {	
+              		console.log('rowData.filterURI: ', rowData.filterURI)									// REMEMBER TO REMOVE
                 	return (
                 		<View key={rowData.id} >									
                   			<SingleEvent { ...rowData } isActive={rowData.isActive} isInRange={rowData.isInRange}/>

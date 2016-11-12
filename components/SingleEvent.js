@@ -15,12 +15,10 @@ import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 
-
 // pass current position (lat lng) as a prop
 // open web view bridge and check Google Maps if it's in range
 
 // use linear gradient on red and green lights
-
 
 export default class SingleEvent extends Component {
 	constructor(props){
@@ -35,7 +33,7 @@ export default class SingleEvent extends Component {
 			endTime: "",
 			coords: null,
 			eventID: null,
-			filterURI: null,
+			filterURI: "../assets/thanksgiving.png",
 			message: "",
 			isActive: false,
 			isInRange: false					// MIGHT HAVE TO REDUX THIS, GIVEN HOW SLOW GEO IS
@@ -52,6 +50,7 @@ export default class SingleEvent extends Component {
 			endTime: this.props.endTime,
 			coords: this.props.coords,
 			filterURI: this.props.filterURI,
+			//filterURI: "../assets/thanksgiving.png",
 			message: this.props.message
 		})
 	}
@@ -67,13 +66,13 @@ export default class SingleEvent extends Component {
 				endTime: this.props.endTime,
 				coords: this.props.coords,
 				filterURI: this.props.filterURI,
+				//filterURI: "../assets/thanksgiving.png",
 				message: this.props.message
 			})
 		}
 	}
 
-	handleEventPress(){
-		
+	handleEventPress(){		
 		Actions.camera({filterURI: this.props.filterURI});
 
 		// either load the filter or an 'out of bounds/event not started yet' popup

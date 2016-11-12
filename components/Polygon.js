@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-
 //import WebViewBridge from 'react-native-webview-bridge';
+
+let pin_blue = require('../assets/pin_blue.png');
 
 const { width, height } = Dimensions.get('window');
 let screenWidth = width;
@@ -239,12 +240,12 @@ export default class Polygon extends Component {
               return(                
                 <MapView.Marker
                   key={point.key}
+                  image={pin_blue}
                   onPress={() => {console.log('marker pressed')}}
                   coordinate={{
                     latitude: point.lat,
                     longitude: point.lng
-                  }}
-                  pinColor={'blue'}/>)
+                  }} />)
           })}
         </MapView>
                     )

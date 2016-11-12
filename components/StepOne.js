@@ -26,13 +26,22 @@ export default class StepOne extends Component {
 				// 	<Text style={{fontSize: 12, fontWeight: 'bold'}}>1</Text>
 				// </View>
 
+									//REMEMBER TO REMOVE TEMP ISCOMPLETE AND ISACTIVE PROPS
+
 	render(){
 		return (
 			<View style={styles.container}>
-				<Icon name="check-circle-o" size={25} color="green" />
+				{this.props.isComplete
+					?
+				(<Icon name="check-circle-o" size={25} color="green" />)
+					:
+				(<View style={styles.numberIcon}>
+					<Text style={{fontSize: 13, fontWeight: 'bold'}}>1</Text>
+				</View>)
+				}
 				<View style={{alignItems: 'center',marginLeft:5}}>
-					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>Upload</Text>
-					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14}}>Filter</Text>
+					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Upload</Text>
+					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Filter</Text>
 				</View>
 			</View>
 			)
@@ -57,5 +66,9 @@ const styles = StyleSheet.create({
 		borderRadius: 25,
 		justifyContent: 'center',
 		alignItems: 'center'
+	},
+	stepText: {
+		fontFamily: 'RobotoCondensed-Regular',
+		fontSize: 14
 	}
 })

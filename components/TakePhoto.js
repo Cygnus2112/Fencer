@@ -27,9 +27,17 @@ export default class TakePhoto extends Component {
 
 	}
 
+    // componentDidMount(){
+    //   Image.prefetch(this.props.filterURI).then(() => {    // see if this speeds things up
+    //      // this.setState({
+    //      //      imageLoaded: true
+    //      //  })
+    //   })
+    // } 
+      
 	takePicture() {
 	  	this.camera.capture()
-	      .then((data) => {
+	      .then((data) => {                // is data.path maybe returning undefined???
 	      	Actions.applyfilter({photoURI: data.path, filterURI: this.props.filterURI})
 	      	//console.log(data) 
 	      }
@@ -42,7 +50,7 @@ export default class TakePhoto extends Component {
       <View style={styles.container}>
         <Camera
           ref={(cam) => {
-            this.camera = cam;
+            this.camera = cam;              //  the new (correct) callback refs style
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}>

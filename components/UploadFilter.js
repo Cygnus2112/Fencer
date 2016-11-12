@@ -72,7 +72,7 @@ export default class UploadFilter extends Component{
     render(){
       return(
         <View style={ styles.container }>
-          <UploadNav />
+          <UploadNav isOneComplete={true} isTwoComplete={true} isThreeActive={true}/>
           <View style={{height: 480*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
             <View style={{width: 30,marginRight:10,marginTop:5}}>
               <Icon name="home" size={30} color="#0c12ce" />

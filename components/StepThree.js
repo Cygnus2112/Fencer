@@ -25,12 +25,22 @@ export default class StepThree extends Component {
 	render(){
 		return (
 			<View style={styles.container}>
+				{this.props.isComplete
+					?
+				(<Icon name="check-circle-o" size={25} color="green" />)
+					:
+				(<View style={styles.numberIcon}>
+					<Text style={{fontSize: 13, fontWeight: 'bold'}}>3</Text>
+				</View>)
+				}
+
 				<View style={styles.numberIcon}>
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>3</Text>
 				</View>
+
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}}>Choose</Text>
-					<Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}}>{"Area"}</Text>
+					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Choose</Text>
+					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Area"}</Text>
 				</View>
 			</View>
 			)
@@ -56,5 +66,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingBottom: 1
+	},
+	stepText: {
+		fontFamily: 'RobotoCondensed-Regular',
+		fontSize: 14
 	}
 })

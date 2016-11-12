@@ -10,12 +10,10 @@ import {
 } from 'react-native';
 
 import MapView from 'react-native-maps';
-
-import Polygon from './Polygon'
+import Polygon from './Polygon';
+import UploadNav from './UploadNav';
 
 import Icon from 'react-native-vector-icons/Entypo';
-
-import UploadNav from './UploadNav'
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;

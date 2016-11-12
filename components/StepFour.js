@@ -25,12 +25,17 @@ export default class StepFour extends Component {
 	render(){
 		return (
 			<View style={styles.container}>
-				<View style={styles.numberIcon}>
+				{this.props.isComplete
+					?
+				(<Icon name="check-circle-o" size={25} color="green" />)
+					:
+				(<View style={styles.numberIcon}>
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>4</Text>
-				</View>
+				</View>)
+				}
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14,fontWeight: 'bold'}}>Send To</Text>
-					<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14,fontWeight: 'bold'}}>Friends</Text>
+					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Send To</Text>
+					<Text style={ this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText }>Friends</Text>
 				</View>
 			</View>
 			)
@@ -56,5 +61,9 @@ const styles = StyleSheet.create({
 		justifyContent: 'center',
 		alignItems: 'center',
 		paddingBottom: 1
+	},
+	stepText: {
+		fontFamily: 'RobotoCondensed-Regular',
+		fontSize: 14
 	}
 })

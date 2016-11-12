@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import {
   AppRegistry,
   StyleSheet,
@@ -6,6 +7,7 @@ import {
   View,
   Navigator,
 } from 'react-native';
+
 import {Scene, Router} from 'react-native-router-flux';
 import ApplyFilter from './components/ApplyFilter'
 import UploadFilter from './components/UploadFilter'
@@ -20,17 +22,21 @@ import SingleEvent from './components/SingleEvent'
 import TakePhoto from './components/TakePhoto'
 import Position from './components/Position'
 import UploadNav from './components/UploadNav'
+
 class Fencer extends Component {
   render() {
     return (
       <Router>
         <Scene key="root" hideNavBar={true}>
-          <Scene key="myfilters" component={MyFilters} initial={true}/>
+          <Scene key="myfilters" component={MyFilters}  initial={true}/>
+          <Scene key="camera" component={ TakePhoto }  />
+          <Scene key="applyfilter" component={ ApplyFilter } />
         </Scene>
       </Router>
     );
   }
 }
+
 AppRegistry.registerComponent('Fencer', () => Fencer);
 
 //import WebBridgeEx from './components/WebBridgeEx'
