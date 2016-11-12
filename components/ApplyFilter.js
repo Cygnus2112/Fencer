@@ -35,9 +35,8 @@ export default class ApplyFilter extends Component{
     //      //  })
     //   })
 
-
        // setTimeout(() => {
-        
+
     //  1)  CHANGE SETTIMEOUT TO COMPONENT WILL RECEIVE PROPS
     //          ... or Redux it    
     //  2)  SHARE BUTTON SHOULDN'T APPEAR TILL IMG IS READY  
