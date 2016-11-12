@@ -7,8 +7,14 @@ import {
     StyleSheet,
     DatePickerAndroid,
     TimePickerAndroid,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as uploadActions from '../actions/uploadActions';
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -16,16 +22,21 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class StepThree extends Component {
+class StepThree extends Component {
 	constructor(props){
 		super(props);
+		this.handlePress = this.handlePress.bind(this);
+	}
 
+	handlePress(){
+		uploadActions.loadViewRequest('area')
 	}
 
 	render(){
 		return (
+		<TouchableOpacity onPress={this.handlePress} >
 			<View style={styles.container}>
-				{this.props.isComplete
+				{this.props.chooseAreaComplete
 					?
 				(<Icon name="check-circle-o" size={25} color="green" />)
 					:
@@ -39,11 +50,12 @@ export default class StepThree extends Component {
 				</View>
 
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Choose</Text>
-					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Area"}</Text>
+					<Text style={this.props.currentView === 'area' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Choose</Text>
+					<Text style={this.props.currentView === 'area' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Area"}</Text>
 				</View>
 			</View>
-			)
+		<TouchableOpacity >
+		)
 	}
 }
 
@@ -72,3 +84,19 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	}
 })
+
+const mapStateToProps = (state) => {
+  return {
+    currentView: state.uploadReducer.currentView,
+    chooseAreaComplete: state.uploadReducer.chooseAreaComplete
+   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    uploadActions: bindActionCreators(uploadActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepThree);
+

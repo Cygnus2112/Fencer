@@ -24,14 +24,17 @@ export default class UploadNav extends Component {
 	}
 
 	render(){
-		return (
-				<View style={{height: 50, flexDirection: 'row', justifyContent: 'center', borderBottomColor: 'black', borderBottomWidth: 2}}>
-					<StepOne isActive={this.props.isOneActive} isComplete={this.props.isOneComplete} />
-					<StepTwo isActive={this.props.isTwoActive} isComplete={this.props.isTwoComplete} />
-					<StepThree isActive={this.props.isThreeActive} isComplete={this.props.isThreeComplete} />
-					<StepFour isActive={this.props.isFourActive} isComplete={this.props.isFourComplete} />
-				</View>
 
-			)
+		// trying it first without passing { ...this.props } to Steps
+
+		return (
+			<View style={{height: 50, flexDirection: 'row', justifyContent: 'center', borderBottomColor: 'black', borderBottomWidth: 2}}>
+				<StepOne />
+				<StepTwo  />
+				<StepThree  />
+				<StepFour  />
+			</View>
+
+		)
 	}
 }

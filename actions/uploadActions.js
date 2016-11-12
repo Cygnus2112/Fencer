@@ -45,6 +45,31 @@ export const submitFilterSuccess = (filterData) => {
 	}
 }
 
+export const submitFilterCoordinates = (coords) => {
+	return dispatch => {
+		dispatch(chooseAreaRequest());
+
+										//  can we validate google polygon coords on backend? Am guessing no.
+
+		// dispatch(chooseAreaSuccess());
+	}
+}
+
+export const chooseAreaRequest = () => {
+	return {
+		type: CHOOSE_AREA_REQUEST
+	}
+}
+
+export const chooseAreaSuccess = (coords) => {
+	return {
+		type: CHOOSE_AREA_SUCCESS,
+		filterCoordinates: coords
+	}
+}
+
+
+
 
 
 

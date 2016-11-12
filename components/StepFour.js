@@ -7,8 +7,14 @@ import {
     StyleSheet,
     DatePickerAndroid,
     TimePickerAndroid,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
+
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as uploadActions from '../actions/uploadActions';
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -16,29 +22,31 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class StepFour extends Component {
+class StepFour extends Component {
 	constructor(props){
 		super(props);
+		this.handlePress = this.handlePress.bind(this);
+	}
 
+	handlePress() {
+		uploadActions.loadViewRequest('send')
+	
 	}
 
 	render(){
 		return (
+		<TouchableOpacity onPress={this.handlePress} >
 			<View style={styles.container}>
-				{this.props.isComplete
-					?
-				(<Icon name="check-circle-o" size={25} color="green" />)
-					:
-				(<View style={styles.numberIcon}>
+				<View style={styles.numberIcon}>
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>4</Text>
-				</View>)
-				}
+				</View>
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Send To</Text>
-					<Text style={ this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText }>Friends</Text>
+					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Send To</Text>
+					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText }>Friends</Text>
 				</View>
 			</View>
-			)
+		</TouchableOpacity>
+		)
 	}
 }
 
@@ -67,3 +75,18 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	}
 })
+
+const mapStateToProps = (state) => {
+  return {
+    currentView: state.uploadReducer.currentView
+   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    uploadActions: bindActionCreators(uploadActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepFour);
+

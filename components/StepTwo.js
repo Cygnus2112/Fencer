@@ -7,7 +7,8 @@ import {
     StyleSheet,
     DatePickerAndroid,
     TimePickerAndroid,
-    Dimensions
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
@@ -16,16 +17,29 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-export default class StepThree extends Component {
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+
+import * as uploadActions from '../actions/uploadActions';
+
+class StepTwo extends Component {
 	constructor(props){
 		super(props);
 
+		this.handlePress = this.handlePress.bind(this);
+
+	}
+
+	handlePress(){
+		uploadActions.loadViewRequest('dates')
 	}
 
 	render(){
 		return (
+
+		<TouchableOpacity onPress={this.handlePress} >
 			<View style={styles.container}>
-				{this.props.isComplete
+				{this.props.selectDatesComplete
 					?
 				(<Icon name="check-circle-o" size={25} color="green" />)
 					:
@@ -34,11 +48,12 @@ export default class StepThree extends Component {
 				</View>)
 				}
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Select"}</Text>
-					<Text style={this.props.isActive ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Dates</Text>
+					<Text style={this.props.currentView === 'dates' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Select"}</Text>
+					<Text style={this.props.currentView === 'dates' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Dates</Text>
 				</View>
 			</View>
-			)
+		</TouchableOpacity>
+		)
 	}
 }
 
@@ -67,3 +82,18 @@ const styles = StyleSheet.create({
 		fontSize: 14
 	}
 })
+
+const mapStateToProps = (state) => {
+  return {
+    currentView: state.uploadReducer.currentView,
+    selectDatesComplete: state.uploadReducer.selectDatesComplete
+   }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    uploadActions: bindActionCreators(uploadActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(StepTwo);

@@ -11,14 +11,13 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
+import { connect } from 'react-redux'
+import { bindActionCreators } from 'redux'
+import * as uploadActions from '../actions/uploadActions';
+
 import Icon from 'react-native-vector-icons/Entypo';
 
 import UploadNav from './UploadNav'
-
-import StepOne from './StepOne'
-import StepTwo from './StepTwo'
-import StepThree from './StepThree'
-import StepFour from './StepFour'
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -46,31 +45,53 @@ so if we do something like ...
 
 */
 
-export default class Upload extends Component {
+class Upload extends Component {
 	constructor(props){
 		super(props);
 
-		this.state = ({
-			currentView: 
-		})
-
 	}
 
+	// trying it first without passing { ...this.props } to UploadNav:
 
 	render(){
-	<View>
-		<View style={{height: 50, flexDirection: 'row', justifyContent: 'center', borderBottomColor: 'black', borderBottomWidth: 2}}>
-			<StepOne isActive={this.props.isOneActive} isComplete={this.props.isOneComplete} />
-			<StepTwo isActive={this.props.isTwoActive} isComplete={this.props.isTwoComplete} />
-			<StepThree isActive={this.props.isThreeActive} isComplete={this.props.isThreeComplete} />
-			<StepFour isActive={this.props.isFourActive} isComplete={this.props.isFourComplete} />
-		</View>
+	  <View>
+		<UploadNav />
 
-		<MainView { ...this.state.propsToSend } view={ this.state.currentView } />
+		<MainView { ...this.state.propsToSend } view={ this.props.currentView } />
 
-	</View>
+	  </View>
 	}
 }
+
+
+
+
+const mapStateToProps = (state) => {
+  return {
+    currentView: state.uploadReducer.currentView,
+	isLoading: state.uploadReducer.isLoading,
+  	isValidatingImage: state.uploadReducer.isValidatingImage,
+  	isValidatingCoords: state.uploadReducer.isValidatingCoords,
+  	currentView: state.uploadReducer.currentView,
+  	uploadFilterComplete: state.uploadReducer.uploadFilterComplete,
+  	selectDatesComplete: state.uploadReducer.selectDatesComplete,
+  	chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
+  	sendToFriendsComplete: state.uploadReducer.sendToFriendsComplete,
+  	selectedDates: state.uploadReducer.selectedDates,
+	filterCoordinates: state.uploadReducer.filterCoordinates,
+  	filterToUpload: state.uploadReducer.filterToUpload,
+  	filterTitle: state.uploadReducer.filterTitle,
+  	filterMessage: state.uploadReducer.filterMessage
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    uploadActions: bindActionCreators(uploadActions, dispatch)
+  }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Upload);
 
 
 

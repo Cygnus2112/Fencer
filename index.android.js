@@ -9,6 +9,23 @@ import {
 } from 'react-native';
 
 import {Scene, Router} from 'react-native-router-flux';
+
+import { createStore, combineReducers, applyMiddleware, compose } from 'redux';
+import { Provider } from 'react-redux';
+import thunk from 'redux-thunk';
+
+import uploadReducer from './reducers/uploadReducers';
+
+const reducer = combineReducers({
+  uploadReducer
+})
+
+const finalCreateStore = compose(
+  applyMiddleware(thunk)
+)(createStore)
+
+const store = finalCreateStore(reducer)
+
 import ApplyFilter from './components/ApplyFilter'
 import UploadFilter from './components/UploadFilter'
 import Welcome from './components/Welcome'
@@ -26,13 +43,15 @@ import UploadNav from './components/UploadNav'
 class Fencer extends Component {
   render() {
     return (
-      <Router>
-        <Scene key="root" hideNavBar={true}>
-          <Scene key="myfilters" component={MyFilters}  initial={true}/>
-          <Scene key="camera" component={ TakePhoto }  />
-          <Scene key="applyfilter" component={ ApplyFilter } />
-        </Scene>
-      </Router>
+      <Provider store={store}>
+        <Router>
+          <Scene key="root" hideNavBar={true}>
+            <Scene key="myfilters" component={MyFilters}  initial={true}/>
+            <Scene key="camera" component={ TakePhoto }  />
+            <Scene key="applyfilter" component={ ApplyFilter } />
+          </Scene>
+        </Router>
+      </Provider>
     );
   }
 }

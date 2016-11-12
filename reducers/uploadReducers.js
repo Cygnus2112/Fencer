@@ -1,4 +1,4 @@
-//import * as ActionTypes from '../actions/uploadActions';
+import * as ActionTypes from '../actions/uploadActions';
 
 const initialState = {
   isLoading: false,
@@ -16,7 +16,9 @@ const initialState = {
     endTime: null
   },
   filterCoordinates: null,
-  filterToUpload: null
+  filterToUpload: null,
+  filterTitle: null,
+  filterMessage: null
 }
 
 export default function uploadReducer(state = initialState, action){
@@ -54,6 +56,8 @@ export default function uploadReducer(state = initialState, action){
       })
 
       //   ADD FUNCTIONS FOR DEALING WITH SENDING OUT INVITES AND UPLOADING DATA TO API
+      //   filterTitle
+      //  filterMessage
 
     default:
       return state;
