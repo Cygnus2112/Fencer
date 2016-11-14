@@ -1,8 +1,8 @@
-When component mounts, check 1) geocoords, and 2) if user is logged in (token)
+// When component mounts, check 1) geocoords, and 2) if user is logged in (token)
 
-While checking, show loading screen.
+// While checking, show loading screen.
 
-After we get coords and isLoggedIn, show welcome screen. 
+// After we get coords and isLoggedIn, show welcome screen. 
 
 import React, { Component } from 'react';
 
@@ -15,9 +15,11 @@ import {
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+
 import * as filterActions from '../actions/filterActions';
 import * as authActions from '../actions/authActions';
-import Welcome from './components/Welcome';
+
+import Welcome from './Welcome';
 
 class LoadingScreen extends Component{
 	constructor(props){
@@ -29,7 +31,7 @@ class LoadingScreen extends Component{
 			<View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
 				<Text style={{fontSize: 26}}>
 					Loading ...
-				<Text>
+				</Text>
 			</View>
 		)
 	}
@@ -42,31 +44,36 @@ class Main extends Component {
 	}
 
 	componentDidMount(){
-		filterActions.userUpdatePositionRequest();
+		filterActions.updatePosition();
 
 	}
+		// {this.props.isUpdatingLocation
+		// 	?
+		//   (<LoadingScreen />)
+		// 	:
+		//   (<Welcome />)
 
+		// }
 	render(){
 	  return (
-
-		{this.props.isUpdatingLocation
-			?
-			<LoadingScreen />
-			:
-			<Welcome />
-
-
-		}
+	  	<View>
+		  	{this.props.isUpdatingLocation
+				?
+			  (<LoadingScreen />)
+				:
+			  (<Welcome />)
+			}
+	  	</View>
 	  )
 	}
 }
 
 const mapStateToProps = (state) => {
   return {
-  //	isLoggedIn: state.authReducer.isLoggedIn,
-  //	authErrorMsg: state.authReducer.authErrorMsg,
-  // 	username: state.authReducer.username,
-  // 	isFetchingAuth: state.authReducer.isFetchingAuth,
+  	isLoggedIn: state.authReducer.isLoggedIn,
+  	// authErrorMsg: state.authReducer.authErrorMsg,
+  	// username: state.authReducer.username,
+  	// isFetchingAuth: state.authReducer.isFetchingAuth,
     isUpdatingPosition: state.filterReducer.isUpdatingLocation,
     currentPosition: state.filterReducer.currentPosition
   }
@@ -74,7 +81,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-  	//authActions: bindActionCreators(authActions, dispatch),
+  	authActions: bindActionCreators(authActions, dispatch),
     filterActions: bindActionCreators(filterActions, dispatch)
   }
 }

@@ -14,7 +14,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux'
 import * as filterActions from '../actions/filterActions';
-
+import * as authActions from '../actions/authActions';
 // Will need to 
 //    1) Grab current location from navigator;
 //    2) Grab fence coords ( ** Google overlay getPath() ** )for every event that is 'active' (ie, within date/time)
@@ -28,7 +28,7 @@ import * as filterActions from '../actions/filterActions';
 //          -- can reduxify some of this, but Geometry/isInBounds calculation MUST be done in browser, because Google
 
         
-export default class Welcome extends Component{
+class Welcome extends Component{
   constructor(props){
     super(props);
 
@@ -38,6 +38,8 @@ export default class Welcome extends Component{
   }
 
   componentDidMount(){
+
+    console.log('this.props.currentPosition: ', this.props.currentPosition)
 
         // get data for all of user's fences in the background, so we have data even if user doesn't press MyFilters
     // if we do, will most likely need to use WebViewBridge on front end
@@ -139,7 +141,8 @@ export default class Welcome extends Component{
 
 const mapStateToProps = (state) => {
   return {
-    isLoggedIn: state.authReducer.isLoggedIn
+    isLoggedIn: state.authReducer.isLoggedIn,
+    currentPosition: state.filterReducer.currentPosition
   }
 }
 

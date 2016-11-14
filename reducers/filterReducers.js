@@ -11,15 +11,15 @@ const initialState = {
 
 export default function filterReducer(state = initialState, action){
   switch(action.type){
+  	// case ActionTypes.UPDATE_POSITION_REQUEST:
+  	//   return Object.assign({}, state, {
+  	//   	currentPosition: ActionTypes.currentPosition
+  	//   })
   	case ActionTypes.UPDATE_POSITION_REQUEST:
-  	  return Object.assign({}, state, {
-  	  	currentPosition: ActionTypes.currentPosition
-  	  })
-  	case ActionTypes.USER_UPDATE_POSITION_REQUEST:
   	  return Object.assign({}, state, {
   	  	isUpdatingPosition: true
   	  })
-  	case ActionTypes.USER_UPDATE_POSITION_SUCCESS:
+  	case ActionTypes.UPDATE_POSITION_SUCCESS:
   	  return Object.assign({}, state, {
   	  	currentPosition: ActionTypes.currentPosition,		//  REMOVE IF GETTING GEO DATA ON FRONT END
   	  	isUpdatingPosition: false

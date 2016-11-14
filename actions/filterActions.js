@@ -3,28 +3,35 @@ import { AsyncStorage, Image } from 'react-native';
 let utils = require('../utils');
 
 export const UPDATE_POSITION_REQUEST = 'UPDATE_POSITION_REQUEST';
-export const USER_UPDATE_POSITION_REQUEST = 'USER_UPDATE_POSITION_REQUEST';
-export const USER_UPDATE_POSITION_SUCCESS = 'USER_UPDATE_POSITION_SUCCESS';
+export const UPDATE_POSITION_SUCCESS = 'UPDATE_POSITION_SUCCESS';
 
-//  can we get geolocation data here, and is it as accurate as doing it inside a React Native component?
-//   ... because I believe RE relies on the HTML5 api.
+export const updatePosition = () => {
+	return dispatch => {
+		dispatch(updatePositionRequest());
+		console.log('dispatch called');
+		navigator.geolocation.getCurrentPosition((pos) => {
+    		let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
 
-export const updatePosition(pos){
+    		console.log('position in filterActions: ', newPos);
+
+    		updatePositionSuccess(newPos);
+  		},
+  		(error) => console.log("Nav error: ", JSON.stringify(error)),
+  		{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+		)
+	}
+}
+
+export const updatePositionRequest = () => {
 	return {
-		type: UPDATE_POSITION_REQUEST,
+		type: UPDATE_POSITION_REQUEST
+	}
+}
+
+export const updatePositionSuccess = (pos) => {
+	return {
+		type: UPDATE_POSITION_SUCCESS,
 		currentPosition: pos
-	}
-}
-
-export const userUpdatePositionRequest(){
-	return {
-		type: USER_UPDATE_POSITION_REQUEST
-	}
-}
-
-export const userUpdatePositionRequest(){
-	return {
-		type: USER_UPDATE_POSITION_SUCCESS
 	}
 }
 
@@ -127,7 +134,7 @@ const loadFiltersCreatedRequest = () => {
   	}
 }
 
-const loadMyFiltersSuccess = (filtersData) => {
+const loadFiltersCreatedSuccess = (filtersData) => {
 	return {
     	type: LOAD_FILTERSCREATED_SUCCESS,
     	filtersCreated: filtersData

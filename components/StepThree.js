@@ -29,11 +29,12 @@ class StepThree extends Component {
 	}
 
 	handlePress(){
-		uploadActions.loadViewRequest('area')
+		uploadActions.loadViewRequest('area'); 
 	}
 
 	render(){
 		return (
+
 		<TouchableOpacity onPress={this.handlePress} >
 			<View style={styles.container}>
 				{this.props.chooseAreaComplete
@@ -54,10 +55,11 @@ class StepThree extends Component {
 					<Text style={this.props.currentView === 'area' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>{"Area"}</Text>
 				</View>
 			</View>
-		<TouchableOpacity >
+		</TouchableOpacity>
+
 		)
 	}
-}
+};
 
 const styles = StyleSheet.create({
 	container: {

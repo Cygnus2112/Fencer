@@ -16,7 +16,7 @@ import thunk from 'redux-thunk';
 
 import uploadReducer from './reducers/uploadReducers';
 import filterReducer from './reducers/filterReducers';
-import authReducer from './reducers/authReducer';
+import authReducer from './reducers/authReducers';
 
 const reducer = combineReducers({
   uploadReducer,
@@ -54,8 +54,9 @@ class Fencer extends Component {
       <Provider store={store}>
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="myfilters" component={MyFilters}  initial={true}/>
-            <Scene key="camera" component={ TakePhoto }  />
+            <Scene key="main" component={Main}  initial={true}/>
+            <Scene key="myfilters" component={MyFilters} />
+            <Scene key="camera" component={ TakePhoto } />
             <Scene key="applyfilter" component={ ApplyFilter } />
           </Scene>
         </Router>

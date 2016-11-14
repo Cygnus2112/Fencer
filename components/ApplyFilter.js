@@ -86,7 +86,7 @@ export default class ApplyFilter extends Component{
       <View style={{flexDirection: 'column'}}>
         <View ref="example_view" collapsable={false} style={{flex:4}}>
             <Image ref="exampleimg" style={styles.container} source={{ uri: this.props.photoURI }}>
-              <Image source={{ this.props.filterURI }} style={{width: 200, height: 380}}/> 
+              <Image source={{ uri: this.props.filterURI }} style={{width: 200, height: 380}} /> 
             </Image>
         </View>
 
