@@ -15,9 +15,13 @@ import { Provider } from 'react-redux';
 import thunk from 'redux-thunk';
 
 import uploadReducer from './reducers/uploadReducers';
+import filterReducer from './reducers/filterReducers';
+import authReducer from './reducers/authReducer';
 
 const reducer = combineReducers({
-  uploadReducer
+  uploadReducer,
+  filterReducer,
+  authReducer
 })
 
 const finalCreateStore = compose(
@@ -34,11 +38,15 @@ import CreateMap from './components/CreateMap'
 import Polygon from './components/Polygon'
 import ChooseFriends from './components/ChooseFriends'
 import ViewBase64 from './components/ViewBase64'
-import MyFilters from './components/MyFilters'
 import SingleEvent from './components/SingleEvent'
 import TakePhoto from './components/TakePhoto'
 import Position from './components/Position'
 import UploadNav from './components/UploadNav'
+
+import Main from './components/Main'
+import MyFilters from './components/MyFilters'
+import Upload from './components/Upload'
+
 
 class Fencer extends Component {
   render() {

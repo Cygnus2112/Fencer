@@ -63,9 +63,6 @@ class Upload extends Component {
 	}
 }
 
-
-
-
 const mapStateToProps = (state) => {
   return {
     currentView: state.uploadReducer.currentView,
@@ -92,6 +89,4 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Upload);
-
-
 

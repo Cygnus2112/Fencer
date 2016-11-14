@@ -1,6 +1,7 @@
 import { AsyncStorage, Image } from 'react-native';
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
+export const SELECT_DATES_REQUEST = 'SELECT_DATES_REQUEST';
 export const UPLOAD_FILTER_REQUEST = 'UPLOAD_FILTER_REQUEST';
 export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
 export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
@@ -67,13 +68,5 @@ export const chooseAreaSuccess = (coords) => {
 		filterCoordinates: coords
 	}
 }
-
-
-
-
-
-
-
-
 
 
