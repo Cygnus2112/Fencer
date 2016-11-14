@@ -22,22 +22,26 @@ import { bindActionCreators } from 'redux'
 
 import * as uploadActions from '../actions/uploadActions';
 
-class StepTwo extends Component {
+class StepTwoComponent extends Component {
 	constructor(props){
 		super(props);
 
-		this.handlePress = this.handlePress.bind(this);
+		//this.handlePress = this.handlePress.bind(this);
 
 	}
 
-	handlePress(){
-		uploadActions.loadViewRequest('dates')
+	componentDidMount(){
+		console.log('this.props in StepTwo: ', this.props)
 	}
+
+	// handlePress(){
+	// 	uploadActions.loadView('dates')
+	// }
 
 	render(){
 		return (
 
-		<TouchableOpacity onPress={this.handlePress} >
+		<TouchableOpacity onPress={this.props.handlePress} >
 			<View style={styles.container}>
 				{this.props.selectDatesComplete
 					?
@@ -91,9 +95,17 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  // return {
+  //   uploadActions: bindActionCreators(uploadActions, dispatch)
+  // }
   return {
-    uploadActions: bindActionCreators(uploadActions, dispatch)
+  	handlePress: () => {
+  		dispatch(uploadActions.loadViewRequest('dates'))
+  	}
   }
+  
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StepTwo);
+const StepTwo = connect(mapStateToProps, mapDispatchToProps)(StepTwoComponent);
+
+export default StepTwo;

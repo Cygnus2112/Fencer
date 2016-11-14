@@ -7,14 +7,22 @@ export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
 export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
 export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
 
+export const loadView = (view) => {
+	console.log('loadView called in uploadActions');
+	return dispatch => {
+		dispatch( loadViewRequest(view) );
+	}
+}
+
 export const loadViewRequest = (view) => {
+	console.log('loadViewRequest dispatched!!!');
 	return {
 		type: LOAD_VIEW_REQUEST,
 		currentView: view
 	}
 }
 
-export const submitDates = (dates) => {			// will do all date validation on front end
+const submitDates = (dates) => {			// will do all date validation on front end
 	return {
 		type: SELECT_DATES_REQUEST,
 		selectedDates: dates
@@ -23,7 +31,7 @@ export const submitDates = (dates) => {			// will do all date validation on fron
 
 export const submitFilter = (filterData) => {
 	return dispatch => {
-		dispatch(submitFilterRequest());
+		dispatch( submitFilterRequest() );
 
 
 		//  do filter validation here. 
@@ -33,13 +41,13 @@ export const submitFilter = (filterData) => {
 	}
 }
 
-export const submitFilterRequest = () => {
+const submitFilterRequest = () => {
 	return {
 		type: UPLOAD_FILTER_REQUEST
 	}
 }
 
-export const submitFilterSuccess = (filterData) => {
+const submitFilterSuccess = (filterData) => {
 	return {
 		type: UPLOAD_FILTER_SUCCESS,
 		filterToUpload: filterData				//  could be something else (ie, filterData.filterURI)
@@ -48,7 +56,7 @@ export const submitFilterSuccess = (filterData) => {
 
 export const submitFilterCoordinates = (coords) => {
 	return dispatch => {
-		dispatch(chooseAreaRequest());
+		dispatch( chooseAreaRequest() );
 
 										//  can we validate google polygon coords on backend? Am guessing no.
 
@@ -56,13 +64,13 @@ export const submitFilterCoordinates = (coords) => {
 	}
 }
 
-export const chooseAreaRequest = () => {
+const chooseAreaRequest = () => {
 	return {
 		type: CHOOSE_AREA_REQUEST
 	}
 }
 
-export const chooseAreaSuccess = (coords) => {
+const chooseAreaSuccess = (coords) => {
 	return {
 		type: CHOOSE_AREA_SUCCESS,
 		filterCoordinates: coords

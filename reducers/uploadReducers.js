@@ -21,9 +21,10 @@ const initialState = {
   filterMessage: null
 }
 
-export default function uploadReducer(state = initialState, action){
+function uploadReducer(state = initialState, action){
   switch(action.type){
     case ActionTypes.LOAD_VIEW_REQUEST: 
+      console.log('action.currentView in uploadReducer: ', action.currentView);
       return Object.assign({}, state, {
         currentView: action.currentView
       })
@@ -63,3 +64,5 @@ export default function uploadReducer(state = initialState, action){
       return state;
   }
 }
+
+export default uploadReducer;

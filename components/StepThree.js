@@ -22,20 +22,20 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class StepThree extends Component {
+class StepThreeComponent extends Component {
 	constructor(props){
 		super(props);
-		this.handlePress = this.handlePress.bind(this);
+		//this.handlePress = this.handlePress.bind(this);
 	}
 
-	handlePress(){
-		uploadActions.loadViewRequest('area'); 
-	}
+	// handlePress(){
+	// 	uploadActions.loadView('area'); 
+	// }
 
 	render(){
 		return (
 
-		<TouchableOpacity onPress={this.handlePress} >
+		<TouchableOpacity onPress={this.props.handlePress} >
 			<View style={styles.container}>
 				{this.props.chooseAreaComplete
 					?
@@ -45,10 +45,6 @@ class StepThree extends Component {
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>3</Text>
 				</View>)
 				}
-
-				<View style={styles.numberIcon}>
-					<Text style={{fontSize: 13, fontWeight: 'bold'}}>3</Text>
-				</View>
 
 				<View style={{alignItems: 'center', marginLeft:5}}>
 					<Text style={this.props.currentView === 'area' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Choose</Text>
@@ -95,10 +91,17 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    uploadActions: bindActionCreators(uploadActions, dispatch)
-  }
+  // return {
+  //   uploadActions: bindActionCreators(uploadActions, dispatch)
+  // }
+    return {
+  	  handlePress: () => {
+  		dispatch(uploadActions.loadViewRequest('area'))
+  	  }
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StepThree);
+const StepThree = connect(mapStateToProps, mapDispatchToProps)(StepThreeComponent);
+
+export default StepThree;
 

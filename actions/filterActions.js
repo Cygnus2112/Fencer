@@ -2,13 +2,40 @@ import { AsyncStorage, Image } from 'react-native';
 
 let utils = require('../utils');
 
+import { Actions } from 'react-native-router-flux';
+
 export const UPDATE_POSITION_REQUEST = 'UPDATE_POSITION_REQUEST';
 export const UPDATE_POSITION_SUCCESS = 'UPDATE_POSITION_SUCCESS';
 
+export const initPosition = () => {
+  console.log('initPosition called');
+ // return dispatch => {
+    //dispatch(updatePositionRequest());
+
+    console.log('dispatch called');
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+        let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+
+        console.log('position in initPosition: ', newPos);
+
+        //dispatch( updatePositionSuccess(newPos) );
+
+        Actions.main({currentPosition: newPos});
+      },
+      (error) => console.log("Nav error: ", JSON.stringify(error)),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    )
+ // }
+}
+
 export const updatePosition = () => {
+	console.log('updatePosition called');
 	return dispatch => {
 		dispatch(updatePositionRequest());
+
 		console.log('dispatch called');
+
 		navigator.geolocation.getCurrentPosition((pos) => {
     		let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
 
@@ -22,13 +49,14 @@ export const updatePosition = () => {
 	}
 }
 
-export const updatePositionRequest = () => {
+const updatePositionRequest = () => {
+	console.log('updatePositionRequest called')
 	return {
 		type: UPDATE_POSITION_REQUEST
 	}
 }
 
-export const updatePositionSuccess = (pos) => {
+const updatePositionSuccess = (pos) => {
 	return {
 		type: UPDATE_POSITION_SUCCESS,
 		currentPosition: pos

@@ -1,9 +1,3 @@
-// When component mounts, check 1) geocoords, and 2) if user is logged in (token)
-
-// While checking, show loading screen.
-
-// After we get coords and isLoggedIn, show welcome screen. 
-
 import React, { Component } from 'react';
 
 import {
@@ -19,61 +13,41 @@ import { bindActionCreators } from 'redux';
 import * as filterActions from '../actions/filterActions';
 import * as authActions from '../actions/authActions';
 
-import Welcome from './Welcome';
-
-class MainComponent extends Component {
+class LoadingComponent extends Component{
 	constructor(props){
-		super(props);
-
+		super(props)
 	}
-
 	componentDidMount(){
+		//store.dispatch( filterActions.updatePositionRequest() );
 		console.log('-----------------------------------');
-		console.log('this.props in Main: ', this.props)
+		filterActions.initPosition();
 		console.log('-----------------------------------');
+
 	}
-
-
-		// {this.props.isUpdatingLocation
-		// 	?
-		//   (<LoadingScreen />)
-		// 	:
-		//   (<Welcome />)
-
-		// }
 	render(){
-	  return (
-	  	<View>
-			<Welcome />
-	  	</View>
-	  )
+		return (
+			<View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
+				<Text style={{fontSize: 26}}>
+					Loading ...
+				</Text>
+			</View>
+		)
 	}
 }
 
-// const mergeProps = (stateProps, dispatchProps, ownProps) => {
-
-//     const { dispatch } = dispatchProps;
-//    	console.log('dispatch in dispatchProps: ', dispatch);
-
-
-//   	return dispatchProps;
-// }
-
 const mapStateToProps = (state) => {
-	console.log('state.authReducer in Main: ', state.authReducer)
   return {
   	isLoggedIn: state.authReducer.isLoggedIn,
   	// authErrorMsg: state.authReducer.authErrorMsg,
   	// username: state.authReducer.username,
   	// isFetchingAuth: state.authReducer.isFetchingAuth,
-  	//    currentPosition: state.filterReducer.currentPosition,
-    isUpdatingPosition: state.filterReducer.isUpdatingPosition
-
+    isUpdatingPosition: state.filterReducer.isUpdatingPosition,
+    currentPosition: state.filterReducer.currentPosition
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-	console.log('dispatch in Main: ', dispatch);
+	console.log('dispatch in Loading: ', dispatch);
 	// let bound = bindActionCreators(filterActions, dispatch);
 	// console.log('boundActionCreators: ', bound);
   return {
@@ -82,6 +56,7 @@ const mapDispatchToProps = (dispatch) => {
   }
 }
 
-const Main = connect(mapStateToProps, mapDispatchToProps)(MainComponent);
+const Loading = connect(mapStateToProps, mapDispatchToProps)(LoadingComponent);
 
-export default Main;
+export default Loading;
+

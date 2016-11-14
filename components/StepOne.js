@@ -22,21 +22,23 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class StepOne extends Component {
+class StepOneComponent extends Component {
 	constructor(props){
 		super(props);
 
-		this.handlePress = this.handlePress.bind(this);
+		//this.handlePress = this.handlePress.bind(this);
 	}
 
-	handlePress(){
-		uploadActions.loadViewRequest('upload')
-	}
+	// handlePress(){
+
+	// 	uploadActions.loadView('upload')
+
+	// }
 
 	render(){
 		return (
 
-		<TouchableOpacity onPress={this.handlePress} >
+		<TouchableOpacity onPress={this.props.handlePress} >
 			<View style={styles.container}>
 				{this.props.uploadComplete
 					?
@@ -89,9 +91,16 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    uploadActions: bindActionCreators(uploadActions, dispatch)
-  }
+  // return {
+  //   uploadActions: bindActionCreators(uploadActions, dispatch)
+  // }
+    return {
+  	  handlePress: () => {
+  		dispatch(uploadActions.loadViewRequest('upload'))
+  	  }
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StepOne);
+let StepOne = connect(mapStateToProps, mapDispatchToProps)(StepOneComponent);
+
+export default StepOne;

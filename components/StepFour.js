@@ -22,20 +22,20 @@ let screenWidth = width;
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-class StepFour extends Component {
+class StepFourComponent extends Component {
 	constructor(props){
 		super(props);
-		this.handlePress = this.handlePress.bind(this);
+		//this.handlePress = this.handlePress.bind(this);
 	}
 
-	handlePress() {
-		uploadActions.loadViewRequest('send')
+	// handlePress() {
+	// 	uploadActions.loadView('send')
 	
-	}
+	// }
 
 	render(){
 		return (
-		<TouchableOpacity onPress={this.handlePress} >
+		<TouchableOpacity onPress={this.props.handlePress} >
 			<View style={styles.container}>
 				<View style={styles.numberIcon}>
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>4</Text>
@@ -83,10 +83,17 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    uploadActions: bindActionCreators(uploadActions, dispatch)
-  }
+  // return {
+  //   uploadActions: bindActionCreators(uploadActions, dispatch)
+  // }
+    return {
+  	  handlePress: () => {
+  		dispatch(uploadActions.loadViewRequest('send'))
+  	  }
+    }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(StepFour);
+const StepFour = connect(mapStateToProps, mapDispatchToProps)(StepFourComponent);
+
+export default StepFour;
 

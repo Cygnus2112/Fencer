@@ -17,7 +17,7 @@ import StepFour from './StepFour'
 
 //REMEMBER TO REMOVE TEMP ISCOMPLETE AND ISACTIVE PROPS
 
-export default class UploadNav extends Component {
+class UploadNav extends Component {
 	constructor(props){
 		super(props);
 
@@ -38,3 +38,5 @@ export default class UploadNav extends Component {
 		)
 	}
 }
+
+export default UploadNav;

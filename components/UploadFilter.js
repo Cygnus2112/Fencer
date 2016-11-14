@@ -12,8 +12,6 @@ var ImagePicker = require('react-native-image-picker');
 
 import Icon from 'react-native-vector-icons/Entypo';
 
-import UploadNav from './UploadNav'
-
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
@@ -21,7 +19,7 @@ let screenWidth = width;
 // - User clicks 'upload png' button
 // - Opens camera roll
 
-export default class UploadFilter extends Component{
+class UploadFilter extends Component{
     constructor(props){
       super(props);
       this.handlePress = this.handlePress.bind(this);
@@ -72,7 +70,6 @@ export default class UploadFilter extends Component{
     render(){
       return(
         <View style={ styles.container }>
-          <UploadNav isOneComplete={true} isTwoComplete={true} isThreeActive={true}/>
           <View style={{height: 480*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
             <View style={{width: 30,marginRight:10,marginTop:5}}>
               <Icon name="home" size={30} color="#0c12ce" />
@@ -137,4 +134,5 @@ const styles = StyleSheet.create({
   }
 })
 
+export default UploadFilter;
 

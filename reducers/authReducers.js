@@ -7,7 +7,7 @@ const initialState = {
   authErrorMsg: ''
 }
 
-export default function authReducer(state = initialState, action){
+function authReducer(state = initialState, action){
   switch(action.type){
     case ActionTypes.SIGNUP_REQUEST:
       return Object.assign({}, state, {
@@ -64,3 +64,5 @@ export default function authReducer(state = initialState, action){
       return state;
   }
 }
+
+export default authReducer;

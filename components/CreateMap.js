@@ -63,7 +63,6 @@ export default class CreateMap extends Component{
 //          <Polygon lat={this.state.lat} lng={this.state.lng} />
     return(
         <View style={styles.container}>
-          <UploadNav isOneComplete={true} />
           <View style={styles.searchBoxContainer}>
             <View style={{width: 30, marginLeft: 15}}>
               <Icon name="home" size={30} color="#0c12ce" />

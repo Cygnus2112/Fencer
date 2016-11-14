@@ -14,8 +14,6 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
-import UploadNav from './UploadNav';
-
 //import Icon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -26,7 +24,7 @@ let screenWidth = width;
 function _formatTime(hour, minute) {
   return hour + ':' + (minute < 10 ? '0' + minute : minute);
 }
-export default class ChooseDates extends Component{
+class ChooseDatesComponent extends Component{
   constructor(props){
     super(props);
     this.launchCal = this.launchCal.bind(this);
@@ -99,7 +97,6 @@ export default class ChooseDates extends Component{
   render(){
     return (
       <View style={styles.container}>
-        <UploadNav />
       <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
         <View style={{width: 30, marginRight: 35}}>
           <Icon name="home" size={30} color={"#c7adff"} />
@@ -284,3 +281,7 @@ const styles = StyleSheet.create({
 
   }
 })
+
+const ChooseDates = ChooseDatesComponent;
+
+export default ChooseDates;

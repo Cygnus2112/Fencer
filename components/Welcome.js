@@ -11,8 +11,8 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
-import { connect } from 'react-redux'
-import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import * as filterActions from '../actions/filterActions';
 import * as authActions from '../actions/authActions';
 // Will need to 
@@ -28,7 +28,7 @@ import * as authActions from '../actions/authActions';
 //          -- can reduxify some of this, but Geometry/isInBounds calculation MUST be done in browser, because Google
 
         
-class Welcome extends Component{
+class WelcomeComponent extends Component{
   constructor(props){
     super(props);
 
@@ -38,8 +38,10 @@ class Welcome extends Component{
   }
 
   componentDidMount(){
-
-    console.log('this.props.currentPosition: ', this.props.currentPosition)
+    console.log('-----------------------------------');
+    //console.log('this.props in Welcome: ', this.props);
+    console.log('-----------------------------------');
+    console.log('this.props.currentPosition: in Welcome', this.props.currentPosition)
 
         // get data for all of user's fences in the background, so we have data even if user doesn't press MyFilters
     // if we do, will most likely need to use WebViewBridge on front end
@@ -147,12 +149,16 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  // let bound = bindActionCreators(filterActions, dispatch);
+  // console.log('boundActionCreators in welcome: ', bound);
   return {
-    filterActions: bindActionCreators(filterActions, dispatch)
+    filterActions: bindActionCreators(filterActions, dispatch),
+    authActions: bindActionCreators(authActions, dispatch)
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Welcome);
+const Welcome = connect(mapStateToProps, mapDispatchToProps)(WelcomeComponent);
+export default Welcome;
 
 
 
