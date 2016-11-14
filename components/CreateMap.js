@@ -21,7 +21,7 @@ let screenWidth = width;
 
 /********************************************************************/
 
-export default class CreateMap extends Component{
+class CreateMapComponent extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -128,25 +128,5 @@ const styles = StyleSheet.create({
   }
 });
 
-// const styles = StyleSheet.create({
-//   container: {
-//     position: 'absolute',
-//     top: 5,
-//     left: 5,
-//     right: 5,
-//     bottom: 5,
-//     justifyContent: 'flex-end',
-//     alignItems: 'center',
-//     backgroundColor: 'white',
-//     borderColor: 'black',
-//     borderWidth: 1,
-//   },
-//   map: {
-//     position: 'absolute',
-//     top: 2,
-//     left: 2,
-//     right: 2,
-//     bottom: 2,
-
-//   }
-// });
+const CreateMap = CreateMapComponent;
+export default CreateMap;

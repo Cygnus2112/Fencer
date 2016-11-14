@@ -62,7 +62,7 @@ let ht = `<html>
 </body>
 </html>`
 
-export default class ContainsPosition extends Component {
+class ContainsPositionComponent extends Component {
 	constructor(props){
 		super(props);
 
@@ -151,3 +151,6 @@ export default class ContainsPosition extends Component {
 		)
 	}
 }
+
+const ContainsPosition = ContainsPositionComponent;
+export default ContainsPosition;

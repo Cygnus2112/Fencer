@@ -15,7 +15,7 @@ var ImagePicker = require('react-native-image-picker');
 import { Actions } from 'react-native-router-flux';
 import Camera from 'react-native-camera';
 
-export default class TakePhoto extends Component {
+class TakePhotoComponent extends Component {
 	constructor(props){
 		super(props);
 
@@ -81,3 +81,6 @@ const styles = StyleSheet.create({
     margin: 40
   }
 });
+
+const TakePhoto = TakePhotoComponent;
+export default TakePhoto;

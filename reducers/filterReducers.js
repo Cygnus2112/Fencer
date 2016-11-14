@@ -9,7 +9,7 @@ const initialState = {
   	filtersCreated: null
 }
 
-function filterReducer(state = initialState, action){
+const filterReducer = (state = initialState, action) => {
   switch(action.type){
   	// case ActionTypes.UPDATE_POSITION_REQUEST:
   	//   return Object.assign({}, state, {

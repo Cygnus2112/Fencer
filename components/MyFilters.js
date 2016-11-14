@@ -71,7 +71,7 @@ let sampleEvents = [
 	}
 ]
 
-export default class MyFilters extends Component {
+class MyFiltersComponent extends Component {
 	constructor(props){
 		super(props);
 
@@ -199,3 +199,5 @@ const styles = StyleSheet.create({
   }
 });
 
+const MyFilters = MyFiltersComponent;
+export default MyFilters;

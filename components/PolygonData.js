@@ -61,7 +61,7 @@ let ht = `<html>
 </body>
 </html>`
 
-export default class PolygonData extends Component {
+class PolygonDataComponent extends Component {
 	constructor(props){
 		super(props);
 		this.onBridgeMessage = this.onBridgeMessage.bind(this);
@@ -126,3 +126,6 @@ export default class PolygonData extends Component {
 		)
 	}
 }
+
+const PolygonData = PolygonDataComponent;
+export default PolygonData;

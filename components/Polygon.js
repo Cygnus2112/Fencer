@@ -26,7 +26,7 @@ let id = 0;
 
 const SPACE = 0.01; 
 
-export default class Polygon extends Component {
+class PolygonComponent extends Component {
   constructor(props) {
     super(props);
 
@@ -330,3 +330,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
 });
+
+const Polygon = PolygonComponent;
+export default Polygon;

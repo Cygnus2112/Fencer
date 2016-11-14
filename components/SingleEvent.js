@@ -20,7 +20,7 @@ const screenWidth = width;
 
 // use linear gradient on red and green lights
 
-export default class SingleEvent extends Component {
+class SingleEventComponent extends Component {
 	constructor(props){
 		super(props);
 
@@ -196,4 +196,7 @@ const styles = StyleSheet.create({
 		borderWidth:1
 	}
 })
+
+const SingleEvent = SingleEventComponent;
+export default SingleEvent;
 

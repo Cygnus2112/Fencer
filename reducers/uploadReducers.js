@@ -21,7 +21,7 @@ const initialState = {
   filterMessage: null
 }
 
-function uploadReducer(state = initialState, action){
+const uploadReducer = (state = initialState, action) => {
   switch(action.type){
     case ActionTypes.LOAD_VIEW_REQUEST: 
       console.log('action.currentView in uploadReducer: ', action.currentView);

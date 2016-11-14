@@ -18,9 +18,7 @@ const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 const screenHeight = height;
 
-import UploadNav from './UploadNav'
-
-export default class ApplyFilter extends Component{
+class ApplyFilterComponent extends Component{
     constructor(props){
       super(props);
       this.state = {
@@ -186,3 +184,6 @@ const styles = StyleSheet.create({
   //   opaque={false}
   //   underlayColor={'transparent'}
   //   style={{marginTop: 1}}/>
+
+  const ApplyFilter = ApplyFilterComponent;
+  export default ApplyFilter;

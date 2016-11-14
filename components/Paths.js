@@ -47,7 +47,7 @@ let ht = `<html>
 </html>`
 
 
-export default class Paths extends Component {
+class PathsComponent extends Component {
 	constructor(props){
 		super(props);
 		this.onBridgeMessage = this.onBridgeMessage.bind(this);
@@ -199,5 +199,7 @@ export default class Paths extends Component {
 //   }
 // }
 
+const Paths = PathsComponent;
+export default Paths;
 
 

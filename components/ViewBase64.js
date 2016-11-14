@@ -13,7 +13,7 @@ import { Actions } from 'react-native-router-flux';
 import Share from 'react-native-share';
 const { width, height } = Dimensions.get('window');
 
-export default class ViewBase64 extends Component {
+class ViewBase64Component extends Component {
     constructor(props){
       super(props);
     }
@@ -77,3 +77,6 @@ var styles = StyleSheet.create({
     resizeMode: 'contain',
   }
 })
+
+const ViewBase64 = ViewBase64Component;
+export default ViewBase64;

@@ -114,7 +114,7 @@ const injectScript2 = `
 let ht = `<html><head>
 </head><body><h3 id='tryit'>cock</h3><h3 id='whatis'>what is this crap</h3><h3 id='whatis2'>what is this crap</h3><h3 id='whatis3'>what is this crap</h3><div>Hello test html</div></body></html>`
 
-export default class BridgeWrapper extends Component {
+class BridgeWrapperComponent extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -289,4 +289,8 @@ class WebBridgeEx extends Component {
           // injectedJavaScript={js}
           // source={{html: ht}}
           // style={{marginTop: 5, height: 100, width:300, backgroundColor: 'white'}}/>
+
+
+const BridgeWrapper = BridgeWrapperComponent;
+export default BridgeWrapperComponent;
 

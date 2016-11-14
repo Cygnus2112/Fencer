@@ -7,7 +7,7 @@ const initialState = {
   authErrorMsg: ''
 }
 
-function authReducer(state = initialState, action){
+const authReducer = (state = initialState, action) => {
   switch(action.type){
     case ActionTypes.SIGNUP_REQUEST:
       return Object.assign({}, state, {
