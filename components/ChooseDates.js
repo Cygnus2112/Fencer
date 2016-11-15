@@ -99,7 +99,7 @@ class ChooseDatesComponent extends Component{
       this.setState({
         startHour: initStartHour,
         endHour: initEndHour,
-        startTimeText: _formatTime(currentHour+1,0),
+        startTimeText: _formatTime(currentHour+1, 0),
         endTimeText: _formatTime(currentHour+2, 0)
         // startTimeText: initStartHour + ':00' + suffix,
         // endTimeText: initEndHour + ':00' + initEndSuffix
@@ -164,6 +164,34 @@ class ChooseDatesComponent extends Component{
         return;
       }
       this.setState(newState);
+      console.log('this.state.startHour: ', this.state.startHour);
+      console.log('this.state.endHour: ', this.state.endHour);
+      if( this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
+          this.state.startDay === this.state.startDay && this.state.startHour > this.state.endHour){
+
+          let endHour = this.state.startHour + 1;
+
+
+
+          if(endHour === 24){
+            let newDate = new Date(this.startYear, this.startMonth, this.startDay, endHour);
+            this.setState({
+              endYear: newDate.getFullYear(),
+              endMonth: newDate.getMonth(),
+              endDay: newDate.getDate(),
+              endHour: newDate.getHours(),
+              endTimeText: _formatTime(newDate.getHours(), this.state.endMinute)
+            })
+          } else {
+            this.setState({
+              endHour: endHour,
+              endTimeText: _formatTime(endHour, this.state.endMinute)
+            })
+          }
+
+
+
+      }
     } catch ({code, message}) {
       console.warn(`Error in TimePickerAndroid: `, message);
     }
@@ -183,6 +211,26 @@ class ChooseDatesComponent extends Component{
         newState[stateKey + 'Year'] = year;
       }
       this.setState(newState);
+      if(this.state.startMonth > this.state.endMonth || this.state.startYear > this.state.endYear){
+        let sm = this.state.startMonth;
+        let em = this.state.endMonth;
+        let sd = this.state.startDay;
+        let ed = this.state.endDay;
+        let ey = this.state.endYear;
+        let sy = this.state.startYear;
+        let smText = this.state.startText;
+        let emText = this.state.endText;
+        this.setState({
+          startMonth: em,
+          endMonth: sm,
+          startDay: ed,
+          endDay: sd,
+          startYear: ey,
+          endYear: sy,
+          startText: emText,
+          endText: smText
+        })
+      }
     } catch ({code, message}) {
       console.warn(`Error in datepicker: `, message);
     }
