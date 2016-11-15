@@ -166,21 +166,20 @@ class ChooseDatesComponent extends Component{
       this.setState(newState);
       console.log('this.state.startHour: ', this.state.startHour);
       console.log('this.state.endHour: ', this.state.endHour);
-      if( this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
+
+      if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
           this.state.startDay === this.state.startDay && this.state.startHour > this.state.endHour){
 
           let endHour = this.state.startHour + 1;
 
-
-
           if(endHour === 24){
-            let newDate = new Date(this.startYear, this.startMonth, this.startDay, endHour);
+            let newDate = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, endHour);
             this.setState({
               endYear: newDate.getFullYear(),
               endMonth: newDate.getMonth(),
               endDay: newDate.getDate(),
               endHour: newDate.getHours(),
-              endTimeText: _formatTime(newDate.getHours(), this.state.endMinute)
+              endTimeText: _formatTime(newDate.getHours(), newDate.getMinutes())
             })
           } else {
             this.setState({
@@ -188,10 +187,41 @@ class ChooseDatesComponent extends Component{
               endTimeText: _formatTime(endHour, this.state.endMinute)
             })
           }
+      } else if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
+          this.state.startDay === this.state.endDay && 
+            (new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute).getTime() - 
+              new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime() < 3600000) ) {
 
+          console.log('cock!!!!');
 
+            let st = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute);
+            let newDate = new Date(st.getTime() + 3600000);
 
+            this.setState({
+              endYear: newDate.getFullYear(),
+              endMonth: newDate.getMonth(),
+              endDay: newDate.getDate(),
+              endHour: newDate.getHours(),
+              endMinute: newDate.getMinutes(),
+              endTimeText: _formatTime(newDate.getHours(), newDate.getMinutes())
+            })
+          
       }
+
+            // if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
+      //     this.state.startDay === this.state.startDay && this.state.startHour === this.state.endHour &&
+      //     this.state.endMinute < this.state.startMinute){
+
+      //     let smin = this.state.startMinute;
+      //     let emin = this.state.endMinute;
+
+      //     this.setState({
+      //       endMinute: smin,
+      //       startMinute: 
+      //     })
+      // }
+
+
     } catch ({code, message}) {
       console.warn(`Error in TimePickerAndroid: `, message);
     }
