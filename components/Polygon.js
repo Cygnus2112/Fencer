@@ -61,6 +61,15 @@ class PolygonComponent extends Component {
   }
 
   componentDidMount(){
+    if(this.props.fenceCoordinates){
+      this.setState({
+        editing: {
+          id: 0,
+          coordinates: this.props.fenceCoordinates
+        }
+
+      })
+    }
    // console.log('this.props.lat in Polygon component: ', this.props.lat);
     // navigator.geolocation.getCurrentPosition(
     //   (position) => {
@@ -116,11 +125,13 @@ class PolygonComponent extends Component {
     console.log('this.finish called')
 
     const { polygons, editing } = this.state;
+    console.log('editing: ', editing)
 
-    this.setState({
-      polygons: [...polygons, editing],
-      editing: null,
-    });
+    // this.setState({
+    //   polygons: [...polygons, editing],
+    //   editing: null,
+    // });
+
     console.log('-------------------------------');
 
     setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
@@ -130,7 +141,7 @@ class PolygonComponent extends Component {
       //   console.log("coords.longitude: ",coords.longitude);
       // }
 
-      this.props.submitFence(this.state.polygons[0].coordinates)
+      this.props.submitFence(editing.coordinates);
 
     },400)
   }
