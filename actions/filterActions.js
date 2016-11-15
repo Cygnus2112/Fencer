@@ -164,6 +164,36 @@ const loadFiltersCreatedSuccess = (filtersData) => {
   	}
 }
 
+// export const FILTER_TO_UPLOAD_REQUEST = 'FILTER_TO_UPLOAD_REQUEST';
+// export const FILTER_TO_UPLOAD_SUCCESS = 'FILTER_TO_UPLOAD_SUCCESS';
+// export const FILTER_TO_UPLOAD_ERROR = 'FILTER_TO_UPLOAD_ERROR';
+
+// export const submitFilterToUpload = (dispatch, filter) => {
+//   dispatch( uploadFilterRequest() );
+
+//     // ... validate image. dispatch( uploadFilterError(error) );
+
+//   dispatch( uploadFilterSuccess(filter) );
+// }
+
+// const uploadFilterRequest = () => {
+//   return {
+//     type: FILTER_TO_UPLOAD_REQUEST
+//   }
+// }
+// const uploadFilterSuccess = (filter) => {
+//   return {
+//     type: FILTER_TO_UPLOAD_SUCCESS,
+//     filterToUpload: filter
+//   }
+// }
+// const uploadFilterError = (reason) => {
+//   return {
+//     type: FILTER_TO_UPLOAD_ERROR,
+//     filterUploadError: reason
+//   }
+// }
+
 
     //   myFilters:
 

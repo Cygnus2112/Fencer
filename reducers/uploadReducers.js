@@ -12,11 +12,14 @@ const initialState = {
   selectedDates: {
     startDate: null,
     endDate: null,
-    startTime: null,
-    endTime: null
+    startHour: null,
+    endHour: null,
+    startMinute: null,
+    endMinute: null
   },
   filterCoordinates: null,
   filterToUpload: null,
+  filterUploadError: "",
   filterTitle: null,
   filterMessage: null
 }
@@ -39,7 +42,12 @@ const uploadReducer = (state = initialState, action) => {
         isValidatingImage: false,
         currentView: 'dates'
       })
-    case ActionTypes.SELECT_DATES_REQUEST:
+    case ActionTypes.UPLOAD_FILTER_ERROR: 
+      return Object.assign({}, state, {
+        isValidatingImage: false,
+        filterUploadError: action.filterUploadError
+      })
+    case ActionTypes.SUBMIT_DATES_REQUEST:
       return Object.assign({}, state, {
         selectedDates: action.selectedDates,
         selectDatesComplete: true,

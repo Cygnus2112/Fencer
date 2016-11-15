@@ -1,13 +1,9 @@
 import { AsyncStorage, Image } from 'react-native';
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
-export const SELECT_DATES_REQUEST = 'SELECT_DATES_REQUEST';
-export const UPLOAD_FILTER_REQUEST = 'UPLOAD_FILTER_REQUEST';
-export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
+
 export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
 export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
-
-
 
 export const loadView = (dispatch, view) => {
 	console.log('loadView called in uploadActions');
@@ -28,23 +24,33 @@ export const loadViewRequest = (view) => {
 	}
 }
 
-const submitDates = (dates) => {			// will do all date validation on front end
+export const SUBMIT_DATES_REQUEST = 'SUBMIT_DATES_REQUEST';
+
+export const submitDates = (dispatch, dates) => {			// will do all date validation on front end
+	dispatch( submitDatesRequest(dates) )
+}
+
+const submitDatesRequest = (dates) => {			// will do all date validation on front end
 	return {
-		type: SELECT_DATES_REQUEST,
+		type: SUBMIT_DATES_REQUEST,
 		selectedDates: dates
 	}
 }
 
-export const submitFilter = (filterData) => {
-	return dispatch => {
+export const UPLOAD_FILTER_REQUEST = 'UPLOAD_FILTER_REQUEST';
+export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
+export const UPLOAD_FILTER_ERROR = 'UPLOAD_FILTER_ERROR';
+
+export const submitFilter = (dispatch, filterData) => {
+	//return dispatch => {
 		dispatch( submitFilterRequest() );
 
 
 		//  do filter validation here. 
 		// if successfull:
 
-		//dispatch(submitFilterSuccess(filterData));  //  could be something else (ie, filterData.filterURI)
-	}
+		dispatch(submitFilterSuccess(filterData));  //  could be something else (ie, filterData.filterURI)
+	//}
 }
 
 const submitFilterRequest = () => {
@@ -57,6 +63,13 @@ const submitFilterSuccess = (filterData) => {
 	return {
 		type: UPLOAD_FILTER_SUCCESS,
 		filterToUpload: filterData				//  could be something else (ie, filterData.filterURI)
+	}
+}
+
+const submitFilterError = (reason) => {
+	return {
+		type: UPLOAD_FILTER_ERROR,
+		filterUploadError: reason		
 	}
 }
 

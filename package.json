@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.android.js",
   "dependencies": {
+    "moment": "^2.16.0",
     "react": "^15.3.2",
     "react-native": "^0.34.0",
     "react-native-button": "^1.7.1",

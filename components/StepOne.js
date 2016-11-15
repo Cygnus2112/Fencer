@@ -30,9 +30,7 @@ class StepOneComponent extends Component {
 	}
 
 	// handlePress(){
-
 	// 	uploadActions.loadView('upload')
-
 	// }
 
 	render(){
@@ -40,7 +38,7 @@ class StepOneComponent extends Component {
 
 		<TouchableOpacity onPress={this.props.handlePress} >
 			<View style={styles.container}>
-				{this.props.uploadComplete
+				{this.props.uploadFilterComplete
 					?
 				(<Icon name="check-circle-o" size={25} color="green" />)
 					:
@@ -86,7 +84,7 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     currentView: state.uploadReducer.currentView,
-    uploadComplete: state.uploadReducer.uploadComplete
+    uploadFilterComplete: state.uploadReducer.uploadFilterComplete
     }
 }
 
@@ -101,6 +99,6 @@ const mapDispatchToProps = (dispatch) => {
     }
 }
 
-let StepOne = connect(mapStateToProps, mapDispatchToProps)(StepOneComponent);
+const StepOne = connect(mapStateToProps, mapDispatchToProps)(StepOneComponent);
 
 export default StepOne;

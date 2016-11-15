@@ -4,10 +4,12 @@ const initialState = {
 	isUpdatingPosition: false,
 	isLoadingMyFilters: false,
 	isLoadingFiltersCreated: false,
+  isValidatingFilter: false,
 	currentPosition: null,
 	myFilters: null,
   filtersCreated: null,
-  filterToUpload: null
+  filterToUpload: null,
+  filterUploadError: ""
 }
 
 const filterReducer = (state = initialState, action) => {
@@ -43,11 +45,20 @@ const filterReducer = (state = initialState, action) => {
   	  	isLoadingFiltersCreated: false,
   	  	filtersCreated: action.filtersCreated
   	  })
-    case ActionTypes.ADD_FILTER_TO_UPLOAD:
+    case ActionTypes.FILTER_TO_UPLOAD_REQUEST:
       return Object.assign({}, state, {
-        isLoadingFiltersCreated: false,
-        filtersCreated: action.filtersCreated
+        isValidatingFilter: true
       })
+    case ActionTypes.FILTER_TO_UPLOAD_SUCCESS:
+      return Object.assign({}, state, {
+        filterToUpload: action.filterToUpload,
+        isValidatingFilter: false
+      })
+    case ActionTypes.FILTER_TO_UPLOAD_ERROR:
+      return Object.assign({}, state, {
+        filterUploadError: action.filterUploadError
+      })
+
 
 
 

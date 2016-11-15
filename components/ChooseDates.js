@@ -11,6 +11,14 @@ import {
     TouchableOpacity
 } from 'react-native';
 
+let moment = require('moment');
+console.log('moment: ', moment().format());
+
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as uploadActions from '../actions/uploadActions';
+
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
@@ -24,35 +32,84 @@ let screenWidth = width;
 function _formatTime(hour, minute) {
   return hour + ':' + (minute < 10 ? '0' + minute : minute);
 }
+
 class ChooseDatesComponent extends Component{
   constructor(props){
     super(props);
     this.launchCal = this.launchCal.bind(this);
     this.launchTime = this.launchTime.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+
+   // this.handleSubmit = this.handleSubmit.bind(this);
+
     this.state = ({
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: this.props.selectedDates.startDate || new Date(),
+      endDate: this.props.selectedDates.endDate || new Date(),
       startText: (new Date()).toLocaleDateString(),
       endText: (new Date()).toLocaleDateString(),
       isoFormatText: 'pick a time (24-hour format)',
-      startHour: 17,
-      startMinute: 0,
-      startTimeText: '5:00PM',
-      endHour: 18,
-      endMinute: 0,
+      startHour: this.props.selectedDates.startHour || 17,
+      startMinute: this.props.selectedDates.startMinute || 0,
+      startTimeText: '12:00PM',
+      endHour: this.props.selectedDates.endHour || 18,
+      endMinute: this.props.selectedDates.endMinute || 0,
       endTimeText: '6:00PM',
     })
   }
 
-  handleSubmit(){
-    //Actions.createmap();
-    Actions.polygon();
+  componentDidMount(){
+    // let d = new Date();
+    // let t = d.toLocaleTimeString();
+    // let suffix, startHour, endHour;
+
+    // if(t.split(' ').length === 2){      // checking if local time is 12 hour format (US)
+    //   suffix = t[1];
+      
+    // }
+
+    if(this.props.selectedDates){
+      let startSuffix = 'AM'; 
+      let endSuffix = 'PM';
+      let startHour = Number(this.props.selectedDates.startHour);
+      let endHour = Number(this.props.selectedDates.endHour);
+
+      if(startHour > 12){
+        startHour = startHour - 12;
+        startSuffix = 'PM';
+      }
+      if(endHour > 12){
+        endHour = endHour - 12;
+        endSuffix = 'PM';
+      }
+      if(startHour === 0){
+        startHour = 12;
+      }
+      if(endHour === 0){
+        endHour = 12;
+      }
+
+
+      this.setState({
+        startText: this.props.selectedDates.startDate.toLocaleDateString(), 
+        endText: this.props.selectedDates.endDate.toLocaleDateString(),
+        startTimeText: startHour + '' + this.props.selectedDates.startMinute + startSuffix,
+        endTimeText: endHour + '' + this.props.selectedDates.endMinute + endSuffix
+      })
+
+
+    }
+   
+
+
   }
 
-  async launchTime(stateKey, options) {
+  // handleSubmit(){
+  //   Actions.polygon();
+  // }
+
+  async launchTime(stateKey) {
+
     try {
-      const {action, minute, hour} = await TimePickerAndroid.open(options);
+      const {action, minute, hour} = await TimePickerAndroid.open({hour: 14, minute: 0});
       var newState = {};
       if (action === TimePickerAndroid.timeSetAction) {
         newState[stateKey + 'TimeText'] = _formatTime(hour, minute);
@@ -110,9 +167,9 @@ class ChooseDatesComponent extends Component{
 
             <TouchableOpacity onPress={()=>(
                   this.launchCal('start', {
-                      date: this.state.allDate,
+                      date: this.state.startDate,
                       minDate: new Date(),
-                      maxDate: new Date(2020, 4, 10),
+                      maxDate: new Date(2017, 2, 10),
                   }))} >
             <View style={styles.dateAndIconContainer}>
                 <View style={[styles.dateBox]}>
@@ -130,12 +187,8 @@ class ChooseDatesComponent extends Component{
             at:
           </Text>
 
-          <TouchableOpacity onPress={()=>(
-                this.launchCal('start', {
-                  date: this.state.allDate,
-                  minDate: new Date(),
-                  maxDate: new Date(2020, 4, 10),
-                }))} >
+          <TouchableOpacity onPress={()=>{this.launchTime('start')} }>
+
             <View style={styles.dateAndIconContainer}>
 
               <View style={styles.dateBox}>
@@ -147,6 +200,7 @@ class ChooseDatesComponent extends Component{
                 <Icon name="clock-o" size={32} color={"black"} />
               </View>
             </View>
+
           </TouchableOpacity>
   
         
@@ -155,8 +209,8 @@ class ChooseDatesComponent extends Component{
           </Text>
 
           <TouchableOpacity onPress={()=>(
-            this.launchCal('start', {
-                date: this.state.allDate,
+            this.launchCal('end', {
+                date: this.state.endDate,
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
             }))} >
@@ -179,8 +233,8 @@ class ChooseDatesComponent extends Component{
           </Text>
 
           <TouchableOpacity onPress={()=>(
-            this.launchCal('start', {
-                date: this.state.allDate,
+            this.launchCal('end', {
+                date: this.state.startDate,
                 minDate: new Date(),
                 maxDate: new Date(2020, 4, 10),
             }))} >
@@ -211,7 +265,14 @@ class ChooseDatesComponent extends Component{
           <View style={styles.buttonBox}>
             <Button
               style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
-              onPress={this.handleSubmit}>
+              onPress={()=> { this.props.submitDates({
+                startDate: this.state.startDate,
+                endDate: this.state.endDate,
+                startHour: this.state.startHour,
+                startMinute: this.state.startMinute,
+                endHour: this.state.endHour,
+                endMinute: this.state.endMinute
+              })}}>
               Submit
             </Button>
           </View>
@@ -224,7 +285,7 @@ class ChooseDatesComponent extends Component{
 const styles = StyleSheet.create({
   container: {
     // flex: 1,
-    height: screenHeight - 25,
+    height: screenHeight - 75,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -282,6 +343,22 @@ const styles = StyleSheet.create({
   }
 })
 
+const mapStateToProps = (state) => {
+  return {
+    selectDatesComplete: state.uploadReducer.selectDatesComplete,
+    selectedDates: state.uploadReducer.selectedDates
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitDates: (dates) => {
+      console.log('dates in mapDispatch: ', dates);
+      uploadActions.submitDates(dispatch, dates)
+    }
+  }
+}
+
 const ChooseDates = ChooseDatesComponent;
 
-export default ChooseDates;
+export default connect(mapStateToProps, mapDispatchToProps)(ChooseDates);

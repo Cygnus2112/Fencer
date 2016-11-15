@@ -28,18 +28,21 @@ class UploadFilter extends Component{
       super(props);
 
       this.handlePress = this.handlePress.bind(this);
-      this.handleUpload = this.handleUpload.bind(this);
+    //  this.handleUpload = this.handleUpload.bind(this);
 
       this.state = {
         png: null,
-        jpg: null,
         buttonState: ''
       }
     }
 
-    handleUpload(){
-        Actions.dates();
+    componentDidMount(){
+      console.log('this.props.filterToUpload: ', this.props.filterToUpload);
     }
+
+    // handleUpload(){
+    //     Actions.dates();
+    // }
 
     handlePress(){
       // const options = {
@@ -64,7 +67,10 @@ class UploadFilter extends Component{
               jpg: source
             })
           } else {
+
             const source = {uri: response.uri, isStatic: true};
+
+            // only when we do the final submit do we convert the image URI into data
 
             this.setState({
                 png: source
@@ -77,27 +83,30 @@ class UploadFilter extends Component{
     render(){
       return(
         <View style={ styles.container }>
-          <View style={{height: 480*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
-            <View style={{width: 30,marginRight:10,marginTop:5}}>
-              <Icon name="home" size={30} color="#0c12ce" />
-            </View>
-            <Image source={require('../assets/png_background.png')} style={styles.preview}>
-              <Image source={this.state.png} style={{height: 480*.94, width: 274*.94}}/>
-            </Image>
-            <View style={{width: 30,marginLeft:10,marginTop:5}}>
-              <Icon name="info" size={28} color="#0c12ce" />
-            </View>
+
+          <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
+              <View style={{width: 30,marginRight:10,marginTop:5}}>
+                <Icon name="home" size={30} color="#0c12ce" />
+              </View>
+              <Image source={require('../assets/png_background.png')} style={styles.preview}>
+                <Image source={this.props.filterToUpload ? this.props.filterToUpload : this.state.png} style={{height: 480*.94, width: 274*.94}}/>
+              </Image>
+              <View style={{width: 30,marginLeft:10,marginTop:5}}>
+                <Icon name="info" size={28} color="#0c12ce" />
+              </View>
           </View>
-          <View style={{width: screenWidth-25, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
-            <View style={ styles.buttonBox }>
-              <Button
-                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
-                styleDisabled={{color: 'red'}}
-                onPress={this.state.png ? this.handleUpload : this.handlePress }>
-                { this.state.png ? ("Upload") : ("Upload Filter") }
-              </Button>
-            </View>
+
+          <View style={{width: screenWidth-25, height: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
+              <View style={ styles.buttonBox }>
+                <Button
+                  style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                  styleDisabled={{color: 'red'}}
+                  onPress={this.state.png ? ( ) => { this.props.submitUpload(this.state.png) } : this.handlePress }>
+                  { this.state.png ? ("Upload") : ("Upload Filter") }
+                </Button>
+              </View>
           </View>
+
         </View>
       )
     }
@@ -113,9 +122,10 @@ class UploadFilter extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    height: screenHeight - 25,
+    height: screenHeight - 75,
+    marginTop: 5,
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f9f9f2'
   },
@@ -125,7 +135,7 @@ const styles = StyleSheet.create({
     borderWidth:2, 
     borderColor:'black',
     backgroundColor: 'white',
-    marginBottom: 5
+    marginBottom: 2
   },
   buttonBox:{
     elevation:3,
@@ -136,10 +146,28 @@ const styles = StyleSheet.create({
     borderRadius:15,
     backgroundColor: '#0c12ce',
     marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 10
+    marginRight: 40
+   // marginBottom: 5
   }
 })
+
+const mapStateToProps = (state) => {
+  return {
+    filterToUpload: state.uploadReducer.filterToUpload, 
+    isValidatingImage: state.uploadReducer.isValidatingImage,
+    filterUploadError: state.uploadReducer.filterUploadError,
+    uploadFilterComplete: state.uploadReducer.uploadFilterComplete
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitUpload: (filter) => {
+      console.log('filter in mapDispatch: ', filter);
+      uploadActions.submitFilter(dispatch, filter)
+    }
+  }
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(UploadFilter);
 

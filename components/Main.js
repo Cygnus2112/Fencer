@@ -49,15 +49,6 @@ class MainComponent extends Component {
 	}
 }
 
-// const mergeProps = (stateProps, dispatchProps, ownProps) => {
-
-//     const { dispatch } = dispatchProps;
-//    	console.log('dispatch in dispatchProps: ', dispatch);
-
-
-//   	return dispatchProps;
-// }
-
 const mapStateToProps = (state) => {
   return {
   	isLoggedIn: state.authReducer.isLoggedIn,
