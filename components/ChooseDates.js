@@ -30,7 +30,17 @@ let screenHeight = height;
 let screenWidth = width;
 
 function _formatTime(hour, minute) {
-  return hour + ':' + (minute < 10 ? '0' + minute : minute);
+  let suffix = 'AM';
+
+  if(hour > 12){
+    hour = hour - 12;
+    suffix = 'PM';
+  }
+  if(hour === 0){
+    hour = 12;
+  }
+
+  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
 }
 
 class ChooseDatesComponent extends Component{
@@ -52,13 +62,38 @@ class ChooseDatesComponent extends Component{
       startTimeText: '12:00PM',
       endHour: this.props.selectedDates.endHour || 18,
       endMinute: this.props.selectedDates.endMinute || 0,
-      endTimeText: '6:00PM',
+      endTimeText: '1:00PM',
     })
   }
 
   componentDidMount(){
-    // let d = new Date();
-    // let t = d.toLocaleTimeString();
+      let d = new Date();
+      let t = d.toLocaleTimeString();
+      let currentHour = Number( t.split(' ')[0].split(':')[0] );
+      let suffix = 'AM';
+      if(currentHour >= 12){
+        suffix = 'PM';
+      }
+      let initEndSuffix = suffix;
+      let initStartHour, initEndHour;
+      if(currentHour === 11 && suffix === 'PM'){
+        initStartHour = currentHour + 1;
+        suffix = 'AM'
+      } else {
+        initStartHour = currentHour + 1;
+      }
+      if(currentHour === 10 && suffix === 'PM' || currentHour === 11 && suffix === 'PM'){
+        initEndHour = currentHour + 2;
+        initEndSuffix = 'AM';
+      } else {
+        initEndHour = currentHour + 2;
+      }
+
+      this.setState({
+        startTimeText: initStartHour + ':00' + suffix,
+        endTimeText: initEndHour + ':00' + initEndSuffix
+      })
+
     // let suffix, startHour, endHour;
 
     // if(t.split(' ').length === 2){      // checking if local time is 12 hour format (US)
@@ -66,7 +101,7 @@ class ChooseDatesComponent extends Component{
       
     // }
 
-    if(this.props.selectedDates){
+    if(this.props.selectedDates.startDate){
       let startSuffix = 'AM'; 
       let endSuffix = 'PM';
       let startHour = Number(this.props.selectedDates.startHour);
@@ -106,10 +141,9 @@ class ChooseDatesComponent extends Component{
   //   Actions.polygon();
   // }
 
-  async launchTime(stateKey) {
-
+  async launchTime(stateKey, options) {
     try {
-      const {action, minute, hour} = await TimePickerAndroid.open({hour: 14, minute: 0});
+      const {action, minute, hour} = await TimePickerAndroid.open(options);
       var newState = {};
       if (action === TimePickerAndroid.timeSetAction) {
         newState[stateKey + 'TimeText'] = _formatTime(hour, minute);
@@ -187,8 +221,13 @@ class ChooseDatesComponent extends Component{
             at:
           </Text>
 
-          <TouchableOpacity onPress={()=>{this.launchTime('start')} }>
-
+          <TouchableOpacity onPress={() => {
+            let d = new Date();
+            let t = d.toLocaleTimeString();
+            let currentHour = Number( t.split(' ')[0].split(':')[0] );
+            let options = {hour: currentHour+1, minute: 0}
+            this.launchTime('start', options)} 
+          }>
             <View style={styles.dateAndIconContainer}>
 
               <View style={styles.dateBox}>
@@ -232,24 +271,25 @@ class ChooseDatesComponent extends Component{
             at:
           </Text>
 
-          <TouchableOpacity onPress={()=>(
-            this.launchCal('end', {
-                date: this.state.startDate,
-                minDate: new Date(),
-                maxDate: new Date(2020, 4, 10),
-            }))} >
+          <TouchableOpacity onPress={() => {
+            let d = new Date();
+            let t = d.toLocaleTimeString();
+            let currentHour = Number( t.split(' ')[0].split(':')[0] );
+            let options = {hour: currentHour+2, minute: 0}
+            this.launchTime('end', options)} 
+          }>
             <View style={styles.dateAndIconContainer}>
 
               <View style={styles.dateBox}>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular', textAlign: 'center',color: 'black',fontSize:22}}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
                   { this.state.endTimeText }
                 </Text>
               </View>
               <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
                 <Icon name="clock-o" size={32} color={"black"} />
               </View>
-
             </View>
+
           </TouchableOpacity>
 
         </View>
