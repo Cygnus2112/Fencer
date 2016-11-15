@@ -28,8 +28,7 @@ class MainComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log('-----------------------------------');
-		console.log('this.props in Main: ', this.props)
+		//console.log('this.props in Main: ', this.props)
 		console.log('-----------------------------------');
 	}
 
@@ -60,20 +59,18 @@ class MainComponent extends Component {
 // }
 
 const mapStateToProps = (state) => {
-	console.log('state.authReducer in Main: ', state.authReducer)
   return {
   	isLoggedIn: state.authReducer.isLoggedIn,
   	// authErrorMsg: state.authReducer.authErrorMsg,
   	// username: state.authReducer.username,
   	// isFetchingAuth: state.authReducer.isFetchingAuth,
-  	//    currentPosition: state.filterReducer.currentPosition,
+  	currentPosition: state.filterReducer.currentPosition,
     isUpdatingPosition: state.filterReducer.isUpdatingPosition
 
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
-	console.log('dispatch in Main: ', dispatch);
 	// let bound = bindActionCreators(filterActions, dispatch);
 	// console.log('boundActionCreators: ', bound);
   return {

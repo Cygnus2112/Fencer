@@ -96,7 +96,8 @@ const mapDispatchToProps = (dispatch) => {
   // }
     return {
   	  handlePress: () => {
-  		dispatch(uploadActions.loadViewRequest('area'))
+  		//dispatch(uploadActions.loadViewRequest('area'))
+  		uploadActions.loadView(dispatch, 'area');
   	  }
     }
 }

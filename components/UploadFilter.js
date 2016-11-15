@@ -16,14 +16,20 @@ const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
 
-// - User clicks 'upload png' button
-// - Opens camera roll
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as filterActions from '../actions/filterActions';
+import * as uploadActions from '../actions/uploadActions';
+
 
 class UploadFilter extends Component{
     constructor(props){
       super(props);
+
       this.handlePress = this.handlePress.bind(this);
       this.handleUpload = this.handleUpload.bind(this);
+
       this.state = {
         png: null,
         jpg: null,
@@ -44,6 +50,7 @@ class UploadFilter extends Component{
       const options = {
 
       };
+
      ImagePicker.launchImageLibrary(options, (response) => {
         if (response.didCancel) {
           console.log('User cancelled photo picker');
@@ -134,5 +141,5 @@ const styles = StyleSheet.create({
   }
 })
 
-export default UploadFilter;
+export default connect(mapStateToProps, mapDispatchToProps)(UploadFilter);
 

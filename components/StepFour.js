@@ -88,7 +88,8 @@ const mapDispatchToProps = (dispatch) => {
   // }
     return {
   	  handlePress: () => {
-  		dispatch(uploadActions.loadViewRequest('send'))
+  		//dispatch(uploadActions.loadViewRequest('send'))
+  		uploadActions.loadView(dispatch, 'send');
   	  }
     }
 }

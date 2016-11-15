@@ -7,15 +7,21 @@ export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
 export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
 export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
 
-export const loadView = (view) => {
+
+
+export const loadView = (dispatch, view) => {
 	console.log('loadView called in uploadActions');
-	return dispatch => {
+	console.log('view in loadView: ', );
+	console.log('checking if dispatch is avail in Actions: ', dispatch);
+	//return dispatch => {
+		
 		dispatch( loadViewRequest(view) );
-	}
+	//}
 }
 
 export const loadViewRequest = (view) => {
 	console.log('loadViewRequest dispatched!!!');
+
 	return {
 		type: LOAD_VIEW_REQUEST,
 		currentView: view

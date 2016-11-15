@@ -4,9 +4,10 @@ const initialState = {
 	isUpdatingPosition: false,
 	isLoadingMyFilters: false,
 	isLoadingFiltersCreated: false,
-	//currentPosition: null,
+	currentPosition: null,
 	myFilters: null,
-  	filtersCreated: null
+  filtersCreated: null,
+  filterToUpload: null
 }
 
 const filterReducer = (state = initialState, action) => {
@@ -42,6 +43,11 @@ const filterReducer = (state = initialState, action) => {
   	  	isLoadingFiltersCreated: false,
   	  	filtersCreated: action.filtersCreated
   	  })
+    case ActionTypes.ADD_FILTER_TO_UPLOAD:
+      return Object.assign({}, state, {
+        isLoadingFiltersCreated: false,
+        filtersCreated: action.filtersCreated
+      })
 
 
 

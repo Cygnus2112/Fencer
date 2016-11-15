@@ -100,8 +100,10 @@ const mapDispatchToProps = (dispatch) => {
   // }
   return {
   	handlePress: () => {
-  		dispatch(uploadActions.loadViewRequest('dates'))
+  		//dispatch(uploadActions.loadViewRequest('dates'))
+  		uploadActions.loadView(dispatch, 'dates');
   	}
+
   }
   
 }

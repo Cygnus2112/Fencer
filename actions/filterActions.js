@@ -7,21 +7,19 @@ import { Actions } from 'react-native-router-flux';
 export const UPDATE_POSITION_REQUEST = 'UPDATE_POSITION_REQUEST';
 export const UPDATE_POSITION_SUCCESS = 'UPDATE_POSITION_SUCCESS';
 
-export const initPosition = () => {
-  console.log('initPosition called');
+export const initPosition = (dispatch) => {
  // return dispatch => {
-    //dispatch(updatePositionRequest());
-
-    console.log('dispatch called');
+    dispatch(updatePositionRequest());
 
     navigator.geolocation.getCurrentPosition((pos) => {
         let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
 
         console.log('position in initPosition: ', newPos);
 
-        //dispatch( updatePositionSuccess(newPos) );
+        dispatch( updatePositionSuccess(newPos) );
 
-        Actions.main({currentPosition: newPos});
+        //Actions.main({currentPosition: newPos});
+        Actions.main();
       },
       (error) => console.log("Nav error: ", JSON.stringify(error)),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -29,28 +27,25 @@ export const initPosition = () => {
  // }
 }
 
-export const updatePosition = () => {
-	console.log('updatePosition called');
-	return dispatch => {
-		dispatch(updatePositionRequest());
+export const updatePosition = (dispatch) => {
 
-		console.log('dispatch called');
+	//return dispatch => {
+		dispatch(updatePositionRequest());
 
 		navigator.geolocation.getCurrentPosition((pos) => {
     		let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
 
     		console.log('position in filterActions: ', newPos);
 
-    		updatePositionSuccess(newPos);
+    		dispatch( updatePositionSuccess(newPos) );
   		},
   		(error) => console.log("Nav error: ", JSON.stringify(error)),
   		{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
 		)
-	}
+	//}
 }
 
 const updatePositionRequest = () => {
-	console.log('updatePositionRequest called')
 	return {
 		type: UPDATE_POSITION_REQUEST
 	}

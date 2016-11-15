@@ -8,8 +8,9 @@ export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 
-export const signup = (info) => {
-  return dispatch => {
+export const signup = (dispatch,info) => {
+//  return dispatch => {
+  console.log('info in authActions signup: ', info);
     dispatch(signupRequest(info));
 
       //return fetch('http://localhost:8080/signup', {
@@ -47,13 +48,12 @@ export const signup = (info) => {
         }
       })
       .catch(err => console.error('Error in signup:', err));
-  }
+ // }
 }
 
 const signupRequest = (info) => {
   return {
-    type: SIGNUP_REQUEST,
-    username: info.username         // do we need this???
+    type: SIGNUP_REQUEST
   }
 }
 
@@ -75,8 +75,9 @@ export const LOGIN_REQUEST = 'LOGIN_REQUEST';
 export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
-export const login = (info) => {
-  return dispatch => {
+export const login = (dispatch, info) => {
+  //return dispatch => {
+    console.log('info in authActions login: ', info);
     dispatch(loginRequest(info));
 
     //return fetch('http://localhost:8080/login', {
@@ -106,18 +107,20 @@ export const login = (info) => {
         //  Actions.styles();
 
         } else {
+          //console.error('login error');
           dispatch(loginError());
           
         }
       } catch(e) {
-        dispatch(loginError());
+       // console.error('login error2:', e);
+        dispatch(loginError({"error2":e}));
       };
     })
     .catch(err => {
-      console.error('login error:', err);
-      dispatch(loginError());
+     // console.error('login error3:', err);
+      dispatch(loginError({"error3":err}));
     });
-  }
+  //}
 }
 
 const loginRequest = (info) => {
@@ -127,7 +130,8 @@ const loginRequest = (info) => {
   }
 }
 
-const loginError = () => {
+const loginError = (msg) => {
+  console.log(msg);
   return {
     type: LOGIN_ERROR
   }
