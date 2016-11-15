@@ -21,9 +21,9 @@ const initialState = {
     startMinute: null,
     endMinute: null
   },
-  filterCoordinates: null,
-  filterToUpload: null,
+  fenceCoordinates: null,
   filterUploadError: "",
+  fenceError: "",
   filterTitle: null,
   filterMessage: null
 }
@@ -63,7 +63,13 @@ const uploadReducer = (state = initialState, action) => {
       })
     case ActionTypes.CHOOSE_AREA_SUCCESS:
       return Object.assign({}, state, {
-        filterCoordinates: action.filterCoordinates,
+        fenceCoordinates: action.fenceCoordinates,
+        isValidatingCoords: false,
+        currentView: 'send'
+      })
+    case ActionTypes.CHOOSE_AREA_ERROR:
+      return Object.assign({}, state, {
+        fenceCoordinates: action.fenceCoordinates,
         isValidatingCoords: false,
         currentView: 'send'
       })

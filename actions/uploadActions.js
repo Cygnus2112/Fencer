@@ -2,9 +2,6 @@ import { AsyncStorage, Image } from 'react-native';
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
 
-export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
-export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
-
 export const loadView = (dispatch, view) => {
 	console.log('loadView called in uploadActions');
 	console.log('view in loadView: ', );
@@ -73,14 +70,19 @@ const submitFilterError = (reason) => {
 	}
 }
 
-export const submitFilterCoordinates = (coords) => {
-	return dispatch => {
+export const CHOOSE_AREA_REQUEST = 'CHOOSE_AREA_REQUEST';
+export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
+export const CHOOSE_AREA_ERROR = 'CHOOSE_AREA_ERROR';
+
+export const submitFenceCoordinates = (dispatch, coords) => {
+	console.log('coords in submitFenceCoordinates: ', coords);
+	//return dispatch => {
 		dispatch( chooseAreaRequest() );
 
 										//  can we validate google polygon coords on backend? Am guessing no.
 
-		// dispatch(chooseAreaSuccess());
-	}
+		dispatch(chooseAreaSuccess(coords));
+	//}
 }
 
 const chooseAreaRequest = () => {
@@ -92,7 +94,13 @@ const chooseAreaRequest = () => {
 const chooseAreaSuccess = (coords) => {
 	return {
 		type: CHOOSE_AREA_SUCCESS,
-		filterCoordinates: coords
+		fenceCoordinates: coords
+	}
+}
+
+const chooseAreaError = () => {
+	return {
+		type: CHOOSE_AREA_ERROR
 	}
 }
 

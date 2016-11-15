@@ -192,8 +192,6 @@ class ChooseDatesComponent extends Component{
             (new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute).getTime() - 
               new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime() < 3600000) ) {
 
-          console.log('cock!!!!');
-
             let st = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute);
             let newDate = new Date(st.getTime() + 3600000);
 

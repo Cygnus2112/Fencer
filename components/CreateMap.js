@@ -9,9 +9,14 @@ import {
     Text,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as uploadActions from '../actions/uploadActions';
+import * as filterActions from '../actions/filterActions';
+
 import MapView from 'react-native-maps';
 import Polygon from './Polygon';
-import UploadNav from './UploadNav';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -26,34 +31,34 @@ class CreateMapComponent extends Component{
     super(props);
     this.state = {
       polygon: false,
-      lat: 37.78825,
-      lng: -122.4324
+      lat: this.props.currentPosition.lat || 37.78825,
+      lng: this.props.currentPosition.lng || -122.4324
     }
-    this.getCoords = this.getCoords.bind(this);
-    this.addPolygon = this.addPolygon.bind(this);
+  //  this.getCoords = this.getCoords.bind(this);
+  //  this.addPolygon = this.addPolygon.bind(this);
   }
 
-  addPolygon(){
-    this.setState({
-      polygon: !this.state.polygon
-    })
-  }
+  // addPolygon(){
+  //   this.setState({
+  //     polygon: !this.state.polygon
+  //   })
+  // }
 
-  getCoords(){
-    navigator.geolocation.getCurrentPosition(     // will DEFINITELY have to redux this one
-      (pos) => {
-        this.setState({
-          lat: pos.coords.latitude,
-          lng: pos.coords.longitude
-        })
-      },
-      (error) => console.log("Geolocation error: ", JSON.stringify(error)),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    )
-  }
+  // getCoords(){
+  //   navigator.geolocation.getCurrentPosition(     // will DEFINITELY have to redux this one
+  //     (pos) => {
+  //       this.setState({
+  //         lat: pos.coords.latitude,
+  //         lng: pos.coords.longitude
+  //       })
+  //     },
+  //     (error) => console.log("Geolocation error: ", JSON.stringify(error)),
+  //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+  //   )
+  // }
 
   componentDidMount(){
-    this.getCoords();
+   // this.getCoords();
   }
 
   render(){
@@ -84,7 +89,7 @@ class CreateMapComponent extends Component{
 
 const styles = StyleSheet.create({
   container: {
-    height: screenHeight - 25,
+    height: screenHeight - 75,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -92,7 +97,7 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
-    top: 100,
+    top: 50,
     left: 5,
     right: 5,
     bottom: 5,
@@ -105,12 +110,14 @@ const styles = StyleSheet.create({
   searchBoxContainer: {
     height: 45, 
     position: 'absolute',
-    top: 50,
+    top: 0,
     width: screenWidth,
     marginTop: 2,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+        borderColor: 'black',
+    borderWidth: 1,
   },
   searchBox: {
     height: 40,
@@ -128,5 +135,24 @@ const styles = StyleSheet.create({
   }
 });
 
-const CreateMap = CreateMapComponent;
+const mapStateToProps = (state) => {
+  return {
+    currentPosition: state.filterReducer.currentPosition,
+    isValidatingCoords: state.uploadReducer.isValidatingCoords,
+    chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
+    fenceCoordinates: state.uploadReducer.fenceCoordinates,
+    fenceError: state.uploadReducer.fenceError
+  }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+//     submitDates: (dates) => {
+//       console.log('dates in mapDispatch: ', dates);
+//       uploadActions.submitDates(dispatch, dates)
+//     }
+//   }
+// }
+
+const CreateMap = connect(mapStateToProps, null)(CreateMapComponent);
 export default CreateMap;

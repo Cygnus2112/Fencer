@@ -8,6 +8,12 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as uploadActions from '../actions/uploadActions';
+import * as filterActions from '../actions/filterActions';
+
 import MapView from 'react-native-maps';
 //import WebViewBridge from 'react-native-webview-bridge';
 
@@ -31,17 +37,18 @@ class PolygonComponent extends Component {
     super(props);
 
     this.finish = this.finish.bind(this);
+
     this.startOver = this.startOver.bind(this);
     this.onRegionChange = this.onRegionChange.bind(this);
 
     this.state = {
-      latitude: this.props.lat || LATITUDE,
-      longitude: this.props.lng || LONGITUDE,
+      latitude: this.props.currentPosition.lat || LATITUDE,
+      longitude: this.props.currentPosition.lng || LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
       region: {
-        latitude: this.props.lat || LATITUDE,
-        longitude: this.props.lng || LONGITUDE,
+        latitude: this.props.currentPosition.lat || LATITUDE,
+        longitude: this.props.currentPosition.lng || LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
@@ -55,20 +62,20 @@ class PolygonComponent extends Component {
 
   componentDidMount(){
    // console.log('this.props.lat in Polygon component: ', this.props.lat);
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
+    // navigator.geolocation.getCurrentPosition(
+    //   (position) => {
         
-        let point = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        this.setState({
-          currPosition: point
-        })
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
+    //     let point = {
+    //       lat: position.coords.latitude,
+    //       lng: position.coords.longitude
+    //     }
+    //     this.setState({
+    //       currPosition: point
+    //     })
+    //   },
+    //   (error) => alert(error.message),
+    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    // );
   }
 
   componentWillReceiveProps(newProps, oldProps){
@@ -116,13 +123,16 @@ class PolygonComponent extends Component {
     });
     console.log('-------------------------------');
 
-    // setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
-    //   //console.log('polygons array (after setTimeout): ', this.state.polygons);
-    //   for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
-    //     let coords = this.state.polygons[0].coordinates[i];
-    //     console.log("coords.longitude: ",coords.longitude);
-    //   }
-    // },500)
+    setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
+      //console.log('polygons array (after setTimeout): ', this.state.polygons);
+      // for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
+      //   let coords = this.state.polygons[0].coordinates[i];
+      //   console.log("coords.longitude: ",coords.longitude);
+      // }
+
+      this.props.submitFence(this.state.polygons[0].coordinates)
+
+    },400)
   }
 
   startOver(){
@@ -269,7 +279,7 @@ class PolygonComponent extends Component {
             ?
             (<View style={styles.buttonContainer}>
               <TouchableOpacity
-                onPress={() => this.finish()}
+                onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
                   <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
@@ -331,5 +341,25 @@ const styles = StyleSheet.create({
   },
 });
 
-const Polygon = PolygonComponent;
+const mapStateToProps = (state) => {
+  return {
+    currentPosition: state.filterReducer.currentPosition,
+    isValidatingCoords: state.uploadReducer.isValidatingCoords,
+    chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
+    fenceCoordinates: state.uploadReducer.fenceCoordinates,
+    fenceError: state.uploadReducer.fenceError
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitFence: (coords) => {
+      console.log('coords in mapDispatch: ', coords);
+      uploadActions.submitFenceCoordinates(dispatch, coords);
+    }
+  }
+}
+
+
+const Polygon = connect(mapStateToProps, mapDispatchToProps)(PolygonComponent);
 export default Polygon;
