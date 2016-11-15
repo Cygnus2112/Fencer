@@ -76,6 +76,7 @@ class ChooseDatesComponent extends Component{
       let d = new Date();
       let t = d.toLocaleTimeString();
       let currentHour = Number( t.split(' ')[0].split(':')[0] );
+
       let suffix = 'AM';
       if(currentHour >= 12){
         suffix = 'PM';
@@ -98,8 +99,10 @@ class ChooseDatesComponent extends Component{
       this.setState({
         startHour: initStartHour,
         endHour: initEndHour,
-        startTimeText: initStartHour + ':00' + suffix,
-        endTimeText: initEndHour + ':00' + initEndSuffix
+        startTimeText: _formatTime(currentHour+1,0),
+        endTimeText: _formatTime(currentHour+2, 0)
+        // startTimeText: initStartHour + ':00' + suffix,
+        // endTimeText: initEndHour + ':00' + initEndSuffix
       })
 
     if(this.props.selectedDates.startMonth){
@@ -143,7 +146,9 @@ class ChooseDatesComponent extends Component{
   }
 
   handleSubmit(){
-    this.forceUpdate();
+    // if(this.state.startYear > this.state.endYear){
+
+    // }
   }
 
   async launchTime(stateKey, options) {
@@ -177,7 +182,6 @@ class ChooseDatesComponent extends Component{
         newState[stateKey + 'Day'] = day;
         newState[stateKey + 'Year'] = year;
       }
-      console.log('newState: ', newState)
       this.setState(newState);
     } catch ({code, message}) {
       console.warn(`Error in datepicker: `, message);
@@ -206,12 +210,18 @@ class ChooseDatesComponent extends Component{
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
           </Text>
 
-            <TouchableOpacity onPress={()=>(
-                  this.launchCal('start', {
-                      date: this.state.startDate,
-                      minDate: new Date(),
-                      maxDate: new Date(2017, 2, 10),
-                  }))} >
+            <TouchableOpacity onPress={()=>{
+              let d = new Date();
+              let mm = d.getMonth();
+              let dd = d.getDate();
+              let yy = d.getFullYear();
+              this.launchCal('start', {
+                date: this.state.startDate,
+                minDate: new Date(),
+                maxDate: new Date(yy, mm+1, dd),
+              })}}>
+
+
             <View style={styles.dateAndIconContainer}>
                 <View style={[styles.dateBox]}>
                   <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
@@ -254,12 +264,17 @@ class ChooseDatesComponent extends Component{
             and <Text style={{fontWeight: 'bold'}}>end</Text> on:
           </Text>
 
-          <TouchableOpacity onPress={()=>(
-            this.launchCal('end', {
-                date: this.state.endDate,
-                minDate: new Date(),
-                maxDate: new Date(2017, 2, 10),
-            }))} >
+          <TouchableOpacity onPress={()=>{
+              let d = new Date();
+              let mm = d.getMonth();
+              let dd = d.getDate();
+              let yy = d.getFullYear();
+
+              this.launchCal('end', {
+                  date: this.state.endDate,
+                  minDate: new Date(),
+                  maxDate: new Date(yy, mm+1, dd),
+              })}} >
             <View style={styles.dateAndIconContainer}>
 
               <View style={styles.dateBox}>
