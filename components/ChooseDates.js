@@ -49,11 +49,15 @@ class ChooseDatesComponent extends Component{
     this.launchCal = this.launchCal.bind(this);
     this.launchTime = this.launchTime.bind(this);
 
-   // this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = ({
-      startDate: this.props.selectedDates.startDate || new Date(),
-      endDate: this.props.selectedDates.endDate || new Date(),
+      startMonth: this.props.selectedDates.startMonth || (new Date()).getMonth(),
+      startDay: this.props.selectedDates.startDay || (new Date()).getDate(),
+      startYear: this.props.selectedDates.startYear || (new Date()).getFullYear(),
+      endMonth: this.props.selectedDates.endMonth || (new Date()).getMonth(),
+      endDay: this.props.selectedDates.endDay || (new Date()).getDate(),
+      endYear: this.props.selectedDates.endYear || (new Date()).getFullYear(),
       startText: (new Date()).toLocaleDateString(),
       endText: (new Date()).toLocaleDateString(),
       isoFormatText: 'pick a time (24-hour format)',
@@ -67,6 +71,8 @@ class ChooseDatesComponent extends Component{
   }
 
   componentDidMount(){
+      console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
+
       let d = new Date();
       let t = d.toLocaleTimeString();
       let currentHour = Number( t.split(' ')[0].split(':')[0] );
@@ -90,18 +96,13 @@ class ChooseDatesComponent extends Component{
       }
 
       this.setState({
+        startHour: initStartHour,
+        endHour: initEndHour,
         startTimeText: initStartHour + ':00' + suffix,
         endTimeText: initEndHour + ':00' + initEndSuffix
       })
 
-    // let suffix, startHour, endHour;
-
-    // if(t.split(' ').length === 2){      // checking if local time is 12 hour format (US)
-    //   suffix = t[1];
-      
-    // }
-
-    if(this.props.selectedDates.startDate){
+    if(this.props.selectedDates.startMonth){
       let startSuffix = 'AM'; 
       let endSuffix = 'PM';
       let startHour = Number(this.props.selectedDates.startHour);
@@ -122,24 +123,28 @@ class ChooseDatesComponent extends Component{
         endHour = 12;
       }
 
+      const { startMonth, startYear, startDay, endMonth,endYear,endDay } = this.props.selectedDates;
+      const startString = new Date(startYear, startMonth, startDay);
+      const endString = new Date(endYear, endMonth, endDay);
 
       this.setState({
-        startText: this.props.selectedDates.startDate.toLocaleDateString(), 
-        endText: this.props.selectedDates.endDate.toLocaleDateString(),
-        startTimeText: startHour + '' + this.props.selectedDates.startMinute + startSuffix,
-        endTimeText: endHour + '' + this.props.selectedDates.endMinute + endSuffix
+        startText: startString.toLocaleDateString(), 
+        endText: endString.toLocaleDateString(),
+        startTimeText: _formatTime(this.props.selectedDates.startHour, this.props.selectedDates.startMinute),
+        endTimeText: _formatTime(this.props.selectedDates.endHour, this.props.selectedDates.endMinute)
       })
-
-
     }
-   
-
-
   }
 
-  // handleSubmit(){
-  //   Actions.polygon();
-  // }
+  componentWillReceiveProps(newProps, oldProps){
+    console.log('---------------------------------')
+    console.log('new props incoming in ChooseDates ...');
+    console.log('---------------------------------')
+  }
+
+  handleSubmit(){
+    this.forceUpdate();
+  }
 
   async launchTime(stateKey, options) {
     try {
@@ -168,7 +173,9 @@ class ChooseDatesComponent extends Component{
       } else {
         var date = new Date(year, month, day);
         newState[stateKey + 'Text'] = date.toLocaleDateString();
-        newState[stateKey + 'Date'] = date;
+        newState[stateKey + 'Month'] = month;
+        newState[stateKey + 'Day'] = day;
+        newState[stateKey + 'Year'] = year;
       }
       console.log('newState: ', newState)
       this.setState(newState);
@@ -251,7 +258,7 @@ class ChooseDatesComponent extends Component{
             this.launchCal('end', {
                 date: this.state.endDate,
                 minDate: new Date(),
-                maxDate: new Date(2020, 4, 10),
+                maxDate: new Date(2017, 2, 10),
             }))} >
             <View style={styles.dateAndIconContainer}>
 
@@ -306,13 +313,22 @@ class ChooseDatesComponent extends Component{
             <Button
               style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
               onPress={()=> { this.props.submitDates({
-                startDate: this.state.startDate,
-                endDate: this.state.endDate,
+                startMonth: this.state.startMonth,
+                startDay: this.state.startDay,
+                startYear: this.state.startYear,
+
+                endMonth: this.state.endMonth,
+                endDay: this.state.endDay,
+                endYear: this.state.endYear,
                 startHour: this.state.startHour,
                 startMinute: this.state.startMinute,
                 endHour: this.state.endHour,
                 endMinute: this.state.endMinute
-              })}}>
+              });
+              this.handleSubmit();
+
+            }
+            }>
               Submit
             </Button>
           </View>
