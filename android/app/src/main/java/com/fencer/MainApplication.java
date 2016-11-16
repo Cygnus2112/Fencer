@@ -16,6 +16,7 @@ import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import cl.json.RNSharePackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
+import com.rnfs.RNFSPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -38,7 +39,8 @@ public class MainApplication extends Application implements ReactApplication {
           new RNSharePackage(),
           new RNViewShotPackage(),
           new RCTCameraPackage(),
-          new WebViewBridgePackage()
+          new WebViewBridgePackage(),
+          new RNFSPackage()
       );
     }
   };

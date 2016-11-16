@@ -11,8 +11,6 @@ import {
     TouchableOpacity
 } from 'react-native';
 
-let moment = require('moment');
-console.log('moment: ', moment().format());
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

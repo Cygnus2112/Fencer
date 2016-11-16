@@ -32,6 +32,8 @@ let id = 0;
 
 const SPACE = 0.01; 
 
+let dataToSend = {};
+
 class PolygonComponent extends Component {
   constructor(props) {
     super(props);
@@ -122,7 +124,6 @@ class PolygonComponent extends Component {
 
   finish() {
     console.log('-------------------------------');
-    console.log('this.finish called')
 
     const { polygons, editing } = this.state;
     console.log('editing: ', editing)
@@ -134,6 +135,7 @@ class PolygonComponent extends Component {
 
     console.log('-------------------------------');
 
+
     setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
       //console.log('polygons array (after setTimeout): ', this.state.polygons);
       // for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
@@ -141,7 +143,14 @@ class PolygonComponent extends Component {
       //   console.log("coords.longitude: ",coords.longitude);
       // }
 
-      this.props.submitFence(editing.coordinates);
+      dataToSend = {
+        fenceCoords: editing.coordinates,
+        selectedDates: this.props.selectedDates,
+        filterToUpload: this.props.filterToUpload
+      }
+
+      //this.props.submitFence(editing.coordinates);
+      this.props.submitFence(dataToSend);
 
     },400)
   }
@@ -358,14 +367,28 @@ const mapStateToProps = (state) => {
     isValidatingCoords: state.uploadReducer.isValidatingCoords,
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
-    fenceError: state.uploadReducer.fenceError
+    fenceError: state.uploadReducer.fenceError,
+    selectedDates: state.uploadReducer.selectedDates,       // TEMPORARY
+    filterToUpload: state.uploadReducer.filterToUpload
   }
 }
 
+
+
 const mapDispatchToProps = (dispatch) => {
+
   return {
     submitFence: (coords) => {
       console.log('coords in mapDispatch: ', coords);
+
+
+      // let data = {
+      //   fenceCoords: coords,
+      //   selectedDates: this.props.selectedDates,
+      //   filterToUpload: this.props.filterToUpload
+      // }
+
+
       uploadActions.submitFenceCoordinates(dispatch, coords);
     }
   }

@@ -41,6 +41,7 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
+		console.log("this.props in SingleEvent: ", this.props);
 		this.setState({
 			eventID: this.props.eventID,
 			eventTitle: this.props.eventTitle,
@@ -55,22 +56,22 @@ class SingleEventComponent extends Component {
 		})
 	}
 
-	componentWillReceiveProps(newProps,oldProps){
-		if(newProps.eventTitle !== oldProps.eventTitle){
-			this.setState({
-				eventID: this.props.eventID,
-				eventTitle: this.props.eventTitle,
-				startDate: this.props.startDate,
-				startTime: this.props.startTime,
-				endDate: this.props.endDate,
-				endTime: this.props.endTime,
-				coords: this.props.coords,
-				filterURI: this.props.filterURI,
-				//filterURI: "../assets/thanksgiving.png",
-				message: this.props.message
-			})
-		}
-	}
+	// componentWillReceiveProps(newProps,oldProps){
+	// 	if(newProps.eventTitle !== oldProps.eventTitle){
+	// 		this.setState({
+	// 			eventID: this.props.eventID,
+	// 			eventTitle: this.props.eventTitle,
+	// 			startDate: this.props.startDate,
+	// 			startTime: this.props.startTime,
+	// 			endDate: this.props.endDate,
+	// 			endTime: this.props.endTime,
+	// 			coords: this.props.coords,
+	// 			filterURI: this.props.filterURI,
+	// 			//filterURI: "../assets/thanksgiving.png",
+	// 			message: this.props.message
+	// 		})
+	// 	}
+	// }
 
 	handleEventPress(){		
 		Actions.camera({filterURI: this.props.filterURI});

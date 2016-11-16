@@ -25,7 +25,8 @@ const initialState = {
   filterUploadError: "",
   fenceError: "",
   filterTitle: null,
-  filterMessage: null
+  filterMessage: null,
+  filterToUpload: null
 }
 
 const uploadReducer = (state = initialState, action) => {

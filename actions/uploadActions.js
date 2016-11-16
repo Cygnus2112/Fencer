@@ -1,4 +1,7 @@
 import { AsyncStorage, Image } from 'react-native';
+import axios from 'axios';
+
+let utils = require('../utils');
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
 
@@ -42,6 +45,8 @@ export const submitFilter = (dispatch, filterData) => {
 	//return dispatch => {
 		dispatch( submitFilterRequest() );
 
+		console.log('filterData.data: ', filterData);
+
 
 		//  do filter validation here. 
 		// if successfull:
@@ -77,11 +82,50 @@ export const CHOOSE_AREA_ERROR = 'CHOOSE_AREA_ERROR';
 export const submitFenceCoordinates = (dispatch, coords) => {
 	console.log('coords in submitFenceCoordinates: ', coords);
 	//return dispatch => {
-		dispatch( chooseAreaRequest() );
+	dispatch( chooseAreaRequest() );
 
 										//  can we validate google polygon coords on backend? Am guessing no.
 
+	AsyncStorage.getItem("fencer-token").then((token) => {
+        if(token){
+            //dispatch(authSuccess());
+            return axios({
+              url: utils.filtersCreatedURL,
+              method: 'post',
+              data: JSON.stringify({
+                username: 'tom', filter: {			
+                	"title": "toms party",
+					"coordinates": coords.fenceCoords,
+					"message": "have fun",
+					"image": coords.filterToUpload.data,
+					"dates": coords.selectedDates}
+              }),
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': token  
+              },
+              timeout: 30000
+            }   
+        )
+        .then(response => {
+            return response
+        })
+        .then(response => {
+        	console.log('response in submitFenceCoordinates');
+             return response;
+        })
+        .catch(err => console.error('error in submitFenceCoordinates:', err));   
+              
+        } else {
+            // dispatch(authFail());
+            
+        }
+    }).done();			
+
 		dispatch(chooseAreaSuccess(coords));
+
+
 	//}
 }
 

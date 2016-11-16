@@ -14,6 +14,9 @@ import MyFilters from './components/MyFilters';
 import Main from './components/Main';
 import Upload from './components/Upload';
 
+import TakePhoto from './components/TakePhoto';
+import ApplyFilter from './components/ApplyFilter';
+
 class AppComponent extends Component {
   render() {
     return (
@@ -23,6 +26,9 @@ class AppComponent extends Component {
             <Scene key="main" component={Main} />
             <Scene key="upload" component={Upload} />
             <Scene key="myfilters" component={MyFilters} />
+            
+            <Scene key="camera" component={ TakePhoto } />
+            <Scene key="applyfilter" component={ ApplyFilter } />
           </Scene>
         </Router>
       

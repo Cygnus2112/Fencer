@@ -61,8 +61,8 @@ const updatePositionSuccess = (pos) => {
 export const LOAD_MYFILTERS_REQUEST = 'LOAD_MYFILTERS_REQUEST';
 export const LOAD_MYFILTERS_SUCCESS = 'LOAD_MYFILTERS_SUCCESS';
 
-export const loadMyFilters = (userData) => {
-  return dispatch => {
+export const loadMyFilters = (dispatch, userData) => {
+ // return dispatch => {
 
     dispatch(loadMyFiltersRequest());			
 
@@ -95,7 +95,7 @@ export const loadMyFilters = (userData) => {
             // dispatch(authFail());
         }
     }).done();
-  }
+ // }
 }
 
 const loadMyFiltersRequest = () => {

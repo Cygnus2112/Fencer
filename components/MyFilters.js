@@ -11,6 +11,11 @@ import {
     TouchableHighlight
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as filterActions from '../actions/filterActions';
+
 import SingleEvent from './SingleEvent'
 
 const { width, height } = Dimensions.get('window');
@@ -78,26 +83,28 @@ class MyFiltersComponent extends Component {
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 		this.state = {
-			events: sampleEvents,
-			dataSource: ds.cloneWithRows(sampleEvents)
+			//events: sampleEvents,
+			dataSource: ds.cloneWithRows( [] )
 		}
 	}
 
 	componentDidMount(){
-		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		this.props.getMyFilters();
 
-		this.setState({
-			dataSource: ds.cloneWithRows( sampleEvents )
-		})
+		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+		// this.setState({
+		// 	dataSource: ds.cloneWithRows( this.props.myFilters )
+		// })
 
 	}
 
 	componentWillReceiveProps(newProps, oldProps){
-		console.log('newProps.events in componentWillReceiveProps: ', newProps.events)
-		if(newProps.events !== oldProps.events){		// THIS COMPARISON PROBABLY DOESN'T WORK
+		console.log('newProps.events in componentWillReceiveProps: ', newProps.myFilters)
+		if(newProps.myFilters !== oldProps.myFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
-				dataSource: ds.cloneWithRows( newProps.events )
+				dataSource: ds.cloneWithRows( newProps.myFilters )
 			})
 		}
 	}
@@ -134,10 +141,11 @@ class MyFiltersComponent extends Component {
 
               		dataSource={this.state.dataSource}
               		renderRow={(rowData) => {	
-              		console.log('rowData.filterURI: ', rowData.filterURI)									// REMEMBER TO REMOVE
+              		console.log('rowData ', rowData)									// REMEMBER TO REMOVE
+              		// <SingleEvent { ...rowData } isActive={rowData.isActive} isInRange={rowData.isInRange}/>
                 	return (
                 		<View key={rowData.id} >									
-                  			<SingleEvent { ...rowData } isActive={rowData.isActive} isInRange={rowData.isInRange}/>
+                  			<SingleEvent { ...rowData } />
                 		</View>
                 	)
                		}
@@ -199,5 +207,20 @@ const styles = StyleSheet.create({
   }
 });
 
-const MyFilters = MyFiltersComponent;
+const mapStateToProps = (state) => {
+  return {
+    currentPosition: state.filterReducer.currentPosition,
+    myFilters: state.filterReducer.myFilters
+  }
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getMyFilters: () => {
+    	filterActions.loadMyFilters(dispatch, {username: 'tom'});
+    }
+  }
+}
+
+const MyFilters = connect(mapStateToProps, mapDispatchToProps)(MyFiltersComponent);
 export default MyFilters;
