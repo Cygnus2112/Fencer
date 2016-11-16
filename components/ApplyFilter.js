@@ -111,17 +111,18 @@ class ApplyFilterComponent extends Component{
 // <Image source={require( this.props.filterURI ) } style={{width: 200, height: 380, backgroundColor:'transparent'}} /> 
    // let filter = require(this.props.filterURI);
    // flex:4, backgroundColor:'transparent'
+      let dataURI = "data:image/png;base64,"+this.props.filterURI;
       return(
       <View style={{flexDirection: 'column',backgroundColor:'transparent' }}>
         <View ref="example_view" collapsable={false} style={{width: screenWidth, height: screenHeight }}>
           <Image ref="exampleimg" style={styles.photo} source={{ uri: this.props.photoURI}}>
-            <Image source={{uri: WEHO}} style={{width: screenWidth, height: screenHeight}}/>
+            <Image source={{uri: dataURI}} style={{width: screenWidth, height: screenHeight}}/>
           </Image>  
             
         </View>
 
-        {this.state.snapshotURI &&
-          (<View style={styles.button}>
+
+            <View style={styles.button}>
               <TouchableOpacity onPress={()=>{
                 console.log("----------------------------------------")
                 let shareImageBase64 = {
@@ -136,12 +137,19 @@ class ApplyFilterComponent extends Component{
                 <Text>Share</Text>
               </View>
             </TouchableOpacity>
-          </View>)
-        }
+          </View>
+
       </View>
       )
     }
 }
+        // {this.state.snapshotURI &&
+        //   (
+        //               )
+        // }
+
+
+
 
 // style={{flex: 1, position: 'absolute', top: 0,left: 0}}
 // style={{width: 350, height: 600}}

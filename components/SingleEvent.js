@@ -44,7 +44,7 @@ class SingleEventComponent extends Component {
 		console.log("this.props in SingleEvent: ", this.props);
 		this.setState({
 			eventID: this.props.eventID,
-			eventTitle: this.props.eventTitle,
+			eventTitle: this.props.title,
 			startDate: this.props.startDate,
 			startTime: this.props.startTime,
 			endDate: this.props.endDate,
@@ -74,7 +74,7 @@ class SingleEventComponent extends Component {
 	// }
 
 	handleEventPress(){		
-		Actions.camera({filterURI: this.props.filterURI});
+		Actions.camera({filterURI: this.props.image});
 
 		// either load the filter or an 'out of bounds/event not started yet' popup
 
@@ -94,7 +94,7 @@ class SingleEventComponent extends Component {
 		return (
 			<TouchableOpacity onPress={this.handleEventPress} >
 				<View style={this.props.isActive ? this.props.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
-					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.eventTitle } </Text>
+					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?
 					  	(<View style={styles.statusMessages}>

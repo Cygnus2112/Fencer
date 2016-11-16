@@ -69,7 +69,7 @@ export const loadMyFilters = (dispatch, userData) => {
     AsyncStorage.getItem("fencer-token").then((token) => {
         if(token){
             //dispatch(authSuccess());
-            return fetch(utils.myFiltersURL+"?username="+userData.username, {
+            return fetch(utils.filtersCreatedURL +"?username="+userData.username, {    // CHANGE BACK TO myFiltersURL
       			method: 'GET',
       			headers: {
         			'Accept': 'application/json',
