@@ -53,7 +53,8 @@ class TakePhotoComponent extends Component {
             this.camera = cam;              //  the new (correct) callback refs style
           }}
           style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}>
+          aspect={Camera.constants.Aspect.fill}
+          captureTarget={Camera.constants.CaptureTarget.temp}>
           <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
         </Camera>
       </View>

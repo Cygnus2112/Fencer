@@ -27,13 +27,17 @@ class SingleEventComponent extends Component {
 		this.handleEventPress = this.handleEventPress.bind(this);
 		this.state = {
 			eventTitle: "",
-			startDate: "",
-			startTime: "",
+			startYear: "",
+			startMonth: "",
+			startDay: "",
+			startHour: "",
+			startMinute: "",
 			endDate: "",
-			endTime: "",
+			endHour: "",
+			endMinute: "",
 			coords: null,
 			eventID: null,
-			filterURI: "../assets/thanksgiving.png",
+			filterURI: null,
 			message: "",
 			isActive: false,
 			isInRange: false					// MIGHT HAVE TO REDUX THIS, GIVEN HOW SLOW GEO IS
@@ -41,14 +45,19 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log("this.props in SingleEvent: ", this.props);
+		console.log("this.props.dates in SingleEvent: ", this.props.dates);
 		this.setState({
 			eventID: this.props.eventID,
 			eventTitle: this.props.title,
-			startDate: this.props.startDate,
-			startTime: this.props.startTime,
-			endDate: this.props.endDate,
-			endTime: this.props.endTime,
+			startYear: this.props.dates.startYear,
+			startMonth: this.props.dates.startMonth,
+			startDay: this.props.dates.startDay,
+			startDate: this.props.dates.startDate,
+			startHour: this.props.dates.startHour,
+			startMinute: this.props.dates.startMinute,
+			endDate: this.props.dates.endDate,
+			endHour: this.props.dates.endHour,
+			endMinute: this.props.dates.endMinute,
 			coords: this.props.coords,
 			filterURI: this.props.filterURI,
 			//filterURI: "../assets/thanksgiving.png",
@@ -121,13 +130,36 @@ class SingleEventComponent extends Component {
 					  	</View>)
 					  	:
 					  	(<View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
-							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{this.state.startDate}</Text> at <Text style={{fontWeight: 'bold'}}>{this.state.startTime}</Text></Text>
+							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.startHour, this.state.startMinute)}</Text></Text>
 					  	</View>)
 					  }
 				</View>
 			</TouchableOpacity>	
 		)
 	}
+}
+
+const _formatTime = (hour, minute) => {
+  let suffix = 'AM';
+  if(hour > 12){
+    hour = hour - 12;
+    suffix = 'PM';
+  }
+  if(hour === 12){
+    suffix = 'PM';
+  }
+  if(hour === 0){
+    hour = 12;
+  }
+  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
+}
+
+const _formatDate = (m,d,y) => {
+	m += 1;
+	if(m === 13){
+		m = 1;
+	}
+	return m + "/" + d + "/" + y;
 }
 
 const styles = StyleSheet.create({

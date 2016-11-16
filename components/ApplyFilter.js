@@ -71,22 +71,22 @@ class ApplyFilterComponent extends Component{
     // componentWillReceiveProps(newProps, oldProps){
     //   console.log('receiving new props...');
     //   if(newProps.photoURI !== oldProps.photoURI){
-    //     RNViewShot.takeSnapshot(this.refs["example_view"], {
-    //         format: "jpeg",
-    //         quality: 1.0,
-    //         result: 'data-uri'
-    //     })
-    //     .then(
-    //         uri => {
-    //           console.log("Image saved to uri")
-    //           console.log("----------------------------------------")
-    //           //Share.open(uri)
-    //           //Actions.viewbase({imgURI: uri});
-    //           this.setState({
-    //             snapshotURI: uri
-    //           })
-    //         },
-    //         error => console.error("Oops, snapshot failed", error)
+        // RNViewShot.takeSnapshot(this.refs["example_view"], {
+        //     format: "jpeg",
+        //     quality: 1.0,
+        //     result: 'data-uri'
+        // })
+        // .then(
+        //     uri => {
+        //       console.log("Image saved to uri")
+        //       console.log("----------------------------------------")
+        //       //Share.open(uri)
+        //       //Actions.viewbase({imgURI: uri});
+        //       this.setState({
+        //         snapshotURI: uri
+        //       })
+        //     },
+        //     error => console.error("Oops, snapshot failed", error)
     //     );
     //   }
     // }
@@ -118,21 +118,41 @@ class ApplyFilterComponent extends Component{
           <Image ref="exampleimg" style={styles.photo} source={{ uri: this.props.photoURI}}>
             <Image source={{uri: dataURI}} style={{width: screenWidth, height: screenHeight}}/>
           </Image>  
-            
         </View>
 
 
             <View style={styles.button}>
               <TouchableOpacity onPress={()=>{
                 console.log("----------------------------------------")
-                let shareImageBase64 = {
-                    title: "React Native",
-                    message: "Hola mundo",
-                    url: this.state.snapshotURI,
-                    subject: "Share Link" //  for email
-                };
-                Share.open(shareImageBase64);
-              }}>
+
+                RNViewShot.takeSnapshot(this.refs["example_view"], {
+                  format: "jpeg",
+                  quality: 1.0,
+                  result: 'data-uri'
+                })
+                .then(
+                    uri => {
+                      console.log("Image saved to uri")
+                      console.log("----------------------------------------")
+                      //Share.open(uri)
+                      //Actions.viewbase({imgURI: uri});
+                      // this.setState({
+                      //   snapshotURI: uri
+                      // })
+
+                      let shareImageBase64 = {
+                        title: "React Native",
+                        message: "Hola mundo",
+                       // url: this.state.snapshotURI,
+                        url: uri,
+                        subject: "Share Link" //  for email
+                      };
+                      Share.open(shareImageBase64);
+
+
+                },
+                error => console.error("Oops, snapshot failed", error)
+              )}}>
               <View style={styles.instructions}>
                 <Text>Share</Text>
               </View>

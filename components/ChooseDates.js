@@ -34,10 +34,12 @@ function _formatTime(hour, minute) {
     hour = hour - 12;
     suffix = 'PM';
   }
+  if(hour === 12){
+    suffix = 'PM';
+  }
   if(hour === 0){
     hour = 12;
   }
-
   return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
 }
 
@@ -405,7 +407,6 @@ class ChooseDatesComponent extends Component{
                 startMonth: this.state.startMonth,
                 startDay: this.state.startDay,
                 startYear: this.state.startYear,
-
                 endMonth: this.state.endMonth,
                 endDay: this.state.endDay,
                 endYear: this.state.endYear,

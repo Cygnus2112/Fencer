@@ -100,7 +100,7 @@ class MyFiltersComponent extends Component {
 	}
 
 	componentWillReceiveProps(newProps, oldProps){
-		console.log('newProps.events in componentWillReceiveProps: ', newProps.myFilters)
+	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
 		if(newProps.myFilters !== oldProps.myFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
@@ -138,22 +138,64 @@ class MyFiltersComponent extends Component {
           	</View>
           	  <View style={styles.eventListContainer}>
             	<ListView
-
               		dataSource={this.state.dataSource}
               		renderRow={(rowData) => {	
-              		console.log('rowData ', rowData)									// REMEMBER TO REMOVE
+
+              			if(rowData !== "this is a fake filter") {
+
+						console.log('rowData ', rowData.dates)	
+
+						let _isActive = _checkDates(rowData.dates);							
+
+						//  Do date/geo validation here?
+
               		// <SingleEvent { ...rowData } isActive={rowData.isActive} isInRange={rowData.isInRange}/>
-                	return (
-                		<View key={rowData.id} >									
-                  			<SingleEvent { ...rowData } />
-                		</View>
-                	)
+
+	                	return (
+	                		<View key={rowData.id} >									
+	                  			<SingleEvent { ...rowData } isActive={ _isActive } />
+	                		</View>
+	                	)
+	                  
+               		} else {
+               			return null;
                		}
+               	}
               		}/>
               </View>
         </View>
         )
     }
+}
+
+const _checkDates = (dates) => {
+	const { endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth } = dates;
+	console.log(endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth);
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	const currentMonth = currentDate.getMonth();
+	const currentDay = currentDate.getDate();
+	const currentHour = currentDate.getHours();
+	const currentMinute = currentDate.getMinutes();
+
+	if(currentYear < startYear || currentYear > endYear){
+		console.log('bad year');
+		return false;
+	} else if (currentMonth < startMonth || currentMonth < endMonth){
+		console.log('bad month');
+		return false;
+	} else if (currentDay < startDay || currentDay > endDay) {
+		console.log('bad day');
+		return false;
+	} else if (currentHour < startHour || currentHour > endHour) {
+		console.log('bad hour');
+		return false;
+	} /* else if (currentMinute < startMinute || currentMinute > endMinute) {
+		console.log('bad minute');
+		return false;						//  SKIPPING MINUTE CHECK FOR DEV PURPOSES
+	} */ else {
+		return true;
+	}
 }
 
 

@@ -93,12 +93,14 @@ export const submitFenceCoordinates = (dispatch, coords) => {
               url: utils.filtersCreatedURL,
               method: 'post',
               data: JSON.stringify({
-                username: 'tom', filter: {			
-                	"title": "toms party",
+                username: 'tom', filter: 
+                {			
+                	"title": "toms NEW party",
 					"coordinates": coords.fenceCoords,
 					"message": "have fun",
 					"image": coords.filterToUpload.data,
-					"dates": coords.selectedDates}
+					"dates": coords.selectedDates
+				}
               }),
               headers: {
                 'Accept': 'application/json',
