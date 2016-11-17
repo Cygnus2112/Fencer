@@ -86,10 +86,7 @@ export const loadMyFilters = (dispatch, userData) => {
     		.then(response => {
              console.log('2nd level response in loadMyFilterss: ');
              console.log(response);
-            console.log('-------------------------');
-            for(let f in response){
-              console.log("coordinates in loadMyFilters API resp: ", f.coordinates)
-            }
+
             console.log('-------------------------');
       			dispatch(loadMyFiltersSuccess(response));
 						

@@ -11,8 +11,6 @@ import {
     TouchableHighlight
 } from 'react-native';
 
-import GeoFencing from 'react-native-geo-fencing';
-
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
 
@@ -102,9 +100,25 @@ class MyFiltersComponent extends Component {
 	componentWillReceiveProps(newProps, oldProps){
 	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
 		if(newProps.myFilters !== oldProps.myFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
+			// console.log('=====================================')
+			
+			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.myFilters) );
+
+			let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
+
+			let sortedFilters = arr.sort((f1,f2)=>{
+				return f1.dates.startYear - f2.dates.startYear;
+			}).sort((f1,f2)=>{
+				return f1.dates.startMonth - f2.dates.startMonth;
+			}).sort((f1,f2)=>{
+				return f1.dates.startDay - f2.dates.startDay;
+			}).sort((f1,f2)=>{
+				return f1.dates.startHour - f2.dates.startHour;
+			})
+
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
-				dataSource: ds.cloneWithRows( newProps.myFilters )
+				dataSource: ds.cloneWithRows( sortedFilters )
 			})
 		}
 	}
@@ -139,29 +153,21 @@ class MyFiltersComponent extends Component {
           	  <View style={styles.eventListContainer}>
             	<ListView
               		dataSource={this.state.dataSource}
-              		renderRow={(rowData) => {	
-              			console.log('rowData: ', rowData);
-
+              		renderRow={(rowData) => {
 
               			console.log('-------------------------');
               			if(rowData.coordinates) {
 
-              				              			const poly = rowData.coordinates.map((point)=>{
-              				return {
-              					lat: point.latitude,
-              					lng: point.longitude
-              				}
-              			})
+							const poly = rowData.coordinates.map((point)=>{
+	              				return {
+	              					lat: point.latitude,
+	              					lng: point.longitude
+	              				}
+              				})
 
-              			poly.push(poly[0]);
-              			console.log('this.props.currentPosition ', this.props.currentPosition);
-              			console.log('poly: ', poly);
-              			setTimeout(()=>{
-              				GeoFencing.containsLocation(this.props.currentPosition, poly)
-        						.then(() => console.log('point is within polygon'))
+              				poly.push(poly[0]);
 
-              			},200)
-              			console.log('-------------------------');
+
               			console.log('-------------------------');
 						//console.log('rowData ', rowData.dates)	
 
@@ -173,7 +179,7 @@ class MyFiltersComponent extends Component {
 
 	                	return (
 	                		<View key={rowData.id} >									
-	                  			<SingleEvent { ...rowData } isActive={ _isActive } />
+	                  			<SingleEvent { ...rowData } isActive={ _isActive } polyCoordsForGeo={poly}/>
 	                		</View>
 	                	)
 	                  

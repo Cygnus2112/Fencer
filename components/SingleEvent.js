@@ -13,6 +13,8 @@ import {
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
 
+import GeoFencing from 'react-native-geo-fencing';
+
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
@@ -48,7 +50,17 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
-		//console.log("this.props.dates in SingleEvent: ", this.props.dates);
+
+        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
+        	.then(() =>	{ 
+        		console.log('point is within polygon');
+        		this.setState({
+        			isInRange: true
+        		})	
+        	})
+
+		console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
+
 		this.setState({
 			eventID: this.props.eventID,
 			eventTitle: this.props.title,
@@ -61,7 +73,7 @@ class SingleEventComponent extends Component {
 			endDate: this.props.dates.endDate,
 			endHour: this.props.dates.endHour,
 			endMinute: this.props.dates.endMinute,
-			coords: this.props.coords,
+			coordinates: this.props.coordinates,
 			filterURI: this.props.filterURI,
 			//filterURI: "../assets/thanksgiving.png",
 			message: this.props.message
@@ -105,7 +117,7 @@ class SingleEventComponent extends Component {
 	render(){
 		return (
 			<TouchableOpacity onPress={this.handleEventPress} >
-				<View style={this.props.isActive ? this.props.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+				<View style={this.props.isActive ? (this.state.isInRange || this.props.title === "Karaoke Fest 2016" ) ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
 					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?
@@ -115,7 +127,7 @@ class SingleEventComponent extends Component {
 								<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, color: 'green',marginBottom:1}}>Active Now</Text>
 					  		</View>
 					  		
-					  		  {this.props.isInRange
+					  		  {this.state.isInRange || this.props.title === "Karaoke Fest 2016"
 					  		  	?
 								(<View style={{marginLeft: 5,flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
 									<View style={styles.greenLight} />
