@@ -140,14 +140,14 @@ class ApplyFilterComponent extends Component{
                       //   snapshotURI: uri
                       // })
 
-                      let shareImageBase64 = {
+                      let shareImage = {
                         title: "React Native",
                         message: "Hola mundo",
                        // url: this.state.snapshotURI,
                         url: uri,
                         subject: "Share Link" //  for email
                       };
-                      Share.open(shareImageBase64);
+                      Share.open(shareImage);
 
 
                 },

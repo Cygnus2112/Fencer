@@ -45,7 +45,7 @@ export const submitFilter = (dispatch, filterData) => {
 	//return dispatch => {
 		dispatch( submitFilterRequest() );
 
-		console.log('filterData.data: ', filterData);
+		console.log('filterData: ', filterData);
 
 
 		//  do filter validation here. 
@@ -95,9 +95,9 @@ export const submitFenceCoordinates = (dispatch, coords) => {
               data: JSON.stringify({
                 username: 'tom', filter: 
                 {			
-                	"title": "toms NEW party",
+                	"title": "Ricos super sweet orgy",
 					"coordinates": coords.fenceCoords,
-					"message": "have fun",
+					"message": "woooooooooooo!",
 					"image": coords.filterToUpload.data,
 					"dates": coords.selectedDates
 				}
@@ -107,14 +107,14 @@ export const submitFenceCoordinates = (dispatch, coords) => {
                 'Content-Type': 'application/json',
                 'x-access-token': token  
               },
-              timeout: 30000
+              timeout: 120000
             }   
         )
         .then(response => {
             return response
         })
         .then(response => {
-        	console.log('response in submitFenceCoordinates');
+        	console.log('response in submitFenceCoordinates: ', response);
              return response;
         })
         .catch(err => console.error('error in submitFenceCoordinates:', err));   

@@ -11,9 +11,9 @@ import {
     TouchableHighlight
 } from 'react-native';
 
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import GeoFencing from 'react-native-geo-fencing';
 
+import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
 
 import SingleEvent from './SingleEvent'
@@ -140,10 +140,30 @@ class MyFiltersComponent extends Component {
             	<ListView
               		dataSource={this.state.dataSource}
               		renderRow={(rowData) => {	
+              			console.log('coords: ', rowData.coordinates);
 
+
+              			console.log('-------------------------');
               			if(rowData !== "this is a fake filter") {
 
-						console.log('rowData ', rowData.dates)	
+              				              			const poly = rowData.coordinates.map((point)=>{
+              				return {
+              					lat: point.latitude,
+              					lng: point.longitude
+              				}
+              			})
+
+              			poly.push(poly[0]);
+              			console.log('this.props.currentPosition ', this.props.currentPosition);
+              			console.log('poly: ', poly);
+              			setTimeout(()=>{
+              				GeoFencing.containsLocation(this.props.currentPosition, poly)
+        						.then(() => console.log('point is within polygon'))
+
+              			},200)
+              			console.log('-------------------------');
+              			console.log('-------------------------');
+						//console.log('rowData ', rowData.dates)	
 
 						let _isActive = _checkDates(rowData.dates);							
 

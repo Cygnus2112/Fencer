@@ -368,8 +368,9 @@ const mapStateToProps = (state) => {
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
     fenceError: state.uploadReducer.fenceError,
-    selectedDates: state.uploadReducer.selectedDates,       // TEMPORARY
-    filterToUpload: state.uploadReducer.filterToUpload
+    selectedDates: state.uploadReducer.selectedDates,
+    filterToUpload: state.uploadReducer.filterToUpload       // TEMPORARY
+
   }
 }
 

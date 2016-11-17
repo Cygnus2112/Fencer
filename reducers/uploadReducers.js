@@ -66,6 +66,7 @@ const uploadReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         fenceCoordinates: action.fenceCoordinates,
         isValidatingCoords: false,
+        chooseAreaComplete: true,
         currentView: 'send'
       })
     case ActionTypes.CHOOSE_AREA_ERROR:

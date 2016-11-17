@@ -10,6 +10,9 @@ import {
     Dimensions,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import * as filterActions from '../actions/filterActions';
+
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
@@ -45,7 +48,7 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log("this.props.dates in SingleEvent: ", this.props.dates);
+		//console.log("this.props.dates in SingleEvent: ", this.props.dates);
 		this.setState({
 			eventID: this.props.eventID,
 			eventTitle: this.props.title,
@@ -230,6 +233,12 @@ const styles = StyleSheet.create({
 	}
 })
 
-const SingleEvent = SingleEventComponent;
+const mapStateToProps = (state) => {
+  return {
+    currentPosition: state.filterReducer.currentPosition
+  }
+}
+
+const SingleEvent = connect(mapStateToProps, null)(SingleEventComponent);
 export default SingleEvent;
 

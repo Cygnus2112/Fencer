@@ -16,7 +16,7 @@ import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import cl.json.RNSharePackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
-import com.rnfs.RNFSPackage;
+import com.surialabs.rn.geofencing.GeoFencingPackage;
 
 import java.util.Arrays;
 import java.util.List;
@@ -40,7 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNViewShotPackage(),
           new RCTCameraPackage(),
           new WebViewBridgePackage(),
-          new RNFSPackage()
+          new GeoFencingPackage()
       );
     }
   };
