@@ -41,8 +41,8 @@ class StepFourComponent extends Component {
 					<Text style={{fontSize: 13, fontWeight: 'bold'}}>4</Text>
 				</View>
 				<View style={{alignItems: 'center', marginLeft:5}}>
-					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Send To</Text>
-					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText }>Friends</Text>
+					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText}>Name {'&'}</Text>
+					<Text style={this.props.currentView === 'send' ? [styles.stepText, {fontWeight: 'bold'}] : styles.stepText }>Share!</Text>
 				</View>
 			</View>
 		</TouchableOpacity>

@@ -22,7 +22,7 @@ import UploadNav from './UploadNav'
 import UploadFilter from './UploadFilter';
 import ChooseDates from './ChooseDates';
 import CreateMap from './CreateMap';
-import ChooseFriends from './ChooseFriends';
+import Send from './Send';
 
 const { width, height } = Dimensions.get('window');
 let screenHeight = height;
@@ -82,7 +82,7 @@ class UploadComponent extends Component {
         ( <CreateMap /> )
       }
       {this.props.currentView == 'send' && 
-        ( <ChooseFriends /> )
+        ( <Send /> )
       }
     
 	  </View>

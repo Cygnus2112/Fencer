@@ -30,9 +30,9 @@ class UploadNav extends Component {
 		return (
 			<View style={{height: 50, flexDirection: 'row', justifyContent: 'center', borderBottomColor: 'black', borderBottomWidth: 2}}>
 				<StepOne />
-				<StepTwo  />
-				<StepThree  />
-				<StepFour  />
+				<StepTwo />
+				<StepThree />
+				<StepFour />
 			</View>
 
 		)
