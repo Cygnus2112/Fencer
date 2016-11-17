@@ -140,11 +140,11 @@ class MyFiltersComponent extends Component {
             	<ListView
               		dataSource={this.state.dataSource}
               		renderRow={(rowData) => {	
-              			console.log('coords: ', rowData.coordinates);
+              			console.log('rowData: ', rowData);
 
 
               			console.log('-------------------------');
-              			if(rowData !== "this is a fake filter") {
+              			if(rowData.coordinates) {
 
               				              			const poly = rowData.coordinates.map((point)=>{
               				return {

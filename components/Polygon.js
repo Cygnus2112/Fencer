@@ -144,9 +144,7 @@ class PolygonComponent extends Component {
       // }
 
       dataToSend = {
-        fenceCoords: editing.coordinates,
-        selectedDates: this.props.selectedDates,
-        filterToUpload: this.props.filterToUpload
+        fenceCoords: editing.coordinates
       }
 
       //this.props.submitFence(editing.coordinates);

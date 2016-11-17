@@ -75,6 +75,13 @@ const uploadReducer = (state = initialState, action) => {
         isValidatingCoords: false,
         currentView: 'send'
       })
+    case ActionTypes.SET_INFO_REQUEST:
+      console.log('action.title, message in reducer ', action.info.title, action.info.message);
+      return Object.assign({}, state, {
+        filterTitle: action.info.title,
+        filterMessage: action.info.message
+      })
+      
 
       //   ADD FUNCTIONS FOR DEALING WITH SENDING OUT INVITES AND UPLOADING DATA TO API
       //   filterTitle

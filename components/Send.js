@@ -32,10 +32,30 @@ class Send extends Component {
     constructor(props){
         super(props);
 
+        this.handleSubmit = this.handleSubmit.bind(this);
+
         this.state = {
             title: "",
             message: ""
         }
+    }
+
+    handleSubmit(){
+        console.log('this.props.fenceCoordinates ', this.props.fenceCoordinates);
+        console.log('this.props.selectedDates', this.props.selectedDates);
+        setTimeout(()=>{
+        console.log('this.props.filterTitle ', this.props.filterTitle);
+        console.log('this.props.filterMessage ',this.props.filterMessage);
+        let dataToSend = {
+            fenceCoordinates: this.props.fenceCoordinates,
+            selectedDates: this.props.selectedDates,
+            filterToUpload: this.props.filterToUpload,
+            title: this.props.filterTitle,
+            message: this.props.filterMessage
+        }
+        this.props.finalSumbit(dataToSend);
+    },300)
+
     }
 
 
@@ -73,7 +93,7 @@ class Send extends Component {
                           style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
                           onPress={()=> { 
                             this.props.submitTitle({title: this.state.title, message: this.state.message}); 
-
+                            this.handleSubmit();
                          }
                         }>
                           Submit
@@ -122,7 +142,9 @@ const mapStateToProps = (state) => {
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
     selectedDates: state.uploadReducer.selectedDates,
-    filterToUpload: state.uploadReducer.filterToUpload       
+    filterToUpload: state.uploadReducer.filterToUpload,
+    filterTitle: state.uploadReducer.filterTitle,
+    filterMessage: state.uploadReducer.filterMessage     
   }
 }
 
@@ -130,8 +152,12 @@ const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
             uploadActions.submitTitleAndMessage(dispatch, info)
+        },
+        finalSumbit: (data) => {
+            uploadActions.finalSubmitFilter(dispatch, data)
         }
+
     }
 }
 
-export default connect(mapStateToProps, null)(Send);
+export default connect(mapStateToProps, mapDispatchToProps)(Send);

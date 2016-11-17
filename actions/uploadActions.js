@@ -81,55 +81,11 @@ export const CHOOSE_AREA_ERROR = 'CHOOSE_AREA_ERROR';
 
 export const submitFenceCoordinates = (dispatch, coords) => {
 	console.log('coords in submitFenceCoordinates: ', coords);
-	//return dispatch => {
+
 	dispatch( chooseAreaRequest() );
-
-										//  can we validate google polygon coords on backend? Am guessing no.
-
-	AsyncStorage.getItem("fencer-token").then((token) => {
-        if(token){
-            //dispatch(authSuccess());
-            return axios({
-              url: utils.filtersCreatedURL,
-              method: 'post',
-              data: JSON.stringify({
-                username: 'tom', filter: 
-                {			
-                	"title": "Ricos super sweet orgy",
-					"coordinates": coords.fenceCoords,
-					"message": "woooooooooooo!",
-					"image": coords.filterToUpload.data,
-					"dates": coords.selectedDates
-				}
-              }),
-              headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-                'x-access-token': token  
-              },
-              timeout: 120000
-            }   
-        )
-        .then(response => {
-            return response
-        })
-        .then(response => {
-        	console.log('response in submitFenceCoordinates: ', response);
-             return response;
-        })
-        .catch(err => console.error('error in submitFenceCoordinates:', err));   
-              
-        } else {
-            // dispatch(authFail());
-            
-        }
-    }).done();			
-
-		dispatch(chooseAreaSuccess(coords));
-
-
-	//}
+	dispatch( chooseAreaSuccess(coords) );
 }
+
 
 const chooseAreaRequest = () => {
 	return {
@@ -150,4 +106,90 @@ const chooseAreaError = () => {
 	}
 }
 
+export const SET_INFO_REQUEST = 'SET_INFO_REQUEST';
+
+export const submitTitleAndMessage = (dispatch, info) => {
+	console.log('info in submitTitleAndMessage: ', info);
+	dispatch(submitInfoRequest(info));
+}
+
+const submitInfoRequest = (info) => {
+	return {
+		type: SET_INFO_REQUEST,
+		info: info
+	}
+}
+
+export const FINAL_SUBMIT_REQUEST = 'FINAL_SUBMIT_REQUEST';
+export const FINAL_SUBMIT_SUCCESS = 'FINAL_SUBMIT_SUCCESS';
+export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
+
+export const finalSubmitFilter = (dispatch, data) => {
+	console.log('data in finalSubmitFilter: ', data);
+
+	dispatch( finalSubmitRequest() );
+
+										//  can we validate google polygon coords on backend? Am guessing no.
+
+	AsyncStorage.getItem("fencer-token").then((token) => {
+        if(token){
+            return axios({
+              url: utils.filtersCreatedURL,
+              method: 'post',
+              data: JSON.stringify({
+                username: 'tom', filter: 			// DON'T FORGET TO REMOVE!!!
+                {			
+                	"title": data.title,
+					"coordinates": data.fenceCoordinates.fenceCoords,
+					"message": data.message,
+					"image": data.filterToUpload.data,
+					"dates": data.selectedDates
+				}
+              }),
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': token  
+              },
+              timeout: 120000
+            }   
+        )
+        .then(response => {
+            return response
+        })
+        .then(response => {
+        	console.log('response in submitFenceCoordinates: ', response);
+        	dispatch(finalSubmitSuccess());  // NAVIGATE BACK TO HOME
+        									// SHOW SUCCESS MODAL
+             return response;
+        })
+        .catch((err) => {
+        	dispatch(finalSubmitSuccess( ));
+        	console.error('error in submitFenceCoordinates:', err);
+        })      
+        .catch((err) => {
+        	dispatch(finalSubmitSuccess( ));
+        	console.error('level 2error in submitFenceCoordinates:', err);
+        });  
+        } else {
+            // dispatch(authFail());
+            
+        }
+    }).done();			
+
+	dispatch(finalSubmitSuccess(data));
+}
+
+const finalSubmitRequest = () => {
+	return {
+		type: FINAL_SUBMIT_REQUEST
+	}
+}
+
+const finalSubmitSuccess = () => {
+	return {
+		type: FINAL_SUBMIT_SUCCESS
+	}
+
+}
 
