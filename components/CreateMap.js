@@ -122,7 +122,8 @@ const styles = StyleSheet.create({
   searchBox: {
     height: 40,
     width: screenWidth - 120,
-    padding: 6,
+    paddingTop: 8,
+    paddingLeft: 50,
     borderColor: 'black',
     borderWidth: 1,
   },

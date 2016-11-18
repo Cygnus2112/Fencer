@@ -43,18 +43,19 @@ class Send extends Component {
     handleSubmit(){
         console.log('this.props.fenceCoordinates ', this.props.fenceCoordinates);
         console.log('this.props.selectedDates', this.props.selectedDates);
+
         setTimeout(()=>{
-        console.log('this.props.filterTitle ', this.props.filterTitle);
-        console.log('this.props.filterMessage ',this.props.filterMessage);
-        let dataToSend = {
-            fenceCoordinates: this.props.fenceCoordinates,
-            selectedDates: this.props.selectedDates,
-            filterToUpload: this.props.filterToUpload,
-            title: this.props.filterTitle,
-            message: this.props.filterMessage
-        }
-        this.props.finalSumbit(dataToSend);
-    },300)
+            console.log('this.props.filterTitle ', this.props.filterTitle);
+            console.log('this.props.filterMessage ',this.props.filterMessage);
+            let dataToSend = {
+                fenceCoordinates: this.props.fenceCoordinates,
+                selectedDates: this.props.selectedDates,
+                filterToUpload: this.props.filterToUpload,
+                title: this.props.filterTitle,
+                message: this.props.filterMessage
+            }
+            this.props.finalSumbit(dataToSend);
+        },100)
 
     }
 
@@ -92,8 +93,10 @@ class Send extends Component {
                         <Button
                           style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
                           onPress={()=> { 
+
                             this.props.submitTitle({title: this.state.title, message: this.state.message}); 
                             this.handleSubmit();
+
                          }
                         }>
                           Submit
@@ -139,7 +142,6 @@ const mapStateToProps = (state) => {
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     uploadFilterComplete: state.uploadReducer.uploadFilterComplete,
     selectDatesComplete: state.uploadReducer.selectDatesComplete,
-    chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
     selectedDates: state.uploadReducer.selectedDates,
     filterToUpload: state.uploadReducer.filterToUpload,
@@ -151,10 +153,22 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
-            uploadActions.submitTitleAndMessage(dispatch, info)
+            if(this.state.title.length < 1){
+
+                // trigger error modal: "fence must have a title"
+
+            } else {
+                uploadActions.submitTitleAndMessage(dispatch, info)
+            }
         },
         finalSumbit: (data) => {
-            uploadActions.finalSubmitFilter(dispatch, data)
+            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.props.filterTitle){
+
+                // trigger error modal: 'oops! one or more of the steps is incomplete...'
+
+            } else {
+                uploadActions.finalSubmitFilter(dispatch, data);
+            }
         }
 
     }

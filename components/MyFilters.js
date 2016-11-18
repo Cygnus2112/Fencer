@@ -156,7 +156,7 @@ class MyFiltersComponent extends Component {
               		renderRow={(rowData) => {
 
               			console.log('-------------------------');
-              			if(rowData.coordinates) {
+              			if(rowData.coordinates && rowData.title !== "dbdb") {
 
 							const poly = rowData.coordinates.map((point)=>{
 	              				return {

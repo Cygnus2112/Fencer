@@ -50,15 +50,14 @@ const authReducer = (state = initialState, action) => {
         username: '',
       })
     case ActionTypes.AUTH_REQUEST:
-      return state;
-      // return Object.assign({}, state, {
-      //   isLoggedIn: false,
-      //   username: '',
-      // })
+      return Object.assign({}, state, {
+        isFetchingAuth: true,
+      })
     case ActionTypes.AUTH_SUCCESS:
       return Object.assign({}, state, {
         username: action.username,
-        isLoggedIn: true
+        isLoggedIn: true,
+        isFetchingAuth: false
       })
     default:
       return state;
