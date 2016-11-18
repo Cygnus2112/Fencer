@@ -45,16 +45,20 @@ class Send extends Component {
         console.log('this.props.selectedDates', this.props.selectedDates);
 
         setTimeout(()=>{
-            console.log('this.props.filterTitle ', this.props.filterTitle);
-            console.log('this.props.filterMessage ',this.props.filterMessage);
-            let dataToSend = {
-                fenceCoordinates: this.props.fenceCoordinates,
-                selectedDates: this.props.selectedDates,
-                filterToUpload: this.props.filterToUpload,
-                title: this.props.filterTitle,
-                message: this.props.filterMessage
+            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.props.filterTitle){
+
+                // trigger error modal: 'oops! one or more of the steps is incomplete...'
+
+            } else {
+                let dataToSend = {
+                    fenceCoordinates: this.props.fenceCoordinates,
+                    selectedDates: this.props.selectedDates,
+                    filterToUpload: this.props.filterToUpload,
+                    title: this.props.filterTitle,
+                    message: this.props.filterMessage
+                }
+                this.props.finalSumbit(dataToSend);
             }
-            this.props.finalSumbit(dataToSend);
         },100)
 
     }
@@ -153,7 +157,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
-            if(this.state.title.length < 1){
+            if(info.title.length < 1){
 
                 // trigger error modal: "fence must have a title"
 
@@ -162,13 +166,9 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         finalSumbit: (data) => {
-            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.props.filterTitle){
 
-                // trigger error modal: 'oops! one or more of the steps is incomplete...'
-
-            } else {
                 uploadActions.finalSubmitFilter(dispatch, data);
-            }
+            
         }
 
     }

@@ -171,12 +171,11 @@ export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
-export const checkForToken = () => {
-    return dispatch => {
+export const checkForToken = (dispatch) => {
+ //   return dispatch => {
     	AsyncStorage.getItem("fencer-token").then((value) => {
             if(value){
             	AsyncStorage.getItem("fencer-username").then((username) => {
-
 
                 // grab all filters
 
@@ -185,15 +184,13 @@ export const checkForToken = () => {
 
             	}).done();
             } else {
+              
             	// dispatch(authFail());
 
-            	//Actions.login();
-
-            //  Actions.styles(hideNavBar={true});
             }
 
         }).done();
-    }
+ //   }
 }
 
 const authRequest = () => {

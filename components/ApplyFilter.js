@@ -6,7 +6,7 @@ import {
     StyleSheet,
     TouchableOpacity,
     Text,
-    Dimensions,
+    Dimensions
 } from 'react-native';
 
 import Share from 'react-native-share';
@@ -27,6 +27,7 @@ class ApplyFilterComponent extends Component{
     }
 
     componentDidMount(){
+    //  StatusBar.setHidden(true, 'slide');
 
       //   setTimeout(() => {
 
@@ -112,12 +113,14 @@ class ApplyFilterComponent extends Component{
    // let filter = require(this.props.filterURI);
    // flex:4, backgroundColor:'transparent'
       let dataURI = "data:image/png;base64,"+this.props.filterURI;
+
       return(
-      <View style={{flexDirection: 'column',backgroundColor:'transparent' }}>
-        <View ref="example_view" collapsable={false} style={{width: screenWidth, height: screenHeight }}>
-          <Image ref="exampleimg" style={styles.photo} source={{ uri: this.props.photoURI}}>
-            <Image source={{uri: dataURI}} style={{width: screenWidth, height: screenHeight}}/>
+      <View style={styles.container}>
+        <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
+          <Image style={styles.photo} source={{ uri: this.props.photoURI}}>
+            <Image source={{uri: dataURI}} style={styles.filter}/>
           </Image>  
+
         </View>
 
 
@@ -125,7 +128,7 @@ class ApplyFilterComponent extends Component{
               <TouchableOpacity onPress={()=>{
                 console.log("----------------------------------------")
 
-                RNViewShot.takeSnapshot(this.refs["example_view"], {
+                RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
                   format: "jpeg",
                   quality: 1.0,
                   result: 'data-uri'
@@ -159,6 +162,7 @@ class ApplyFilterComponent extends Component{
             </TouchableOpacity>
           </View>
 
+
       </View>
       )
     }
@@ -176,30 +180,46 @@ class ApplyFilterComponent extends Component{
 
 const styles = StyleSheet.create({
   instructions: {
-    marginTop: 20,
-    marginBottom: 20,
+    // marginTop: 20,
+    // marginBottom: 20,
   },
   container: {
-    flex: 1,
+    //flex: 1,
     //width: undefined,
     //height: undefined,
     width: screenWidth,
     height: screenHeight,
+    flexDirection: 'column',
     backgroundColor:'transparent',
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
+  },
+  photoAndFilter:{
+    width: screenWidth * .9, 
+    height: screenHeight * .95, 
+    marginBottom:20,
+    // borderColor: 'red', 
+    // borderWidth: 2 
   },
   photo:{
-    width: screenWidth,
-    height: screenHeight-100,
-    backgroundColor:'transparent',
+    width: screenWidth * .9,
+    height: screenHeight * .95,
+   // backgroundColor:'transparent',
+    backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center',
-
+    // borderColor: 'blue', 
+    // borderWidth: 2
+  },
+  filter:{
+    width: screenWidth * .9, 
+    height: screenHeight *.95,
+    // borderColor: 'green', 
+    // borderWidth: 2
   },
   button: {
     position: 'absolute',
-    bottom: 20,
+    bottom: 50,
     left: (screenWidth/2) - 65,
     elevation:3,
     padding:7,

@@ -52,21 +52,6 @@ class WelcomeComponent extends Component{
         // get data for all of user's fences in the background, so we have data even if user doesn't press MyFilters
     // if we do, will most likely need to use WebViewBridge on front end
 
-    /* user will have two filter db collections:
-
-    myFilters:
-      {
-        'xbh1234' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}],
-        'ehb3929' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}],
-        'pna4958' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}]
-      }
-
-    filtersCreated:
-      {
-        'xbh1234' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}]
-      }
-    */
-
   }
 
   handleCreate(){
@@ -137,7 +122,9 @@ class WelcomeComponent extends Component{
           </View>
         </View>
 
-        <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+        {!this.props.isLoggedIn &&
+
+        (<View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
           <View style={{
              justifyContent: 'center',
              alignItems: 'center',
@@ -163,7 +150,10 @@ class WelcomeComponent extends Component{
                 Login
               </Button>
           </View>
-        </View>
+        </View>)
+
+        }
+
         {this.state.showLoginModal
           ?
           (<LoginModal modalVisible={true} toggleModal={() => {this.setState( {showLoginModal:false}) } } />)

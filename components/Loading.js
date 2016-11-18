@@ -18,7 +18,8 @@ class LoadingComponent extends Component{
 		super(props)
 	}
 	componentDidMount(){
-		//store.dispatch( filterActions.updatePositionRequest() );
+		
+    this.props.checkAuth();
 		this.props.initPosition();
 
 	}
@@ -37,7 +38,7 @@ const mapStateToProps = (state) => {
   return {
   	isLoggedIn: state.authReducer.isLoggedIn,
   	//authErrorMsg: state.authReducer.authErrorMsg,
-  	// username: state.authReducer.username,
+  	username: state.authReducer.username,
   	// isFetchingAuth: state.authReducer.isFetchingAuth,
     isUpdatingPosition: state.filterReducer.isUpdatingPosition,
     currentPosition: state.filterReducer.currentPosition
@@ -45,11 +46,10 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-	// let bound = bindActionCreators(filterActions, dispatch);
-	// console.log('boundActionCreators: ', bound);
   return {
-  	authActions: bindActionCreators(authActions, dispatch),
-    filterActions: bindActionCreators(filterActions, dispatch),
+    checkAuth: () => {
+      authActions.checkForToken(dispatch)
+    },
     initPosition: () => {
     	filterActions.initPosition(dispatch)
     }

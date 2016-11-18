@@ -50,9 +50,6 @@ class AppComponent extends Component {
 // }
 
 const mapDispatchToProps = (dispatch) => {
-	console.log('dispatch in App: ', dispatch);
-	// let bound = bindActionCreators(filterActions, dispatch);
-	// console.log('boundActionCreators: ', bound);
   return {
   	authActions: bindActionCreators(authActions, dispatch),
     filterActions: bindActionCreators(filterActions, dispatch),
