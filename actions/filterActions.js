@@ -79,12 +79,12 @@ export const loadMyFilters = (dispatch, userData) => {
     		})
     		.then(response => {
               console.log('-------------------------');
-              console.log('first response: ', response);
+            //  console.log('first response: ', response);
               console.log('-------------------------');
       			  return response.json();
     		})
     		.then(response => {
-             console.log('2nd level response in loadMyFilterss: ');
+            // console.log('2nd level response in loadMyFilterss: ');
              console.log(response);
 
             console.log('-------------------------');

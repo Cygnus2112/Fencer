@@ -69,7 +69,7 @@ class Send extends Component {
           <View style={styles.container}>
             <View style={{width: screenWidth,flexDirection: 'row',  justifyContent: 'center'}}>
               <View style={{width: 30, marginRight:10,marginTop:5}}>
-                <Icon name="home" size={30} color={"#c7adff"} />
+                <Icon name="home" size={30} color={"#0c12ce"} />
               </View>
                 <View style={{borderColor:'black',borderWidth:2, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
 

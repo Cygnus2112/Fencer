@@ -11,29 +11,27 @@ import {
 
 // WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
 
+
 var ImagePicker = require('react-native-image-picker');
 import { Actions } from 'react-native-router-flux';
-import Camera from 'react-native-camera';
+//import Camera from 'react-native-camera';
+
+import {
+  CameraKitCamera
+} from 'react-native-camera-kit';
 
 class TakePhotoComponent extends Component {
 	constructor(props){
 		super(props);
 
 		this.takePicture = this.takePicture.bind(this);
+    this.handleZoom = this.handleZoom.bind(this);
 
 		this.state = {
 			filterURI: null // will be passed as prop
 		}
 
 	}
-
-    // componentDidMount(){
-    //   Image.prefetch(this.props.filterURI).then(() => {    // see if this speeds things up
-    //      // this.setState({
-    //      //      imageLoaded: true
-    //      //  })
-    //   })
-    // } 
       
 	takePicture() {
 	  	this.camera.capture()
@@ -45,20 +43,80 @@ class TakePhotoComponent extends Component {
 	      .catch(err => console.error(err));
 	}
 
+  handleZoom(e){
+    console.log('focus????')
+  }
+
+  componentDidMount(){
+    this.showAuth();
+  }
+
+  async showAuth(){
+        const isUserAuthorizedCamera = await CameraKitCamera.requestDeviceCameraAuthorization();
+    console.log('isUserAuthorizedCamera: ', isUserAuthorizedCamera);
+  }
+
+        //                     <Camera
+        //   ref={(cam) => {
+        //     this.camera = cam;              //  the new (correct) callback refs style
+        //   }}
+        //   style={styles.preview}
+        //   aspect={Camera.constants.Aspect.fill}
+        //   captureTarget={Camera.constants.CaptureTarget.temp}
+        //   defaultTouchToFocus
+        //   onFocusChanged={ this.handleZoom }>
+        //   <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
+        // </Camera>
+
+        //       <CameraKitCamera
+        // ref={(cam) => {
+        //                     this.camera = cam;
+        //                     }
+        //         }
+        // style={{flex: 1, backgroundColor:'white'}}
+        // cameraOptions={{
+        //             flashMode: 'auto',             // on/off/auto(default)
+        //             focusMode: 'on',               // off/on(default)
+        //             zoomMode: 'on',                // off/on(default)
+        //             }}/>
+
+        //         <Camera
+        //   ref={(cam) => {
+        //     this.camera = cam;              //  the new (correct) callback refs style
+        //   }}
+        //   style={styles.preview}
+        //   aspect={Camera.constants.Aspect.fill}
+        //   captureTarget={Camera.constants.CaptureTarget.temp}
+        //   onZoomChanged={this._handleZoomChange.bind(this)}
+        //   onFocusChanged={this._handleFocusChange.bind(this)}>
+        //   <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
+        // </Camera>
+
+  _handleZoomChange() { console.log('zoom????') }
+
+  _handleFocusChange() { console.log('focus????') }
+
   render() {
     return (
       <View style={styles.container}>
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;              //  the new (correct) callback refs style
-          }}
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-          captureTarget={Camera.constants.CaptureTarget.temp}>
-          <Text style={styles.capture} onPress={this.takePicture}>[CAPTURE]</Text>
-        </Camera>
+
+              <CameraKitCamera
+        ref={(cam) => {
+                            this.camera = cam;
+                            }
+                }
+        style={{flex: 1, backgroundColor:'white'}}
+        cameraOptions={{
+                    flashMode: 'auto',             // on/off/auto(default)
+                    focusMode: 'on',               // off/on(default)
+                    zoomMode: 'on',                // off/on(default)
+                    }}/>
+
       </View>
     );
+
+    
+
   }
 }
 

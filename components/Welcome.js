@@ -6,6 +6,8 @@ import {
     StyleSheet,
     Text,
     WebView,
+    Dimensions,
+    TouchableOpacity
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -17,6 +19,13 @@ import * as filterActions from '../actions/filterActions';
 import * as authActions from '../actions/authActions';
 
 import LoginModal from './LoginModal'
+
+const { width, height } = Dimensions.get('window');
+let screenWidth = width;
+let screenHeight= height;
+
+console.log('screenHeight: ', screenHeight);
+console.log('screenWidth: ', screenWidth);
 
 // Will need to 
 //    1) Grab current location from navigator;
@@ -66,26 +75,73 @@ class WelcomeComponent extends Component{
 
   }
 
+        //   <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+        //   <View style={{
+        //      justifyContent: 'center',
+        //      alignItems: 'center',
+        //      padding:10,
+        //      margin: 5,
+        //      height:50,
+        //      width: 200,
+        //      overflow:'hidden',
+        //      borderRadius:4,
+        //      borderWidth:2,
+        //      borderColor: 'black',
+        //      backgroundColor: 'blue',
+        //    }}>
+        //       <Button
+        //         style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
+        //         styleDisabled={{color: 'red'}}
+        //         onPress={ this.handleCreate }>
+        //         Create New Geofilter
+        //       </Button>
+        //   </View>
+        // </View>
+
+        // <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+          // <View style={{
+          //    justifyContent: 'center',
+          //    alignItems: 'center',
+          //    padding:10,
+          //    margin: 5,
+          //    height:50,
+          //    width: 200,
+          //    overflow:'hidden',
+          //    borderRadius:4,
+          //    borderWidth:2,
+          //    borderColor: 'black',
+          //    backgroundColor: 'blue',
+          //  }}>
+          //     <Button
+          //       style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
+          //       styleDisabled={{color: 'red'}}
+          //       onPress={ this.loadMyFilters } >
+          //       My Geofilters
+          //     </Button>
+          // </View>
+        // </View>
+
   render(){
     return (
-      <View style={{flex:1, flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
+      <View style={{flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
 
-        <View style={{flex:2,justifyContent: 'center',alignItems: 'center'}}>
-          <Text style={{fontSize: 24 }}>
-            Welcome!
-          </Text>
+        <View style={styles.fakeNavBar}>
+          <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+            <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+          </Image>
         </View>
-
-        <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+        <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: (screenHeight/2) - 62, width: screenWidth,borderBottomWidth:1,borderBottomColor: 'black'}}>
+          <Image source={require('../assets/map_with_pin_color.png')} style={{height: (screenHeight/2) - 62, width: screenWidth}}>
           <View style={{
              justifyContent: 'center',
              alignItems: 'center',
              padding:10,
-             margin: 5,
-             height:50,
-             width: 200,
+             marginTop: 10,
+             marginLeft: 10,
+             height:70,
+             width: 110,
              overflow:'hidden',
-             borderRadius:4,
+             borderRadius:15,
              borderWidth:2,
              borderColor: 'black',
              backgroundColor: 'blue',
@@ -97,18 +153,23 @@ class WelcomeComponent extends Component{
                 Create New Geofilter
               </Button>
           </View>
-        </View>
 
-        <View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
+          </Image>
+        </View>
+        <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: (screenHeight/2) - 62, width: screenWidth,borderTopWidth:1,borderTopColor: 'black'}}>
+          <Image source={require('../assets/balloons.jpeg')} style={{height: (screenHeight/2) - 62, width: screenWidth}} >
           <View style={{
+             position: 'absolute', 
+             right: 10,
+             top: 150,
              justifyContent: 'center',
              alignItems: 'center',
              padding:10,
              margin: 5,
-             height:50,
-             width: 200,
+             height:70,
+             width: 110,
              overflow:'hidden',
-             borderRadius:4,
+             borderRadius:15,
              borderWidth:2,
              borderColor: 'black',
              backgroundColor: 'blue',
@@ -120,37 +181,26 @@ class WelcomeComponent extends Component{
                 My Geofilters
               </Button>
           </View>
+          </Image>
         </View>
+
+
 
         {!this.props.isLoggedIn &&
 
-        (<View style={{flex:1,justifyContent: 'center',alignItems: 'center'}}>
-          <View style={{
-             justifyContent: 'center',
-             alignItems: 'center',
-             padding:10,
-             margin: 5,
-             height:50,
-             width: 200,
-             overflow:'hidden',
-             borderRadius:4,
-             borderWidth:2,
-             borderColor: 'black',
-             backgroundColor: 'blue',
-           }}>
-              <Button
-                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
-                styleDisabled={{color: 'red'}}
-                onPress={ ( ) => {
+        (   
+          <TouchableOpacity onPress={ ( ) => {
                     this.setState({
                       showLoginModal: !this.state.showLoginModal
                     })
                   } 
-                } >
-                Login
-              </Button>
-          </View>
-        </View>)
+                }>
+            <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: 50, width: screenWidth, borderWidth:2,borderColor: 'black',backgroundColor: 'blue'}}>
+              <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}> Login </Text>
+            </View>
+          </TouchableOpacity>
+
+            )
 
         }
 
@@ -161,11 +211,35 @@ class WelcomeComponent extends Component{
           (null)
         }
 
-
       </View>
     )
   }
 }
+
+              // <Button
+              //   style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
+              //   styleDisabled={{color: 'red'}}
+              //   onPress={ ( ) => {
+              //       this.setState({
+              //         showLoginModal: !this.state.showLoginModal
+              //       })
+              //     } 
+              //   } >
+              //   Login
+              // </Button>
+
+          // <View style={{
+          //    justifyContent: 'center',
+          //    alignItems: 'center',
+          //    height:50,
+          //    width: 200,
+          //    overflow:'hidden',
+          //    borderRadius:4,
+          //    borderWidth:2,
+          //    borderColor: 'black',
+          //    backgroundColor: 'blue',
+          //  }}>
+          //  </View>
 
 const mapStateToProps = (state) => {
   return {
@@ -186,5 +260,16 @@ const mapDispatchToProps = (dispatch) => {
 const Welcome = connect(mapStateToProps, mapDispatchToProps)(WelcomeComponent);
 export default Welcome;
 
+const styles = StyleSheet.create({
+  fakeNavBar:{
+    height: 50,
+    width: screenWidth,
+    backgroundColor: 'blue',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    elevation: 4
+  }
+})
 
 

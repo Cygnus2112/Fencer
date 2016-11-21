@@ -167,6 +167,45 @@ class ChooseDatesComponent extends Component{
       console.log('this.state.startHour: ', this.state.startHour);
       console.log('this.state.endHour: ', this.state.endHour);
 
+      let currentTime = Date.now();
+
+      if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
+          this.state.startDay === this.state.endDay && new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime() < currentTime)
+ {
+      let d = new Date();
+      let t = d.toLocaleTimeString();
+      let currentHour = Number( t.split(' ')[0].split(':')[0] );
+
+      let suffix = 'AM';
+      if(currentHour >= 12){
+        suffix = 'PM';
+      }
+      let initEndSuffix = suffix;
+      let initStartHour, initEndHour;
+      if(currentHour === 11 && suffix === 'PM'){
+        initStartHour = currentHour + 1;
+        suffix = 'AM'
+      } else {
+        initStartHour = currentHour + 1;
+      }
+      if(currentHour === 10 && suffix === 'PM' || currentHour === 11 && suffix === 'PM'){
+        initEndHour = currentHour + 2;
+        initEndSuffix = 'AM';
+      } else {
+        initEndHour = currentHour + 2;
+      }
+
+      this.setState({
+        startHour: initStartHour,
+        endHour: initEndHour,
+        startTimeText: _formatTime(currentHour+1, 0),
+        endTimeText: _formatTime(currentHour+2, 0)
+        // startTimeText: initStartHour + ':00' + suffix,
+        // endTimeText: initEndHour + ':00' + initEndSuffix
+      })
+          
+      }
+
       if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
           this.state.startDay === this.state.startDay && this.state.startHour > this.state.endHour){
 
@@ -204,7 +243,7 @@ class ChooseDatesComponent extends Component{
               endTimeText: _formatTime(newDate.getHours(), newDate.getMinutes())
             })
           
-      }
+      } 
 
             // if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
       //     this.state.startDay === this.state.startDay && this.state.startHour === this.state.endHour &&
@@ -258,6 +297,18 @@ class ChooseDatesComponent extends Component{
           startText: emText,
           endText: smText
         })
+      } else if (this.state.startDay > this.state.endDay) {
+        let sd = this.state.startDay;
+        let newDate = new Date(this.state.endYear, this.state.endMonth, sd, this.state.endHour, this.state.endMinute);
+        this.setState({
+          endYear: newDate.getFullYear(),
+          endMonth: newDate.getMonth(),
+          endDay: newDate.getDate(),
+          endHour: newDate.getHours(),
+          endMinute: newDate.getMinutes(),
+          endText: newDate.toLocaleDateString()
+        })
+
       }
     } catch ({code, message}) {
       console.warn(`Error in datepicker: `, message);
@@ -277,7 +328,7 @@ class ChooseDatesComponent extends Component{
       <View style={styles.container}>
       <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
         <View style={{width: 30, marginRight: 35}}>
-          <Icon name="home" size={30} color={"#c7adff"} />
+          <Image source={require('../assets/home_icon.png')} style={{width: 30, height:30}}/>
         </View>
         <View style={styles.dateFieldsContainer}>
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
@@ -392,7 +443,7 @@ class ChooseDatesComponent extends Component{
 
         </View>
         <View style={{width: 30,marginLeft:35}}>
-          <Icon name="info" size={30} color="#0c12ce" />
+          <Image source={require('../assets/info_unedited.png')} style={{width: 30, height:30}}/>
         </View>
       </View>
         <View style={styles.errorBox}>
