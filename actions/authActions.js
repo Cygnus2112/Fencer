@@ -177,9 +177,11 @@ export const checkForToken = (dispatch) => {
             if(value){
             	AsyncStorage.getItem("fencer-username").then((username) => {
 
-                // grab all filters
+                // grab all filters???
 
             		dispatch(authSuccess(username));
+
+                purgeExpiredFilters(dispatch, value, username);
 
 
             	}).done();
@@ -203,6 +205,48 @@ const authSuccess = (username) => {
   return {
     type: AUTH_SUCCESS,
     username: username
+  }
+}
+
+export const purgeExpiredFilters = (dispatch, token, username) => {
+  dispatch(purgeRequest());
+
+  return fetch(utils.purgeFiltersURL +"?username="+username, {    // CHANGE BACK TO myFiltersURL
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'x-access-token': token
+            }
+    })
+    .then(response => {
+              console.log('-------------------------');
+              return response.json();
+    })
+    .then(response => {
+            console.log('2nd level response in purgeExpiredFilters: ');
+            console.log(response);
+
+            console.log('-------------------------');
+            dispatch(purgeSuccess());
+            
+    })
+    .catch(err => {
+        console.error('Error in purgeExpiredFilters:', err);
+      });
+
+
+}
+
+const purgeRequest = () => {
+  return {
+    type: 'PURGE_REQUEST'
+  }
+}
+
+const purgeSuccess = () => {
+  return {
+    type: 'PURGE_SUCCESS'
   }
 }
 

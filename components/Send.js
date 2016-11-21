@@ -71,9 +71,10 @@ class Send extends Component {
               <View style={{width: 30, marginRight:10,marginTop:5}}>
                 <Icon name="home" size={30} color={"#0c12ce"} />
               </View>
-                <View style={{borderColor:'black',borderWidth:2, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'center',alignItems: 'center'}}>
-
-                    <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Give your filter a name: </Text>
+                <View style={{height: screenHeight-150, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'space-between',alignItems: 'center'}}>
+  
+                  <View style={{height: 150}}>
+                    <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Give your filter a name:</Text>
                     <View style={{width: 250}}>
                         <TextInput 
                             style={{fontSize: 20, textAlign: 'center',fontFamily: 'RobotoCondensed-Regular'}} 
@@ -82,17 +83,23 @@ class Send extends Component {
                             onChangeText={(text) => this.setState({title: text})}
                             value={this.state.title}/>
                     </View>
-                    <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Add an optional message {'for'} your friends:</Text>
-                    <View style={{width: 250, borderColor: 'black', borderWidth: 2}}>
+                  </View>
+
+                  <View style={{height: 150}}>
+                    <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Add an optional message <Text style={{fontSize: 16}}>(directions, contact info, etc.):</Text></Text>
+                    <View style={{width: 250, height: 50 }}>
                         <TextInput 
                             style={{fontSize: 18,fontFamily: 'RobotoCondensed-Regular'}} 
-                            multiline={true} 
-                            numberOfLines={4}  
+                            // multiline={true} 
+                            // numberOfLines={4}  
                             autoCorrect={false} 
                             maxLength={140} 
                             onChangeText={(text) => this.setState({message: text})}
                             value={this.state.message} />
                     </View>
+                  </View>
+
+                  <View style={{height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
                     <View style={styles.buttonBox}>
                         <Button
                           style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
@@ -106,6 +113,7 @@ class Send extends Component {
                           Submit
                         </Button>
                     </View>
+                  </View>
                 </View>
 
               <View style={{width: 30,marginLeft:10,marginTop:5}}>
@@ -134,10 +142,7 @@ const styles = StyleSheet.create({
     width: 130,
     overflow:'hidden',
     borderRadius:15,
-    backgroundColor: '#0c12ce',
-    marginLeft: 40,
-    marginRight: 40,
-    marginBottom: 10
+    backgroundColor: '#0c12ce'
   }
 });
 

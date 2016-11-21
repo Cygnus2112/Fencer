@@ -37,7 +37,7 @@ class UploadFilter extends Component{
     }
 
     componentDidMount(){
-      console.log('this.props.filterToUpload: ', this.props.filterToUpload);
+     // console.log('this.props.filterToUpload: ', this.props.filterToUpload);
     }
 
     handlePress(){

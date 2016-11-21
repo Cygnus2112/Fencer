@@ -32,48 +32,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 
 */
 
-let sampleEvents = [
-	{
-		eventTitle: "Happy Thanksgiving!",
-		startDate: "11/12/16",
-		startTime: "12:00AM",
-		endDate: "11/13/16",
-		endTime: "2:00AM",
-		coords: null,
-		eventID: 1,
-		filterURI: "../assets/thanksgiving.png",
-		message: "Let's do this!",
-		isActive: true,							//  REMEMBER TO REMOVE
-		isInRange: true
-	},
-	{
-		eventTitle: "KaraokeFest 2016",
-		startDate: "11/12/16",
-		startTime: "12:00AM",
-		endDate: "11/13/16",
-		endTime: "2:00AM",
-		coords: null,
-		eventID: 2,
-		filterURI: "../assets/event2.png",
-		message: "Time to get your karaoke on ...",
-		isActive: true,							//  REMEMBER TO REMOVE
-		isInRange: false
-	},
-	{
-		eventTitle: "Kappa Sigma Winter Formal",
-		startDate: "12/1/16",
-		startTime: "8:00PM",
-		endDate: "12/2/16",
-		endTime: "2:00AM",
-		coords: null,
-		eventID: 2,
-		filterURI: "../assets/weho_halloween.png",
-		message: "",
-		isActive: false,							//  REMEMBER TO REMOVE
-		isInRange: false
-	}
-]
-
 class MyFiltersComponent extends Component {
 	constructor(props){
 		super(props);
@@ -141,13 +99,13 @@ class MyFiltersComponent extends Component {
 			</View>
 			<View style={styles.titleContainer}>
             	<View style={{width: 30, marginLeft: 15}}>
-              		<Icon name="home" size={30} color="#0c12ce" />
+              		<Icon name="home" size={30} color="#0c12ce"/>
             	</View>
             	<View style={styles.searchBox}>
               		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
             	</View>
             	<View style={{width: 30, marginRight: 15}}>
-              		<Icon name="info" size={30} color="#0c12ce" />
+              		<Icon name="info" size={30} color="#0c12ce"/>
             	</View>
           	</View>
           	  <View style={styles.eventListContainer}>
