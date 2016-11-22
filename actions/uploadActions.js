@@ -160,7 +160,10 @@ export const finalSubmitFilter = (dispatch, data) => {
         .then(response => {
         	console.log('response in finalSubmitFilter: ', response);
         	dispatch(finalSubmitSuccess({bitlyURL: response.bitlyURL}));  // NAVIGATE BACK TO HOME
+
         									// SHOW SUCCESS MODAL
+
+        									
             return response;
         })
         .catch((err) => {

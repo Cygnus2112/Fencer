@@ -15,6 +15,8 @@ import {
     TextInput
 } from 'react-native';
 
+import { Actions } from 'react-native-router-flux';
+
 import { connect } from 'react-redux'
 import * as uploadActions from '../actions/uploadActions';
 
@@ -61,6 +63,13 @@ class Send extends Component {
             }
         },100)
 
+    }
+
+    componentWillReceiveProps(newProps, oldProps){
+        console.log('newProps: ', newProps);
+        if(newProps.finalSubmitComplete){
+            Actions.main();
+        }
     }
 
 
@@ -156,7 +165,8 @@ const mapStateToProps = (state) => {
     filterToUpload: state.uploadReducer.filterToUpload,
     filterTitle: state.uploadReducer.filterTitle,
     filterMessage: state.uploadReducer.filterMessage,
-    bitlyURL: state.uploadReducer.bitlyURL    
+    bitlyURL: state.uploadReducer.bitlyURL,
+    finalSubmitComplete: state.uploadReducer.finalSubmitComplete   
   }
 }
 
