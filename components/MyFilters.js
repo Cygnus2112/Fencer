@@ -45,7 +45,13 @@ class MyFiltersComponent extends Component {
 	}
 
 	componentDidMount(){
+		console.log('mounting MyFilters...');
 		this.props.getMyFilters();
+
+		Linking.getInitialURL().then((url) => {
+            console.log(`Deep Link URL: ${url}`);
+
+        }).catch(err => console.error('An error occurred', err));
 
 		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 

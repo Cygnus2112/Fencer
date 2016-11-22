@@ -7,7 +7,8 @@ import {
     Text,
     WebView,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    Linking
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -54,6 +55,14 @@ class WelcomeComponent extends Component{
   }
 
   componentDidMount(){
+
+        console.log('mounting Welcome...');
+
+    Linking.getInitialURL().then((url) => {
+            console.log(`Deep Link URL: ${url}`);
+
+        }).catch(err => console.error('An error occurred', err));
+
     //console.log('this.props in Welcome: ', this.props);
     console.log('-----------------------------------');
     console.log('this.props.currentPosition: in Welcome', this.props.currentPosition)
