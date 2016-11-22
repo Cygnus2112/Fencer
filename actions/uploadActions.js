@@ -158,26 +158,24 @@ export const finalSubmitFilter = (dispatch, data) => {
             return response
         })
         .then(response => {
-        	console.log('response in submitFenceCoordinates: ', response);
-        	dispatch(finalSubmitSuccess());  // NAVIGATE BACK TO HOME
+        	console.log('response in finalSubmitFilter: ', response);
+        	dispatch(finalSubmitSuccess({bitlyURL: response.bitlyURL}));  // NAVIGATE BACK TO HOME
         									// SHOW SUCCESS MODAL
-             return response;
+            return response;
         })
         .catch((err) => {
         	dispatch(finalSubmitSuccess( ));
-        	console.error('error in submitFenceCoordinates:', err);
+        	console.error('error in finalSubmitFilter:', err);
         })      
         .catch((err) => {
         	dispatch(finalSubmitSuccess( ));
-        	console.error('level 2error in submitFenceCoordinates:', err);
+        	console.error('level 2 error in finalSubmitFilter:', err);
         });  
         } else {
             // dispatch(authFail());
             
         }
     }).done();			
-
-	dispatch(finalSubmitSuccess(data));
 }
 
 const finalSubmitRequest = () => {
@@ -186,9 +184,10 @@ const finalSubmitRequest = () => {
 	}
 }
 
-const finalSubmitSuccess = () => {
+const finalSubmitSuccess = (data) => {
 	return {
-		type: FINAL_SUBMIT_SUCCESS
+		type: FINAL_SUBMIT_SUCCESS,
+		bitlyURL: data.bitlyURL
 	}
 
 }

@@ -26,7 +26,8 @@ const initialState = {
   fenceError: "",
   filterTitle: null,
   filterMessage: null,
-  filterToUpload: null
+  filterToUpload: null,
+  bitlyURL: ""
 }
 
 const uploadReducer = (state = initialState, action) => {
@@ -81,6 +82,15 @@ const uploadReducer = (state = initialState, action) => {
         filterTitle: action.info.title,
         filterMessage: action.info.message
       })
+    // case ActionTypes.FINAL_SUBMIT_REQUEST:
+    //   return Object.assign({}, state, {
+
+    //   })
+    case ActionTypes.FINAL_SUBMIT_SUCCESS:
+      return Object.assign({}, state, {
+        bitlyURL: action.bitlyURL
+      })
+
       
 
       //   ADD FUNCTIONS FOR DEALING WITH SENDING OUT INVITES AND UPLOADING DATA TO API

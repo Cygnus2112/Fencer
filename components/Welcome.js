@@ -1,3 +1,5 @@
+
+
 import React, { Component } from 'react';
 
 import {
@@ -13,6 +15,8 @@ import {
 
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
+
+import Share from 'react-native-share';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -74,7 +78,19 @@ class WelcomeComponent extends Component{
 
   handleCreate(){
 
-    Actions.upload();
+    // let url = "http://app.fencer.ext"
+
+
+    // let shareOptions = {
+    //   title: "Filter Link",
+    //   message: "This is the link for Fencer: ",
+    //   url: url,
+    //   subject: "Share Link" //  for email
+    // };
+
+    // Share.open(shareOptions);
+
+   Actions.upload();
 
   }
 

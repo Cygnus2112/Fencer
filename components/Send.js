@@ -155,7 +155,8 @@ const mapStateToProps = (state) => {
     selectedDates: state.uploadReducer.selectedDates,
     filterToUpload: state.uploadReducer.filterToUpload,
     filterTitle: state.uploadReducer.filterTitle,
-    filterMessage: state.uploadReducer.filterMessage     
+    filterMessage: state.uploadReducer.filterMessage,
+    bitlyURL: state.uploadReducer.bitlyURL    
   }
 }
 
@@ -172,7 +173,7 @@ const mapDispatchToProps = (dispatch) => {
         },
         finalSumbit: (data) => {
 
-                uploadActions.finalSubmitFilter(dispatch, data);
+            uploadActions.finalSubmitFilter(dispatch, data);
             
         }
 
