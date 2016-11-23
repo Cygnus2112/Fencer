@@ -137,12 +137,13 @@ export const finalSubmitFilter = (dispatch, data) => {
               url: utils.filtersCreatedURL,
               method: 'post',
               data: JSON.stringify({
-                username: 'tom', filter: 			// DON'T FORGET TO REMOVE!!!
+                username: 'tom', // DON'T FORGET TO REMOVE!!!
+               	filter: 			
                 {			
                 	"title": data.title,
 					"coordinates": data.fenceCoordinates.fenceCoords,
 					"message": data.message,
-					"image": data.filterToUpload.data,
+					//"image": data.filterToUpload.data,			// 
 					"dates": data.selectedDates
 				}
               }),
@@ -159,19 +160,41 @@ export const finalSubmitFilter = (dispatch, data) => {
         })
         .then(response => {
         	console.log('response in finalSubmitFilter: ', response);
-        	dispatch(finalSubmitSuccess({bitlyURL: response.bitlyURL}));  // NAVIGATE BACK TO HOME
+
+
+
+        	dispatch(finalSubmitSuccess({filterID: response.filterID,bitlyURL: response.bitlyURL}));  // NAVIGATE BACK TO HOME
 
         									// SHOW SUCCESS MODAL
+
+        	axios({
+            	method: 'post',
+            	url: utils.filterImagesURL,
+            	data: {
+              		filterID: response.filterID,
+              		imageData: response.data
+            	},
+            	headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-access-token': token  
+            	},
+            	timeout: 120000
+          	})
+          	.then(response => {
+          		console.log('response in filterimages POST (client side): ', response);
+            	return response
+        	})
 
         									
             return response;
         })
         .catch((err) => {
-        	dispatch(finalSubmitSuccess( ));
+        	//dispatch(finalSubmitSuccess( ));
         	console.error('error in finalSubmitFilter:', err);
         })      
         .catch((err) => {
-        	dispatch(finalSubmitSuccess( ));
+        	//dispatch(finalSubmitSuccess( ));
         	console.error('level 2 error in finalSubmitFilter:', err);
         });  
         } else {

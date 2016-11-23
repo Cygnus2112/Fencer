@@ -4,7 +4,9 @@ const initialState = {
   isFetchingAuth: false,
   isLoggedIn: false,
   username: '',
-  authErrorMsg: ''
+  authErrorMsg: '',
+  myFilters: null,
+  filtersCreated: null
 }
 
 const authReducer = (state = initialState, action) => {
@@ -56,9 +58,29 @@ const authReducer = (state = initialState, action) => {
     case ActionTypes.AUTH_SUCCESS:
       return Object.assign({}, state, {
         username: action.username,
+        myFilters: action.myFilters,
+        filtersCreated: action.filtersCreated,
         isLoggedIn: true,
         isFetchingAuth: false
       })
+    // case ActionTypes.LOAD_MYFILTERS_REQUEST:
+    //   return Object.assign({}, state, {
+    //    isLoadingMyFilters: true
+    //   })
+    // case ActionTypes.LOAD_MYFILTERS_SUCCESS:
+    //   return Object.assign({}, state, {
+    //    isLoadingMyFilters: false,
+    //    myFilters: action.myFilters
+    //   })
+    // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
+    //   return Object.assign({}, state, {
+    //    isLoadingFiltersCreated: true
+    //   })
+    // case ActionTypes.LOAD_FILTERSCREATED_SUCCESS:
+    //   return Object.assign({}, state, {
+    //    isLoadingFiltersCreated: false,
+    //    filtersCreated: action.filtersCreated
+    //  })
     default:
       return state;
   }

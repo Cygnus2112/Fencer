@@ -84,7 +84,7 @@ export const loadMyFilters = (dispatch, userData) => {
       			  return response.json();
     		})
     		.then(response => {
-            // console.log('2nd level response in loadMyFilterss: ');
+             console.log('2nd level response in loadMyFilters: ');
              console.log(response);
 
             console.log('-------------------------');

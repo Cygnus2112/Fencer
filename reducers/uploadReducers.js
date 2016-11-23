@@ -28,6 +28,7 @@ const initialState = {
   filterMessage: null,
   filterToUpload: null,
   bitlyURL: "",
+  filterID: "",
   finalSubmitComplete: false
 }
 
@@ -90,6 +91,7 @@ const uploadReducer = (state = initialState, action) => {
     case ActionTypes.FINAL_SUBMIT_SUCCESS:
       return Object.assign({}, state, {
         bitlyURL: action.bitlyURL,
+        filterID: action.filterID,              // MIGHT NOT NEED THIS
         finalSubmitComplete: true               //  will need to move this to after text message is sent
       })
 

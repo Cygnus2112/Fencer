@@ -61,7 +61,7 @@ class MyFiltersComponent extends Component {
 		if(newProps.myFilters !== oldProps.myFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			// console.log('=====================================')
 			
-			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.myFilters) );
+			console.log('is Array newProps.myFilters: ', Array.isArray(newProps.myFilters) );
 
 			let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
 

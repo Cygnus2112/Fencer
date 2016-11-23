@@ -177,11 +177,46 @@ export const checkForToken = (dispatch) => {
             if(value){
             	AsyncStorage.getItem("fencer-username").then((username) => {
 
+                let token = value;
+                return fetch(utils.userDataURL +"?username="+username, {    // CHANGE BACK TO myFiltersURL
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-access-token': token
+                  }
+                })
+              .then(response => {
+                  console.log('-------------------------');
+            //  console.log('first response: ', response);
+                  console.log('-------------------------');
+                  return response.json();
+              })
+              .then(response => {
+                console.log('2nd level response in auth checkForToken: ');
+                console.log(response);
+
+                console.log('-------------------------');
+
+                let data = {
+                  username: response.username,
+                  myFilters: response.myFilters,
+                  filtersCreated: response.filtersCreated
+                }
+
+                dispatch(authSuccess(data));
+
+            
+              })
+              .catch(err => {
+                console.error('Error in checkForToken:', err);
+              });
+
                 // grab all filters???
 
-            		dispatch(authSuccess(username));
+            		
 
-                purgeExpiredFilters(dispatch, value, username);
+               // purgeExpiredFilters(dispatch, value, username);
 
 
             	}).done();
@@ -201,10 +236,12 @@ const authRequest = () => {
   }
 }
 
-const authSuccess = (username) => {
+const authSuccess = (data) => {
   return {
     type: AUTH_SUCCESS,
-    username: username
+    username: data.username,
+    myFilters: data.myFilters,
+    filtersCreated: data.filtersCreated
   }
 }
 
