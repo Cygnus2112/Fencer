@@ -45,8 +45,8 @@ class MyFiltersComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log('mounting MyFilters...');
-		this.props.getMyFilters();
+		//console.log('this.props in MyFilters: ', this.props);
+		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters});
 
 		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -58,12 +58,14 @@ class MyFiltersComponent extends Component {
 
 	componentWillReceiveProps(newProps, oldProps){
 	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
-		if(newProps.myFilters !== oldProps.myFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
+		if(newProps.allFilters !== oldProps.allFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			// console.log('=====================================')
 			
-			console.log('is Array newProps.myFilters: ', Array.isArray(newProps.myFilters) );
+			console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
 
-			let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
+			//let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
+
+			let arr = newProps.allFilters;
 
 			let sortedFilters = arr.sort((f1,f2)=>{
 				return f1.dates.startYear - f2.dates.startYear;
@@ -237,14 +239,17 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     currentPosition: state.filterReducer.currentPosition,
-    myFilters: state.filterReducer.myFilters
+    allFilters: state.filterReducer.allFilters,
+    myFilters: state. authReducer.myFilters,
+    username: state.authReducer.username
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    getMyFilters: () => {
-    	filterActions.loadMyFilters(dispatch, {username: 'tom'});
+    getMyFilters: (data) => {
+    	console.log('data in MyFilters dispatch: ', data);
+    	filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
     }
   }
 }

@@ -58,18 +58,22 @@ const updatePositionSuccess = (pos) => {
 	}
 }
 
-export const LOAD_MYFILTERS_REQUEST = 'LOAD_MYFILTERS_REQUEST';
-export const LOAD_MYFILTERS_SUCCESS = 'LOAD_MYFILTERS_SUCCESS';
+export const LOAD_ALLFILTERS_REQUEST = 'LOAD_ALLFILTERS_REQUEST';
+export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
 
-export const loadMyFilters = (dispatch, userData) => {
+export const loadAllFilters = (dispatch, userData) => {
  // return dispatch => {
 
-    dispatch(loadMyFiltersRequest());			
+    dispatch(loadAllFiltersRequest());			
 
     AsyncStorage.getItem("fencer-token").then((token) => {
         if(token){
-            //dispatch(authSuccess());
-            return fetch(utils.filtersCreatedURL +"?username="+userData.username, {    // CHANGE BACK TO myFiltersURL
+
+            console.log("userData.filters: ",userData.filters);
+
+            let filters = JSON.stringify(userData.filters);
+
+            return fetch(utils.allFiltersURL +"?username="+userData.username+"&filters="+filters, {   
       			method: 'GET',
       			headers: {
         			'Accept': 'application/json',
@@ -84,15 +88,15 @@ export const loadMyFilters = (dispatch, userData) => {
       			  return response.json();
     		})
     		.then(response => {
-             console.log('2nd level response in loadMyFilters: ');
+             console.log('2nd level response in loadAllFilters: ');
              console.log(response);
 
             console.log('-------------------------');
-      			dispatch(loadMyFiltersSuccess(response));
+      			dispatch(loadAllFiltersSuccess(response));
 						
     		})
     		.catch(err => {
-            	console.error('Error in loadMyFilters:', err);
+            	console.error('Error in loadAllFilters:', err);
           	});
             	
         } else {
@@ -102,71 +106,71 @@ export const loadMyFilters = (dispatch, userData) => {
  // }
 }
 
-const loadMyFiltersRequest = () => {
+const loadAllFiltersRequest = () => {
 	return {
-    	type: LOAD_MYFILTERS_REQUEST
+    	type: LOAD_ALLFILTERS_REQUEST
   	}
 }
 
-const loadMyFiltersSuccess = (filtersData) => {
+const loadAllFiltersSuccess = (filtersData) => {
 	return {
-    	type: LOAD_MYFILTERS_SUCCESS,
-    	myFilters: filtersData
+    	type: LOAD_ALLFILTERS_SUCCESS,
+    	allFilters: filtersData
   	}
 }
 
-export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';
-export const LOAD_FILTERSCREATED_SUCCESS = 'LOAD_FILTERSCREATED_SUCCESS';
+// export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';
+// export const LOAD_FILTERSCREATED_SUCCESS = 'LOAD_FILTERSCREATED_SUCCESS';
 
-export const loadFiltersCreated = (userData) => {
-  return dispatch => {
+// export const loadFiltersCreated = (userData) => {
+//   return dispatch => {
 
-    dispatch(loadFiltersCreatedRequest());			
+//     dispatch(loadFiltersCreatedRequest());			
 
-    AsyncStorage.getItem("fencer-token").then((token) => {
-        if(token){
-            //dispatch(authSuccess());
-            return fetch(utils.filtersCreatedURL+"?username="+userData.username, {
-      			method: 'GET',
-      			headers: {
-        			'Accept': 'application/json',
-        			'Content-Type': 'application/json',
-        			'x-access-token': token
-      			}
-    		})
-    		.then(response => {
-      			  return response.json();
-    		})
-    		.then(response => {
-            // console.log('response in filter actions: ');
-            // console.log(response);
+//     AsyncStorage.getItem("fencer-token").then((token) => {
+//         if(token){
+//             //dispatch(authSuccess());
+//             return fetch(utils.filtersCreatedURL+"?username="+userData.username, {
+//       			method: 'GET',
+//       			headers: {
+//         			'Accept': 'application/json',
+//         			'Content-Type': 'application/json',
+//         			'x-access-token': token
+//       			}
+//     		})
+//     		.then(response => {
+//       			  return response.json();
+//     		})
+//     		.then(response => {
+//             // console.log('response in filter actions: ');
+//             // console.log(response);
 
-      			dispatch(loadFiltersCreatedSuccess(response));
+//       			dispatch(loadFiltersCreatedSuccess(response));
 						
-    		})
-    		.catch(err => {
-            	console.error('Error in loadFiltersCreated:', err);
-          	});
+//     		})
+//     		.catch(err => {
+//             	console.error('Error in loadFiltersCreated:', err);
+//           	});
             	
-        } else {
-            // dispatch(authFail());
-        }
-    }).done();
-  }
-}
+//         } else {
+//             // dispatch(authFail());
+//         }
+//     }).done();
+//   }
+// }
 
-const loadFiltersCreatedRequest = () => {
-	return {
-    	type: LOAD_FILTERSCREATED_REQUEST
-  	}
-}
+// const loadFiltersCreatedRequest = () => {
+// 	return {
+//     	type: LOAD_FILTERSCREATED_REQUEST
+//   	}
+// }
 
-const loadFiltersCreatedSuccess = (filtersData) => {
-	return {
-    	type: LOAD_FILTERSCREATED_SUCCESS,
-    	filtersCreated: filtersData
-  	}
-}
+// const loadFiltersCreatedSuccess = (filtersData) => {
+// 	return {
+//     	type: LOAD_FILTERSCREATED_SUCCESS,
+//     	filtersCreated: filtersData
+//   	}
+// }
 
 // export const FILTER_TO_UPLOAD_REQUEST = 'FILTER_TO_UPLOAD_REQUEST';
 // export const FILTER_TO_UPLOAD_SUCCESS = 'FILTER_TO_UPLOAD_SUCCESS';

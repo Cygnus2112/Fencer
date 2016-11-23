@@ -75,59 +75,59 @@ class UploadFilter extends Component{
 
 /************************************ testing axios image file streaming ***********************/
 
-AsyncStorage.getItem("fencer-token").then((token) => {
-        if(token){
+// AsyncStorage.getItem("fencer-token").then((token) => {
+//         if(token){
 
 
 
-            // headers: {
-            //   'Accept': 'application/json',
-            //   'Content-Type': 'application/json',
-            //   'x-access-token': token
-            // }
+//             // headers: {
+//             //   'Accept': 'application/json',
+//             //   'Content-Type': 'application/json',
+//             //   'x-access-token': token
+//             // }
 
 
-        fetch("http://192.168.1.105:8080/filterimages?filterid="+ 'SUPERFAKEID2', {    // CHANGE BACK TO myFiltersURL
-            method: 'GET',
-            headers: {
-              'x-access-token': token
-            }
-        })
-        .then(response => {
-              console.log('-------------------------');
-            console.log('first response keys: ', Object.keys( response) );
-              console.log('-------------------------');
-              return response.json();
-        })
-        .then(response => {
-            console.log('2nd level response: ');
-           //  console.log(response.data);
+//         fetch("http://192.168.1.105:8080/filterimages?filterid="+ 'SUPERFAKEID2', {    // CHANGE BACK TO myFiltersURL
+//             method: 'GET',
+//             headers: {
+//               'x-access-token': token
+//             }
+//         })
+//         .then(response => {
+//               console.log('-------------------------');
+//             console.log('first response keys: ', Object.keys( response) );
+//               console.log('-------------------------');
+//               return response.json();
+//         })
+//         .then(response => {
+//             console.log('2nd level response: ');
+//            //  console.log(response.data);
 
-            console.log('-------------------------');
-
-
-
-            // this.setState({
-            //     png: {data: source.data}
-            // });
+//             console.log('-------------------------');
 
 
-            this.setState({
-                png: {data: response.data}
-            });
+
+//             // this.setState({
+//             //     png: {data: source.data}
+//             // });
+
+
+//             this.setState({
+//                 png: {data: response.data}
+//             });
     
-        })
-        .catch(err => {
-              console.error('Error in loadMyFilters:', err);
-            });
+//         })
+//         .catch(err => {
+//               console.error('Error in loadMyFilters:', err);
+//             });
 
 
 
-          } else {
-            console.log('token not found!');
-          }
+//           } else {
+//             console.log('token not found!');
+//           }
 
-});
+// });
 
 
 
@@ -153,12 +153,14 @@ AsyncStorage.getItem("fencer-token").then((token) => {
               <View style={{width: 30,marginRight:10,marginTop:5}}>
                 <Icon name="home" size={30} color="#0c12ce" />
               </View>
+              <Image source={require('../assets/png_background.png')} style={styles.preview}>
                 {this.props.filterToUpload
                   ?
                 (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} style={{height: 480*.94, width: 274*.94}}/>)
                   :
                 (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} style={{height: 480*.94, width: 274*.94}}/>)
                 }
+              </Image>
               <View style={{width: 30,marginLeft:10,marginTop:5}}>
                 <Icon name="info" size={28} color="#0c12ce" />
               </View>

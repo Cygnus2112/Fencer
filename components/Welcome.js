@@ -269,6 +269,7 @@ class WelcomeComponent extends Component{
 const mapStateToProps = (state) => {
   return {
     isLoggedIn: state.authReducer.isLoggedIn,
+    username: state.authReducer.username,
     currentPosition: state.filterReducer.currentPosition,
     bitlyURL: state.uploadReducer.bitlyURL,
     finalSubmitComplete: state.uploadReducer.finalSubmitComplete  

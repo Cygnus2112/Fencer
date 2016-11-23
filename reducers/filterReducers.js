@@ -2,12 +2,13 @@ import * as ActionTypes from '../actions/filterActions';
 
 const initialState = {
 	isUpdatingPosition: false,
-	isLoadingMyFilters: false,
-	isLoadingFiltersCreated: false,
+	isLoadingAllFilters: false,
+	//isLoadingFiltersCreated: false,
   isValidatingFilter: false,
 	currentPosition: null,
   filterToUpload: null,
   filterUploadError: "",
+  allFilters: null,
   //myFilters: null,
   //filtersCreated: null
 }
@@ -27,6 +28,16 @@ const filterReducer = (state = initialState, action) => {
   	  	currentPosition: action.currentPosition,		//  REMOVE IF GETTING GEO DATA ON FRONT END
   	  	isUpdatingPosition: false
   	  })
+    case ActionTypes.LOAD_ALLFILTERS_REQUEST:
+      return Object.assign({}, state, {
+       isLoadingAllFilters: true
+      })
+    case ActionTypes.LOAD_ALLFILTERS_SUCCESS:
+      return Object.assign({}, state, {
+       isLoadingAllFilters: false,
+       allFilters: action.allFilters
+      })
+
   	// case ActionTypes.LOAD_MYFILTERS_REQUEST:
   	//   return Object.assign({}, state, {
   	//   	isLoadingMyFilters: true

@@ -131,6 +131,8 @@ export const finalSubmitFilter = (dispatch, data) => {
 
 										//  can we validate google polygon coords on backend? Am guessing no.
 
+	let filterData = data.filterToUpload.data;
+
 	AsyncStorage.getItem("fencer-token").then((token) => {
         if(token){
             return axios({
@@ -172,7 +174,7 @@ export const finalSubmitFilter = (dispatch, data) => {
             	url: utils.filterImagesURL,
             	data: {
               		filterID: response.filterID,
-              		imageData: response.data
+              		imageData: filterData
             	},
             	headers: {
                     'Accept': 'application/json',
