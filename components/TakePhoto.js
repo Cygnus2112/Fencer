@@ -35,11 +35,16 @@ class TakePhotoComponent extends Component {
 		super(props);
 
 		this.takePicture = this.takePicture.bind(this);
+    this.switchType = this.switchType.bind(this);
     // this.handleZoom = this.handleZoom.bind(this);
 
     this.state = {
       photo: null,
-      applyFilter: false
+      applyFilter: false,
+      camera: {
+        type: Camera.constants.Type.back,
+        mirror: false
+      }
     }
 
 	}
@@ -75,6 +80,28 @@ class TakePhotoComponent extends Component {
 	      })
 	      .catch(err => console.error(err));
 	}
+
+  switchType() {
+    let newType;
+    let newMirror;
+    const { back, front } = Camera.constants.Type;
+
+    if (this.state.camera.type === back) {
+      newType = front;
+      newMirror = true;
+    } else if (this.state.camera.type === front) {
+      newMirror = false;
+      newType = back;
+    }
+
+    this.setState({
+      camera: {
+        ...this.state.camera,
+        type: newType,
+        mirror: newMirror
+      },
+    });
+  }
 
   _handleFocusChange(e){
     console.log('focus???')
@@ -118,10 +145,22 @@ class TakePhotoComponent extends Component {
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
+          type={this.state.camera.type}
+          mirrorImage={this.state.camera.mirror}
           defaultTouchToFocus
           captureTarget={Camera.constants.CaptureTarget.temp}
           onZoomChanged={this._handleZoomChange.bind(this)}
           onFocusChanged={this._handleFocusChange.bind(this)}>
+
+          <TouchableOpacity onPress={this.switchType}>
+            <View style={{width: 50, height: 50,
+                  flex: 0,
+                  marginBottom: 40
+            }}>
+            <Image source={require('../assets/camera-switch.png')} style={{width: 50, height: 50,backgroundColor: 'white'}} />
+
+            </View>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.takePicture}>
             <View style={{width: 50, height: 50,
