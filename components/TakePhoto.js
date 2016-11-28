@@ -11,10 +11,11 @@ import {
 
 // WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
 
-
 var ImagePicker = require('react-native-image-picker');
 import { Actions } from 'react-native-router-flux';
 import Camera from 'react-native-camera';
+
+import { connect } from 'react-redux';
 
 // import {
 //   CameraKitCamera
@@ -25,7 +26,7 @@ class TakePhotoComponent extends Component {
 		super(props);
 
 		this.takePicture = this.takePicture.bind(this);
-    this.handleZoom = this.handleZoom.bind(this);
+    // this.handleZoom = this.handleZoom.bind(this);
 
 		this.state = {
 			filterURI: null // will be passed as prop
@@ -36,20 +37,20 @@ class TakePhotoComponent extends Component {
 	takePicture() {
 	  	this.camera.capture()
 	      .then((data) => {                // is data.path maybe returning undefined???
-	      	Actions.applyfilter({photoURI: data.path, filterURI: this.props.filterURI})
+	      	Actions.applyfilter({photoURI: data.path, filterURI: this.props.filterImage})
 	      	//console.log(data) 
 	      }
 	      )
 	      .catch(err => console.error(err));
 	}
 
-  handleZoom(e){
-    console.log('focus????')
+  _handleFocusChange(e){
+    console.log('focus???')
+  }
+  _handleZoomChange(e){
+    console.log('zoom????')
   }
 
-  // componentDidMount(){
-  //   this.showAuth();
-  // }
 
   // async showAuth(){
   //       const isUserAuthorizedCamera = await CameraKitCamera.requestDeviceCameraAuthorization();
@@ -100,12 +101,13 @@ class TakePhotoComponent extends Component {
     return (
       <View style={styles.container}>
 
-                <Camera
+        <Camera
           ref={(cam) => {
             this.camera = cam;              //  the new (correct) callback refs style
           }}
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
+          defaultTouchToFocus
           captureTarget={Camera.constants.CaptureTarget.temp}
           onZoomChanged={this._handleZoomChange.bind(this)}
           onFocusChanged={this._handleFocusChange.bind(this)}>
@@ -153,5 +155,17 @@ const styles = StyleSheet.create({
   }
 });
 
-const TakePhoto = TakePhotoComponent;
+const mapStateToProps = (state) => {
+  return {
+    filterImage: state.filterReducer.filterImage
+  }
+}
+
+// const mapDispatchToProps = (dispatch) => {
+//   return {
+
+//   }
+// }
+
+const TakePhoto = connect(mapStateToProps, null)(TakePhotoComponent);
 export default TakePhoto;

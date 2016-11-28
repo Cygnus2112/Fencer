@@ -46,7 +46,7 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 		//console.log('this.props in MyFilters: ', this.props);
-		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters});
+		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
 		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -117,6 +117,7 @@ class MyFiltersComponent extends Component {
               		renderRow={(rowData) => {
 
               			console.log('-------------------------');
+
               			if(rowData.coordinates && rowData.title !== "dbdb") {
 
 							const poly = rowData.coordinates.map((point)=>{
@@ -130,7 +131,7 @@ class MyFiltersComponent extends Component {
 
 
               			console.log('-------------------------');
-						//console.log('rowData ', rowData.dates)	
+						//console.log('rowData ', rowData)	
 
 						let _isActive = _checkDates(rowData.dates);							
 
@@ -156,8 +157,11 @@ class MyFiltersComponent extends Component {
 }
 
 const _checkDates = (dates) => {
+	console.log('dates in _checkDates: ', dates);
 	const { endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth } = dates;
+
 	console.log(endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth);
+
 	const currentDate = new Date();
 	const currentYear = currentDate.getFullYear();
 	const currentMonth = currentDate.getMonth();

@@ -7,7 +7,7 @@ export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
 
 export const loadView = (dispatch, view) => {
 	console.log('loadView called in uploadActions');
-	console.log('view in loadView: ', );
+	console.log('view in loadView: ');
 	console.log('checking if dispatch is avail in Actions: ', dispatch);
 	//return dispatch => {
 		
@@ -139,13 +139,13 @@ export const finalSubmitFilter = (dispatch, data) => {
               url: utils.filtersCreatedURL,
               method: 'post',
               data: JSON.stringify({
-                username: 'tom', // DON'T FORGET TO REMOVE!!!
+                username: data.username, // DON'T FORGET TO REMOVE!!!
                	filter: 			
                 {			
                 	"title": data.title,
 					"coordinates": data.fenceCoordinates.fenceCoords,
 					"message": data.message,
-					//"image": data.filterToUpload.data,			// 
+					//"image": data.filterToUpload.data,			
 					"dates": data.selectedDates
 				}
               }),
@@ -161,19 +161,17 @@ export const finalSubmitFilter = (dispatch, data) => {
             return response
         })
         .then(response => {
-        	console.log('response in finalSubmitFilter: ', response);
+        	//console.log('response in finalSubmitFilter: ', response);
 
-
-
-        	dispatch(finalSubmitSuccess({filterID: response.filterID,bitlyURL: response.bitlyURL}));  // NAVIGATE BACK TO HOME
+        	dispatch(finalSubmitSuccess({filterID: response.data.filterID,bitlyURL: response.data.bitlyURL}));  // NAVIGATE BACK TO HOME
 
         									// SHOW SUCCESS MODAL
-
+        	console.log('response.data.filterID in upload: ', response.data.filterID);
         	axios({
             	method: 'post',
             	url: utils.filterImagesURL,
             	data: {
-              		filterID: response.filterID,
+              		filterID: response.data.filterID,
               		imageData: filterData
             	},
             	headers: {
@@ -213,6 +211,7 @@ const finalSubmitRequest = () => {
 }
 
 const finalSubmitSuccess = (data) => {
+	console.log('data in finalSubmitSuccess: ', data);
 	return {
 		type: FINAL_SUBMIT_SUCCESS,
 		bitlyURL: data.bitlyURL

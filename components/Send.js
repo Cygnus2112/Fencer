@@ -57,7 +57,8 @@ class Send extends Component {
                     selectedDates: this.props.selectedDates,
                     filterToUpload: this.props.filterToUpload,
                     title: this.props.filterTitle,
-                    message: this.props.filterMessage
+                    message: this.props.filterMessage,
+                    username: this.props.username
                 }
                 this.props.finalSumbit(dataToSend);
             }
@@ -68,7 +69,10 @@ class Send extends Component {
     componentWillReceiveProps(newProps, oldProps){
         console.log('newProps: ', newProps);
         if(newProps.finalSubmitComplete){
-            Actions.main();
+          //  Actions.main();
+
+          Actions.loading();                            //   NEED TO CHANGE THIS
+
         }
     }
 
@@ -157,6 +161,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
+    username: state.authReducer.username,
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     uploadFilterComplete: state.uploadReducer.uploadFilterComplete,
     selectDatesComplete: state.uploadReducer.selectDatesComplete,

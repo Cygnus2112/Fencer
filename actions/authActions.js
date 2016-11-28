@@ -35,9 +35,8 @@ export const signup = (dispatch,info) => {
           if(response.token){
         	  AsyncStorage.setItem('fencer-token', response.token);
         	  AsyncStorage.setItem('fencer-username', info.username);
-          	  dispatch(signupSuccess({"token" : response.token, "username": info.username}));
-
-          	  //Actions.styles();
+          	  
+            dispatch(signupSuccess({"token" : response.token, "username": info.username}));
 
           } else {
             dispatch(signupError(response));
@@ -187,9 +186,9 @@ export const checkForToken = (dispatch) => {
                   }
                 })
               .then(response => {
-                  console.log('-------------------------');
+
             //  console.log('first response: ', response);
-                  console.log('-------------------------');
+
                   return response.json();
               })
               .then(response => {

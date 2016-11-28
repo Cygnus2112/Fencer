@@ -211,7 +211,7 @@ class WelcomeComponent extends Component{
 
 
 
-        {this.props.isLoggedIn &&
+        {!this.props.isLoggedIn &&
 
         (   
           <TouchableOpacity onPress={ ( ) => {

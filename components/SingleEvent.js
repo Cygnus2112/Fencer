@@ -41,16 +41,17 @@ class SingleEventComponent extends Component {
 			endHour: "",
 			endMinute: "",
 			coords: null,
-			eventID: null,
-			filterURI: null,
+			//eventID: null,
+			filterID: null,
+			// filterURI: null,
 			message: "",
 			isActive: false,
-			isInRange: false					// MIGHT HAVE TO REDUX THIS, GIVEN HOW SLOW GEO IS
+			isInRange: false,					// MIGHT HAVE TO REDUX THIS, GIVEN HOW SLOW GEO IS
+			filterImage: null
 		}
 	}
 
 	componentDidMount(){
-
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
         		console.log('point is within polygon');
@@ -59,10 +60,19 @@ class SingleEventComponent extends Component {
         		})	
         	})
 
+       	if(this.props.isActive){
+       		console.log('this.props.filterID in SingleEvent: ', this.props.filterID);
+       		this.props.fetchFilterImage({ filterID: this.props.filterID });
+       		// fetch filter 
+       	}
+
 		console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
+		console.log("##################################");
+		console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
 
 		this.setState({
-			eventID: this.props.eventID,
+			//eventID: this.props.eventID,
+			filterID: this.props.filterID,
 			eventTitle: this.props.title,
 			startYear: this.props.dates.startYear,
 			startMonth: this.props.dates.startMonth,
@@ -74,10 +84,17 @@ class SingleEventComponent extends Component {
 			endHour: this.props.dates.endHour,
 			endMinute: this.props.dates.endMinute,
 			coordinates: this.props.coordinates,
-			filterURI: this.props.filterURI,
-			//filterURI: "../assets/thanksgiving.png",
+		//	filterURI: this.props.filterURI,
+			filterImage: this.props.filterImage,
 			message: this.props.message
 		})
+	}
+
+	componentWillReceiveProps(newProps,oldProps){
+		if(newProps.filterImage !== oldProps.filterImage){
+			console.log('filterImage data received: ');
+			console.log(newProps.filterImage);
+		}
 	}
 
 	// componentWillReceiveProps(newProps,oldProps){
@@ -98,7 +115,8 @@ class SingleEventComponent extends Component {
 	// }
 
 	handleEventPress(){		
-		Actions.camera({filterURI: this.props.image});
+		//Actions.camera({filterURI: this.props.filterImage});
+		Actions.camera();
 
 		// either load the filter or an 'out of bounds/event not started yet' popup
 
@@ -127,7 +145,7 @@ class SingleEventComponent extends Component {
 								<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, color: 'green',marginBottom:1}}>Active Now</Text>
 					  		</View>
 					  		
-					  		  {this.state.isInRange || this.props.title === "Karaoke Fest 2016"
+					  		  {this.state.isInRange
 					  		  	?
 								(<View style={{marginLeft: 5,flexDirection:'row', justifyContent: 'center', alignItems: 'center'}}>
 									<View style={styles.greenLight} />
@@ -247,10 +265,21 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    currentPosition: state.filterReducer.currentPosition
+    currentPosition: state.filterReducer.currentPosition,
+    //username: state.authReducer.username,
+    filterImage: state.filterReducer.filterImage
   }
 }
 
-const SingleEvent = connect(mapStateToProps, null)(SingleEventComponent);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		fetchFilterImage: (data) => {
+			filterActions.loadFilterImage(dispatch, data);
+
+		}
+	}
+}
+
+const SingleEvent = connect(mapStateToProps, mapDispatchToProps)(SingleEventComponent);
 export default SingleEvent;
 

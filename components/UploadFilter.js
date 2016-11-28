@@ -68,10 +68,8 @@ class UploadFilter extends Component{
           } else {
 
             const source = {data: response.data};
-          console.log('************************************');
-        console.log('response.data (first 20 chars): ', response.data.slice(0,20));
-
-        console.log('************************************');
+            console.log('************************************');
+            console.log('response.data (first 20 chars): ', response.data.slice(0,20));
 
 /************************************ testing axios image file streaming ***********************/
 

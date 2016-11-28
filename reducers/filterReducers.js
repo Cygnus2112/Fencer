@@ -10,7 +10,9 @@ const initialState = {
   filterUploadError: "",
   allFilters: null,
   //myFilters: null,
-  //filtersCreated: null
+  //filtersCreated: null,
+  isLoadingFilterImage: false,
+  filterImage: null
 }
 
 const filterReducer = (state = initialState, action) => {
@@ -34,9 +36,19 @@ const filterReducer = (state = initialState, action) => {
       })
     case ActionTypes.LOAD_ALLFILTERS_SUCCESS:
       return Object.assign({}, state, {
-       isLoadingAllFilters: false,
-       allFilters: action.allFilters
+        isLoadingAllFilters: false,
+        allFilters: action.allFilters
       })
+    case ActionTypes.LOAD_FILTER_IMAGE_REQUEST:
+      return Object.assign({}, state, {
+        isLoadingFilterImage: true
+      })
+    case ActionTypes.LOAD_FILTER_IMAGE_SUCCESS:
+      return Object.assign({}, state, {
+        isLoadingFilterImage: false,
+        filterImage: action.filterImage
+      })
+
 
   	// case ActionTypes.LOAD_MYFILTERS_REQUEST:
   	//   return Object.assign({}, state, {

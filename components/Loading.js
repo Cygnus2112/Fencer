@@ -4,7 +4,8 @@ import {
     View,
     Image,
     StyleSheet,
-    Text
+    Text,
+    AsyncStorage
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -18,9 +19,13 @@ class LoadingComponent extends Component{
 		super(props)
 	}
 	componentDidMount(){
+   // AsyncStorage.removeItem("fencer-token").then((value) => {
+     // console.log('token removed');
+          this.props.checkAuth();
+          this.props.initPosition();
+   // });
 		
-    this.props.checkAuth();
-		this.props.initPosition();
+
 
 	}
 	render(){

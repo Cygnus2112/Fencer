@@ -82,16 +82,14 @@ export const loadAllFilters = (dispatch, userData) => {
       			}
     		})
     		.then(response => {
-              console.log('-------------------------');
             //  console.log('first response: ', response);
-              console.log('-------------------------');
       			  return response.json();
     		})
     		.then(response => {
-             console.log('2nd level response in loadAllFilters: ');
-             console.log(response);
+            //  console.log('2nd level response in loadAllFilters: ');
+            //  console.log(response);
 
-            console.log('-------------------------');
+            // console.log('-------------------------');
       			dispatch(loadAllFiltersSuccess(response));
 						
     		})
@@ -117,6 +115,59 @@ const loadAllFiltersSuccess = (filtersData) => {
     	type: LOAD_ALLFILTERS_SUCCESS,
     	allFilters: filtersData
   	}
+}
+
+export const LOAD_FILTER_IMAGE_REQUEST = 'LOAD_FILTER_IMAGE_REQUEST';
+export const LOAD_FILTER_IMAGE_SUCCESS = 'LOAD_FILTER_IMAGE_SUCCESS';
+
+export const loadFilterImage = (dispatch, data) => {
+  dispatch(loadFilterImageRequest());      
+
+      AsyncStorage.getItem("fencer-token").then((token) => {
+        if(token){
+
+  return fetch(utils.filterImagesURL+"?filterid="+data.filterID, {   
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'x-access-token': token
+        }
+    })
+    .then(response => {
+        //  console.log('first response: ', response);
+          return response.json();
+    })
+    .then(response => {
+
+        dispatch(loadFilterImageSuccess(response));
+            
+    })
+    .catch(err => {
+        console.error('Error in loadFilterImage:', err);
+    });
+
+
+  } else {
+            // dispatch(authFail());
+        }
+    }).done();
+
+
+                     
+}
+
+const loadFilterImageRequest = () => {
+  return {
+      type: LOAD_FILTER_IMAGE_REQUEST
+    }
+}
+
+const loadFilterImageSuccess = (filterImageData) => {
+  return {
+      type: LOAD_FILTER_IMAGE_SUCCESS,
+      filterImage: filterImageData.data
+    }
 }
 
 // export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';
