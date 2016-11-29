@@ -29,7 +29,6 @@ import Icon from 'react-native-vector-icons/Entypo';
 			- sorting/filtering the events array is going to be a pain. Will need to:
 				- filter out events that have already finished (if they're not deleted on back-end)
 				- sort based on 1) start year, 2) start month, 3) start day, 4) start time, 5) end day, 6) end time
-
 */
 
 class MyFiltersComponent extends Component {
@@ -64,8 +63,11 @@ class MyFiltersComponent extends Component {
 			console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
 
 			//let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
-
 			let arr = newProps.allFilters;
+
+			// let arr = newProps.allFilters.filter((f) => {
+			// 	return _isActiveOrUpcoming(f.dates);					// we only show filters that are active or upcoming
+			// })
 
 			let sortedFilters = arr.sort((f1,f2)=>{
 				return f1.dates.startYear - f2.dates.startYear;
@@ -131,13 +133,8 @@ class MyFiltersComponent extends Component {
 
 
               			console.log('-------------------------');
-						//console.log('rowData ', rowData)	
 
 						let _isActive = _checkDates(rowData.dates);							
-
-						//  Do date/geo validation here?
-
-              		// <SingleEvent { ...rowData } isActive={rowData.isActive} isInRange={rowData.isInRange}/>
 
 	                	return (
 	                		<View key={rowData.id} >									
@@ -180,6 +177,38 @@ const _checkDates = (dates) => {
 		return false;
 	} else if (currentHour < startHour || currentHour > endHour) {
 		console.log('bad hour');
+		return false;
+	} /* else if (currentMinute < startMinute || currentMinute > endMinute) {
+		console.log('bad minute');
+		return false;						//  SKIPPING MINUTE CHECK FOR DEV PURPOSES
+	} */ else {
+		return true;
+	}
+}
+
+const _isActiveOrUpcoming = (dates) => {
+	const { endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth } = dates;
+
+	console.log(endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth);
+
+	const currentDate = new Date();
+	const currentYear = currentDate.getFullYear();
+	const currentMonth = currentDate.getMonth();
+	const currentDay = currentDate.getDate();
+	const currentHour = currentDate.getHours();
+	const currentMinute = currentDate.getMinutes();
+
+	if(currentYear > endYear){
+		console.log('bad year (_isActiveOrUpcoming)');
+		return false;
+	} else if (currentMonth > endMonth){
+		console.log('bad month (_isActiveOrUpcoming)');
+		return false;
+	} else if (currentDay > endDay) {
+		console.log('bad day (_isActiveOrUpcoming)');
+		return false;
+	} else if (currentHour > endHour) {
+		console.log('bad hour (_isActiveOrUpcoming)');
 		return false;
 	} /* else if (currentMinute < startMinute || currentMinute > endMinute) {
 		console.log('bad minute');

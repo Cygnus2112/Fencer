@@ -8,7 +8,10 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Dimensions,
+    AsyncStorage
 } from 'react-native';
+
+let utils = require('../utils');
 
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
@@ -19,9 +22,6 @@ import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
 const screenWidth = width;
-
-// pass current position (lat lng) as a prop
-// open web view bridge and check Google Maps if it's in range
 
 // use linear gradient on red and green lights
 
@@ -43,10 +43,10 @@ class SingleEventComponent extends Component {
 			coords: null,
 			//eventID: null,
 			filterID: null,
-			// filterURI: null,
+			filterURI: null,
 			message: "",
 			isActive: false,
-			isInRange: false,					// MIGHT HAVE TO REDUX THIS, GIVEN HOW SLOW GEO IS
+			isInRange: false,					
 			filterImage: null
 		}
 	}
@@ -59,12 +59,44 @@ class SingleEventComponent extends Component {
         			isInRange: true
         		})	
         	})
+        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
 
-       	if(this.props.isActive){
+      //  if(this.props.isActive){
        		console.log('this.props.filterID in SingleEvent: ', this.props.filterID);
-       		this.props.fetchFilterImage({ filterID: this.props.filterID });
-       		// fetch filter 
-       	}
+       	//	this.props.fetchFilterImage({ filterID: this.props.filterID });
+
+       		AsyncStorage.getItem("fencer-token").then((token) => {
+        	  if(token){
+
+  				return fetch(utils.filterImagesURL+"?filterid="+this.props.filterID, {   
+    			  method: 'GET',
+    			  headers: {
+        			'Accept': 'application/json',
+        			'Content-Type': 'application/json',
+        			'x-access-token': token
+        		  }
+    		  })
+    		  .then(response => {
+        		//  console.log('first response: ', response);
+          		return response.json();
+    		  })
+    		  .then(response => {
+
+        		//dispatch(loadFilterImageSuccess(response));
+        		this.setState({
+        			filterURI: response.data
+        		})
+            
+    		  })
+			  .catch(err => {
+			      console.error('Error in loadFilterImage:', err);
+		      });
+  			  } else {
+            	// dispatch(authFail());
+        	  }
+    		  }).done();
+
+     //  	}
 
 		console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
 		console.log("##################################");
@@ -92,8 +124,10 @@ class SingleEventComponent extends Component {
 
 	componentWillReceiveProps(newProps,oldProps){
 		if(newProps.filterImage !== oldProps.filterImage){
-			console.log('filterImage data received: ');
-			console.log(newProps.filterImage);
+			console.log('filterImage data received in SingleEvent ');
+			console.log('filterID: ', newProps.filterID);
+			console.log("first 20 chars: ", newProps.filterImage.slice(0,20));
+			console.log("last 20 chars: ", newProps.filterImage.slice(newProps.filterImage.length-20,newProps.filterImage.length-1));
 		}
 	}
 
@@ -116,7 +150,19 @@ class SingleEventComponent extends Component {
 
 	handleEventPress(){		
 		//Actions.camera({filterURI: this.props.filterImage});
-		Actions.camera();
+
+		// HOW DO WE DELAY THIS TRANSITION UNTIL THE FILTER IS LOADED???
+
+		let that = this;
+
+		let interval = setInterval(()=>{
+			if(that.state.filterURI){
+				clearInterval(interval);
+				Actions.camera({filterURI: this.state.filterURI});
+			}
+		},50)
+
+		//Actions.camera({filterURI: this.state.filterURI});
 
 		// either load the filter or an 'out of bounds/event not started yet' popup
 
@@ -135,7 +181,7 @@ class SingleEventComponent extends Component {
 	render(){
 		return (
 			<TouchableOpacity onPress={this.handleEventPress} >
-				<View style={this.props.isActive ? (this.state.isInRange || this.props.title === "Karaoke Fest 2016" ) ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+				<View style={this.props.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
 					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?

@@ -121,6 +121,7 @@ export const LOAD_FILTER_IMAGE_REQUEST = 'LOAD_FILTER_IMAGE_REQUEST';
 export const LOAD_FILTER_IMAGE_SUCCESS = 'LOAD_FILTER_IMAGE_SUCCESS';
 
 export const loadFilterImage = (dispatch, data) => {
+  console.log('data in loadFilterImage: ', data);
   dispatch(loadFilterImageRequest());      
 
       AsyncStorage.getItem("fencer-token").then((token) => {

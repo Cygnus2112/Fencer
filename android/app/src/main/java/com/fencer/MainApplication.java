@@ -15,6 +15,7 @@ import com.airbnb.android.react.maps.MapsPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import cl.json.RNSharePackage;
 import com.lwansbrough.RCTCamera.RCTCameraPackage;
+//import com.wix.RNCameraKit.RNCameraKitPackage;
 import com.github.alinz.reactnativewebviewbridge.WebViewBridgePackage;
 import com.surialabs.rn.geofencing.GeoFencingPackage;
 
@@ -39,6 +40,7 @@ public class MainApplication extends Application implements ReactApplication {
           new RNSharePackage(),
           new RNViewShotPackage(),
           new RCTCameraPackage(),
+        //  new RNCameraKitPackage(), 
           new WebViewBridgePackage(),
           new GeoFencingPackage()
       );

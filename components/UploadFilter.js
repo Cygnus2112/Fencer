@@ -4,9 +4,9 @@ import {
     Image,
     StyleSheet,
     Text,
-    Dimensions,
-    AsyncStorage                            // REMEMBER TO REMOVE              
+    Dimensions                           // REMEMBER TO REMOVE              
 } from 'react-native';
+
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 var ImagePicker = require('react-native-image-picker');
@@ -22,9 +22,6 @@ import { bindActionCreators } from 'redux';
 
 import * as filterActions from '../actions/filterActions';
 import * as uploadActions from '../actions/uploadActions';
-
-
-var axios = require('axios')                        // REMEMBER TO REMOVE
 
 class UploadFilter extends Component{
     constructor(props){
@@ -70,83 +67,36 @@ class UploadFilter extends Component{
             const source = {data: response.data};
             console.log('************************************');
             console.log('response.data (first 20 chars): ', response.data.slice(0,20));
-
-/************************************ testing axios image file streaming ***********************/
-
-// AsyncStorage.getItem("fencer-token").then((token) => {
-//         if(token){
-
-
-
-//             // headers: {
-//             //   'Accept': 'application/json',
-//             //   'Content-Type': 'application/json',
-//             //   'x-access-token': token
-//             // }
-
-
-//         fetch("http://192.168.1.105:8080/filterimages?filterid="+ 'SUPERFAKEID2', {    // CHANGE BACK TO myFiltersURL
-//             method: 'GET',
-//             headers: {
-//               'x-access-token': token
-//             }
-//         })
-//         .then(response => {
-//               console.log('-------------------------');
-//             console.log('first response keys: ', Object.keys( response) );
-//               console.log('-------------------------');
-//               return response.json();
-//         })
-//         .then(response => {
-//             console.log('2nd level response: ');
-//            //  console.log(response.data);
-
-//             console.log('-------------------------');
-
-
-
-//             // this.setState({
-//             //     png: {data: source.data}
-//             // });
-
-
-//             this.setState({
-//                 png: {data: response.data}
-//             });
-    
-//         })
-//         .catch(err => {
-//               console.error('Error in loadMyFilters:', err);
-//             });
-
-
-
-//           } else {
-//             console.log('token not found!');
-//           }
-
-// });
-
-
-
-/************************************ **************************  ***********************/
+            console.log('response.data (last 20 chars): ', response.data.slice(response.data.length-20,response.data.length-1));
 
             // only when we do the final submit do we convert the image URI into data
 
             this.setState({
                 png: {data: source.data}
             });
+
           }
         }
       });
+
+// ImagePicker.launchCamera({cancelButtonTitle: null}, (response)  => {
+//   // Same code as in above section!
+//   console.log('response in ImagePicker.launchCamera: ', response);
+// });
+
+
+
     }     
 //height: 1920/4, width: 1080/4
 
 
     render(){
+      if(this.state.png.data){
+        console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
+        console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
+      }
       return(
         <View style={ styles.container }>
-
           <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
               <View style={{width: 30,marginRight:10,marginTop:5}}>
                 <Icon name="home" size={30} color="#0c12ce" />
@@ -174,7 +124,6 @@ class UploadFilter extends Component{
                 </Button>
               </View>
           </View>
-
         </View>
       )
     }

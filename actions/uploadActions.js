@@ -5,14 +5,8 @@ let utils = require('../utils');
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
 
-export const loadView = (dispatch, view) => {
-	console.log('loadView called in uploadActions');
-	console.log('view in loadView: ');
-	console.log('checking if dispatch is avail in Actions: ', dispatch);
-	//return dispatch => {
-		
-		dispatch( loadViewRequest(view) );
-	//}
+export const loadView = (dispatch, view) => {		
+	dispatch( loadViewRequest(view) );
 }
 
 export const loadViewRequest = (view) => {
@@ -42,17 +36,16 @@ export const UPLOAD_FILTER_SUCCESS = 'UPLOAD_FILTER_SUCCESS';
 export const UPLOAD_FILTER_ERROR = 'UPLOAD_FILTER_ERROR';
 
 export const submitFilter = (dispatch, filterData) => {
-	//return dispatch => {
-		dispatch( submitFilterRequest() );
+	dispatch( submitFilterRequest() );
 
-		console.log('filterData: ', filterData);
+	console.log('filterData (first 20 chars) in submitFilter: ', filterData.data.slice(0,20));
+	console.log('filterData (last 20 chars) in submitFilter: ', filterData.data.slice(filterData.data.length-20,filterData.data.length-1));
 
 
 		//  do filter validation here. 
 		// if successfull:
 
-		dispatch(submitFilterSuccess(filterData));  //  could be something else (ie, filterData.filterURI)
-	//}
+	dispatch(submitFilterSuccess(filterData));  //  could be something else (ie, filterData.filterURI)
 }
 
 const submitFilterRequest = () => {
@@ -125,7 +118,9 @@ export const FINAL_SUBMIT_SUCCESS = 'FINAL_SUBMIT_SUCCESS';
 export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
 
 export const finalSubmitFilter = (dispatch, data) => {
-	console.log('data in finalSubmitFilter: ', data);
+	console.log('title in finalSubmitFilter: ', data.title);
+	console.log('filter data (first 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(0,20));
+	console.log('filter data (last 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(data.filterToUpload.data.length-20,data.filterToUpload.data.length-1));
 
 	dispatch( finalSubmitRequest() );
 
@@ -199,7 +194,7 @@ export const finalSubmitFilter = (dispatch, data) => {
         });  
         } else {
             // dispatch(authFail());
-            
+            console.log('token not found???');
         }
     }).done();			
 }

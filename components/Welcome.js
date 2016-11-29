@@ -78,18 +78,6 @@ class WelcomeComponent extends Component{
 
   handleCreate(){
 
-    // let url = "http://app.fencer.ext"
-
-
-    // let shareOptions = {
-    //   title: "Filter Link",
-    //   message: "This is the link for Fencer: ",
-    //   url: url,
-    //   subject: "Share Link" //  for email
-    // };
-
-    // Share.open(shareOptions);
-
    Actions.upload();
 
   }

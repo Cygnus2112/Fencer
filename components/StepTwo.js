@@ -31,7 +31,7 @@ class StepTwoComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log('this.props in StepTwo: ', this.props)
+		//console.log('this.props in StepTwo: ', this.props)
 	}
 
 	// handlePress(){

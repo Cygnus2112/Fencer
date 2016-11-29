@@ -56,11 +56,11 @@ class UploadComponent extends Component {
 
 	}
   componentDidMount(){
-      console.log('this.props.currentView in Upload: ', this.props.currentView);
+    //  console.log('this.props.currentView in Upload: ', this.props.currentView);
   }
 
   componentWillReceiveProps(newProps, oldProps){
-    console.log('newProps.currentView: ', newProps.currentView);
+   // console.log('newProps.currentView: ', newProps.currentView);
   }
   
 
