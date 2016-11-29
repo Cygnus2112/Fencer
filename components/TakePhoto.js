@@ -36,6 +36,7 @@ class TakePhotoComponent extends Component {
 
 		this.takePicture = this.takePicture.bind(this);
     this.switchType = this.switchType.bind(this);
+    this.switchFlash = this.switchFlash.bind(this);
     // this.handleZoom = this.handleZoom.bind(this);
 
     this.state = {
@@ -43,6 +44,7 @@ class TakePhotoComponent extends Component {
       applyFilter: false,
       camera: {
         type: Camera.constants.Type.back,
+        flashMode: Camera.constants.FlashMode.auto,
         mirror: false
       }
     }
@@ -103,6 +105,41 @@ class TakePhotoComponent extends Component {
     });
   }
 
+  switchFlash() {
+    let newFlashMode;
+    const { auto, on, off } = Camera.constants.FlashMode;
+
+    if (this.state.camera.flashMode === auto) {
+      newFlashMode = on;
+    } else if (this.state.camera.flashMode === on) {
+      newFlashMode = off;
+    } else if (this.state.camera.flashMode === off) {
+      newFlashMode = auto;
+    }
+
+    this.setState({
+      camera: {
+        ...this.state.camera,
+        flashMode: newFlashMode,
+      },
+    });
+  }
+
+  get flashIcon() {
+    let icon;
+    const { auto, on, off } = Camera.constants.FlashMode;
+
+    if (this.state.camera.flashMode === auto) {
+      icon = require('../assets/ic_flash_auto_white.png');
+    } else if (this.state.camera.flashMode === on) {
+      icon = require('../assets/ic_flash_on_white.png');
+    } else if (this.state.camera.flashMode === off) {
+      icon = require('../assets/ic_flash_off_white.png');
+    }
+
+    return icon;
+  }
+
   _handleFocusChange(e){
     console.log('focus???')
   }
@@ -146,11 +183,19 @@ class TakePhotoComponent extends Component {
           style={styles.preview}
           aspect={Camera.constants.Aspect.fill}
           type={this.state.camera.type}
+          flashMode={this.state.camera.flashMode}
           mirrorImage={this.state.camera.mirror}
           defaultTouchToFocus
           captureTarget={Camera.constants.CaptureTarget.temp}
           onZoomChanged={this._handleZoomChange.bind(this)}
           onFocusChanged={this._handleFocusChange.bind(this)}>
+
+          <TouchableOpacity
+            style={styles.flashButton}
+            onPress={this.switchFlash}>
+            <Image
+              source={this.flashIcon}/>
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={this.switchType}>
             <View style={{width: 50, height: 50,
@@ -286,7 +331,10 @@ const styles = StyleSheet.create({
     overflow:'hidden',
     borderRadius:15,
     backgroundColor: '#0c12ce'
-  }
+  },
+  flashButton: {
+    padding: 5,
+  },
 });
 
 const mapStateToProps = (state) => {
