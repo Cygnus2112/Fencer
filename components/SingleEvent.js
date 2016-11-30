@@ -100,7 +100,7 @@ class SingleEventComponent extends Component {
 
 		console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
 		console.log("##################################");
-		console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
+	//	console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
 
 		this.setState({
 			//eventID: this.props.eventID,
@@ -124,10 +124,10 @@ class SingleEventComponent extends Component {
 
 	componentWillReceiveProps(newProps,oldProps){
 		if(newProps.filterImage !== oldProps.filterImage){
-			console.log('filterImage data received in SingleEvent ');
-			console.log('filterID: ', newProps.filterID);
-			console.log("first 20 chars: ", newProps.filterImage.slice(0,20));
-			console.log("last 20 chars: ", newProps.filterImage.slice(newProps.filterImage.length-20,newProps.filterImage.length-1));
+			// console.log('filterImage data received in SingleEvent ');
+			// console.log('filterID: ', newProps.filterID);
+			// console.log("first 20 chars: ", newProps.filterImage.slice(0,20));
+			// console.log("last 20 chars: ", newProps.filterImage.slice(newProps.filterImage.length-20,newProps.filterImage.length-1));
 		}
 	}
 
@@ -317,15 +317,15 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-	return {
-		fetchFilterImage: (data) => {
-			filterActions.loadFilterImage(dispatch, data);
+// const mapDispatchToProps = (dispatch) => {
+// 	return {
+// 		fetchFilterImage: (data) => {
+// 			filterActions.loadFilterImage(dispatch, data);
 
-		}
-	}
-}
+// 		}
+// 	}
+// }
 
-const SingleEvent = connect(mapStateToProps, mapDispatchToProps)(SingleEventComponent);
+const SingleEvent = connect(mapStateToProps, null)(SingleEventComponent);
 export default SingleEvent;
 

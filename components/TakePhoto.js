@@ -21,6 +21,9 @@ import {
 // const FLASH_MODE_ON = "on";
 // const FLASH_MODE_OFF = "off";
 // const FLASH_MODE_TORCH = "torch";
+  const FACEBOOK_ICON = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAAAYFBMVEUAAAAAQIAAWpwAX5kAX5gAX5gAX5gAXJwAXpgAWZ8AX5gAXaIAX5gAXpkAVaoAX5gAXJsAX5gAX5gAYJkAYJkAXpoAX5gAX5gAX5kAXpcAX5kAX5gAX5gAX5YAXpoAYJijtTrqAAAAIHRSTlMABFis4vv/JL0o4QvSegbnQPx8UHWwj4OUgo7Px061qCrcMv8AAAB0SURBVEjH7dK3DoAwDEVRqum9BwL//5dIscQEEjFiCPhubziTbVkc98dsx/V8UGnbIIQjXRvFQMZJCnScAR3nxQNcIqrqRqWHW8Qd6cY94oGER8STMVioZsQLLnEXw1mMr5OqFdGGS378wxgzZvwO5jiz2wFnjxABOufdfQAAAABJRU5ErkJggg==";
+
+import Icon from 'react-native-vector-icons/Entypo';
 
 import { connect } from 'react-redux';
 
@@ -44,6 +47,10 @@ class TakePhotoComponent extends Component {
 		this.takePicture = this.takePicture.bind(this);
     this.switchType = this.switchType.bind(this);
     this.switchFlash = this.switchFlash.bind(this);
+
+    this.share = this.share.bind(this);
+
+    this.onCancel = this.onCancel.bind(this);
     // this.handleZoom = this.handleZoom.bind(this);
 
     this.state = {
@@ -247,6 +254,59 @@ class TakePhotoComponent extends Component {
     return icon;
   }
 
+  onCancel() {
+    console.log("CANCEL")
+    //this.setState({visible:false});
+  }
+
+  share(platform){
+
+    let start = Date.now();
+    console.log('getting snapshot...');
+
+    //whatsapp works. facebook works.
+
+                RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
+                  format: "jpeg",
+                  quality: 1.0,
+                  result: 'data-uri'
+                })
+                .then(
+                    uri => {
+                      console.log("Image saved to uri. Time to complete: ", Date.now()-start);
+                      console.log("----------------------------------------")
+
+                   //   console.log('image uri: ', uri);
+
+                    if(platform) {
+
+                      let shareImage = {
+                        title: "React Native",
+                        message: "",
+                        url: uri,
+                        social: platform
+                      };
+ 
+                      Share.shareSingle(shareImage).catch(err => {
+                        console.log('Error in TakePhoto share:', err);
+                      })
+                    } else {
+                      let shareImage = {
+                        title: "React Native",
+                        message: "",
+                        url: uri,
+                        subject: "Share Link" //  for email
+                      };
+                      Share.open(shareImage);
+                    }
+                },
+                error => console.error("Oops, snapshot failed", error)
+              )
+
+
+
+  }
+
   _handleFocusChange(e){
     console.log('focus???')
   }
@@ -257,6 +317,7 @@ class TakePhotoComponent extends Component {
 
   render() {
   //  let filterURI = "data:image/png;base64,"+this.props.filterImage;
+
   let filterURI = "data:image/png;base64,"+this.props.filterURI;
     return (<View>
         {!this.state.applyFilter
@@ -311,43 +372,39 @@ class TakePhotoComponent extends Component {
 
         :
         (<View style={styles.container}>
+
         <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
           <Image style={styles.photo} source={{ uri: this.state.photo}}>
             <Image source={{uri: filterURI}} style={styles.filter}/>
           </Image>  
         </View>
-            <View style={styles.button}>
-              <TouchableOpacity onPress={()=>{
-                console.log("----------------------------------------")
 
-                RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
-                  format: "jpeg",
-                  quality: 1.0,
-                  result: 'data-uri'
-                })
-                .then(
-                    uri => {
-                      console.log("Image saved to uri")
-                      console.log("----------------------------------------")
+            <View style={styles.whatsapp}>
+              <TouchableOpacity onPress={()=>{this.share('whatsapp')} }>
+                <Image source={require("../assets/whatsapp.png")} style={{width: 50, height: 50}}/>
+              </TouchableOpacity>
+            </View>
 
-                      let shareImage = {
-                        title: "React Native",
-                        message: "Hola mundo",
-                       // url: this.state.snapshotURI,
-                        url: uri,
-                        subject: "Share Link" //  for email
-                      };
-                      Share.open(shareImage);
+            <View style={styles.facebook}>
+              <TouchableOpacity onPress={()=>{this.share('facebook')} }>
+                  <Icon name="facebook" size={50} color="white"/>
+              </TouchableOpacity>
+            </View>
 
+            <View style={styles.trash}>
+              <TouchableOpacity onPress={()=>{this.setState({applyFilter: !this.state.applyFilter})}}>
+                  <Image source={require('../assets/trash.png')} style={{width: 50, height: 50}} />
+              </TouchableOpacity>
+            </View>
 
-                },
-                error => console.error("Oops, snapshot failed", error)
-              )}}>
-              <View style={styles.instructions}>
-                <Text>Share</Text>
-              </View>
+          <View style={styles.share}>
+            <TouchableOpacity onPress={()=>{
+              this.share();
+            } }>
+              <Icon name="share" size={50} color="white"/>
             </TouchableOpacity>
           </View>
+
         </View>
 
           )
@@ -414,6 +471,36 @@ const styles = StyleSheet.create({
     overflow:'hidden',
     borderRadius:15,
     backgroundColor: '#0c12ce'
+  },
+  trash: {
+    position: 'absolute',
+    bottom: 120,
+   // left: (screenWidth/2) - 65,
+    left: 50,
+    elevation:3
+  },
+  facebook: {
+    position: 'absolute',
+    bottom: 220,
+   // left: (screenWidth/2) - 65,
+    left: 50,
+    elevation:3
+  },
+  whatsapp: {
+    position: 'absolute',
+    bottom: 220,
+   // left: (screenWidth/2) - 65,
+    left: 150,
+    elevation:3,
+    height: 50,
+    width: 50
+  },
+  share: {
+    position: 'absolute',
+    bottom: 120,
+   // left: (screenWidth/2) - 65,
+    left: 150,
+    elevation:3
   },
   flashButton: {
     padding: 5,

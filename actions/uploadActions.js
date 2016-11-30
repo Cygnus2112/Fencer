@@ -38,8 +38,8 @@ export const UPLOAD_FILTER_ERROR = 'UPLOAD_FILTER_ERROR';
 export const submitFilter = (dispatch, filterData) => {
 	dispatch( submitFilterRequest() );
 
-	console.log('filterData (first 20 chars) in submitFilter: ', filterData.data.slice(0,20));
-	console.log('filterData (last 20 chars) in submitFilter: ', filterData.data.slice(filterData.data.length-20,filterData.data.length-1));
+	//console.log('filterData (first 20 chars) in submitFilter: ', filterData.data.slice(0,20));
+	//console.log('filterData (last 20 chars) in submitFilter: ', filterData.data.slice(filterData.data.length-20,filterData.data.length-1));
 
 
 		//  do filter validation here. 

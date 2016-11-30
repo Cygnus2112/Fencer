@@ -60,7 +60,7 @@ class MyFiltersComponent extends Component {
 		if(newProps.allFilters !== oldProps.allFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			// console.log('=====================================')
 			
-			console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
+			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
 
 			//let arr = Object.keys(newProps.myFilters).map((k) => newProps.myFilters[k])
 			let arr = newProps.allFilters;
@@ -120,7 +120,7 @@ class MyFiltersComponent extends Component {
 
               			console.log('-------------------------');
 
-              			if(rowData.coordinates && rowData.title !== "dbdb") {
+              			if(rowData.coordinates) {
 
 							const poly = rowData.coordinates.map((point)=>{
 	              				return {
@@ -154,7 +154,7 @@ class MyFiltersComponent extends Component {
 }
 
 const _checkDates = (dates) => {
-	console.log('dates in _checkDates: ', dates);
+	//console.log('dates in _checkDates: ', dates);
 	const { endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth } = dates;
 
 	console.log(endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth);
@@ -281,7 +281,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getMyFilters: (data) => {
-    	console.log('data in MyFilters dispatch: ', data);
+    //	console.log('data in MyFilters dispatch: ', data);
     	filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
     }
   }

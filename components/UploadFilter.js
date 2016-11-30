@@ -65,9 +65,9 @@ class UploadFilter extends Component{
           } else {
 
             const source = {data: response.data};
-            console.log('************************************');
-            console.log('response.data (first 20 chars): ', response.data.slice(0,20));
-            console.log('response.data (last 20 chars): ', response.data.slice(response.data.length-20,response.data.length-1));
+            // console.log('************************************');
+            // console.log('response.data (first 20 chars): ', response.data.slice(0,20));
+            // console.log('response.data (last 20 chars): ', response.data.slice(response.data.length-20,response.data.length-1));
 
             // only when we do the final submit do we convert the image URI into data
 
@@ -91,10 +91,10 @@ class UploadFilter extends Component{
 
 
     render(){
-      if(this.state.png.data){
-        console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
-        console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
-      }
+      // if(this.state.png.data){
+      //   console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
+      //   console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
+      // }
       return(
         <View style={ styles.container }>
           <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
