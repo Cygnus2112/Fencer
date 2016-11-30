@@ -281,7 +281,7 @@ class TakePhotoComponent extends Component {
                     if(platform) {
 
                       let shareImage = {
-                        title: "React Native",
+                      //  title: "React Native",
                         message: "",
                         url: uri,
                         social: platform
@@ -292,7 +292,7 @@ class TakePhotoComponent extends Component {
                       })
                     } else {
                       let shareImage = {
-                        title: "React Native",
+                      //  title: "React Native",
                         message: "",
                         url: uri,
                         subject: "Share Link" //  for email
@@ -378,6 +378,12 @@ class TakePhotoComponent extends Component {
             <Image source={{uri: filterURI}} style={styles.filter}/>
           </Image>  
         </View>
+
+                    <View style={styles.snapchat}>
+              <TouchableOpacity onPress={()=>{this.share('snapchat')} }>
+                <Image source={require("../assets/snapchat.png")} style={{width: 50, height: 50}}/>
+              </TouchableOpacity>
+            </View>
 
             <View style={styles.whatsapp}>
               <TouchableOpacity onPress={()=>{this.share('whatsapp')} }>
@@ -484,6 +490,13 @@ const styles = StyleSheet.create({
     bottom: 220,
    // left: (screenWidth/2) - 65,
     left: 50,
+    elevation:3
+  },
+  snapchat: {
+    position: 'absolute',
+    bottom: 220,
+   // left: (screenWidth/2) - 65,
+    left: 250,
     elevation:3
   },
   whatsapp: {
