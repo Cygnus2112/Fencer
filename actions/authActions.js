@@ -220,7 +220,7 @@ export const checkForToken = (dispatch) => {
 
             	}).done();
             } else {
-              
+              console.log('token not found');
             	// dispatch(authFail());
 
             }

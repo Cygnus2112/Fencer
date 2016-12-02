@@ -21,7 +21,8 @@ import {
 // const FLASH_MODE_ON = "on";
 // const FLASH_MODE_OFF = "off";
 // const FLASH_MODE_TORCH = "torch";
-  const FACEBOOK_ICON = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAAAYFBMVEUAAAAAQIAAWpwAX5kAX5gAX5gAX5gAXJwAXpgAWZ8AX5gAXaIAX5gAXpkAVaoAX5gAXJsAX5gAX5gAYJkAYJkAXpoAX5gAX5gAX5kAXpcAX5kAX5gAX5gAX5YAXpoAYJijtTrqAAAAIHRSTlMABFis4vv/JL0o4QvSegbnQPx8UHWwj4OUgo7Px061qCrcMv8AAAB0SURBVEjH7dK3DoAwDEVRqum9BwL//5dIscQEEjFiCPhubziTbVkc98dsx/V8UGnbIIQjXRvFQMZJCnScAR3nxQNcIqrqRqWHW8Qd6cY94oGER8STMVioZsQLLnEXw1mMr5OqFdGGS378wxgzZvwO5jiz2wFnjxABOufdfQAAAABJRU5ErkJggg==";
+
+//  const FACEBOOK_ICON = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAADwAAAA8CAMAAAANIilAAAAAYFBMVEUAAAAAQIAAWpwAX5kAX5gAX5gAX5gAXJwAXpgAWZ8AX5gAXaIAX5gAXpkAVaoAX5gAXJsAX5gAX5gAYJkAYJkAXpoAX5gAX5gAX5kAXpcAX5kAX5gAX5gAX5YAXpoAYJijtTrqAAAAIHRSTlMABFis4vv/JL0o4QvSegbnQPx8UHWwj4OUgo7Px061qCrcMv8AAAB0SURBVEjH7dK3DoAwDEVRqum9BwL//5dIscQEEjFiCPhubziTbVkc98dsx/V8UGnbIIQjXRvFQMZJCnScAR3nxQNcIqrqRqWHW8Qd6cY94oGER8STMVioZsQLLnEXw1mMr5OqFdGGS378wxgzZvwO5jiz2wFnjxABOufdfQAAAABJRU5ErkJggg==";
 
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -319,44 +320,40 @@ class TakePhotoComponent extends Component {
   //  let filterURI = "data:image/png;base64,"+this.props.filterImage;
 
   let filterURI = "data:image/png;base64,"+this.props.filterURI;
-    return (<View>
+    return (<View >
         {!this.state.applyFilter
           ?
 
         (<View style={styles.container}>
+
           <Camera
-          ref={(cam) => {
-            this.camera = cam;              //  the new (correct) callback refs style
-          }}
-          style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-          type={this.state.camera.type}
-          flashMode={this.state.camera.flashMode}
-          mirrorImage={this.state.camera.mirror}
-          defaultTouchToFocus
-          captureTarget={Camera.constants.CaptureTarget.temp}
-          onZoomChanged={this._handleZoomChange.bind(this)}
-          onFocusChanged={this._handleFocusChange.bind(this)}>
+            ref={(cam) => {
+              this.camera = cam;              //  the new (correct) callback refs style
+            }}
+            style={styles.preview}
+            aspect={Camera.constants.Aspect.fill}
+            type={this.state.camera.type}
+            flashMode={this.state.camera.flashMode}
+            mirrorImage={this.state.camera.mirror}
+            defaultTouchToFocus
+            captureTarget={Camera.constants.CaptureTarget.temp}
+            onZoomChanged={this._handleZoomChange.bind(this)}
+            onFocusChanged={this._handleFocusChange.bind(this)}>
 
-          <TouchableOpacity
-            style={styles.flashButton}
-            onPress={this.switchFlash}>
-            <Image
-              source={this.flashIcon}/>
-          </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.flashButton}
+                onPress={this.switchFlash}>
+                  <Image source={this.flashIcon} style={{width: 32, height: 32}}/>
+              </TouchableOpacity>
 
-          <TouchableOpacity onPress={this.switchType}>
-            <View style={{width: 50, height: 50,
-                  flex: 0,
-                  marginBottom: 40
-            }}>
-            <Image source={require('../assets/camera-switch.png')} style={{width: 50, height: 50,backgroundColor: 'white'}} />
+              <TouchableOpacity 
+                onPress={this.switchType}
+                style={styles.cameraButton}>
+                  <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32}} />
+              </TouchableOpacity>
 
-            </View>
-          </TouchableOpacity>
-
-          <TouchableOpacity onPress={this.takePicture}>
-            <View style={{width: 50, height: 50,
+              <TouchableOpacity onPress={this.takePicture}>
+                <View style={{width: 50, height: 50,
                   flex: 0,
                   padding: 10,
                   margin: 40,
@@ -364,50 +361,49 @@ class TakePhotoComponent extends Component {
                   borderColor: 'white',
                   borderWidth: 2
 
-            }} />
-          </TouchableOpacity>
+                }} />
+              </TouchableOpacity>
 
-        </Camera>
+          </Camera>
+
         </View>)
 
         :
         (<View style={styles.container}>
 
-        <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
-          <Image style={styles.photo} source={{ uri: this.state.photo}}>
-            <Image source={{uri: filterURI}} style={styles.filter}/>
-          </Image>  
-        </View>
+          <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
+            <Image style={styles.photo} source={{ uri: this.state.photo}}>
+              <Image source={{uri: filterURI}} style={styles.filter}/>
+            </Image>  
+          </View>
 
-                    <View style={styles.snapchat}>
+            <View style={styles.snapchat}>
               <TouchableOpacity onPress={()=>{this.share('snapchat')} }>
-                <Image source={require("../assets/snapchat.png")} style={{width: 50, height: 50}}/>
+                <Image source={require("../assets/snapchat.png")} style={{width: 35, height: 35}}/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.whatsapp}>
               <TouchableOpacity onPress={()=>{this.share('whatsapp')} }>
-                <Image source={require("../assets/whatsapp.png")} style={{width: 50, height: 50}}/>
+                <Image source={require("../assets/whatsapp.png")} style={{width: 35, height: 35}}/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.facebook}>
               <TouchableOpacity onPress={()=>{this.share('facebook')} }>
-                  <Icon name="facebook" size={50} color="white"/>
+                  <Icon name="facebook" size={35} color="white"/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.trash}>
               <TouchableOpacity onPress={()=>{this.setState({applyFilter: !this.state.applyFilter})}}>
-                  <Image source={require('../assets/trash.png')} style={{width: 50, height: 50}} />
+                  <Image source={require('../assets/trash.png')} style={{width: 32, height: 32}} />
               </TouchableOpacity>
             </View>
 
           <View style={styles.share}>
-            <TouchableOpacity onPress={()=>{
-              this.share();
-            } }>
-              <Icon name="share" size={50} color="white"/>
+            <TouchableOpacity onPress={()=>{ this.share() } }>
+              <Icon name="share" size={40} color="white"/>
             </TouchableOpacity>
           </View>
 
@@ -426,7 +422,13 @@ class TakePhotoComponent extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+  //  flex: 1
+    width: screenWidth,
+    height: screenHeight,
+    flexDirection: 'column',
+    backgroundColor:'transparent',
+    justifyContent: 'flex-start',
+    alignItems: 'center'
   },
   preview: {
     flex: 1,
@@ -480,43 +482,51 @@ const styles = StyleSheet.create({
   },
   trash: {
     position: 'absolute',
-    bottom: 120,
+    top: 10,
    // left: (screenWidth/2) - 65,
-    left: 50,
+    left: 25,
     elevation:3
   },
   facebook: {
     position: 'absolute',
-    bottom: 220,
+    bottom: 50,
    // left: (screenWidth/2) - 65,
     left: 50,
     elevation:3
   },
   snapchat: {
     position: 'absolute',
-    bottom: 220,
+    bottom: 50,
    // left: (screenWidth/2) - 65,
-    left: 250,
+    left: 115,
     elevation:3
   },
   whatsapp: {
     position: 'absolute',
-    bottom: 220,
+    bottom: 50,
    // left: (screenWidth/2) - 65,
-    left: 150,
+    right: 115,
     elevation:3,
-    height: 50,
-    width: 50
+    height: 35,
+    width: 35
   },
   share: {
     position: 'absolute',
-    bottom: 120,
+    bottom: 45,
    // left: (screenWidth/2) - 65,
-    left: 150,
+    right: 50,
     elevation:3
   },
   flashButton: {
-    padding: 5,
+    position: 'absolute',
+    top: 10,
+    left: 10,
+  //  padding: 5,
+  },
+  cameraButton: {
+    position: 'absolute',
+    top: 10,
+    right: 10
   },
 });
 
