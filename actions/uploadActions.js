@@ -38,10 +38,6 @@ export const UPLOAD_FILTER_ERROR = 'UPLOAD_FILTER_ERROR';
 export const submitFilter = (dispatch, filterData) => {
 	dispatch( submitFilterRequest() );
 
-	//console.log('filterData (first 20 chars) in submitFilter: ', filterData.data.slice(0,20));
-	//console.log('filterData (last 20 chars) in submitFilter: ', filterData.data.slice(filterData.data.length-20,filterData.data.length-1));
-
-
 		//  do filter validation here. 
 		// if successfull:
 
@@ -119,8 +115,8 @@ export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
 
 export const finalSubmitFilter = (dispatch, data) => {
 	console.log('title in finalSubmitFilter: ', data.title);
-	console.log('filter data (first 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(0,20));
-	console.log('filter data (last 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(data.filterToUpload.data.length-20,data.filterToUpload.data.length-1));
+	// console.log('filter data (first 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(0,20));
+	// console.log('filter data (last 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(data.filterToUpload.data.length-20,data.filterToUpload.data.length-1));
 
 	dispatch( finalSubmitRequest() );
 
@@ -176,13 +172,16 @@ export const finalSubmitFilter = (dispatch, data) => {
             	},
             	timeout: 120000
           	})
-          	.then(response => {
-          		console.log('response in filterimages POST (client side): ', response);
-            	return response
+          	.then(resp => {
+
+          		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
+
+          		console.log('response in filterimages POST (client side): ', resp);
+            	return resp
         	})
 
         									
-            return response;
+            return response;			// WHY IS THIS HERE???
         })
         .catch((err) => {
         	//dispatch(finalSubmitSuccess( ));
@@ -212,5 +211,18 @@ const finalSubmitSuccess = (data) => {
 		bitlyURL: data.bitlyURL
 	}
 
+}
+
+export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
+export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
+
+export const clearProps = (dispatch) => {
+	dispatch(clearPropsRequest());
+}
+
+const clearPropsRequest = () => {
+	return {
+		type: CLEAR_PROPS_REQUEST
+	}
 }
 

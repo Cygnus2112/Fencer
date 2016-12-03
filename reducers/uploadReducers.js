@@ -94,12 +94,36 @@ const uploadReducer = (state = initialState, action) => {
         filterID: action.filterID,              // MIGHT NOT NEED THIS
         finalSubmitComplete: true               //  will need to move this to after text message is sent
       })
+    case ActionTypes.CLEAR_PROPS_REQUEST:
+      return Object.assign({}, state, {
+          uploadFilterComplete: false,
+          selectDatesComplete: false,
+          chooseAreaComplete: false,
+          //sendToFriendsComplete: false,
+          selectedDates: {
+            startMonth: null,
+            startDay: null,
+            startYear: null,
+            endMonth: null,
+            endDay: null,
+            endYear: null,
+            startHour: null,
+            endHour: null,
+            startMinute: null,
+            endMinute: null
+          },
+          filterToUpload: null,
+          fenceCoordinates: null,
+          filterTitle: null,
+          filterMessage: null
+      })
+    // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
+    //   return Object.assign({}, state, {
+    //     bitlyURL: "",
+    //     filterID: "",
+    //     sendToFriendsComplete: true         
+    //   })
 
-      
-
-      //   ADD FUNCTIONS FOR DEALING WITH SENDING OUT INVITES AND UPLOADING DATA TO API
-      //   filterTitle
-      //  filterMessage
 
     default:
       return state;

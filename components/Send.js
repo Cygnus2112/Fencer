@@ -19,7 +19,7 @@ import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux'
 import * as uploadActions from '../actions/uploadActions';
-
+ 
 import Share from 'react-native-share';
 
 import Button from 'react-native-button';
@@ -46,7 +46,7 @@ class Send extends Component {
         console.log('this.props.fenceCoordinates ', this.props.fenceCoordinates);
         console.log('this.props.selectedDates', this.props.selectedDates);
 
-        setTimeout(()=>{
+        // setTimeout(()=>{
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.props.filterTitle){
 
                 // trigger error modal: 'oops! one or more of the steps is incomplete...'
@@ -62,17 +62,20 @@ class Send extends Component {
                 }
                 this.props.finalSumbit(dataToSend);
             }
-        },100)
+        // },100)
 
     }
 
     componentWillReceiveProps(newProps, oldProps){
         console.log('newProps: ', newProps);
         if(newProps.finalSubmitComplete){
-          //  Actions.main();
+          //  this.props.clearProps()           // will need to clear all *except* filterToUpload
 
           Actions.loading();                            //   NEED TO CHANGE THIS
 
+        }
+        if(newProps.filterTitle){
+            this.handleSubmit();
         }
     }
 
@@ -119,7 +122,6 @@ class Send extends Component {
                           onPress={()=> { 
 
                             this.props.submitTitle({title: this.state.title, message: this.state.message}); 
-                            this.handleSubmit();
 
                          }
                         }>
@@ -187,9 +189,10 @@ const mapDispatchToProps = (dispatch) => {
             }
         },
         finalSumbit: (data) => {
-
             uploadActions.finalSubmitFilter(dispatch, data);
-            
+        },
+        clearProps: () => {
+            uploadActions.clearProps(dispatch);
         }
 
     }

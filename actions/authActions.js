@@ -145,19 +145,20 @@ const loginSuccess = (user) => {
 
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
-export const logout = () => {
-  return dispatch => {
+export const logout = (dispatch) => {
+  //return dispatch => {
     AsyncStorage.removeItem('fencer-token')
     	.then(result => {
     		AsyncStorage.removeItem('fencer-username')
     			.then(result => {
+
     				dispatch(logoutSuccess());
 
-    			//	Actions.login();
+            console.log('succcessfully logged out');
 
     			});
     	});
-  }
+  //}
 }
 
 const logoutSuccess = () => {

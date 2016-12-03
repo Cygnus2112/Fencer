@@ -199,21 +199,33 @@ class WelcomeComponent extends Component{
 
 
 
-        {!this.props.isLoggedIn &&
-
-        (   
-          <TouchableOpacity onPress={ ( ) => {
+        {!this.props.isLoggedIn 
+          ?
+          (   
+            <TouchableOpacity onPress={ ( ) => {
                     this.setState({
                       showLoginModal: !this.state.showLoginModal
                     })
                   } 
                 }>
-            <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: 50, width: screenWidth, borderWidth:2,borderColor: 'black',backgroundColor: 'blue'}}>
-              <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}> Login </Text>
-            </View>
-          </TouchableOpacity>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: 50, width: screenWidth, borderWidth:2,borderColor: 'black',backgroundColor: 'blue'}}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}> Login </Text>
+              </View>
+            </TouchableOpacity>
+          )
+          :
+          (
+            <TouchableOpacity onPress={ ( ) => {
 
-            )
+                this.props.logout();
+
+                  } 
+              }>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: 50, width: screenWidth, borderWidth:2,borderColor: 'black',backgroundColor: 'blue'}}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}> Logout </Text>
+              </View>
+            </TouchableOpacity>
+          )
 
         }
 
@@ -268,8 +280,9 @@ const mapDispatchToProps = (dispatch) => {
   // let bound = bindActionCreators(filterActions, dispatch);
   // console.log('boundActionCreators in welcome: ', bound);
   return {
-    filterActions: bindActionCreators(filterActions, dispatch),
-    authActions: bindActionCreators(authActions, dispatch)
+    logout: () => {
+      authActions.logout(dispatch)
+    }
   }
 }
 
