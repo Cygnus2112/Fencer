@@ -123,12 +123,12 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillReceiveProps(newProps,oldProps){
-		if(newProps.filterImage !== oldProps.filterImage){
+		//if(newProps.filterImage !== oldProps.filterImage){
 			// console.log('filterImage data received in SingleEvent ');
 			// console.log('filterID: ', newProps.filterID);
 			// console.log("first 20 chars: ", newProps.filterImage.slice(0,20));
 			// console.log("last 20 chars: ", newProps.filterImage.slice(newProps.filterImage.length-20,newProps.filterImage.length-1));
-		}
+		//}
 	}
 
 	// componentWillReceiveProps(newProps,oldProps){

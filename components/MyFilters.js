@@ -55,9 +55,9 @@ class MyFiltersComponent extends Component {
 
 	}
 
-	componentWillReceiveProps(newProps, oldProps){
+	componentWillReceiveProps(newProps){
 	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
-		if(newProps.allFilters !== oldProps.allFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
+		if(newProps.allFilters !== this.props.allFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			// console.log('=====================================')
 			
 			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
@@ -273,7 +273,7 @@ const mapStateToProps = (state) => {
   return {
     currentPosition: state.filterReducer.currentPosition,
     allFilters: state.filterReducer.allFilters,
-    myFilters: state. authReducer.myFilters,
+    myFilters: state.authReducer.myFilters,
     username: state.authReducer.username
   }
 }

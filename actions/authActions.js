@@ -75,11 +75,9 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export const login = (dispatch, info) => {
-  //return dispatch => {
     console.log('info in authActions login: ', info);
     dispatch(loginRequest(info));
 
-    //return fetch('http://localhost:8080/login', {
     return fetch(utils.loginURL, {
       method: 'POST',
       headers: {
@@ -92,34 +90,33 @@ export const login = (dispatch, info) => {
       })
     })
     .then(response => {
+      // if there's an error, we skip to the the 'error3' catch statement
       return response.json();
     })
     .then(response => {
+      console.log('response in login: ', response);
       try {
         if(response.token){        	
+          console.log('response.token: ', response.token);
         	AsyncStorage.setItem('fencer-token', response.token);
         	AsyncStorage.setItem('fencer-username', info.username);
 
           dispatch(loginSuccess({"token":response.token, "username": info.username}));
-          //dispatch(authSuccess());
-
-        //  Actions.styles();
 
         } else {
-          //console.error('login error');
+          console.log('login error');
           dispatch(loginError());
           
         }
       } catch(e) {
-       // console.error('login error2:', e);
+        console.log('try-catch error:', e);
         dispatch(loginError({"error2":e}));
       };
     })
     .catch(err => {
-     // console.error('login error3:', err);
+      console.log('login error3:', err);
       dispatch(loginError({"error3":err}));
     });
-  //}
 }
 
 const loginRequest = (info) => {
@@ -130,7 +127,7 @@ const loginRequest = (info) => {
 }
 
 const loginError = (msg) => {
-  console.log(msg);
+  console.log('loginError: ', msg);
   return {
     type: LOGIN_ERROR
   }
@@ -176,7 +173,7 @@ export const checkForToken = (dispatch) => {
     	AsyncStorage.getItem("fencer-token").then((value) => {
             if(value){
             	AsyncStorage.getItem("fencer-username").then((username) => {
-
+                console.log('current username: ', username);
                 let token = value;
                 return fetch(utils.userDataURL +"?username="+username, {    // CHANGE BACK TO myFiltersURL
                   method: 'GET',

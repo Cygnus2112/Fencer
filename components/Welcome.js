@@ -1,5 +1,4 @@
 
-
 import React, { Component } from 'react';
 
 import {
@@ -24,6 +23,8 @@ import * as filterActions from '../actions/filterActions';
 import * as authActions from '../actions/authActions';
 
 import LoginModal from './LoginModal'
+
+const queryString = require('query-string');
 
 const { width, height } = Dimensions.get('window');
 let screenWidth = width;
@@ -59,13 +60,24 @@ class WelcomeComponent extends Component{
   }
 
   componentDidMount(){
+    console.log('this.props.myFilters: ', this.props.myFilters);
 
         console.log('mounting Welcome...');
 
     Linking.getInitialURL().then((url) => {
-            console.log(`Deep Link URL: ${url}`);
+        console.log(`Deep Link URL: ${url}`);
+        const parsed = queryString.parse(url);
+        for(filter in parsed){
+          if(this.props.myFilters.indexOf(parsed[filter]) === -1){
+            console.log('filter ID from url: ', parsed[filter]);
+            this.props.addFilter(parsed[filter])
+          } else {
+            console.log('filter alread added to myFilters');
+          }
 
-        }).catch(err => console.error('An error occurred', err));
+        }
+
+    }).catch(err => console.error('An error occurred', err));
 
     //console.log('this.props in Welcome: ', this.props);
     console.log('-----------------------------------');
@@ -78,7 +90,7 @@ class WelcomeComponent extends Component{
 
   handleCreate(){
 
-   Actions.upload();
+    Actions.upload();
 
   }
 
@@ -241,30 +253,6 @@ class WelcomeComponent extends Component{
   }
 }
 
-              // <Button
-              //   style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
-              //   styleDisabled={{color: 'red'}}
-              //   onPress={ ( ) => {
-              //       this.setState({
-              //         showLoginModal: !this.state.showLoginModal
-              //       })
-              //     } 
-              //   } >
-              //   Login
-              // </Button>
-
-          // <View style={{
-          //    justifyContent: 'center',
-          //    alignItems: 'center',
-          //    height:50,
-          //    width: 200,
-          //    overflow:'hidden',
-          //    borderRadius:4,
-          //    borderWidth:2,
-          //    borderColor: 'black',
-          //    backgroundColor: 'blue',
-          //  }}>
-          //  </View>
 
 const mapStateToProps = (state) => {
   return {
@@ -272,7 +260,8 @@ const mapStateToProps = (state) => {
     username: state.authReducer.username,
     currentPosition: state.filterReducer.currentPosition,
     bitlyURL: state.uploadReducer.bitlyURL,
-    finalSubmitComplete: state.uploadReducer.finalSubmitComplete  
+    finalSubmitComplete: state.uploadReducer.finalSubmitComplete,
+    myFilters: state.authReducer.myFilters 
   }
 }
 
@@ -282,6 +271,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     logout: () => {
       authActions.logout(dispatch)
+    },
+    addFilter: (filter) => {
+      filterActions.addFilterByID(filter)
     }
   }
 }

@@ -16,14 +16,6 @@ import { bindActionCreators } from 'redux';
 import * as authActions from '../actions/authActions';
 
 class LoginModal extends Component {
-
-  // state = {
-  //   modalVisible: false,
-  // }
-
-  // setModalVisible(visible) {
-  //   this.setState({modalVisible: visible});
-  // }
   constructor(props){
     super(props);
 
@@ -41,15 +33,21 @@ class LoginModal extends Component {
     }
   }
 
-  componentWillReceiveProps(newProps, oldProps){
-    if(newProps.username !== oldProps.username){
+  componentDidMount(){
+   // console.log('this.props in LoginModal componentDidMount: ', this.props);
+  }
+
+  componentWillReceiveProps(newProps){
+    if(newProps.username !== this.props.username){
       this.setState({
         modalVisible: !this.state.modalVisible
       })
       this.props.toggleModal();
     }
-    if(newProps.authErrorMsg !== oldProps.authErrorMsg){
-      console.log('auth error: ', newProps.authErrorMsg);
+    if(newProps.authErrorMsg !== this.props.authErrorMsg){
+      this.setState({
+        errorMsg: newProps.authErrorMsg
+      })
     }
   }
 
@@ -276,18 +274,16 @@ const styles = StyleSheet.create({
 })
 
 const mapStateToProps = (state) => {
+
   return {
     currentView: state.uploadReducer.currentView,
-    selectDatesComplete: state.uploadReducer.selectDatesComplete,
+   // selectDatesComplete: state.uploadReducer.selectDatesComplete,
     username: state.authReducer.username,
     authErrorMsg: state.authReducer.authErrorMsg
    }
 }
 
 const mapDispatchToProps = (dispatch) => {
-  // return {
-  //   uploadActions: bindActionCreators(uploadActions, dispatch)
-  // }
   return {
     submitSignup: (info) => {
       authActions.signup(dispatch, info);

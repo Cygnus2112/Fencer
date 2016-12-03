@@ -1,4 +1,5 @@
 import { AsyncStorage, Image } from 'react-native';
+import axios from 'axios';
 
 let utils = require('../utils');
 
@@ -169,6 +170,37 @@ const loadFilterImageSuccess = (filterImageData) => {
       type: LOAD_FILTER_IMAGE_SUCCESS,
       filterImage: filterImageData.data
     }
+}
+
+
+export const addFilterByID = (filter) => {
+  AsyncStorage.getItem("fencer-token").then((token) => {
+    if(token){
+      axios({
+        method: 'post',
+        url: utils.myFiltersURL,
+        data: {
+          filterID: filter
+        },
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': token  
+        },
+        timeout: 120000
+        })
+        .then(resp => {
+
+                //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
+
+          console.log('response in addFilterByID: ', resp);
+          return resp
+        })
+    } else {
+      console.log('token not found in addFilterByID');
+    }
+        }).done();
+  
 }
 
 // export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';

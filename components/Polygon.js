@@ -89,8 +89,8 @@ class PolygonComponent extends Component {
     // );
   }
 
-  componentWillReceiveProps(newProps, oldProps){
-    if(newProps.lat !== oldProps.lat || newProps.lng !== oldProps.lng){
+  componentWillReceiveProps(newProps){
+    if(newProps.lat !== this.props.lat || newProps.lng !== this.props.lng){
       this.setState({
         latitude: newProps.lat,
         longitude: newProps.lng,

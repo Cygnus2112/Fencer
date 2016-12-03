@@ -43,38 +43,58 @@ class Send extends Component {
     }
 
     handleSubmit(){
-        console.log('this.props.fenceCoordinates ', this.props.fenceCoordinates);
-        console.log('this.props.selectedDates', this.props.selectedDates);
+        console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
+        console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
+        console.log()
 
         // setTimeout(()=>{
-            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.props.filterTitle){
+            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
 
                 // trigger error modal: 'oops! one or more of the steps is incomplete...'
-
+                console.log('oops! one or more of the steps is incomplete...');
+                console.log(this.props.uploadFilterComplete);
+                console.log(this.props.selectDatesComplete);
+                console.log(this.props.chooseAreaComplete);
+                console.log(this.props.filterTitle);
             } else {
                 let dataToSend = {
                     fenceCoordinates: this.props.fenceCoordinates,
                     selectedDates: this.props.selectedDates,
                     filterToUpload: this.props.filterToUpload,
-                    title: this.props.filterTitle,
-                    message: this.props.filterMessage,
+                    title: this.state.title,
+                    message: this.state.message,
                     username: this.props.username
                 }
                 this.props.finalSumbit(dataToSend);
+
+                // we can send the actual text message in UploadActions or maybe on the backend.
+
             }
         // },100)
 
     }
 
-    componentWillReceiveProps(newProps, oldProps){
-        console.log('newProps: ', newProps);
-        if(newProps.finalSubmitComplete){
+    componentWillReceiveProps(newProps){
+        //console.log('newProps: ', newProps);
+        if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
           //  this.props.clearProps()           // will need to clear all *except* filterToUpload
 
-          Actions.loading();                            //   NEED TO CHANGE THIS
+         // Actions.loading();                            //   NEED TO CHANGE THIS
+
+            console.log('newProps.bitlyURL: ', newProps.bitlyURL);
+            console.log('this.props.bitlyURL: ', this.props.bitlyURL);
+
+            let shareText = {
+                //  title: "React Native",
+                message: "Here is your new Fencer filter: ",
+                url: this.props.bitlyURL || newProps.bitlyURL,
+                subject: "Share Link" //  for email
+            };
+            Share.open(shareText);
+
 
         }
-        if(newProps.filterTitle){
+        if(newProps.filterTitle !== this.props.filterTitle){
             this.handleSubmit();
         }
     }
