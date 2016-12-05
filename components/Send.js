@@ -90,7 +90,12 @@ class Send extends Component {
                 url: this.props.bitlyURL || newProps.bitlyURL,
                 subject: "Share Link" //  for email
             };
-            Share.open(shareText);
+            Share.open(shareText).then((resp) => {
+                console.log('successfully sent filter???', resp);
+
+                Actions.loading();
+                
+            });
 
 
         }

@@ -98,7 +98,7 @@ class SingleEventComponent extends Component {
 
      //  	}
 
-		console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
+	//	console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
 		console.log("##################################");
 	//	console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
 

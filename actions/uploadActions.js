@@ -120,8 +120,6 @@ export const finalSubmitFilter = (dispatch, data) => {
 
 	dispatch( finalSubmitRequest() );
 
-										//  can we validate google polygon coords on backend? Am guessing no.
-
 	let filterData = data.filterToUpload.data;
 
 	AsyncStorage.getItem("fencer-token").then((token) => {
@@ -154,7 +152,7 @@ export const finalSubmitFilter = (dispatch, data) => {
         .then(response => {
         	//console.log('response in finalSubmitFilter: ', response);
 
-        	dispatch(finalSubmitSuccess({filterID: response.data.filterID,bitlyURL: response.data.bitlyURL}));  // NAVIGATE BACK TO HOME
+        	dispatch(finalSubmitSuccess({filterID: response.data.filterID, bitlyURL: response.data.bitlyURL}));  // NAVIGATE BACK TO HOME
 
         									// SHOW SUCCESS MODAL
         	console.log('response.data.filterID in upload: ', response.data.filterID);
@@ -176,7 +174,7 @@ export const finalSubmitFilter = (dispatch, data) => {
 
           		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
 
-          		console.log('response in filterimages POST (client side): ', resp);
+          		//console.log('response in filterimages POST (client side): ', resp);
             	return resp
         	})
 
