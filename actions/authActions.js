@@ -4,6 +4,8 @@ import {
 
 let utils = require('../utils');
 
+import { Actions } from 'react-native-router-flux';
+
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
@@ -98,10 +100,46 @@ export const login = (dispatch, info) => {
       try {
         if(response.token){        	
           console.log('response.token: ', response.token);
-        	AsyncStorage.setItem('fencer-token', response.token);
-        	AsyncStorage.setItem('fencer-username', info.username);
+          AsyncStorage.setItem('fencer-username', info.username,()=>{
+            AsyncStorage.setItem('fencer-token', response.token,()=>{
+              return fetch(utils.userDataURL +"?username="+info.username, {    
+                  method: 'GET',
+                  headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json',
+                    'x-access-token': response.token
+                  }
+                })
+                .then(response => {
 
-          dispatch(loginSuccess({"token":response.token, "username": info.username}));
+            //  console.log('first response: ', response);
+
+                  return response.json();
+              })
+              .then(response => {
+                console.log('2nd level response in auth login getUserData: ');
+                console.log(response);
+
+                console.log('-------------------------');
+
+                let data = {
+                  username: response.username,
+                  myFilters: response.myFilters,
+                  filtersCreated: response.filtersCreated
+                }
+
+                dispatch(authSuccess(data));
+                dispatch(loginSuccess({"token":response.token, "username": info.username}));
+            
+              })
+              .catch(err => {
+                console.error('Error in checkForToken:', err);
+              });
+
+
+
+            })
+          })
 
         } else {
           console.log('login error');
@@ -169,13 +207,51 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
 export const checkForToken = (dispatch) => {
- //   return dispatch => {
+      dispatch(authRequest());
+
     	AsyncStorage.getItem("fencer-token").then((value) => {
             if(value){
             	AsyncStorage.getItem("fencer-username").then((username) => {
                 console.log('current username: ', username);
                 let token = value;
-                return fetch(utils.userDataURL +"?username="+username, {    // CHANGE BACK TO myFiltersURL
+
+                dispatch(authSuccess(username));
+              })
+
+            } else {
+              console.log('token not found');
+            	// dispatch(authFail());
+
+            }
+
+        }).done();
+}
+
+const authRequest = () => {
+  return {
+    type: AUTH_REQUEST
+  }
+}
+
+const authSuccess = (username) => {
+  return {
+    type: AUTH_SUCCESS,
+    username: username
+  }
+}
+
+export const LOAD_MY_FILTERS_REQUEST = 'LOAD_MY_FILTERS_REQUEST';
+export const LOAD_MY_FILTERS_SUCCESS = 'LOAD_MY_FILTERS_SUCCESS';
+
+export const loadMyFilters = (dispatch) => {
+        dispatch(loadMyFiltersRequest());
+        AsyncStorage.getItem("fencer-token").then((value) => {
+            if(value){
+              AsyncStorage.getItem("fencer-username").then((username) => {
+                console.log('current username: ', username);
+                let token = value;
+
+                return fetch(utils.userDataURL +"?username="+username, {    
                   method: 'GET',
                   headers: {
                     'Accept': 'application/json',
@@ -183,14 +259,14 @@ export const checkForToken = (dispatch) => {
                     'x-access-token': token
                   }
                 })
-              .then(response => {
+                .then(response => {
 
             //  console.log('first response: ', response);
 
                   return response.json();
               })
               .then(response => {
-                console.log('2nd level response in auth checkForToken: ');
+                console.log('2nd level response in auth loadMyFilters: ');
                 console.log(response);
 
                 console.log('-------------------------');
@@ -201,46 +277,49 @@ export const checkForToken = (dispatch) => {
                   filtersCreated: response.filtersCreated
                 }
 
-                dispatch(authSuccess(data));
-
-            
+                dispatch(loadMyFiltersSuccess(data));
+                Actions.myfilters();
+                
               })
               .catch(err => {
-                console.error('Error in checkForToken:', err);
+                console.error('Error in loadMyFilters:', err);
               });
 
                 // grab all filters???
 
-            		
+              
 
                // purgeExpiredFilters(dispatch, value, username);
 
 
-            	}).done();
+              }).done();
             } else {
               console.log('token not found');
-            	// dispatch(authFail());
+              // dispatch(authFail());
 
             }
 
         }).done();
- //   }
+
+
 }
 
-const authRequest = () => {
+const loadMyFiltersRequest = () => {
   return {
-    type: AUTH_REQUEST
+    type: LOAD_MY_FILTERS_REQUEST
   }
 }
 
-const authSuccess = (data) => {
+const loadMyFiltersSuccess = (data) => {
   return {
-    type: AUTH_SUCCESS,
-    username: data.username,
+    type: LOAD_MY_FILTERS_SUCCESS,
     myFilters: data.myFilters,
     filtersCreated: data.filtersCreated
   }
 }
+
+export const PURGE_REQUEST = 'PURGE_REQUEST';
+export const PURGE_SUCCESS = 'PURGE_SUCCESS';
 
 export const purgeExpiredFilters = (dispatch, token, username) => {
   dispatch(purgeRequest());
@@ -274,15 +353,16 @@ export const purgeExpiredFilters = (dispatch, token, username) => {
 
 const purgeRequest = () => {
   return {
-    type: 'PURGE_REQUEST'
+    type: PURGE_REQUEST
   }
 }
 
 const purgeSuccess = () => {
   return {
-    type: 'PURGE_SUCCESS'
+    type: PURGE_SUCCESS
   }
 }
+
 
 
 

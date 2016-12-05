@@ -69,10 +69,12 @@ class WelcomeComponent extends Component{
         const parsed = queryString.parse(url);
         for(filter in parsed){
           if(this.props.myFilters.indexOf(parsed[filter]) === -1){
+
             console.log('filter ID from url: ', parsed[filter]);
             this.props.addFilter(parsed[filter])
+            
           } else {
-            console.log('filter alread added to myFilters');
+            console.log('filter already added to myFilters');
           }
 
         }
@@ -96,7 +98,8 @@ class WelcomeComponent extends Component{
 
   loadMyFilters(){
 
-    Actions.myfilters();
+    //Actions.myfilters();
+    this.props.loadMyFilters();
 
   }
 
@@ -266,14 +269,15 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  // let bound = bindActionCreators(filterActions, dispatch);
-  // console.log('boundActionCreators in welcome: ', bound);
   return {
     logout: () => {
       authActions.logout(dispatch)
     },
     addFilter: (filter) => {
       filterActions.addFilterByID(filter)
+    },
+    loadMyFilters: () => {
+      authActions.loadMyFilters(dispatch);
     }
   }
 }

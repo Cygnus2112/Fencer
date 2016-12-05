@@ -12,7 +12,8 @@ import {
     ListView,
     Dimensions,
     Linking,
-    TextInput
+    TextInput,
+    AppState
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -45,7 +46,7 @@ class Send extends Component {
     handleSubmit(){
         console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
         console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
-        console.log()
+        console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
@@ -86,15 +87,15 @@ class Send extends Component {
 
             let shareText = {
                 //  title: "React Native",
-                message: "Here is your new Fencer filter: ",
+                message: "Here is your new Fencer filter: " + this.state.title + " ",
                 url: this.props.bitlyURL || newProps.bitlyURL,
                 subject: "Share Link" //  for email
             };
             Share.open(shareText).then((resp) => {
                 console.log('successfully sent filter???', resp);
-
+                console.log('AppState.currentState after Share: ', AppState.currentState);
+                this.props.clearProps();
                 Actions.loading();
-                
             });
 
 
@@ -217,7 +218,7 @@ const mapDispatchToProps = (dispatch) => {
             uploadActions.finalSubmitFilter(dispatch, data);
         },
         clearProps: () => {
-            uploadActions.clearProps(dispatch);
+            uploadActions.clearUploadProps(dispatch);
         }
 
     }

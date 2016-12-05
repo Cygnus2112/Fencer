@@ -163,31 +163,6 @@ const _checkDates = (dates) => {
 	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
 	let currentTime = Date.now();
 
-	//const currentDate = new Date();
-	// const currentYear = currentDate.getFullYear();
-	// const currentMonth = currentDate.getMonth();
-	// const currentDay = currentDate.getDate();
-	// const currentHour = currentDate.getHours();
-	// const currentMinute = currentDate.getMinutes();
-
-	// if(currentYear < startYear || currentYear > endYear){
-	// 	console.log('bad year');
-	// 	return false;
-	// } else if (currentMonth < startMonth || currentMonth < endMonth){
-	// 	console.log('bad month');
-	// 	return false;
-	// } else if (currentDay < startDay || currentDay > endDay) {
-	// 	console.log('bad day');
-	// 	return false;
-	// } else if (currentHour < startHour || currentHour > endHour) {
-	// 	console.log('bad hour');
-	// 	return false;
-	// } /* else if (currentMinute < startMinute || currentMinute > endMinute) {
-	// 	console.log('bad minute');
-	// 	return false;						//  SKIPPING MINUTE CHECK FOR DEV PURPOSES
-	// } */ else {
-	// 	return true;
-	// }
 
 	if(currentTime < startTime || currentTime > endTime){
 		return false;
@@ -199,47 +174,18 @@ const _checkDates = (dates) => {
 
 const _isActiveOrUpcoming = (dates) => {
 	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
-	console.log("event dates: ");
-	console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+	//console.log("event dates: ");
+	//console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
 
 	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
 	let currentTime = Date.now();
 
     if(currentTime > endTime){
-    	console.log('bad year (_isActiveOrUpcoming). event has ended');
+    	console.log('_isActiveOrUpcoming: event has ended');
 		return false;
     } else {
     	return true;
     }
-
-	// const { endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth } = dates;
-	// console.log(endMinute, endHour, startMinute, startHour, endYear, endDay, endMonth, startYear, startDay, startMonth);
-
-	// const currentDate = new Date();
-	// const currentYear = currentDate.getFullYear();
-	// const currentMonth = currentDate.getMonth();
-	// const currentDay = currentDate.getDate();
-	// const currentHour = currentDate.getHours();
-	// const currentMinute = currentDate.getMinutes();
-
-	// if(currentYear > endYear){
-	// 	console.log('bad year (_isActiveOrUpcoming)');
-	// 	return false;
-	// } else if (currentMonth > endMonth){
-	// 	console.log('bad month (_isActiveOrUpcoming)');
-	// 	return false;
-	// } else if (currentDay > endDay) {
-	// 	console.log('bad day (_isActiveOrUpcoming)');
-	// 	return false;
-	// } else if (currentHour > endHour) {
-	// 	console.log('bad hour (_isActiveOrUpcoming)');
-	// 	return false;
-	// } /* else if (currentMinute < startMinute || currentMinute > endMinute) {
-	// 	console.log('bad minute');
-	// 	return false;						//  SKIPPING MINUTE CHECK FOR DEV PURPOSES
-	// } */ else {
-	// 	return true;
-	// }
 }
 
 

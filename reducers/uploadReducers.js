@@ -99,7 +99,7 @@ const uploadReducer = (state = initialState, action) => {
           uploadFilterComplete: false,
           selectDatesComplete: false,
           chooseAreaComplete: false,
-          //sendToFriendsComplete: false,
+          sendToFriendsComplete: false,
           selectedDates: {
             startMonth: null,
             startDay: null,
@@ -115,7 +115,10 @@ const uploadReducer = (state = initialState, action) => {
           filterToUpload: null,
           fenceCoordinates: null,
           filterTitle: null,
-          filterMessage: null
+          filterMessage: null,
+          bitlyURL: "",
+          filterID: "",
+          finalSubmitComplete: false
       })
     // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
     //   return Object.assign({}, state, {

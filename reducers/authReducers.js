@@ -50,6 +50,8 @@ const authReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isLoggedIn: false,
         username: '',
+        myFilters: null,
+        filtersCreated: null
       })
     case ActionTypes.AUTH_REQUEST:
       return Object.assign({}, state, {
@@ -58,20 +60,19 @@ const authReducer = (state = initialState, action) => {
     case ActionTypes.AUTH_SUCCESS:
       return Object.assign({}, state, {
         username: action.username,
-        myFilters: action.myFilters,
-        filtersCreated: action.filtersCreated,
         isLoggedIn: true,
         isFetchingAuth: false
       })
-    // case ActionTypes.LOAD_MYFILTERS_REQUEST:
-    //   return Object.assign({}, state, {
-    //    isLoadingMyFilters: true
-    //   })
-    // case ActionTypes.LOAD_MYFILTERS_SUCCESS:
-    //   return Object.assign({}, state, {
-    //    isLoadingMyFilters: false,
-    //    myFilters: action.myFilters
-    //   })
+    case ActionTypes.LOAD_MY_FILTERS_REQUEST:
+      return Object.assign({}, state, {
+       isLoadingMyFilters: true
+      })
+    case ActionTypes.LOAD_MY_FILTERS_SUCCESS:
+      return Object.assign({}, state, {
+        isLoadingMyFilters: false,
+        myFilters: action.myFilters,
+        filtersCreated: action.filtersCreated
+      })
     // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
     //   return Object.assign({}, state, {
     //    isLoadingFiltersCreated: true

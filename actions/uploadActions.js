@@ -214,11 +214,11 @@ const finalSubmitSuccess = (data) => {
 export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
 export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
 
-export const clearProps = (dispatch) => {
-	dispatch(clearPropsRequest());
+export const clearUploadProps = (dispatch) => {
+	dispatch(clearUploadPropsRequest());
 }
 
-const clearPropsRequest = () => {
+const clearUploadPropsRequest = () => {
 	return {
 		type: CLEAR_PROPS_REQUEST
 	}
