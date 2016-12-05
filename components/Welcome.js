@@ -60,24 +60,29 @@ class WelcomeComponent extends Component{
   }
 
   componentDidMount(){
-    console.log('this.props.myFilters: ', this.props.myFilters);
+    //console.log('mounting Welcome...');
+    //console.log('this.props.myFilters: ', this.props.myFilters);
 
-        console.log('mounting Welcome...');
+   // if the user is not logged in and they were referred by a deep link, we need to redirect them to a sign-up page.
 
     Linking.getInitialURL().then((url) => {
         console.log(`Deep Link URL: ${url}`);
+      //  if(url) {
+        // if(!this.props.isLoggedIn){
+            // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+       // } else {
         const parsed = queryString.parse(url);
         for(filter in parsed){
           if(this.props.myFilters.indexOf(parsed[filter]) === -1){
 
             console.log('filter ID from url: ', parsed[filter]);
             this.props.addFilter(parsed[filter])
-            
+
           } else {
             console.log('filter already added to myFilters');
           }
-
         }
+      //}
 
     }).catch(err => console.error('An error occurred', err));
 
