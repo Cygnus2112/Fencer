@@ -2,6 +2,7 @@ import { AsyncStorage, Image } from 'react-native';
 import axios from 'axios';
 
 let utils = require('../utils');
+import { Actions } from 'react-native-router-flux';
 
 export const LOAD_VIEW_REQUEST = 'LOAD_VIEW_REQUEST';
 
@@ -215,6 +216,7 @@ export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
 export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
 
 export const clearUploadProps = (dispatch) => {
+	Actions.loading();
 	dispatch(clearUploadPropsRequest());
 }
 

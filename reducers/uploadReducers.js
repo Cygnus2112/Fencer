@@ -114,7 +114,7 @@ const uploadReducer = (state = initialState, action) => {
           },
           filterToUpload: null,
           fenceCoordinates: null,
-          filterTitle: null,
+       //   filterTitle: null,
           filterMessage: null,
           bitlyURL: "",
           filterID: "",

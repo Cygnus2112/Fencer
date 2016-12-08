@@ -13,7 +13,8 @@ import {
     Dimensions,
     Linking,
     TextInput,
-    AppState
+    AppState,
+    Share
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -21,7 +22,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import * as uploadActions from '../actions/uploadActions';
  
-import Share from 'react-native-share';
+//import Share from 'react-native-share';
 
 import Button from 'react-native-button';
 //import Icon from 'react-native-vector-icons/FontAwesome';
@@ -46,7 +47,7 @@ class Send extends Component {
     handleSubmit(){
         console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
         console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
-        console.log('AppState.currentState: ', AppState.currentState);
+      //  console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
@@ -76,11 +77,8 @@ class Send extends Component {
     }
 
     componentWillReceiveProps(newProps){
-        //console.log('newProps: ', newProps);
-        if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
-          //  this.props.clearProps()           // will need to clear all *except* filterToUpload
-
-         // Actions.loading();                            //   NEED TO CHANGE THIS
+       // if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
+         if(newProps.filterTitle !== this.props.filterTitle){
 
             console.log('newProps.bitlyURL: ', newProps.bitlyURL);
             console.log('this.props.bitlyURL: ', this.props.bitlyURL);
@@ -91,18 +89,26 @@ class Send extends Component {
                 url: this.props.bitlyURL || newProps.bitlyURL,
                 subject: "Share Link" //  for email
             };
-            Share.open(shareText).then((resp) => {
+
+            Share.share(shareText)
+            .then((resp) => {
                 console.log('successfully sent filter???', resp);
-                console.log('AppState.currentState after Share: ', AppState.currentState);
-                this.props.clearProps();
-                Actions.loading();
-            });
+                console.log('#####################################################');
+               // this.props.clearProps();
+                //Actions.loading();
+            })
+            .then((resp2) => {
+                console.log('anything here? ', resp2);
+            })
+            // .catch((err) => {
+            //     console.log('err in Share promise: ', err);
+            // })
 
 
         }
-        if(newProps.filterTitle !== this.props.filterTitle){
-            this.handleSubmit();
-        }
+        // if(newProps.filterTitle !== this.props.filterTitle){
+        //     this.handleSubmit();
+        // }
     }
 
 
@@ -110,9 +116,11 @@ class Send extends Component {
         return (
           <View style={styles.container}>
             <View style={{width: screenWidth,flexDirection: 'row',  justifyContent: 'center'}}>
-              <View style={{width: 30, marginRight:10,marginTop:5}}>
-                <Icon name="home" size={30} color={"#0c12ce"} />
-              </View>
+              <TouchableOpacity onPress={() => { Actions.loading() }}>
+                <View style={{width: 30, marginRight:10,marginTop:5}}>
+                  <Icon name="home" size={30} color={"#0c12ce"} />
+                </View>
+              </TouchableOpacity>
                 <View style={{height: screenHeight-150, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'space-between',alignItems: 'center'}}>
   
                   <View style={{height: 150}}>
@@ -217,7 +225,7 @@ const mapDispatchToProps = (dispatch) => {
         finalSumbit: (data) => {
             uploadActions.finalSubmitFilter(dispatch, data);
         },
-        clearProps: () => {
+        clearProps: (action) => {
             uploadActions.clearUploadProps(dispatch);
         }
 

@@ -66,25 +66,22 @@ class UploadComponent extends Component {
 
 	// trying it first without passing { ...this.props } to UploadNav:
 
-
-//  <Text style={{fontSize: 26}}> Damnit. </Text>  
 	render(){
     return(
 	  <View>
-    <UploadNav />
-      {this.props.currentView == 'upload' && 
-        ( <UploadFilter /> )
-      }
-      {this.props.currentView == 'dates' && 
-        ( <ChooseDates /> )
-      }
-      {this.props.currentView == 'area' && 
-        ( <CreateMap /> )
-      }
-      {this.props.currentView == 'send' && 
-        ( <Send /> )
-      }
-    
+      <UploadNav />
+        {this.props.currentView == 'upload' && 
+          ( <UploadFilter /> )
+        }
+        {this.props.currentView == 'dates' && 
+          ( <ChooseDates /> )
+        }
+        {this.props.currentView == 'area' && 
+          ( <CreateMap /> )
+        }
+        {this.props.currentView == 'send' && 
+          ( <Send /> )
+        }
 	  </View>
     )
 	}

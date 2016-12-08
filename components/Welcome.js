@@ -15,7 +15,7 @@ import {
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
-import Share from 'react-native-share';
+//import Share from 'react-native-share';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';

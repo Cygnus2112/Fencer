@@ -67,13 +67,14 @@ const styles = StyleSheet.create({
 		paddingLeft: 3
 	},
 	numberIcon: {
-		height: 20,
-		width: 20,
+		height: 22,
+		width: 22,
 		borderColor: 'black',
 		borderWidth: 2,
 		borderRadius: 25,
 		justifyContent: 'center',
-		alignItems: 'center'
+		alignItems: 'center',
+		paddingBottom: 1
 	},
 	stepText: {
 		fontFamily: 'RobotoCondensed-Regular',

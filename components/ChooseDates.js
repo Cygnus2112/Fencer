@@ -327,9 +327,11 @@ class ChooseDatesComponent extends Component{
     return (
       <View style={styles.container}>
       <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
-        <View style={{width: 30, marginRight: 35}}>
-          <Image source={require('../assets/home_icon.png')} style={{width: 30, height:30}}/>
-        </View>
+        <TouchableOpacity onPress={() => { Actions.loading() }}>
+          <View style={{width: 30, marginRight: 35}}>
+            <Image source={require('../assets/home_icon.png')} style={{width: 30, height:30}}/>
+          </View>
+        </TouchableOpacity>
         <View style={styles.dateFieldsContainer}>
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
             This filter will become

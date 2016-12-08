@@ -4,6 +4,7 @@ import {
     Image,
     StyleSheet,
     Text,
+    TouchableHighlight,
     Dimensions                           // REMEMBER TO REMOVE              
 } from 'react-native';
 
@@ -98,9 +99,11 @@ class UploadFilter extends Component{
       return(
         <View style={ styles.container }>
           <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
+            <TouchableHighlight onPress={() => { Actions.loading() }}>
               <View style={{width: 30,marginRight:10,marginTop:5}}>
                 <Icon name="home" size={30} color="#0c12ce" />
               </View>
+            </TouchableHighlight>
               <Image source={require('../assets/png_background.png')} style={styles.preview}>
                 {this.props.filterToUpload
                   ?
@@ -140,7 +143,7 @@ class UploadFilter extends Component{
 const styles = StyleSheet.create({
   container: {
     height: screenHeight - 75,
-    marginTop: 5,
+    paddingTop: 5,
     flexDirection: 'column',
     justifyContent: 'flex-start',
     alignItems: 'center',

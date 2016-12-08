@@ -7,7 +7,10 @@ import {
     TouchableNativeFeedback,
     Dimensions,
     Text,
+    TouchableOpacity
 } from 'react-native';
+
+import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -69,9 +72,11 @@ class CreateMapComponent extends Component{
     return(
         <View style={styles.container}>
           <View style={styles.searchBoxContainer}>
-            <View style={{width: 30, marginLeft: 15}}>
-              <Icon name="home" size={30} color="#0c12ce" />
-            </View>
+            <TouchableOpacity onPress={() => { Actions.loading() }}>
+              <View style={{width: 30, marginLeft: 15}}>
+                <Icon name="home" size={30} color="#0c12ce" />
+              </View>
+            </TouchableOpacity>
             <View style={styles.searchBox}>
               <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
             </View>
