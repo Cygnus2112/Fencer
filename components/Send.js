@@ -14,7 +14,7 @@ import {
     Linking,
     TextInput,
     AppState,
-    Share
+ //   Share
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -22,7 +22,7 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux'
 import * as uploadActions from '../actions/uploadActions';
  
-//import Share from 'react-native-share';
+import Share from 'react-native-share';
 
 import Button from 'react-native-button';
 //import Icon from 'react-native-vector-icons/FontAwesome';
@@ -77,8 +77,8 @@ class Send extends Component {
     }
 
     componentWillReceiveProps(newProps){
-       // if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
-         if(newProps.filterTitle !== this.props.filterTitle){
+       if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
+      //   if(newProps.filterTitle !== this.props.filterTitle){
 
             console.log('newProps.bitlyURL: ', newProps.bitlyURL);
             console.log('this.props.bitlyURL: ', this.props.bitlyURL);
@@ -86,29 +86,23 @@ class Send extends Component {
             let shareText = {
                 //  title: "React Native",
                 message: "Here is your new Fencer filter: " + this.state.title + " ",
-                url: this.props.bitlyURL || newProps.bitlyURL,
+                url: newProps.bitlyURL,
                 subject: "Share Link" //  for email
             };
 
-            Share.share(shareText)
+            Share.open(shareText)
             .then((resp) => {
                 console.log('successfully sent filter???', resp);
                 console.log('#####################################################');
                // this.props.clearProps();
                 //Actions.loading();
             })
-            .then((resp2) => {
-                console.log('anything here? ', resp2);
-            })
-            // .catch((err) => {
-            //     console.log('err in Share promise: ', err);
-            // })
 
 
         }
-        // if(newProps.filterTitle !== this.props.filterTitle){
-        //     this.handleSubmit();
-        // }
+        if(newProps.filterTitle !== this.props.filterTitle){
+            this.handleSubmit();
+        }
     }
 
 

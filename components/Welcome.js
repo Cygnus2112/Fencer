@@ -65,26 +65,22 @@ class WelcomeComponent extends Component{
 
    // if the user is not logged in and they were referred by a deep link, we need to redirect them to a sign-up page.
 
-    Linking.getInitialURL().then((url) => {
-        console.log(`Deep Link URL: ${url}`);
-      //  if(url) {
-        // if(!this.props.isLoggedIn){
-            // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
-       // } else {
-        const parsed = queryString.parse(url);
-        for(filter in parsed){
-          if(this.props.myFilters.indexOf(parsed[filter]) === -1){
+   //  MOVED DEEP LINK LOGIC TO LOADING COMPONENT FOR THE TIME BEING
 
-            console.log('filter ID from url: ', parsed[filter]);
-            this.props.addFilter(parsed[filter])
+    // Linking.getInitialURL().then((url) => {
+    //     console.log(`Deep Link URL: ${url}`);
+    //   //  if(url) {
+    //     // if(!this.props.isLoggedIn){
+    //         // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+    //    // } else {
+    //   const parsed = queryString.parse(url);
 
-          } else {
-            console.log('filter already added to myFilters');
-          }
-        }
-      //}
+    //   for(filter in parsed){
+    //       console.log('filter ID from url: ', parsed[filter]);
+    //       this.props.addFilter(parsed[filter])
+    //   }
 
-    }).catch(err => console.error('An error occurred', err));
+    // }).catch(err => console.error('An error occurred', err));
 
     //console.log('this.props in Welcome: ', this.props);
     console.log('-----------------------------------');

@@ -65,6 +65,13 @@ class TakePhotoComponent extends Component {
     }
 	}
 
+    componentDidMount(){
+      console.log('TakePhoto mounted')
+    }
+    componentWillUnmount(){
+      console.log('TakePhoto un-mounting ... ');
+    }
+
 
   // constructor(props) {
 
@@ -343,13 +350,13 @@ class TakePhotoComponent extends Component {
               <TouchableOpacity
                 style={styles.flashButton}
                 onPress={this.switchFlash}>
-                  <Image source={this.flashIcon} style={{width: 32, height: 32}}/>
+                  <Image source={this.flashIcon} style={{width: 32, height: 32,opacity:0.8}}/>
               </TouchableOpacity>
 
               <TouchableOpacity 
                 onPress={this.switchType}
                 style={styles.cameraButton}>
-                  <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32}} />
+                  <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32, opacity:0.8}} />
               </TouchableOpacity>
 
               <TouchableOpacity onPress={this.takePicture}>
@@ -379,31 +386,31 @@ class TakePhotoComponent extends Component {
 
             <View style={styles.snapchat}>
               <TouchableOpacity onPress={()=>{this.share('snapchat')} }>
-                <Image source={require("../assets/snapchat.png")} style={{width: 35, height: 35}}/>
+                <Image source={require("../assets/snapchat.png")} style={{width: 25, height: 25}}/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.whatsapp}>
               <TouchableOpacity onPress={()=>{this.share('whatsapp')} }>
-                <Image source={require("../assets/whatsapp.png")} style={{width: 35, height: 35}}/>
+                <Image source={require("../assets/whatsapp.png")} style={{width: 27, height: 27}}/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.facebook}>
               <TouchableOpacity onPress={()=>{this.share('facebook')} }>
-                  <Icon name="facebook" size={35} color="white"/>
+                  <Icon name="facebook" size={25} color="white"/>
               </TouchableOpacity>
             </View>
 
             <View style={styles.trash}>
               <TouchableOpacity onPress={()=>{this.setState({applyFilter: !this.state.applyFilter})}}>
-                  <Image source={require('../assets/trash.png')} style={{width: 32, height: 32}} />
+                  <Icon name="circle-with-cross" size={27} color="white" />
               </TouchableOpacity>
             </View>
 
           <View style={styles.share}>
             <TouchableOpacity onPress={()=>{ this.share() } }>
-              <Icon name="share" size={40} color="white"/>
+              <Icon name="share" size={30} color="white"/>
             </TouchableOpacity>
           </View>
 
@@ -482,40 +489,80 @@ const styles = StyleSheet.create({
   },
   trash: {
     position: 'absolute',
-    top: 10,
+    top: 5,
    // left: (screenWidth/2) - 65,
-    left: 25,
-    elevation:3
+    right:20,
+    elevation:3,
+    height:35,
+    width:35,
+    // borderColor: 'black',
+    // backgroundColor: 'rgba(0,0,0,0.5)',
+    // borderRadius:5,
+    // justifyContent: 'center',
+    // alignItems: 'center',
+    // borderWidth:1
   },
   facebook: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 35,
    // left: (screenWidth/2) - 65,
     left: 50,
-    elevation:3
+    elevation:3,
+    height:40,
+    width:40,
+    borderColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1
   },
   snapchat: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 35,
    // left: (screenWidth/2) - 65,
     left: 115,
-    elevation:3
+    elevation:3,
+    height:40,
+    width:40,
+    borderColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1
   },
   whatsapp: {
     position: 'absolute',
-    bottom: 50,
+    bottom: 35,
    // left: (screenWidth/2) - 65,
     right: 115,
     elevation:3,
-    height: 35,
-    width: 35
+    // height: 35,
+    // width: 35,
+    height:40,
+    width:40,
+    borderColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1
   },
   share: {
     position: 'absolute',
-    bottom: 45,
+    bottom: 35,
    // left: (screenWidth/2) - 65,
     right: 50,
-    elevation:3
+    elevation:3,
+    height:40,
+    width:40,
+    borderColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1
   },
   flashButton: {
     position: 'absolute',

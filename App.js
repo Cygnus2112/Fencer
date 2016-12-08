@@ -22,13 +22,12 @@ class AppComponent extends Component {
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading} initial={true}/>
+            <Scene key="loading" component={Loading} initial={true} type='reset'/>
             <Scene key="main" component={Main} />
-            <Scene key="upload" component={Upload} />
-            <Scene key="myfilters" component={MyFilters} />
+            <Scene key="upload" component={Upload} type='reset'/>
+            <Scene key="myfilters" component={MyFilters} type='reset'/>
             
             <Scene key="camera" component={ TakePhoto } />
-            <Scene key="applyfilter" component={ ApplyFilter } />
           </Scene>
         </Router>
       

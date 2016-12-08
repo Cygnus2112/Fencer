@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+const queryString = require('query-string');
+
 import {
     View,
     Image,
@@ -8,8 +10,11 @@ import {
     Text,
     Dimensions,
     ListView,
-    TouchableHighlight
+    TouchableHighlight,
+    Linking
 } from 'react-native';
+
+import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
@@ -45,6 +50,7 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 		//console.log('this.props in MyFilters: ', this.props);
+
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
 		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -54,6 +60,10 @@ class MyFiltersComponent extends Component {
 		// })
 
 	}
+
+    componentWillUnmount(){
+      console.log('MyFilters un-mounting ... ');
+    }
 
 	componentWillReceiveProps(newProps){
 	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
@@ -102,9 +112,11 @@ class MyFiltersComponent extends Component {
 				</Image>
 			</View>
 			<View style={styles.titleContainer}>
+            <TouchableOpacity onPress={()=>{Actions.loading()}}>
             	<View style={{width: 30, marginLeft: 15}}>
               		<Icon name="home" size={30} color="#0c12ce"/>
             	</View>
+            </TouchableOpacity>
             	<View style={styles.searchBox}>
               		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
             	</View>

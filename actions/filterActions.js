@@ -193,7 +193,7 @@ export const addFilterByID = (filter) => {
 
                 //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
 
-          console.log('response in addFilterByID: ', resp);
+        //  console.log('response in addFilterByID: ', resp);
           return resp
         })
     } else {
