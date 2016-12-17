@@ -186,10 +186,10 @@ export const finalSubmitFilter = (dispatch, data) => {
         	//dispatch(finalSubmitSuccess( ));
         	console.error('error in finalSubmitFilter:', err);
         })      
-        .catch((err) => {
-        	//dispatch(finalSubmitSuccess( ));
-        	console.error('level 2 error in finalSubmitFilter:', err);
-        });  
+        // .catch((err) => {
+        // 	//dispatch(finalSubmitSuccess( ));
+        // 	console.error('level 2 error in finalSubmitFilter:', err);
+        // });  
         } else {
             // dispatch(authFail());
             console.log('token not found???');

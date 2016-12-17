@@ -14,6 +14,8 @@ import {
     Linking
 } from 'react-native';
 
+import Spinner from './Spinner';
+
 import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux';
@@ -104,8 +106,78 @@ class MyFiltersComponent extends Component {
 				// 	<View style={{marginLeft: 10}}>
 				// 	<Icon name="menu" size={30} color="white" />
 				// </View>	
-		return (
-		<View style={styles.container}>
+  //  return(
+      // <View style={styles.container}>
+      //   <View style={styles.fakeNavBar}>
+      //     <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+      //       <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+      //     </Image>
+      //     {this.props.isLoadingAllFilters
+      //       ?
+      //       (<View style={styles.eventListContainerContainer}><Spinner /></View>)
+      //       :
+      //       (<View style={styles.eventListContainerContainer}>
+      //         <View style={styles.titleContainer}>
+      //           <TouchableOpacity onPress={()=>{Actions.loading()}}>
+      //             <View style={{width: 30, marginLeft: 15}}>
+      //                 <Icon name="home" size={30} color="#0c12ce"/>
+      //             </View>
+      //           </TouchableOpacity>
+      //           <View style={styles.searchBox}>
+      //               <Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text> 
+      //           </View>
+      //           <View style={{width: 30, marginRight: 15}}>
+      //               <Icon name="info" size={30} color="#0c12ce"/>
+      //           </View>
+      //       </View>
+      //         <View style={styles.eventListContainer}>
+      //             <ListView
+      //                 dataSource={this.state.dataSource}
+      //                 renderRow={(rowData) => {
+      //                   console.log('-------------------------');
+      //                   if(rowData.coordinates) {
+      //                     const poly = rowData.coordinates.map((point)=>{
+      //                       return {
+      //                         lat: point.latitude,
+      //                         lng: point.longitude
+      //                       }
+      //                     })
+
+      //                     poly.push(poly[0]);
+      //                   console.log('-------------------------');
+
+      //                   let _isActive = _checkDates(rowData.dates);             
+
+      //                   return (
+      //                     <View key={rowData.id} >                  
+      //                         <SingleEvent { ...rowData } isActive={ _isActive } polyCoordsForGeo={poly}/>
+      //                     </View>
+      //                   )
+                        
+      //                 } else {
+      //                   return null;
+      //                 }
+      //               }
+      //                 }/>
+      //         </View>
+      //         </View>)
+      //     }
+      //   </View>
+      // </View>
+      // )
+
+        if(this.props.isLoadingAllFilters){
+		return (<View style={styles.container}>
+      <View style={styles.fakeNavBar}>
+        <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+          <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+        </Image>
+      </View>
+      <Spinner />
+      </View>)
+    } else {
+
+      return(<View style={styles.container}>
 			<View style={styles.fakeNavBar}>
 				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
 					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
@@ -159,8 +231,9 @@ class MyFiltersComponent extends Component {
                	}
               		}/>
               </View>
-        </View>
-        )
+        </View>)
+     }
+        
     }
 }
 
@@ -233,6 +306,10 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
   },
+  eventListContainerContainer: {
+    height: screenHeight - 50,
+    width: screenWidth,
+  },
   fakeNavBar:{
   	height: 50,
   	width: screenWidth,
@@ -256,7 +333,8 @@ const mapStateToProps = (state) => {
     currentPosition: state.filterReducer.currentPosition,
     allFilters: state.filterReducer.allFilters,
     myFilters: state.authReducer.myFilters,
-    username: state.authReducer.username
+    username: state.authReducer.username,
+    isLoadingAllFilters: state.filterReducer.isLoadingAllFilters
   }
 }
 

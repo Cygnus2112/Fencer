@@ -9,6 +9,8 @@ import {
     Linking
 } from 'react-native';
 
+import Spinner from './Spinner';
+
 const queryString = require('query-string');
 
 import { connect } from 'react-redux';
@@ -58,16 +60,17 @@ class LoadingComponent extends Component{
           this.props.initPosition();
    // });
 		
-
-
 	}
+  //  <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
+        // <Text style={{fontSize: 26}}>
+        //   Loading ...
+        // </Text>
+//      </View>
 	render(){
 		return (
-			<View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
-				<Text style={{fontSize: 26}}>
-					Loading ...
-				</Text>
-			</View>
+	
+        <Spinner />
+
 		)
 	}
 }

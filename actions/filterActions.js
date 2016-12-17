@@ -70,33 +70,31 @@ export const loadAllFilters = (dispatch, userData) => {
     AsyncStorage.getItem("fencer-token").then((token) => {
         if(token){
 
-            console.log("userData.filters: ",userData.filters);
+          //  console.log("userData.filters: ",userData.filters);
 
             let filters = JSON.stringify(userData.filters);
 
-            return fetch(utils.allFiltersURL +"?username="+userData.username+"&filters="+filters, {   
+          return fetch(utils.allFiltersURL +"?username="+userData.username+"&filters="+filters, {   
       			method: 'GET',
       			headers: {
         			'Accept': 'application/json',
         			'Content-Type': 'application/json',
         			'x-access-token': token
       			}
-    		})
-    		.then(response => {
-            //  console.log('first response: ', response);
-      			  return response.json();
-    		})
-    		.then(response => {
-            //  console.log('2nd level response in loadAllFilters: ');
-            //  console.log(response);
+    		  })
+    		  .then(response => {
 
-            // console.log('-------------------------');
+      			 return response.json();
+
+    		  })
+    		  .then(response => {
+
       			dispatch(loadAllFiltersSuccess(response));
 						
-    		})
-    		.catch(err => {
+    		  })
+    		  .catch(err => {
             	console.error('Error in loadAllFilters:', err);
-          	});
+          });
             	
         } else {
             // dispatch(authFail());

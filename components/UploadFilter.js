@@ -8,9 +8,21 @@ import {
     Dimensions                           // REMEMBER TO REMOVE              
 } from 'react-native';
 
+
+
+
+import RNFetchBlob from 'react-native-fetch-blob';
+const fs = RNFetchBlob.fs;
+
+
+
+
+import Spinner from './Spinner';
+
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 var ImagePicker = require('react-native-image-picker');
+   import ImageResizer from 'react-native-image-resizer';
 
 import Icon from 'react-native-vector-icons/Entypo';
 
@@ -24,7 +36,7 @@ import { bindActionCreators } from 'redux';
 import * as filterActions from '../actions/filterActions';
 import * as uploadActions from '../actions/uploadActions';
 
-class UploadFilter extends Component{
+class UploadFilter extends Component {
     constructor(props){
       super(props);
 
@@ -58,34 +70,83 @@ class UploadFilter extends Component{
            console.log('ImagePicker Error: ', response.error);
         } else {
           console.log('-----------------------------------------');
+          console.log('image height in ImagePicker: ', response.height);
+          console.log('image height in ImagePicker: ', response.width);
+          console.log('image size in ImagePicker: ', response.fileSize);
           if(response.type === 'image/jpeg'){
+
+
+            // TRIGGER ERROR HERE
+            // should prob just be if(response.type !== 'image/png')
+
+
+
             const source = {uri: response.uri, isStatic: true};
             this.setState({
               jpg: source
             })
           } else {
 
-            const source = {data: response.data};
-            // console.log('************************************');
-            // console.log('response.data (first 20 chars): ', response.data.slice(0,20));
-            // console.log('response.data (last 20 chars): ', response.data.slice(response.data.length-20,response.data.length-1));
+            if(response.height > 1920 || response.width > 1080) {
+
+              const baseUri = "data:image/png;base64," + response.data;
+              console.log('baseUri: ', baseUri.slice(0,40));
+              ImageResizer.createResizedImage(baseUri, 1080, 1920, 'PNG',100).then((resizedImageUri) => {
+                console.log('resized image url: ', resizedImageUri);
+
+              // only when we do the final submit do we convert the image URI into data
+
+
+                fs.readFile(resizedImageUri, 'base64')
+                  .then((data) => {
+                    var byteLength = parseInt((data).replace(/=/g,"").length * 0.75);
+                    console.log('file size in base64 convert: ', byteLength);
+
+                    this.setState({
+                      png: {data: data}
+                    });
+
+
+                  })
+
+
+
+
+                }).catch((err) => {
+
+                });
+
+
+            } else{
+              const source = {data: response.data};
+
+              // TRIGGER FILE SIZE ERROR HERE
+              // in case the height and width are within limits but file is super big anyway
+              // if(response.fileSize > 1mg)
+
+
+
 
             // only when we do the final submit do we convert the image URI into data
 
-            this.setState({
+                                var byteLength = parseInt((response.data).replace(/=/g,"").length * 0.75);
+                    console.log('file size in base64 convert: ', byteLength);
+
+              this.setState({
                 png: {data: source.data}
-            });
+              });
+
+
+            }
+
+
+
+
+
 
           }
         }
       });
-
-// ImagePicker.launchCamera({cancelButtonTitle: null}, (response)  => {
-//   // Same code as in above section!
-//   console.log('response in ImagePicker.launchCamera: ', response);
-// });
-
-
 
     }     
 //height: 1920/4, width: 1080/4
@@ -96,39 +157,46 @@ class UploadFilter extends Component{
       //   console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
       //   console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
       // }
-      return(
-        <View style={ styles.container }>
-          <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
-            <TouchableHighlight onPress={() => { Actions.loading() }}>
-              <View style={{width: 30,marginRight:10,marginTop:5}}>
-                <Icon name="home" size={30} color="#0c12ce" />
-              </View>
-            </TouchableHighlight>
-              <Image source={require('../assets/png_background.png')} style={styles.preview}>
-                {this.props.filterToUpload
-                  ?
-                (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} style={{height: 480*.94, width: 274*.94}}/>)
-                  :
-                (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} style={{height: 480*.94, width: 274*.94}}/>)
-                }
-              </Image>
-              <View style={{width: 30,marginLeft:10,marginTop:5}}>
-                <Icon name="info" size={28} color="#0c12ce" />
-              </View>
-          </View>
 
-          <View style={{width: screenWidth-25, height: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
-              <View style={ styles.buttonBox }>
-                <Button
-                  style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
-                  styleDisabled={{color: 'red'}}
-                  onPress={this.state.png.data ? ( ) => { this.props.submitUpload(this.state.png) } : this.handlePress }>
-                  { this.state.png ? ("Upload") : ("Upload Filter") }
-                </Button>
-              </View>
-          </View>
-        </View>
-      )
+      //this.state.png.uri ? {uri: this.state.png.uri} : 
+
+      if(this.props.isValidatingImage){
+        return ( <Spinner /> );
+      } else {
+        return (
+            <View style={ styles.container }>
+                <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
+                  <TouchableHighlight onPress={() => { Actions.loading() }}>
+                    <View style={{width: 30,marginRight:10,marginTop:5}}>
+                      <Icon name="home" size={30} color="#0c12ce" />
+                    </View>
+                  </TouchableHighlight>
+                  <Image source={require('../assets/png_background.png')} style={styles.preview}>
+                    {this.props.filterToUpload
+                      ?
+                    (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
+                      :
+                    (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
+                    }
+                  </Image>
+                  <View style={{width: 30,marginLeft:10,marginTop:5}}>
+                    <Icon name="info" size={28} color="#0c12ce" />
+                  </View>
+                </View>
+
+                <View style={{width: screenWidth-25, height: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
+                  <View style={ styles.buttonBox }>
+                    <Button
+                      style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                      styleDisabled={{color: 'red'}}
+                      onPress={this.state.png.data ? ( ) => { this.props.submitUpload(this.state.png) } : this.handlePress }>
+                      { this.state.png ? ("Upload") : ("Upload Filter") }
+                    </Button>
+                  </View>
+                </View>
+            </View>)
+      }
+      
     }
 }
 
