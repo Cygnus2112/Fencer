@@ -157,6 +157,9 @@ export const finalSubmitFilter = (dispatch, data) => {
 
         									// SHOW SUCCESS MODAL
         	console.log('response.data.filterID in upload: ', response.data.filterID);
+
+        	let start = Date.now();
+
         	axios({
             	method: 'post',
             	url: utils.filterImagesURL,
@@ -172,6 +175,8 @@ export const finalSubmitFilter = (dispatch, data) => {
             	timeout: 120000
           	})
           	.then(resp => {
+
+          		console.log('total upload time (client-side): ', Date.now() - start);
 
           		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
 
@@ -210,6 +215,18 @@ const finalSubmitSuccess = (data) => {
 		bitlyURL: data.bitlyURL
 	}
 
+}
+
+export const CLEAR_FILTER_IMAGE_REQUEST = 'CLEAR_FILTER_IMAGE_REQUEST';
+
+export const clearFilterImage = (dispatch) => {
+	dispatch(clearFilterImageRequest());
+}
+
+const clearFilterImageRequest = () => {
+	return {
+		type: CLEAR_FILTER_IMAGE_REQUEST
+	}
 }
 
 export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';

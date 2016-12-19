@@ -120,6 +120,12 @@ const uploadReducer = (state = initialState, action) => {
           filterID: "",
           finalSubmitComplete: false
       })
+    case ActionTypes.CLEAR_FILTER_IMAGE_REQUEST:
+      return Object.assign({}, state, {
+        filterToUpload: null,
+        uploadFilterComplete: false
+      })
+
     // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
     //   return Object.assign({}, state, {
     //     bitlyURL: "",
