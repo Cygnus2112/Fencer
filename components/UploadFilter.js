@@ -6,7 +6,8 @@ import {
     Text,
     TouchableHighlight,
     Dimensions,
-    ActivityIndicator         
+    ActivityIndicator,
+    Alert         
 } from 'react-native';
 
 
@@ -88,18 +89,14 @@ class UploadFilter extends Component {
           console.log('image height in ImagePicker: ', response.height);
           console.log('image height in ImagePicker: ', response.width);
           console.log('image size in ImagePicker: ', response.fileSize);
-          if(response.type === 'image/jpeg'){
+          if(response.type !== 'image/png'){
 
+            Alert.alert('Error', 'Image must be in PNG format.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
 
-            // TRIGGER ERROR HERE
-            // should prob just be if(response.type !== 'image/png')
-
-
-
-            const source = {uri: response.uri, isStatic: true};
             this.setState({
-              jpg: source
+              isFetchingImage: false
             })
+
           } else {
 
             if(response.height > 1920 || response.width > 1080) {
@@ -117,16 +114,25 @@ class UploadFilter extends Component {
                     var byteLength = parseInt((data).replace(/=/g,"").length * 0.75);
                     console.log('file size in base64 convert: ', byteLength);
 
+              if(byteLength > 1000000){
+
+                            this.setState({
+              isFetchingImage: false
+            })
+
+                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+
+              } else {
+
                     this.setState({
                       png: {data: data},
                       isFetchingImage: false
                     });
+}
+
 
 
                   })
-
-
-
 
                 }).catch((err) => {
 
@@ -136,30 +142,25 @@ class UploadFilter extends Component {
             } else{
               const source = {data: response.data};
 
-              // TRIGGER FILE SIZE ERROR HERE
-              // in case the height and width are within limits but file is super big anyway
-              // if(response.fileSize > 1mg)
-
-
-
-
             // only when we do the final submit do we convert the image URI into data
 
-              let byteLength = parseInt((response.data).replace(/=/g,"").length * 0.75);
-              console.log('file size in base64 convert: ', byteLength);
+              if(response.fileSize > 1000000){
 
-              this.setState({
-                png: {data: source.data},
-                isFetchingImage: false
-              });
+                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
 
+              } else {
+
+                let byteLength = parseInt((response.data).replace(/=/g,"").length * 0.75);
+                console.log('file size in base64 convert: ', byteLength);
+
+                this.setState({
+                  png: {data: source.data},
+                  isFetchingImage: false
+                });
+
+              }
 
             }
-
-
-
-
-
 
           }
         }
@@ -174,8 +175,6 @@ class UploadFilter extends Component {
       //   console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
       //   console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
       // }
-
-      //this.state.png.uri ? {uri: this.state.png.uri} : 
 
       if(this.props.isValidatingImage){
         return ( <Spinner /> );

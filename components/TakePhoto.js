@@ -26,6 +26,9 @@ import {
 
 import Icon from 'react-native-vector-icons/Entypo';
 
+import PreviewWithFilter from './PreviewWithFilter';
+import Preview from './Preview';
+
 import { connect } from 'react-redux';
 
 var ImagePicker = require('react-native-image-picker');
@@ -55,6 +58,7 @@ class TakePhotoComponent extends Component {
     // this.handleZoom = this.handleZoom.bind(this);
 
     this.state = {
+      filterInPreview: true,
       photo: null,
       applyFilter: false,
       camera: {
@@ -326,12 +330,51 @@ class TakePhotoComponent extends Component {
   render() {
   //  let filterURI = "data:image/png;base64,"+this.props.filterImage;
 
-  let filterURI = "data:image/png;base64,"+this.props.filterURI;
+//          <Image source={{uri: filterURI}} style={styles.filter}>
+//            {this.state.filterInPreview ? (<Image source={{uri: filterURI}} style={styles.filter}>) : null} 
+    let filterURI = "data:image/png;base64,"+this.props.filterURI;
+
+    //   <Image source={{uri: filterURI}} style={styles.filter}>
+
+
     return (<View >
         {!this.state.applyFilter
           ?
+       
+       (<View style={styles.container}>
+              <TouchableOpacity
+                style={styles.flashButton}
+                onPress={this.switchFlash}>
+                  <Image source={this.flashIcon} style={{width: 32, height: 32,opacity:0.8}}/>
+              </TouchableOpacity>
 
-        (<View style={styles.container}>
+              <TouchableOpacity 
+                onPress={this.switchType}
+                style={styles.cameraButton}>
+                  <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32, opacity:0.8}} />
+              </TouchableOpacity>
+
+           {/*   COULDN'T MAKE THIS WORK DUE TO PREVIEW IMAGE INEXPLICABLY REMAINING ON SCREEN
+                <TouchableOpacity onPress={()=>{
+                  //console.log('filter button pressed');
+                  this.setState({ filterInPreview: !this.state.filterInPreview });
+                } }
+                style={{position: 'absolute',top: 10, zIndex:5, left:(screenWidth *.9)/2 - 15} }>
+                <Icon name="image" size={30} color="rgba(255,255,255, 0.7)"/>
+              </TouchableOpacity> */}
+
+              <TouchableOpacity onPress={this.takePicture} style={styles.takePictureButton}>
+                <View style={{width: 50, height: 50,
+                  flex: 0,
+                  padding: 10,
+                  margin: 40,
+                  borderRadius: 25,
+                  borderColor: 'white',
+                  borderWidth: 2,
+                  zIndex: 5
+
+                }} />
+              </TouchableOpacity>
 
           <Camera
             ref={(cam) => {
@@ -346,31 +389,7 @@ class TakePhotoComponent extends Component {
             captureTarget={Camera.constants.CaptureTarget.temp}
             onZoomChanged={this._handleZoomChange.bind(this)}
             onFocusChanged={this._handleFocusChange.bind(this)}>
-
-              <TouchableOpacity
-                style={styles.flashButton}
-                onPress={this.switchFlash}>
-                  <Image source={this.flashIcon} style={{width: 32, height: 32,opacity:0.8}}/>
-              </TouchableOpacity>
-
-              <TouchableOpacity 
-                onPress={this.switchType}
-                style={styles.cameraButton}>
-                  <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32, opacity:0.8}} />
-              </TouchableOpacity>
-
-              <TouchableOpacity onPress={this.takePicture}>
-                <View style={{width: 50, height: 50,
-                  flex: 0,
-                  padding: 10,
-                  margin: 40,
-                  borderRadius: 25,
-                  borderColor: 'white',
-                  borderWidth: 2
-
-                }} />
-              </TouchableOpacity>
-
+              <PreviewWithFilter filterURI={filterURI} />
           </Camera>
 
         </View>)
@@ -439,10 +458,16 @@ const styles = StyleSheet.create({
   },
   preview: {
     flex: 1,
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-start',
     alignItems: 'center',
     height: Dimensions.get('window').height,
     width: Dimensions.get('window').width
+  },
+  filter:{
+    width: screenWidth * .9, 
+    height: screenHeight *.95,
+     borderColor: 'green', 
+     borderWidth: 2
   },
   capture: {
     flex: 0,
@@ -469,11 +494,11 @@ const styles = StyleSheet.create({
     // borderColor: 'blue', 
     // borderWidth: 2
   },
-  filter:{
-    width: screenWidth * .9, 
-    height: screenHeight *.95,
-    // borderColor: 'green', 
-    // borderWidth: 2
+  takePictureButton: {
+    position: 'absolute',
+    bottom: 25,
+    left: (screenWidth *.9)/2 - 50,
+    zIndex: 5
   },
   button: {
     position: 'absolute',
@@ -568,12 +593,14 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 10,
     left: 10,
+    zIndex: 5
   //  padding: 5,
   },
   cameraButton: {
     position: 'absolute',
     top: 10,
-    right: 10
+    right: 10,
+    zIndex: 5
   },
 });
 
