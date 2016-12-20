@@ -229,6 +229,18 @@ const clearFilterImageRequest = () => {
 	}
 }
 
+export const CLEAR_FENCE_PROPS_REQUEST = 'CLEAR_FENCE_PROPS_REQUEST';
+
+export const clearFenceProps = (dispatch) => {
+	dispatch(clearFencePropsRequest());
+}
+
+const clearFencePropsRequest = () => {
+	return {
+		type: CLEAR_FENCE_PROPS_REQUEST
+	}
+}
+
 export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
 export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
 

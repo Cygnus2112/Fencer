@@ -61,6 +61,7 @@ class CreateMapComponent extends Component{
   // }
 
   componentDidMount(){
+    console.log('CreateMap mounted.');
    // this.getCoords();
   }
 

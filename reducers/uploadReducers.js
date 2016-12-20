@@ -125,6 +125,11 @@ const uploadReducer = (state = initialState, action) => {
         filterToUpload: null,
         uploadFilterComplete: false
       })
+    case ActionTypes.CLEAR_FENCE_PROPS_REQUEST:
+      return Object.assign({}, state, {
+        fenceCoordinates: null,
+        chooseAreaComplete: false
+      })
 
     // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
     //   return Object.assign({}, state, {

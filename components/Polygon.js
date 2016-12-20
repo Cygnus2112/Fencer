@@ -63,11 +63,18 @@ class PolygonComponent extends Component {
   }
 
   componentDidMount(){
+
+    console.log('Polygon mounted.');
+    //console.log('this.props.currentPosition.lat in Polygon: ',this.props.currentPosition.lat);
+    //console.log('this.state in Polygon: ', this.state);
+
     if(this.props.fenceCoordinates){
+
+      console.log('this.props.fenceCoordinates: ', this.props.fenceCoordinates);
       this.setState({
         editing: {
           id: 0,
-          coordinates: this.props.fenceCoordinates
+          coordinates: this.props.fenceCoordinates.fenceCoords
         }
 
       })
@@ -118,7 +125,7 @@ class PolygonComponent extends Component {
   // }
 
   onRegionChange(region) {
-    console.log('region in onRegionChange: ', region);
+   // console.log('region in onRegionChange: ', region);
     this.setState({ region });
   }
 
@@ -126,7 +133,7 @@ class PolygonComponent extends Component {
     console.log('-------------------------------');
 
     const { polygons, editing } = this.state;
-    console.log('editing: ', editing)
+  //  console.log('editing: ', editing)
 
     // this.setState({
     //   polygons: [...polygons, editing],
@@ -135,12 +142,13 @@ class PolygonComponent extends Component {
 
     console.log('-------------------------------');
 
+//console.log('this.state in Polygon finish() func: ', this.state);
 
     setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
       //console.log('polygons array (after setTimeout): ', this.state.polygons);
       // for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
       //   let coords = this.state.polygons[0].coordinates[i];
-      //   console.log("coords.longitude: ",coords.longitude);
+      //   console.log("coords.longitude: ",coords.longitude);c
       // }
 
       dataToSend = {
@@ -153,7 +161,10 @@ class PolygonComponent extends Component {
     },400)
   }
 
-  startOver(){
+  startOver(hasProps){
+    if(hasProps){
+      this.props.clearFenceProps();
+    }
     this.setState({
       editing: null,
       polygons: [],
@@ -163,8 +174,8 @@ class PolygonComponent extends Component {
   }
 
   onPress(e) {
-    console.log('e.nativeEvent.coordinate: ', e.nativeEvent.coordinate);
-    console.log('this.state.markerPoints: ', this.state.markerPoints)
+    //console.log('e.nativeEvent.coordinate: ', e.nativeEvent.coordinate);
+   // console.log('this.state.markerPoints: ', this.state.markerPoints)
 
     if(this.state.markerPoints.length < 4) {
 
@@ -249,14 +260,20 @@ class PolygonComponent extends Component {
             onPress={e => this.onPress(e)}
             {...mapOptions}
           >
-          {this.state.polygons.map(polygon => (
-            <MapView.Polygon
+          {this.state.polygons.map((polygon) => {
+
+           // console.log('in this.state.polygons.map for some reason...');
+
+            return(<MapView.Polygon
               key={polygon.id}
               coordinates={polygon.coordinates}
               strokeColor="#F00"
               fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={2}/>
-          ))}
+              strokeWidth={2}/>)
+          }
+
+
+          )}
           { this.state.editing && (
             <MapView.Polygon
               coordinates={this.state.editing.coordinates}
@@ -265,6 +282,10 @@ class PolygonComponent extends Component {
               strokeWidth={2}/>
           )}
           {this.state.markerPoints.map((point) => { 
+           // console.log('-------------------COCK----------------------');
+
+          //  console.log('in this.state.markerPoints.map for some reason...');
+
               return(                
                 <MapView.Marker
                   key={point.key}
@@ -278,7 +299,17 @@ class PolygonComponent extends Component {
         </MapView>
                     )
         }
-          {this.state.editing && this.state.editing.coordinates.length > 2
+          {this.props.fenceCoordinates
+            ?
+            (<View style={styles.buttonContainer}>
+              <TouchableOpacity
+                onPress={() => this.startOver(true)}
+                style={[styles.buttonStartOver, {width: 180 }]}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>{"Discard & Start Over"}</Text>
+              </TouchableOpacity>
+            </View>)
+            :
+            this.state.editing && this.state.editing.coordinates.length > 2
             ?
             (<View style={styles.buttonContainer}>
               <TouchableOpacity
@@ -377,17 +408,11 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
 
   return {
+    clearFenceProps: () => {
+      uploadActions.clearFenceProps(dispatch);
+    },
     submitFence: (coords) => {
       console.log('coords in mapDispatch: ', coords);
-
-
-      // let data = {
-      //   fenceCoords: coords,
-      //   selectedDates: this.props.selectedDates,
-      //   filterToUpload: this.props.filterToUpload
-      // }
-
-
       uploadActions.submitFenceCoordinates(dispatch, coords);
     }
   }
