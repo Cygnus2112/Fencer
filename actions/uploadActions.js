@@ -158,6 +158,8 @@ export const finalSubmitFilter = (dispatch, data) => {
         									// SHOW SUCCESS MODAL
         	console.log('response.data.filterID in upload: ', response.data.filterID);
 
+        	Actions.success({title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, dates: data.selectedDates })
+
         	let start = Date.now();
 
         	axios({
@@ -245,7 +247,7 @@ export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
 export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
 
 export const clearUploadProps = (dispatch) => {
-	Actions.loading();
+//	Actions.loading();
 	dispatch(clearUploadPropsRequest());
 }
 

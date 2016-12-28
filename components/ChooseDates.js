@@ -327,7 +327,10 @@ class ChooseDatesComponent extends Component{
     return (
       <View style={styles.container}>
       <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={() => { Actions.loading() }}>
+        <TouchableOpacity onPress={() => { 
+
+          Actions.loading(); 
+        }}>
           <View style={{width: 30, marginRight: 35}}>
             <Image source={require('../assets/home_icon.png')} style={{width: 30, height:30}}/>
           </View>
@@ -554,6 +557,9 @@ const mapDispatchToProps = (dispatch) => {
     submitDates: (dates) => {
       console.log('dates in mapDispatch: ', dates);
       uploadActions.submitDates(dispatch, dates)
+    },
+    clearProps: () => {
+      uploadActions.clearUploadProps(dispatch);
     }
   }
 }

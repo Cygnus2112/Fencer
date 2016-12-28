@@ -5,6 +5,7 @@ import {
     StyleSheet,
     Text,
     TouchableHighlight,
+    TouchableOpacity,
     Dimensions,
     ActivityIndicator,
     Alert         
@@ -116,11 +117,14 @@ class UploadFilter extends Component {
 
               if(byteLength > 1000000){
 
-                            this.setState({
-              isFetchingImage: false
-            })
+                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => {
+                  this.setState({
+                    isFetchingImage: false
+                  })
+                  console.log('OK Pressed!')
 
-                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+
+              }}])
 
               } else {
 
@@ -146,7 +150,14 @@ class UploadFilter extends Component {
 
               if(response.fileSize > 1000000){
 
-                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => {
+                    console.log('OK Pressed!');
+                    this.setState({
+                      isFetchingImage: false
+                    })
+
+                  }
+                }])
 
               } else {
 
@@ -182,11 +193,16 @@ class UploadFilter extends Component {
         return (
             <View style={ styles.container }>
                 <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
-                  <TouchableHighlight onPress={() => { Actions.loading() }}>
-                    <View style={{width: 30,marginRight:10,marginTop:5}}>
+                  
+                  <View style={{width: 30,marginRight:10,marginTop:5}}>
+                    <TouchableOpacity onPress={() => { 
+                      this.props.clearProps();
+                      Actions.loading(); 
+                    }}>
                       <Icon name="home" size={30} color="#0c12ce" />
-                    </View>
-                  </TouchableHighlight>
+                    </TouchableOpacity >
+                  </View>
+                  
                   <Image source={require('../assets/png_background.png')} style={styles.preview}>
                   {this.state.isFetchingImage
                     ?
@@ -196,8 +212,37 @@ class UploadFilter extends Component {
                       ?
                     (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
                       :
+                    this.state.png.data
+                      ?
                     (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
-                    
+                      :
+                      (        <View style={styles.guidelines}>
+                                  
+            <Text style={{fontSize: 20, paddingTop: 4,paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Images should be <Text style={{fontWeight: 'bold'}}>1080px</Text> wide by <Text style={{fontWeight: 'bold'}}>1920px</Text> high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- File size must be under <Text style={{fontWeight: 'bold'}}>1mb</Text>. (For best results, try to keep it under 400kb.)</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- To preview a filter on your device, tap <Text style={{fontWeight: 'bold'}}>"test"</Text> after selecting an image.</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Need help designing your filter? Tap the <Text style={{fontWeight: 'bold'}}>info</Text> icon for a list of free online resources.</Text>
+   {/*       <View style={styles.guidelineTitle}>
+            <Text style={{fontSize: 20,color: 'red'}}>Filter image guidelines:</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text style={{fontSize: 14}}>Files must be in PNG format.</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>Images should be 1080px wide by 1920px high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>File size must be under 1mb. (For best results, try to keep it under 400kb.)</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>To preview a filter on your device, tap "test" after selecting an image.</Text>
+          </View>
+                    <View style={styles.guideline}>
+            <Text>Need help designing your filter? Tap the info icon for a list of free apps and online resources.</Text>
+          </View> */}
+        </View>)
                   }
                   </Image>
                 
@@ -281,10 +326,42 @@ const styles = StyleSheet.create({
   preview:{
     height: 480*.94, 
     width: 274*.94,
+        justifyContent: 'center',
+    alignItems: 'center',
     borderWidth:2, 
     borderColor:'black',
     backgroundColor: 'white',
-    marginBottom: 2
+    marginBottom: 2,
+  //  elevation: 3,
+
+  },
+  guidelines: {
+   // flex: 1,
+    justifyContent: 'flex-start',
+    alignItems: 'flex-start',
+    borderColor: 'black',
+    borderWidth: 1,
+    borderRadius: 10,
+    width: 220,
+    height: 275,
+    backgroundColor: 'white',
+    elevation: 3,
+  },
+  guidelineTitle: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1,
+    width: 225,
+  },
+  guideline: {
+    width: 225,
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'flex-start',
+    paddingHorizontal: 10,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   buttonBox:{
     elevation:3,
@@ -330,7 +407,7 @@ const styles = StyleSheet.create({
    // marginBottom: 5
   },
   insidespinner: {
-    marginTop: 100,
+   // marginTop: 100,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8
@@ -354,6 +431,9 @@ const mapDispatchToProps = (dispatch) => {
     submitUpload: (filterData) => {
      // console.log('filter in mapDispatch: ', filter);
       uploadActions.submitFilter(dispatch, filterData)
+    },
+    clearProps: () => {
+      uploadActions.clearUploadProps(dispatch);
     }
   }
 }

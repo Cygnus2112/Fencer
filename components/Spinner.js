@@ -4,8 +4,13 @@ import {
     View,
     StyleSheet,
     Text,
-	ActivityIndicator
+	ActivityIndicator,
+	Dimensions
 } from 'react-native';
+
+const { width, height } = Dimensions.get('window');
+let screenHeight = height;
+let screenWidth = width;
 
 class Spinner extends Component {
 	constructor(){
@@ -29,7 +34,8 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
     	justifyContent: 'center',
-		backgroundColor: "#0000ff"
+		backgroundColor: "#0000ff",
+		width: screenWidth
 
 	},
 	spinner: {

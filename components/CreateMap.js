@@ -73,7 +73,10 @@ class CreateMapComponent extends Component{
     return(
         <View style={styles.container}>
           <View style={styles.searchBoxContainer}>
-            <TouchableOpacity onPress={() => { Actions.loading() }}>
+            <TouchableOpacity onPress={() => { 
+              this.props.clearProps();
+              Actions.loading(); 
+            }}>
               <View style={{width: 30, marginLeft: 15}}>
                 <Icon name="home" size={30} color="#0c12ce" />
               </View>
@@ -152,14 +155,13 @@ const mapStateToProps = (state) => {
   }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-//     submitDates: (dates) => {
-//       console.log('dates in mapDispatch: ', dates);
-//       uploadActions.submitDates(dispatch, dates)
-//     }
-//   }
-// }
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearProps: () => {
+      uploadActions.clearUploadProps(dispatch);
+    }
+  }
+}
 
-const CreateMap = connect(mapStateToProps, null)(CreateMapComponent);
+const CreateMap = connect(mapStateToProps, mapDispatchToProps)(CreateMapComponent);
 export default CreateMap;

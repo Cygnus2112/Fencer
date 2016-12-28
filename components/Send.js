@@ -77,29 +77,31 @@ class Send extends Component {
     }
 
     componentWillReceiveProps(newProps){
-       if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
-      //   if(newProps.filterTitle !== this.props.filterTitle){
+      //  if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
+      // //   if(newProps.filterTitle !== this.props.filterTitle){
 
-            console.log('newProps.bitlyURL: ', newProps.bitlyURL);
-            console.log('this.props.bitlyURL: ', this.props.bitlyURL);
+      //       console.log('newProps.bitlyURL: ', newProps.bitlyURL);
+      //       console.log('this.props.bitlyURL: ', this.props.bitlyURL);
 
-            let shareText = {
-                //  title: "React Native",
-                message: "Here is your new Fencer filter: " + this.state.title + " ",
-                url: newProps.bitlyURL,
-                subject: "Share Link" //  for email
-            };
+      //       let shareText = {
+      //           //  title: "React Native",
+      //           message: "Here is your new Fencer filter: " + this.state.title + " ",
+      //           url: newProps.bitlyURL,
+      //           subject: "Share Link" //  for email
+      //       };
 
-            Share.open(shareText)
-            .then((resp) => {
-                console.log('successfully sent filter???', resp);
-                console.log('#####################################################');
-               // this.props.clearProps();
-                //Actions.loading();
-            })
+      //       Share.open(shareText)
+      //       .then((resp) => {
+      //           console.log('successfully sent filter???', resp);
+      //           console.log('#####################################################');
+      //          // this.props.clearProps();
+      //           //Actions.loading();
+      //       })
 
 
-        }
+      //   }
+
+        
         if(newProps.filterTitle !== this.props.filterTitle){
             this.handleSubmit();
         }

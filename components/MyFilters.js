@@ -46,6 +46,7 @@ class MyFiltersComponent extends Component {
 
 		this.state = {
 			//events: sampleEvents,
+      // isLoadingFilter: false,
 			dataSource: ds.cloneWithRows( [] )
 		}
 	}
@@ -167,15 +168,23 @@ class MyFiltersComponent extends Component {
       // )
 
         if(this.props.isLoadingAllFilters){
-		return (<View style={styles.container}>
-      <View style={styles.fakeNavBar}>
-        <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-          <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
-        </Image>
-      </View>
-      <Spinner />
-      </View>)
-    } else {
+		      return (
+            <View style={styles.container}>
+              <View style={styles.fakeNavBar}>
+                <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+                  <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+                </Image>
+              </View>
+              <Spinner />
+            </View>)
+        } else if(this.state.isLoadingFilter){
+          return (
+            <View style={styles.container}>
+              <Text>Loading da filter...</Text>
+            </View>
+            )
+
+        } else {
 
       return(<View style={styles.container}>
 			<View style={styles.fakeNavBar}>
@@ -221,7 +230,9 @@ class MyFiltersComponent extends Component {
 
 	                	return (
 	                		<View key={rowData.id} >									
-	                  			<SingleEvent { ...rowData } isActive={ _isActive } polyCoordsForGeo={poly}/>
+	                  			<SingleEvent { ...rowData } 
+                            isActive={ _isActive } 
+                            polyCoordsForGeo={ poly } />
 	                		</View>
 	                	)
 	                  
@@ -236,6 +247,8 @@ class MyFiltersComponent extends Component {
         
     }
 }
+
+//toggleLoading={ () => {this.setState({isLoadingFilter: !this.state.isLoadingFilter})} }
 
 const _checkDates = (dates) => {
 	//IS THERE A REASON WHY I DIDN'T JUST COMPARE DATE.NOW()???

@@ -16,17 +16,18 @@ import Upload from './components/Upload';
 
 import TakePhoto from './components/TakePhoto';
 import ApplyFilter from './components/ApplyFilter';
+import Success from './components/Success';
 
 class AppComponent extends Component {
   render() {
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading} initial={true} type='reset'/>
+            <Scene key="loading" component={Loading} initial={true} type='reset' />
+            <Scene key="success" component={Success} />
             <Scene key="main" component={Main} />
             <Scene key="upload" component={Upload} type='reset'/>
             <Scene key="myfilters" component={MyFilters} type='reset'/>
-            
             <Scene key="camera" component={ TakePhoto } />
           </Scene>
         </Router>

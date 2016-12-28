@@ -13,6 +13,8 @@ import {
 
 let utils = require('../utils');
 
+import LoginModal from './LoginModal'
+
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
 
@@ -47,7 +49,8 @@ class SingleEventComponent extends Component {
 			message: "",
 			isActive: false,
 			isInRange: false,					
-			filterImage: null
+			filterImage: null,
+			isLoadingFilter: false,
 		}
 	}
 
@@ -153,12 +156,23 @@ class SingleEventComponent extends Component {
 
 		// HOW DO WE DELAY THIS TRANSITION UNTIL THE FILTER IS LOADED???
 
+		let start = Date.now();
+
+		this.setState({
+			isLoadingFilter: true
+		})
+
 		let that = this;
 
 		let interval = setInterval(()=>{
 			if(that.state.filterURI){
 				clearInterval(interval);
 				Actions.camera({filterURI: this.state.filterURI});
+				console.log('opening camera. time elapsed: ', Date.now() - start);
+
+				this.setState({
+					isLoadingFilter: false
+				})
 			}
 		},50)
 
@@ -180,8 +194,8 @@ class SingleEventComponent extends Component {
 //					<Text style={{fontSize: 14, textAlign: 'center'}}> {this.props.message} </Text>
 	render(){
 		return (
-			<TouchableOpacity onPress={this.handleEventPress} >
 				<View style={this.props.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+				  <TouchableOpacity onPress={this.handleEventPress} >
 					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?
@@ -212,8 +226,17 @@ class SingleEventComponent extends Component {
 							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.startHour, this.state.startMinute)}</Text></Text>
 					  	</View>)
 					  }
+				  </TouchableOpacity>	
+				  			{this.state.isLoadingFilter
+				?
+			(<LoginModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
+				:
+			(null)
+			}
+
 				</View>
-			</TouchableOpacity>	
+			
+
 		)
 	}
 }
