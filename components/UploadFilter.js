@@ -8,7 +8,9 @@ import {
     TouchableOpacity,
     Dimensions,
     ActivityIndicator,
-    Alert         
+    Alert,
+    Modal,
+    Linking         
 } from 'react-native';
 
 
@@ -51,7 +53,8 @@ class UploadFilter extends Component {
       this.state = {
         png: {data: null},
         buttonState: '',
-        isFetchingImage: false
+        isFetchingImage: false,
+        infoPressed: false
       }
     }
 
@@ -266,7 +269,9 @@ class UploadFilter extends Component {
                   </Image>
                 
                   <View style={{width: 30,marginLeft:10,marginTop:5}}>
-                    <Icon name="info" size={28} color="#0c12ce" />
+                    <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+                      <Icon name="info" size={28} color="#0c12ce" />
+                    </TouchableOpacity>
                   </View>
                 </View>
 
@@ -319,6 +324,12 @@ class UploadFilter extends Component {
                 }
 
                 </View>
+      {this.state.infoPressed
+        ?
+      (<InfoModal modalVisible={true} toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+        :
+      (null)
+      }
             </View>)
       }
       
@@ -332,6 +343,54 @@ class UploadFilter extends Component {
 
 //<Image source={this.state.jpg} style={{height: 1920/4, width: 1080/4}}>
 //<View style={{flex: 1, alignItems: 'center',justifyContent: 'center',borderColor: 'black',borderRadius:2}}>
+
+class InfoModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+
+  render(){
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+              <View style={styles.infoModal}>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, marginBottom: 15}}>Need help designing your geofilter? There are lots of great free photo editors available online. Here are a few of our favorites:</Text>
+                <TouchableOpacity onPress={()=>{Linking.openURL('https://www.picmonkey.com/')}}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>PicMonkey (picmonkey.com)</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{Linking.openURL('https://pixlr.com/editor/')}}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>Pixlr (pixlr.com/editor)</Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{Linking.openURL('http://www.fotor.com/')}}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>Fotor (fotor.com)</Text>
+                </TouchableOpacity>
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, marginTop: 15, marginBottom: 10}}>{"If you need inspiration, Snapchat's geofilter site "} 
+                  <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://geofilters.snapchat.com/')}}> (geofilters.snapchat.com) </Text> 
+                    offers a variety of customizable Photoshop and Illustrator templates. (You can also <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://unlockables-odg-templates.storage.googleapis.com/geofilter-templates.zip')}}>download the filters in .zip format</Text>.)</Text>
+                <TouchableHighlight 
+                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                  onPress={() => {
+                    this.props.toggleModal();
+                    this.setState({modalVisible: !this.state.modalVisible})
+                  }
+                }>
+              <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+            </TouchableHighlight>
+
+              </View>
+            </View>
+      </Modal>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -443,6 +502,29 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  modalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
   }
 })
 

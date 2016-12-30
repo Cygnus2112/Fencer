@@ -347,7 +347,7 @@ class TakePhotoComponent extends Component {
                 ?
               (
                 <View style={[styles.backButton,{borderColor: 'white'}]}>
-                  <TouchableOpacity onPress={this.switchFlash}>
+                  <TouchableOpacity onPress={ () => { Actions.pop() }}>
                     <Icon name="chevron-left" size={30} color="white"/>
                   </TouchableOpacity>
                 </View>)

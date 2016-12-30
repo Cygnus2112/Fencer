@@ -250,7 +250,7 @@ class SingleEventComponent extends Component {
 					  	</View>)
 					  }
 				  </TouchableOpacity>	
-				  			{this.state.isLoadingFilter
+			{this.state.isLoadingFilter
 				?
 			(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
 				:
@@ -288,7 +288,6 @@ class LoadingModal extends Component {
 	        </Modal>
 		)
 	}
-
 }
 
 
