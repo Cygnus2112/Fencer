@@ -46,6 +46,8 @@ class UploadFilter extends Component {
       this.handlePress = this.handlePress.bind(this);
     //  this.handleUpload = this.handleUpload.bind(this);
 
+      this.handleTest = this.handleTest.bind(this);
+
       this.state = {
         png: {data: null},
         buttonState: '',
@@ -57,6 +59,11 @@ class UploadFilter extends Component {
      // console.log('this.props.filterToUpload: ', this.props.filterToUpload);
     }
 
+    handleTest( uri ){
+      Actions.camera({test: true, filterURI: uri });
+
+    }
+
     handlePress(){
       // const options = {
       //   chooseFromLibraryButtonTitle: 'Choose from Library...',
@@ -65,7 +72,7 @@ class UploadFilter extends Component {
       // };
 
   //    setTimeout(() => {
-              this.setState({
+      this.setState({
         isFetchingImage: true
       })
   //    },200)
@@ -210,11 +217,23 @@ class UploadFilter extends Component {
                     :
                    this.props.filterToUpload
                       ?
-                    (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
+                    (<Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}>
+                        <View style={styles.testButton}>
+                          <TouchableOpacity onPress={() => { this.handleTest( this.props.filterToUpload.data ) } }>
+                            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Test</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Image>)
                       :
                     this.state.png.data
                       ?
-                    (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}/>)
+                    (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}>
+                        <View style={styles.testButton}>
+                          <TouchableOpacity onPress={() => { this.handleTest( this.state.png.data ) } }>
+                            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Test</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Image>)
                       :
                       (        <View style={styles.guidelines}>
                                   
@@ -411,6 +430,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     padding: 8
+  },
+  testButton: {
+    position: 'absolute',
+    bottom: 25,
+    left: (274*.94)/2 - 40,             //  WILL NEED TO CHANGE ONCE WE DIAL DOWN POSITIONING
+    width: 80,
+    height: 36,
+    borderColor: 'white',
+    borderWidth: 1,
+    borderRadius: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(0,0,0,0.5)'
   }
 })
 

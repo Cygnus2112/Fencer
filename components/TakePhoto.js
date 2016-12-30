@@ -332,6 +332,7 @@ class TakePhotoComponent extends Component {
 
 //          <Image source={{uri: filterURI}} style={styles.filter}>
 //            {this.state.filterInPreview ? (<Image source={{uri: filterURI}} style={styles.filter}>) : null} 
+    console.log('this.props.filterURI: ', this.props.filterURI);
     let filterURI = "data:image/png;base64,"+this.props.filterURI;
 
     //   <Image source={{uri: filterURI}} style={styles.filter}>
@@ -342,17 +343,29 @@ class TakePhotoComponent extends Component {
           ?
        
        (<View style={styles.container}>
-              <TouchableOpacity
+            {this.props.test
+                ?
+              (
+                <View style={[styles.backButton,{borderColor: 'white'}]}>
+                  <TouchableOpacity onPress={this.switchFlash}>
+                    <Icon name="chevron-left" size={30} color="white"/>
+                  </TouchableOpacity>
+                </View>)
+                :
+              (<TouchableOpacity
                 style={styles.flashButton}
                 onPress={this.switchFlash}>
                   <Image source={this.flashIcon} style={{width: 32, height: 32,opacity:0.8}}/>
-              </TouchableOpacity>
+              </TouchableOpacity>)
+            }
 
-              <TouchableOpacity 
+            {!this.props.test &&
+              (<TouchableOpacity 
                 onPress={this.switchType}
                 style={styles.cameraButton}>
                   <Image source={require('../assets/cameraswitch.png')} style={{width: 32, height: 32, opacity:0.8}} />
-              </TouchableOpacity>
+              </TouchableOpacity>)
+            }
 
            {/*   COULDN'T MAKE THIS WORK DUE TO PREVIEW IMAGE INEXPLICABLY REMAINING ON SCREEN
                 <TouchableOpacity onPress={()=>{
@@ -363,7 +376,8 @@ class TakePhotoComponent extends Component {
                 <Icon name="image" size={30} color="rgba(255,255,255, 0.7)"/>
               </TouchableOpacity> */}
 
-              <TouchableOpacity onPress={this.takePicture} style={styles.takePictureButton}>
+            {!this.props.test &&
+              (<TouchableOpacity onPress={this.takePicture} style={styles.takePictureButton}>
                 <View style={{width: 50, height: 50,
                   flex: 0,
                   padding: 10,
@@ -374,7 +388,8 @@ class TakePhotoComponent extends Component {
                   zIndex: 5
 
                 }} />
-              </TouchableOpacity>
+              </TouchableOpacity>)
+            }
 
           <Camera
             ref={(cam) => {
@@ -529,7 +544,7 @@ const styles = StyleSheet.create({
   },
   facebook: {
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
    // left: (screenWidth/2) - 65,
     left: 50,
     elevation:3,
@@ -544,7 +559,7 @@ const styles = StyleSheet.create({
   },
   snapchat: {
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
    // left: (screenWidth/2) - 65,
     left: 115,
     elevation:3,
@@ -559,7 +574,7 @@ const styles = StyleSheet.create({
   },
   whatsapp: {
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
    // left: (screenWidth/2) - 65,
     right: 115,
     elevation:3,
@@ -576,7 +591,7 @@ const styles = StyleSheet.create({
   },
   share: {
     position: 'absolute',
-    bottom: 35,
+    bottom: 45,
    // left: (screenWidth/2) - 65,
     right: 50,
     elevation:3,
@@ -592,15 +607,30 @@ const styles = StyleSheet.create({
   flashButton: {
     position: 'absolute',
     top: 10,
-    left: 10,
+    left: 30,
     zIndex: 5
   //  padding: 5,
   },
   cameraButton: {
     position: 'absolute',
     top: 10,
-    right: 10,
+    right: 30,
     zIndex: 5
+  },
+  backButton: {
+    position: 'absolute',
+    top: 10,
+   // left: (screenWidth/2) - 65,
+    left: 30,
+    zIndex: 5,
+    height:40,
+    width:40,
+    borderColor: 'black',
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    borderRadius:5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth:1
   },
 });
 

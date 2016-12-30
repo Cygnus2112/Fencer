@@ -8,12 +8,12 @@ import {
     TouchableHighlight,
     TouchableOpacity,
     Dimensions,
-    AsyncStorage
+    AsyncStorage,
+    Modal,
+    ActivityIndicator
 } from 'react-native';
 
 let utils = require('../utils');
-
-import LoginModal from './LoginModal'
 
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
@@ -26,6 +26,29 @@ const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 
 // use linear gradient on red and green lights
+
+const _formatTime = (hour, minute) => {
+  let suffix = 'AM';
+  if(hour > 12){
+    hour = hour - 12;
+    suffix = 'PM';
+  }
+  if(hour === 12){
+    suffix = 'PM';
+  }
+  if(hour === 0){
+    hour = 12;
+  }
+  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
+}
+
+const _formatDate = (m,d,y) => {
+	m += 1;
+	if(m === 13){
+		m = 1;
+	}
+	return m + "/" + d + "/" + y;
+}
 
 class SingleEventComponent extends Component {
 	constructor(props){
@@ -229,7 +252,7 @@ class SingleEventComponent extends Component {
 				  </TouchableOpacity>	
 				  			{this.state.isLoadingFilter
 				?
-			(<LoginModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
+			(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
 				:
 			(null)
 			}
@@ -241,28 +264,33 @@ class SingleEventComponent extends Component {
 	}
 }
 
-const _formatTime = (hour, minute) => {
-  let suffix = 'AM';
-  if(hour > 12){
-    hour = hour - 12;
-    suffix = 'PM';
-  }
-  if(hour === 12){
-    suffix = 'PM';
-  }
-  if(hour === 0){
-    hour = 12;
-  }
-  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
+class LoadingModal extends Component {
+	constructor(props){
+		super(props);
+		
+		this.state = {
+      		modalVisible: this.props.modalVisible
+    	}
+	}
+
+	render(){
+		return(
+			<Modal
+	            animationType={"none"}
+	            transparent={true}
+	            visible={this.state.modalVisible}
+	            onRequestClose={() => {alert("Modal has been closed.")}}>
+
+	            <View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
+	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'white'}}>Fetching filter...</Text>
+	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+	            </View>
+	        </Modal>
+		)
+	}
+
 }
 
-const _formatDate = (m,d,y) => {
-	m += 1;
-	if(m === 13){
-		m = 1;
-	}
-	return m + "/" + d + "/" + y;
-}
 
 const styles = StyleSheet.create({
 	containerActive:{
