@@ -111,13 +111,37 @@ class Send extends Component {
     render(){
         return (
           <View style={styles.container}>
-            <View style={{width: screenWidth,flexDirection: 'row',  justifyContent: 'center'}}>
-              <TouchableOpacity onPress={() => { Actions.loading() }}>
-                <View style={{width: 30, marginRight:10,marginTop:5}}>
+
+              <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
+                <TouchableOpacity onPress={() => { 
+                  this.props.clearProps();
+                  Actions.loading();
+                }}>
                   <Icon name="home" size={30} color={"#0c12ce"} />
-                </View>
-              </TouchableOpacity>
-                <View style={{height: screenHeight-150, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'space-between',alignItems: 'center'}}>
+                </TouchableOpacity>
+              </View>
+
+              <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
+                <Icon name="info" size={30} color="#0c12ce" />
+              </View>
+
+              <View style={styles.buttonBox}>
+                        <Button
+                          style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
+                          onPress={()=> { 
+
+                            this.props.submitTitle({title: this.state.title, message: this.state.message}); 
+
+                         }
+                        }>
+                          Submit
+                        </Button>
+              </View>
+              
+
+            <View style={{width: screenWidth,flexDirection: 'row',  justifyContent: 'center'}}>
+
+                <View style={{height: 315, width: 250,marginTop: 50,flexDirection: 'column',justifyContent: 'space-between',alignItems: 'center'}}>
   
                   <View style={{height: 150}}>
                     <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Give your filter a name:</Text>
@@ -145,25 +169,11 @@ class Send extends Component {
                     </View>
                   </View>
 
-                  <View style={{height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                    <View style={styles.buttonBox}>
-                        <Button
-                          style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
-                          onPress={()=> { 
+              {/*    <View style={{height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderColor:'black', borderWidth: 1}}> */}
 
-                            this.props.submitTitle({title: this.state.title, message: this.state.message}); 
+                 {/*    </View> */}
 
-                         }
-                        }>
-                          Submit
-                        </Button>
-                    </View>
-                  </View>
                 </View>
-
-              <View style={{width: 30,marginLeft:10,marginTop:5}}>
-                <Icon name="info" size={30} color="#0c12ce" />
-              </View>
 
             </View>
           </View>
@@ -180,14 +190,24 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#f9f9f2'
   },
-   buttonBox:{
+  buttonBox:{
+    // elevation:3,
+    // padding:5,
+    // height:40,
+    // width: 130,
+    // overflow:'hidden',
+    // borderRadius:15,
+    // backgroundColor: '#0c12ce'
     elevation:3,
-    padding:7,
+    padding:5,
     height:40,
     width: 130,
     overflow:'hidden',
     borderRadius:15,
-    backgroundColor: '#0c12ce'
+    backgroundColor: '#0c12ce',
+    position: 'absolute',
+    left: (screenWidth/2) - 65,
+    bottom: 10
   }
 });
 

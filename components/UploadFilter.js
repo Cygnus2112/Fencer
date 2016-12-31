@@ -202,16 +202,23 @@ class UploadFilter extends Component {
       } else {
         return (
             <View style={ styles.container }>
-                <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
-                  
-                  <View style={{width: 30,marginRight:10,marginTop:5}}>
+                <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
                     <TouchableOpacity onPress={() => { 
                       this.props.clearProps();
                       Actions.loading(); 
                     }}>
                       <Icon name="home" size={30} color="#0c12ce" />
                     </TouchableOpacity >
-                  </View>
+                </View>
+
+                <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
+                    <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+                      <Icon name="info" size={30} color="#0c12ce" />
+                    </TouchableOpacity>
+                </View>
+
+                <View style={{height: 482*.94, width: screenWidth, flexDirection: 'row', justifyContent: 'center'}}>
+                  
                   
                   <Image source={require('../assets/png_background.png')} style={styles.preview}>
                   {this.state.isFetchingImage
@@ -268,11 +275,7 @@ class UploadFilter extends Component {
                   }
                   </Image>
                 
-                  <View style={{width: 30,marginLeft:10,marginTop:5}}>
-                    <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
-                      <Icon name="info" size={28} color="#0c12ce" />
-                    </TouchableOpacity>
-                  </View>
+
                 </View>
 
                 <View style={{width: screenWidth-25, height: 50, flexDirection: 'row', justifyContent: 'center', alignItems: 'center',marginTop:5}}>
@@ -459,18 +462,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center'
-  },
-  buttonBox:{
-    elevation:3,
-    padding:7,
-    height:40,
-    width: 130,
-    overflow:'hidden',
-    borderRadius:15,
-    backgroundColor: '#0c12ce',
-    // marginLeft: 40,
-    // marginRight: 40
-   // marginBottom: 5
   },
   buttonBoxDiscard:{
     elevation:3,

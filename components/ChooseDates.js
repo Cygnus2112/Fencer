@@ -71,6 +71,7 @@ class ChooseDatesComponent extends Component{
   }
 
   componentDidMount(){
+     // console.log('screenHeight / 1.7 ', screenHeight / 1.7);
       console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
 
       let d = new Date();
@@ -326,137 +327,140 @@ class ChooseDatesComponent extends Component{
   render(){
     return (
       <View style={styles.container}>
-      <View style={{height: screenHeight / 1.7, width: screenWidth,flexDirection: 'row', justifyContent: 'center'}}>
-        <TouchableOpacity onPress={() => { 
-
-          Actions.loading(); 
-        }}>
-          <View style={{width: 30, marginRight: 35}}>
+        <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
+          <TouchableOpacity onPress={() => { 
+            this.props.clearProps();
+            Actions.loading(); 
+          }}>
             <Image source={require('../assets/home_icon.png')} style={{width: 30, height:30}}/>
-          </View>
-        </TouchableOpacity>
-        <View style={styles.dateFieldsContainer}>
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
-            This filter will become
-          </Text> 
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
-          </Text>
-
-            <TouchableOpacity onPress={()=>{
-              let d = new Date();
-              let mm = d.getMonth();
-              let dd = d.getDate();
-              let yy = d.getFullYear();
-              this.launchCal('start', {
-                date: this.state.startDate,
-                minDate: new Date(),
-                maxDate: new Date(yy, mm+1, dd),
-              })}}>
-
-
-            <View style={styles.dateAndIconContainer}>
-                <View style={[styles.dateBox]}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
-                    { this.state.startText }
-                  </Text>
-                </View>
-                <View style={styles.calendarIcon} >
-                  <Icon name="calendar-o" size={30} color={"black"} />
-                </View>
-            </View>
           </TouchableOpacity>
+        </View>
 
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
-            at:
-          </Text>
+        <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
+          <Image source={require('../assets/info_unedited.png')} style={{width: 31, height:31}}/>
+        </View>
+          
+     {/*    <View style={{height: 345, width: screenWidth,flexDirection: 'row', justifyContent: 'center',borderWidth: 1, borderColor: 'black'}}> */}
 
-          <TouchableOpacity onPress={() => {
-            let d = new Date();
-            let t = d.toLocaleTimeString();
-            let currentHour = Number( t.split(' ')[0].split(':')[0] );
-            let options = {hour: currentHour+1, minute: 0}
-            this.launchTime('start', options)} 
-          }>
-            <View style={styles.dateAndIconContainer}>
+          <View style={styles.dateFieldsContainer}>
+            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
+              This filter will become
+            </Text> 
+            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}><Text style={{fontWeight: 'bold'}}>active</Text> on:
+            </Text>
 
-              <View style={styles.dateBox}>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
-                  { this.state.startTimeText }
-                </Text>
-              </View>
-              <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
-                <Icon name="clock-o" size={32} color={"black"} />
-              </View>
-            </View>
-
-          </TouchableOpacity>
-  
-        
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
-            and <Text style={{fontWeight: 'bold'}}>end</Text> on:
-          </Text>
-
-          <TouchableOpacity onPress={()=>{
-              let d = new Date();
-              let mm = d.getMonth();
-              let dd = d.getDate();
-              let yy = d.getFullYear();
-
-              this.launchCal('end', {
-                  date: this.state.endDate,
+              <TouchableOpacity onPress={()=>{
+                let d = new Date();
+                let mm = d.getMonth();
+                let dd = d.getDate();
+                let yy = d.getFullYear();
+                this.launchCal('start', {
+                  date: this.state.startDate,
                   minDate: new Date(),
                   maxDate: new Date(yy, mm+1, dd),
-              })}} >
-            <View style={styles.dateAndIconContainer}>
+                })}}>
 
-              <View style={styles.dateBox}>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular', textAlign: 'center',color: 'black',fontSize:22}}>
-                  { this.state.endText }
+                  <View style={styles.dateAndIconContainer}>
+                      <View style={[styles.dateBox]}>
+                        <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
+                          { this.state.startText }
+                        </Text>
+                      </View>
+                      <View style={styles.calendarIcon} >
+                        <Icon name="calendar-o" size={30} color={"black"} />
+                      </View>
+                  </View>
+              </TouchableOpacity>
+
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
+                  at:
                 </Text>
-              </View>
-              <View style={styles.calendarIcon} >
-                <Icon name="calendar-o" size={30} color={"black"} />
-              </View>
 
-            </View>
-          </TouchableOpacity>
+                <TouchableOpacity onPress={() => {
+                  let d = new Date();
+                  let t = d.toLocaleTimeString();
+                  let currentHour = Number( t.split(' ')[0].split(':')[0] );
+                  let options = {hour: currentHour+1, minute: 0}
+                  this.launchTime('start', options)} 
+                }>
+                  <View style={styles.dateAndIconContainer}>
+
+                    <View style={styles.dateBox}>
+                      <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
+                        { this.state.startTimeText }
+                      </Text>
+                    </View>
+                    <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
+                      <Icon name="clock-o" size={32} color={"black"} />
+                    </View>
+                  </View>
+
+                </TouchableOpacity>
         
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
-            at:
-          </Text>
-
-          <TouchableOpacity onPress={() => {
-            let d = new Date();
-            let t = d.toLocaleTimeString();
-            let currentHour = Number( t.split(' ')[0].split(':')[0] );
-            let options = {hour: currentHour+2, minute: 0}
-            this.launchTime('end', options)} 
-          }>
-            <View style={styles.dateAndIconContainer}>
-
-              <View style={styles.dateBox}>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
-                  { this.state.endTimeText }
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
+                  and <Text style={{fontWeight: 'bold'}}>end</Text> on:
                 </Text>
-              </View>
-              <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
-                <Icon name="clock-o" size={32} color={"black"} />
-              </View>
-            </View>
 
-          </TouchableOpacity>
+                <TouchableOpacity onPress={()=>{
+                    let d = new Date();
+                    let mm = d.getMonth();
+                    let dd = d.getDate();
+                    let yy = d.getFullYear();
+
+                    this.launchCal('end', {
+                        date: this.state.endDate,
+                        minDate: new Date(),
+                        maxDate: new Date(yy, mm+1, dd),
+                    })}} >
+                  <View style={styles.dateAndIconContainer}>
+
+                    <View style={styles.dateBox}>
+                      <Text style={{fontFamily: 'RobotoCondensed-Regular', textAlign: 'center',color: 'black',fontSize:22}}>
+                        { this.state.endText }
+                      </Text>
+                    </View>
+                    <View style={styles.calendarIcon} >
+                      <Icon name="calendar-o" size={30} color={"black"} />
+                    </View>
+
+                  </View>
+                </TouchableOpacity>
+        
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
+                  at:
+                </Text>
+
+                <TouchableOpacity onPress={() => {
+                  let d = new Date();
+                  let t = d.toLocaleTimeString();
+                  let currentHour = Number( t.split(' ')[0].split(':')[0] );
+                  let options = {hour: currentHour+2, minute: 0}
+                  this.launchTime('end', options)} 
+                }>
+                  <View style={styles.dateAndIconContainer}>
+
+                    <View style={styles.dateBox}>
+                      <Text style={{fontFamily: 'RobotoCondensed-Regular',color: 'black', fontSize:22,textAlign: 'center'}}>
+                        { this.state.endTimeText }
+                      </Text>
+                    </View>
+                    <View style={{borderWidth: 2, borderLeftWidth: 0,borderColor: 'black', justifyContent: 'center',alignItems:'center', height:38, width:38}} >
+                      <Icon name="clock-o" size={32} color={"black"} />
+                    </View>
+                  </View>
+
+                </TouchableOpacity>
 
         </View>
-        <View style={{width: 30,marginLeft:35}}>
-          <Image source={require('../assets/info_unedited.png')} style={{width: 30, height:30}}/>
-        </View>
-      </View>
-        <View style={styles.errorBox}>
+
+     {/* </View> */}
+
+     {/*   <View style={styles.errorBox}>
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>Filter can be active for</Text>
           <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>no more than 48 hours.</Text>
-        </View>
+        </View> */}
       
-          <View style={styles.buttonBox}>
+        <View style={styles.buttonBox}>
             <Button
               style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
               onPress={()=> { this.props.submitDates({
@@ -471,13 +475,11 @@ class ChooseDatesComponent extends Component{
                 endHour: this.state.endHour,
                 endMinute: this.state.endMinute
               });
-              this.handleSubmit();
-
-            }
+              this.handleSubmit();}
             }>
               Submit
             </Button>
-          </View>
+        </View>
 
       </View>
     )
@@ -488,14 +490,15 @@ const styles = StyleSheet.create({
   container: {
     // flex: 1,
     height: screenHeight - 75,
+ //height: screenHeight - 125,
     flexDirection: 'column',
     justifyContent: 'space-between',
     alignItems: 'center',
     backgroundColor: '#f9f9f2'
   },
-   buttonBox:{
+  buttonBox:{
     elevation:3,
-    padding:7,
+    padding:5,
     height:40,
     width: 130,
     overflow:'hidden',
@@ -503,15 +506,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c12ce',
     marginLeft: 40,
     marginRight: 40,
-    marginBottom: 10
+    marginBottom: 10,
   },
   dateFieldsContainer: {
-    height: screenHeight / 1.7,
+    height: 330,
     justifyContent: 'flex-start',
-    alignItems: 'center'
+    alignItems: 'center',
+    marginTop: 30, 
+    // borderWidth: 1, 
+    // borderColor: 'black'
   },
   errorBox: {
     height: 50,
+    borderWidth: 1, 
+    borderColor: 'black'
   },
   dateBox:{
     height: 38, 

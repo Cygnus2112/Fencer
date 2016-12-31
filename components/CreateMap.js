@@ -72,20 +72,22 @@ class CreateMapComponent extends Component{
 //          <Polygon lat={this.state.lat} lng={this.state.lng} />
     return(
         <View style={styles.container}>
-          <View style={styles.searchBoxContainer}>
+          <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
             <TouchableOpacity onPress={() => { 
               this.props.clearProps();
               Actions.loading(); 
             }}>
-              <View style={{width: 30, marginLeft: 15}}>
-                <Icon name="home" size={30} color="#0c12ce" />
-              </View>
+              <Icon name="home" size={30} color="#0c12ce" />
             </TouchableOpacity>
+          </View>
+
+          <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
+            <Icon name="info" size={30} color="#0c12ce" />
+          </View>
+
+          <View style={styles.searchBoxContainer}>
             <View style={styles.searchBox}>
               <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
-            </View>
-            <View style={{width: 30, marginRight: 15}}>
-              <Icon name="info" size={30} color="#0c12ce" />
             </View>
           </View>
           <View style={styles.mapContainer} >
@@ -123,7 +125,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     marginTop: 2,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     alignItems: 'center',
     //borderColor: 'black',
     //borderWidth: 1,
