@@ -275,22 +275,23 @@ class LoadingModal extends Component {
 
 	render(){
 		return(
-			<Modal
-	            animationType={"none"}
-	            transparent={true}
-	            visible={this.state.modalVisible}
-	            onRequestClose={() => {alert("Modal has been closed.")}}>
-
-	            <View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
-	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'white'}}>Fetching filter...</Text>
-	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+      	<Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+              <View style={styles.loadingModal}>           
+	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>
+	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="blue" />
 	            </View>
-	        </Modal>
+	        </View>
+	    </Modal>
 		)
 	}
 }
 
-
+//<View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
 const styles = StyleSheet.create({
 	containerActive:{
 		height: 80, 
@@ -356,7 +357,30 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 		borderColor: 'black',
 		borderWidth:1
-	}
+	},
+	modalContainer: {
+	    position: 'absolute', 
+	    top: 0, 
+	    left: 0, 
+	    right: 0, 
+	    bottom: 0, 
+	    backgroundColor: 'rgba(0,0,0,0.5)'
+	},
+  	loadingModal: {
+	    position: 'absolute', 
+	    top: 60, 
+	    left:40, 
+	    right: 40, 
+	    bottom: 60, 
+	    justifyContent: 'center', 
+	    alignItems: 'center', 
+	   // backgroundColor:'white',
+	    backgroundColor: 'white',
+	    borderWidth:1, 
+	    borderColor:'black', 
+	    borderRadius:10,
+	    padding: 10
+  	}
 })
 
 const mapStateToProps = (state) => {

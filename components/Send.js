@@ -147,7 +147,7 @@ class Send extends Component {
                     <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Give your filter a name:</Text>
                     <View style={{width: 250}}>
                         <TextInput 
-                            style={{fontSize: 20, textAlign: 'center',fontFamily: 'RobotoCondensed-Regular'}} 
+                            style={{fontSize: 20, textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',color: 'blue'}} 
                             autoCorrect={false} 
                             maxLength={28} 
                             onChangeText={(text) => this.setState({title: text})}
@@ -159,7 +159,7 @@ class Send extends Component {
                     <Text style={{fontSize: 22, textAlign: 'center', fontFamily: 'RobotoCondensed-Regular'}}>Add an optional message <Text style={{fontSize: 16}}>(directions, contact info, etc.):</Text></Text>
                     <View style={{width: 250, height: 50 }}>
                         <TextInput 
-                            style={{fontSize: 18,fontFamily: 'RobotoCondensed-Regular'}} 
+                            style={{fontSize: 18,fontFamily: 'RobotoCondensed-Regular',color: 'blue'}} 
                             // multiline={true} 
                             // numberOfLines={4}  
                             autoCorrect={false} 

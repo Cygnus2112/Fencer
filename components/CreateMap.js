@@ -7,7 +7,10 @@ import {
     TouchableNativeFeedback,
     Dimensions,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableHighlight,
+    Modal,
+    ScrollView 
 } from 'react-native';
 
 import { Actions } from 'react-native-router-flux';
@@ -35,7 +38,8 @@ class CreateMapComponent extends Component{
     this.state = {
       polygon: false,
       lat: this.props.currentPosition.lat || 37.78825,
-      lng: this.props.currentPosition.lng || -122.4324
+      lng: this.props.currentPosition.lng || -122.4324,
+      infoPressed: false
     }
   //  this.getCoords = this.getCoords.bind(this);
   //  this.addPolygon = this.addPolygon.bind(this);
@@ -82,7 +86,9 @@ class CreateMapComponent extends Component{
           </View>
 
           <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
-            <Icon name="info" size={30} color="#0c12ce" />
+            <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+              <Icon name="info" size={30} color="#0c12ce" />
+            </TouchableOpacity>
           </View>
 
           <View style={styles.searchBoxContainer}>
@@ -93,10 +99,77 @@ class CreateMapComponent extends Component{
           <View style={styles.mapContainer} >
             <Polygon lat={this.state.lat} lng={this.state.lng} />
           </View>
+          {this.state.infoPressed
+              ?
+            (<InfoModal modalVisible={true} toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+              :
+            (null)
+          }
         </View>
     )
   }
 }
+
+class InfoModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+
+  render(){
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+              <View style={styles.infoModal}>
+               <ScrollView contentContainerStyle={styles.modalScroll}>  
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>To begin choosing your geofence area, tap anywhere to set a point on the map. In order to be valid, a geofence must have a minimum of <Text style={{fontWeight: 'bold'}}>three</Text> points and a maximum of <Text style={{fontWeight: 'bold'}}>four</Text>.</Text>
+                  <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                    <Image source={require('../assets/fence_thumbnail.png')} style={{width: 200}} resizeMode={"contain"}/>
+                  </View>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>Tap <Text style={{fontWeight: 'bold'}}>Submit</Text> when finished or <Text style={{fontWeight: 'bold'}}>Start Over</Text> to discard your geofence and start again. </Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>To change a {"map's"} target area, use the search field or scroll to your preferred location.</Text> 
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>Location data contained in your geofence will be used to determine if a user is within your geofence area (and thus able to access your geofilter). GPS positioning on mobile devices isn't always precise, so it's best to err on the generous side when setting your geofence area.</Text>
+
+                </ScrollView>   
+                <TouchableHighlight 
+                      style={{margin: 5,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                      onPress={() => {
+                        this.props.toggleModal();
+                        this.setState({modalVisible: !this.state.modalVisible})
+                      }
+                  }>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                </TouchableHighlight>
+              </View >
+            </View>
+      </Modal>
+    )
+  }
+}
+// Basic directions
+// To begin, tap anywhere to set a point on the map. In order to be valid, a fence must have a minimum of three points and a maximum of four. 
+
+// Thumbnail image of geofence. (Maybe both rectangle and triangle.)
+
+
+// Tap "Submit" when finished or "Start Over" to discard your geofence and start again. 
+
+// To change a map's target area, use the search field or scroll to your preferred location.
+
+// Location information contained in (dictated by, encoded in) your geofence will be used
+// to determine if a user is within your geofence area, and thus able to access your geofilter. GPS positioning on mobile devices isn't
+// always precise, so it's best to err on generous side when setting an area (say +10% your venue coordinates) (what???? argh. intended venue?)
+
+// 
+
+//  For best results, place geofence points in clockwise fashion. 
 
 const styles = StyleSheet.create({
   container: {
@@ -144,6 +217,47 @@ const styles = StyleSheet.create({
     left: 2,
     right: 2,
     bottom: 2
+  },
+  modalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+   // padding: 10
+  },
+  modalScroll: {
+    //zIndex: 5,
+    // position: 'absolute', 
+    // top: 70, 
+    // left:45, 
+    // right: 45, 
+    // bottom: 100, 
+  //  justifyContent: 'center', 
+  //  alignItems: 'center', 
+    margin:10,
+    marginTop: 5,
+    paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor:'white',
+    // borderWidth:1, 
+    // borderColor:'black', 
+    //padding: 5
+
   }
 });
 
