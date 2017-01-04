@@ -114,6 +114,7 @@ class UploadFilter extends Component {
 
               const baseUri = "data:image/png;base64," + response.data;
               console.log('baseUri: ', baseUri.slice(0,40));
+
               ImageResizer.createResizedImage(baseUri, 1080, 1920, 'PNG',100).then((resizedImageUri) => {
                 console.log('resized image url: ', resizedImageUri);
 
@@ -125,18 +126,18 @@ class UploadFilter extends Component {
                     var byteLength = parseInt((data).replace(/=/g,"").length * 0.75);
                     console.log('file size in base64 convert: ', byteLength);
 
-              if(byteLength > 1000000){
+                  if(byteLength > 1300000){
 
-                Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => {
-                  this.setState({
-                    isFetchingImage: false
-                  })
-                  console.log('OK Pressed!')
+                    Alert.alert('Error', 'Image size must be less than 1mb.', [{text: 'OK', onPress: () => {
+                      this.setState({
+                        isFetchingImage: false
+                      })
+                      console.log('OK Pressed!')
 
 
-              }}])
+                    }}])
 
-              } else {
+                  } else {
 
                     this.setState({
                       png: {data: data},
@@ -172,7 +173,7 @@ class UploadFilter extends Component {
               } else {
 
                 let byteLength = parseInt((response.data).replace(/=/g,"").length * 0.75);
-                console.log('file size in base64 convert: ', byteLength);
+                console.log('file size: ', byteLength);
 
                 this.setState({
                   png: {data: source.data},
@@ -407,14 +408,12 @@ const styles = StyleSheet.create({
   preview:{
     height: 480*.94, 
     width: 274*.94,
-        justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     borderWidth:2, 
     borderColor:'black',
-    backgroundColor: 'white',
+  //  backgroundColor: 'white',
     marginBottom: 2,
-  //  elevation: 3,
-
   },
   guidelines: {
    // flex: 1,

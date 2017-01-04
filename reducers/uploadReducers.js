@@ -29,7 +29,8 @@ const initialState = {
   filterToUpload: null,
   bitlyURL: "",
   filterID: "",
-  finalSubmitComplete: false
+  finalSubmitComplete: false,
+  mapModalDismissed: false
 }
 
 const uploadReducer = (state = initialState, action) => {
@@ -131,6 +132,11 @@ const uploadReducer = (state = initialState, action) => {
         fenceCoordinates: null,
         chooseAreaComplete: false
       })
+    case ActionTypes.DISMISS_MAP_MODAL_REQUEST:
+      return Object.assign({}, state, {
+        mapModalDismissed: true
+      })
+
 
     // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
     //   return Object.assign({}, state, {

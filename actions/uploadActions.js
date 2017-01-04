@@ -257,3 +257,16 @@ const clearUploadPropsRequest = () => {
 	}
 }
 
+export const DISMISS_MAP_MODAL_REQUEST = 'DISMISS_MAP_MODAL_REQUEST';
+
+export const dismissMapModal = (dispatch) => {
+//	Actions.loading();
+	dispatch( dismissMapModalRequest() );
+}
+
+const dismissMapModalRequest = () => {
+	return {
+		type: DISMISS_MAP_MODAL_REQUEST
+	}
+}
+

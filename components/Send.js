@@ -14,6 +14,7 @@ import {
     Linking,
     TextInput,
     AppState,
+    Alert,
  //   Share
 } from 'react-native';
 
@@ -51,13 +52,29 @@ class Send extends Component {
 
         // setTimeout(()=>{
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
+                const errMessage = () => {
+                  if(!this.props.uploadFilterComplete){
+                    return "Upload Filter";
+                  } else if(!this.props.selectDatesComplete){
+                    return "Select Dates";
+                  } else if(!this.props.chooseAreaComplete) {
+                    return "Choose Area";
+                  } else {
+                    return "Name Your Filter";
+                  }
+                }
+
+                Alert.alert('Oops!',"You geofilter is incomplete. Please complete the following step before proceeding:\n\n" + errMessage(), [{text: 'OK', onPress: () => {
+                    console.log('OK Pressed!');
+                  }
+                }])
 
                 // trigger error modal: 'oops! one or more of the steps is incomplete...'
-                console.log('oops! one or more of the steps is incomplete...');
-                console.log(this.props.uploadFilterComplete);
-                console.log(this.props.selectDatesComplete);
-                console.log(this.props.chooseAreaComplete);
-                console.log(this.props.filterTitle);
+                // console.log('oops! one or more of the steps is incomplete...');
+                // console.log(this.props.uploadFilterComplete);
+                // console.log(this.props.selectDatesComplete);
+                // console.log(this.props.chooseAreaComplete);
+                // console.log(this.props.filterTitle);
             } else {
                 let dataToSend = {
                     fenceCoordinates: this.props.fenceCoordinates,
@@ -231,7 +248,10 @@ const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
             if(info.title.length < 1){
-
+                Alert.alert('Oops!','Please name your geofilter before proceeding.', [{text: 'OK', onPress: () => {
+                    console.log('OK Pressed!');
+                  }
+                }])
                 // trigger error modal: "fence must have a title"
 
             } else {

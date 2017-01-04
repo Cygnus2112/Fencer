@@ -15,7 +15,7 @@ class PreviewWithFilter extends Component {
 		super(props);
 	}
 	render(){
-		return(<Image source={{uri: this.props.filterURI}} style={styles.filter}/>)
+		return(<Image source={{uri: this.props.filterURI}} style={styles.filter} resizeMode={'contain'} />)
 	}
 }
 
@@ -23,8 +23,11 @@ const styles = StyleSheet.create({
   filter:{
     width: screenWidth * .9, 
     height: screenHeight *.95,
-     borderColor: 'green', 
-     borderWidth: 2
+    // borderColor: 'green', 
+    // borderWidth: 2,
+    // flexDirection: 'row',
+    // justifyContent: 'center',
+    // alignItems: 'center',
   }
 });
 

@@ -332,7 +332,7 @@ class TakePhotoComponent extends Component {
 
 //          <Image source={{uri: filterURI}} style={styles.filter}>
 //            {this.state.filterInPreview ? (<Image source={{uri: filterURI}} style={styles.filter}>) : null} 
-    console.log('this.props.filterURI: ', this.props.filterURI);
+  //  console.log('this.props.filterURI: ', this.props.filterURI);
     let filterURI = "data:image/png;base64,"+this.props.filterURI;
 
     //   <Image source={{uri: filterURI}} style={styles.filter}>
@@ -391,7 +391,7 @@ class TakePhotoComponent extends Component {
               </TouchableOpacity>)
             }
 
-          <Camera
+       <Camera
             ref={(cam) => {
               this.camera = cam;              //  the new (correct) callback refs style
             }}
@@ -403,9 +403,11 @@ class TakePhotoComponent extends Component {
             defaultTouchToFocus
             captureTarget={Camera.constants.CaptureTarget.temp}
             onZoomChanged={this._handleZoomChange.bind(this)}
-            onFocusChanged={this._handleFocusChange.bind(this)}>
+            onFocusChanged={this._handleFocusChange.bind(this)}>  
+
               <PreviewWithFilter filterURI={filterURI} />
-          </Camera>
+
+         </Camera>     
 
         </View>)
 
@@ -414,7 +416,7 @@ class TakePhotoComponent extends Component {
 
           <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
             <Image style={styles.photo} source={{ uri: this.state.photo}}>
-              <Image source={{uri: filterURI}} style={styles.filter}/>
+              <Image source={{uri: filterURI}} style={styles.filter} resizeMode={'contain'} />
             </Image>  
           </View>
 
@@ -467,7 +469,7 @@ const styles = StyleSheet.create({
     width: screenWidth,
     height: screenHeight,
     flexDirection: 'column',
-    backgroundColor:'transparent',
+    backgroundColor:'white',
     justifyContent: 'flex-start',
     alignItems: 'center'
   },
@@ -481,8 +483,8 @@ const styles = StyleSheet.create({
   filter:{
     width: screenWidth * .9, 
     height: screenHeight *.95,
-     borderColor: 'green', 
-     borderWidth: 2
+     // borderColor: 'green', 
+     // borderWidth: 2
   },
   capture: {
     flex: 0,

@@ -281,10 +281,10 @@ class LoadingModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => { console.log("Modal has been closed.")}}>
             <View style={styles.modalContainer}>
-              <View style={styles.loadingModal}>           
-	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>
-	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="blue" />
-	            </View>
+          {/*    <View style={styles.loadingModal}>           
+	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>	*/}
+	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+	        {/*    </View>	*/}
 	        </View>
 	    </Modal>
 		)
@@ -364,7 +364,9 @@ const styles = StyleSheet.create({
 	    left: 0, 
 	    right: 0, 
 	    bottom: 0, 
-	    backgroundColor: 'rgba(0,0,0,0.5)'
+	    backgroundColor: 'rgba(0,0,0,0.5)',
+	    justifyContent: 'center',
+	    alignItems: 'center'
 	},
   	loadingModal: {
 	    position: 'absolute', 

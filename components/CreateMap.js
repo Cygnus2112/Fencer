@@ -39,7 +39,7 @@ class CreateMapComponent extends Component{
       polygon: false,
       lat: this.props.currentPosition.lat || 37.78825,
       lng: this.props.currentPosition.lng || -122.4324,
-      infoPressed: false
+      infoPressed: !this.props.mapModalDismissed
     }
   //  this.getCoords = this.getCoords.bind(this);
   //  this.addPolygon = this.addPolygon.bind(this);
@@ -101,7 +101,10 @@ class CreateMapComponent extends Component{
           </View>
           {this.state.infoPressed
               ?
-            (<InfoModal modalVisible={true} toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+            (<InfoModal modalVisible={true} toggleModal={() => { 
+                this.setState({ infoPressed: false});
+                this.props.dismissMapModal();
+              }} />)
               :
             (null)
           }
@@ -141,6 +144,7 @@ class InfoModal extends Component {
                 <TouchableHighlight 
                       style={{margin: 5,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
                       onPress={() => {
+                        
                         this.props.toggleModal();
                         this.setState({modalVisible: !this.state.modalVisible})
                       }
@@ -267,7 +271,8 @@ const mapStateToProps = (state) => {
     isValidatingCoords: state.uploadReducer.isValidatingCoords,
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
-    fenceError: state.uploadReducer.fenceError
+    fenceError: state.uploadReducer.fenceError,
+    mapModalDismissed: state.uploadReducer.mapModalDismissed
   }
 }
 
@@ -275,6 +280,9 @@ const mapDispatchToProps = (dispatch) => {
   return {
     clearProps: () => {
       uploadActions.clearUploadProps(dispatch);
+    },
+    dismissMapModal: () => {
+      uploadActions.dismissMapModal(dispatch);
     }
   }
 }
