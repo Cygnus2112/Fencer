@@ -46,10 +46,9 @@ function _formatTime(hour, minute) {
 class ChooseDatesComponent extends Component{
   constructor(props){
     super(props);
+
     this.launchCal = this.launchCal.bind(this);
     this.launchTime = this.launchTime.bind(this);
-
-    this.handleSubmit = this.handleSubmit.bind(this);
 
     this.state = ({
       startMonth: this.props.selectedDates.startMonth || (new Date()).getMonth(),
@@ -60,74 +59,23 @@ class ChooseDatesComponent extends Component{
       endYear: this.props.selectedDates.endYear || (new Date()).getFullYear(),
       startText: (new Date()).toLocaleDateString(),
       endText: (new Date()).toLocaleDateString(),
-      isoFormatText: 'pick a time (24-hour format)',
       startHour: this.props.selectedDates.startHour || 17,
       startMinute: this.props.selectedDates.startMinute || 0,
       startTimeText: '12:00PM',
       endHour: this.props.selectedDates.endHour || 18,
       endMinute: this.props.selectedDates.endMinute || 0,
-      endTimeText: '1:00PM',
+      endTimeText: '1:00PM'
     })
   }
 
   componentDidMount(){
-     // console.log('screenHeight / 1.7 ', screenHeight / 1.7);
-      console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
+  //    console.log('ChooseDates component mounting... ');
+  //    console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
+  //    console.log('-------------------------------');
 
-      let d = new Date();
-      let t = d.toLocaleTimeString();
-      let currentHour = Number( t.split(' ')[0].split(':')[0] );
+    if(typeof(this.props.selectedDates.startMonth) === 'number'){
 
-      let suffix = 'AM';
-      if(currentHour >= 12){
-        suffix = 'PM';
-      }
-      let initEndSuffix = suffix;
-      let initStartHour, initEndHour;
-      if(currentHour === 11 && suffix === 'PM'){
-        initStartHour = currentHour + 1;
-        suffix = 'AM'
-      } else {
-        initStartHour = currentHour + 1;
-      }
-      if(currentHour === 10 && suffix === 'PM' || currentHour === 11 && suffix === 'PM'){
-        initEndHour = currentHour + 2;
-        initEndSuffix = 'AM';
-      } else {
-        initEndHour = currentHour + 2;
-      }
-
-      this.setState({
-        startHour: initStartHour,
-        endHour: initEndHour,
-        startTimeText: _formatTime(currentHour+1, 0),
-        endTimeText: _formatTime(currentHour+2, 0)
-        // startTimeText: initStartHour + ':00' + suffix,
-        // endTimeText: initEndHour + ':00' + initEndSuffix
-      })
-
-    if(this.props.selectedDates.startMonth){
-      let startSuffix = 'AM'; 
-      let endSuffix = 'PM';
-      let startHour = Number(this.props.selectedDates.startHour);
-      let endHour = Number(this.props.selectedDates.endHour);
-
-      if(startHour > 12){
-        startHour = startHour - 12;
-        startSuffix = 'PM';
-      }
-      if(endHour > 12){
-        endHour = endHour - 12;
-        endSuffix = 'PM';
-      }
-      if(startHour === 0){
-        startHour = 12;
-      }
-      if(endHour === 0){
-        endHour = 12;
-      }
-
-      const { startMonth, startYear, startDay, endMonth,endYear,endDay } = this.props.selectedDates;
+      const { startMonth, startYear, startDay, endMonth, endYear, endDay } = this.props.selectedDates;
       const startString = new Date(startYear, startMonth, startDay);
       const endString = new Date(endYear, endMonth, endDay);
 
@@ -137,6 +85,27 @@ class ChooseDatesComponent extends Component{
         startTimeText: _formatTime(this.props.selectedDates.startHour, this.props.selectedDates.startMinute),
         endTimeText: _formatTime(this.props.selectedDates.endHour, this.props.selectedDates.endMinute)
       })
+    } else {
+      let currentTime = new Date().getTime();
+
+      let initStartTime = new Date(currentTime + 3600000);
+      let initEndTime = new Date(currentTime + 7200000);
+
+      let initStartHour = initStartTime.getHours();
+      let initEndHour = initEndTime.getHours();
+
+      let initMinute = initStartTime.getMinutes();
+
+      this.setState({
+        startHour: initStartHour,
+        endHour: initEndHour,
+        startMinute: initMinute,
+        endMinute: initMinute,
+        startTimeText: _formatTime(initStartHour, initMinute),
+        endTimeText: _formatTime(initEndHour, initMinute)
+      })
+
+
     }
   }
 
@@ -146,16 +115,11 @@ class ChooseDatesComponent extends Component{
     console.log('---------------------------------')
   }
 
-  handleSubmit(){
-    // if(this.state.startYear > this.state.endYear){
-
-    // }
-  }
-
   async launchTime(stateKey, options) {
     try {
       const {action, minute, hour} = await TimePickerAndroid.open(options);
       var newState = {};
+
       if (action === TimePickerAndroid.timeSetAction) {
         newState[stateKey + 'TimeText'] = _formatTime(hour, minute);
         newState[stateKey + 'Hour'] = hour;
@@ -164,100 +128,71 @@ class ChooseDatesComponent extends Component{
         //newState[stateKey + 'Text'] = 'dismissed';
         return;
       }
+
       this.setState(newState);
-      console.log('this.state.startHour: ', this.state.startHour);
-      console.log('this.state.endHour: ', this.state.endHour);
 
       let currentTime = Date.now();
 
-      if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
-          this.state.startDay === this.state.endDay && new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime() < currentTime)
- {
-      let d = new Date();
-      let t = d.toLocaleTimeString();
-      let currentHour = Number( t.split(' ')[0].split(':')[0] );
+      let newStartTime = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime();
 
-      let suffix = 'AM';
-      if(currentHour >= 12){
-        suffix = 'PM';
-      }
-      let initEndSuffix = suffix;
-      let initStartHour, initEndHour;
-      if(currentHour === 11 && suffix === 'PM'){
-        initStartHour = currentHour + 1;
-        suffix = 'AM'
-      } else {
-        initStartHour = currentHour + 1;
-      }
-      if(currentHour === 10 && suffix === 'PM' || currentHour === 11 && suffix === 'PM'){
-        initEndHour = currentHour + 2;
-        initEndSuffix = 'AM';
-      } else {
-        initEndHour = currentHour + 2;
-      }
+      let endTime = new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute);
 
-      this.setState({
-        startHour: initStartHour,
-        endHour: initEndHour,
-        startTimeText: _formatTime(currentHour+1, 0),
-        endTimeText: _formatTime(currentHour+2, 0)
-        // startTimeText: initStartHour + ':00' + suffix,
-        // endTimeText: initEndHour + ':00' + initEndSuffix
-      })
-          
-      }
+      if(newStartTime < currentTime + 3600000) {        //  Start Time must be at least one hour from now
 
-      if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
-          this.state.startDay === this.state.startDay && this.state.startHour > this.state.endHour){
+          let d = new Date().getTime();
+          let initStartTime = new Date(d + 3600000);
 
-          let endHour = this.state.startHour + 1;
+          let initStartHour = initStartTime.getHours();
+          let initMinute = initStartTime.getMinutes();
 
-          if(endHour === 24){
-            let newDate = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, endHour);
+          this.setState({
+            startYear: initStartTime.getFullYear(),
+            startMonth: initStartTime.getMonth(),
+            startDay: initStartTime.getDate(),
+            startHour: initStartHour,
+            startMinute: initMinute,
+            startTimeText: _formatTime(initStartHour, initMinute)
+          });
+
+          if(endTime.getTime() < initStartTime.getTime() + 3600000){      //  End Time must be at least one hour after Start Time
+            let newEndTime = new Date(initStartTime.getTime() + 3600000);
             this.setState({
-              endYear: newDate.getFullYear(),
-              endMonth: newDate.getMonth(),
-              endDay: newDate.getDate(),
-              endHour: newDate.getHours(),
-              endTimeText: _formatTime(newDate.getHours(), newDate.getMinutes())
-            })
-          } else {
-            this.setState({
-              endHour: endHour,
-              endTimeText: _formatTime(endHour, this.state.endMinute)
+              endYear: newEndTime.getFullYear(),
+              endMonth: newEndTime.getMonth(),
+              endDay: newEndTime.getDate(),
+              endHour: newEndTime.getHours(),
+              endMinute: newEndTime.getMinutes(),
+              endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
           }
-      } else if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
-          this.state.startDay === this.state.endDay && 
-            (new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute).getTime() - 
-              new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime() < 3600000) ) {
 
-            let st = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute);
-            let newDate = new Date(st.getTime() + 3600000);
+          
+      } else if (newStartTime > endTime.getTime()) {      //  Start Time must be before End Time
+
+            let newEndTime = new Date(endTime.getTime() + 3600000);
+            this.setState({
+              endYear: newEndTime.getFullYear(),
+              endMonth: newEndTime.getMonth(),
+              endDay: newEndTime.getDate(),
+              endHour: newEndTime.getHours(),
+              endMinute: newEndTime.getMinutes(),
+              endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
+            })
+
+      } else if((endTime.getTime() - newStartTime) < 3600000 ) {
+
+            let newEndTime = new Date(endTime.getTime() + 3600000);
 
             this.setState({
-              endYear: newDate.getFullYear(),
-              endMonth: newDate.getMonth(),
-              endDay: newDate.getDate(),
-              endHour: newDate.getHours(),
-              endMinute: newDate.getMinutes(),
-              endTimeText: _formatTime(newDate.getHours(), newDate.getMinutes())
+              endYear: newEndTime.getFullYear(),
+              endMonth: newEndTime.getMonth(),
+              endDay: newEndTime.getDate(),
+              endHour: newEndTime.getHours(),
+              endMinute: newEndTime.getMinutes(),
+              endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
           
       } 
-
-            // if(this.state.startYear === this.state.endYear && this.state.startMonth === this.state.endMonth && 
-      //     this.state.startDay === this.state.startDay && this.state.startHour === this.state.endHour &&
-      //     this.state.endMinute < this.state.startMinute){
-
-      //     let smin = this.state.startMinute;
-      //     let emin = this.state.endMinute;
-
-      //     this.setState({
-      //       endMinute: smin,
-      //       startMinute: 
-      //     })
-      // }
 
 
     } catch ({code, message}) {
@@ -266,6 +201,7 @@ class ChooseDatesComponent extends Component{
   };
 
   async launchCal(stateKey, options){
+
     try {
       var newState = {};
       const {action, year, month, day} = await DatePickerAndroid.open(options);
@@ -278,39 +214,96 @@ class ChooseDatesComponent extends Component{
         newState[stateKey + 'Day'] = day;
         newState[stateKey + 'Year'] = year;
       }
-      this.setState(newState);
-      if(this.state.startMonth > this.state.endMonth || this.state.startYear > this.state.endYear){
-        let sm = this.state.startMonth;
-        let em = this.state.endMonth;
-        let sd = this.state.startDay;
-        let ed = this.state.endDay;
-        let ey = this.state.endYear;
-        let sy = this.state.startYear;
-        let smText = this.state.startText;
-        let emText = this.state.endText;
-        this.setState({
-          startMonth: em,
-          endMonth: sm,
-          startDay: ed,
-          endDay: sd,
-          startYear: ey,
-          endYear: sy,
-          startText: emText,
-          endText: smText
-        })
-      } else if (this.state.startDay > this.state.endDay) {
-        let sd = this.state.startDay;
-        let newDate = new Date(this.state.endYear, this.state.endMonth, sd, this.state.endHour, this.state.endMinute);
-        this.setState({
-          endYear: newDate.getFullYear(),
-          endMonth: newDate.getMonth(),
-          endDay: newDate.getDate(),
-          endHour: newDate.getHours(),
-          endMinute: newDate.getMinutes(),
-          endText: newDate.toLocaleDateString()
-        })
 
-      }
+      this.setState(newState);
+
+      let newStartTime = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime();
+
+      let endTime = new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute);
+
+      if(endTime.getTime() < newStartTime){
+
+        if(newStartTime - endTime.getTime() > 259200000){   //  if the length of active time is greater than 72 hours
+          let newEndTime = new Date(endTime.getTime() + 259200000)
+          this.setState({
+            startYear: endTime.getFullYear(),
+            startMonth: endTime.getMonth(),
+            startDay: endTime.getDate(),
+            startHour: endTime.getHours(),
+            startMinute: endTime.getMinutes(),
+            endYear: newEndTime.getFullYear(),
+            endMonth: newEndTime.getMonth(),
+            endDay: newEndTime.getDate(),
+            endHour: newEndTime.getHours(),
+            endMinute: newEndTime.getMinutes(),
+            startTimeText: _formatTime(endTime.getHours(), endTime.getMinutes()),
+            endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes()),
+            startText: endTime.toLocaleDateString(),
+            endText: newEndTime.toLocaleDateString(),
+          })
+        } else if( newStartTime - endTime.getTime() < 3600000 ){
+          let newEndTime = new Date(endTime.getTime() + 3600000)
+          this.setState({
+            startYear: endTime.getFullYear(),
+            startMonth: endTime.getMonth(),
+            startDay: endTime.getDate(),
+            startHour: endTime.getHours(),
+            startMinute: endTime.getMinutes(),
+            endYear: newEndTime.getFullYear(),
+            endMonth: newEndTime.getMonth(),
+            endDay: newEndTime.getDate(),
+            endHour: newEndTime.getHours(),
+            endMinute: newEndTime.getMinutes(),
+            startTimeText: _formatTime(endTime.getHours(), endTime.getMinutes()),
+            endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes()),
+            startText: endTime.toLocaleDateString(),
+            endText: newEndTime.toLocaleDateString(),
+          })
+
+
+        } else {
+            let sm = this.state.startMonth;
+            let em = this.state.endMonth;
+            let sd = this.state.startDay;
+            let ed = this.state.endDay;
+            let ey = this.state.endYear;
+            let sy = this.state.startYear;
+            let smText = this.state.startText;
+            let emText = this.state.endText;
+            this.setState({
+              startMonth: em,
+              endMonth: sm,
+              startDay: ed,
+              endDay: sd,
+              startYear: ey,
+              endYear: sy,
+              startText: emText,
+              endText: smText
+            })
+        }
+      } else if (endTime.getTime() - newStartTime < 3600000) {    //  if the time period is less than 1 hour
+          let newEndTime = new Date(endTime.getTime() + 3600000);
+          this.setState({
+            endYear: newEndTime.getFullYear(),
+            endMonth: newEndTime.getMonth(),
+            endDay: newEndTime.getDate(),
+            endHour: newEndTime.getHours(),
+            endMinute: newEndTime.getMinutes(),
+            endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes()),
+            endText: newEndTime.toLocaleDateString()
+          })
+      } else if(endTime.getTime() - newStartTime > 259200000){   //  if the time period is greater than 72 hours
+          let newEndTime = new Date(newStartTime + 259200000);
+          this.setState({
+            endYear: newEndTime.getFullYear(),
+            endMonth: newEndTime.getMonth(),
+            endDay: newEndTime.getDate(),
+            endHour: newEndTime.getHours(),
+            endMinute: newEndTime.getMinutes(),
+            endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes()),
+            endText: newEndTime.toLocaleDateString(),
+          })
+        } 
     } catch ({code, message}) {
       console.warn(`Error in datepicker: `, message);
     }
@@ -474,8 +467,7 @@ class ChooseDatesComponent extends Component{
                 startMinute: this.state.startMinute,
                 endHour: this.state.endHour,
                 endMinute: this.state.endMinute
-              });
-              this.handleSubmit();}
+              })}
             }>
               Submit
             </Button>

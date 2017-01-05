@@ -22,12 +22,7 @@ class PreviewWithFilter extends Component {
 const styles = StyleSheet.create({
   filter:{
     width: screenWidth * .9, 
-    height: screenHeight *.95,
-    // borderColor: 'green', 
-    // borderWidth: 2,
-    // flexDirection: 'row',
-    // justifyContent: 'center',
-    // alignItems: 'center',
+    height: screenHeight *.95
   }
 });
 

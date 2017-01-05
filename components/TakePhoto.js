@@ -482,9 +482,7 @@ const styles = StyleSheet.create({
   },
   filter:{
     width: screenWidth * .9, 
-    height: screenHeight *.95,
-     // borderColor: 'green', 
-     // borderWidth: 2
+    height: screenHeight *.95
   },
   capture: {
     flex: 0,
@@ -497,9 +495,7 @@ const styles = StyleSheet.create({
   photoAndFilter:{
     width: screenWidth * .9, 
     height: screenHeight * .95, 
-    marginBottom:20,
-    // borderColor: 'red', 
-    // borderWidth: 2 
+    marginBottom:20
   },
   photo:{
     width: screenWidth * .9,
