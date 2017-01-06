@@ -110,6 +110,9 @@ const loadAllFiltersRequest = () => {
 }
 
 const loadAllFiltersSuccess = (filtersData) => {
+  console.log('++++++++++++++++++++');
+  console.log('filtersData in loadAllFiltersSuccess: ', filtersData);
+  console.log('++++++++++++++++++++');
 	return {
     	type: LOAD_ALLFILTERS_SUCCESS,
     	allFilters: filtersData

@@ -56,17 +56,28 @@ class MyFiltersComponent extends Component {
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
-		// const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+		if(this.props.allFilters.length){
+      let arr = this.props.allFilters.filter((f) => {
+        return _isActiveOrUpcoming(f.dates);          // we only show filters that are active or upcoming
+      })
 
-		// this.setState({
-		// 	dataSource: ds.cloneWithRows( this.props.myFilters )
-		// })
-  //  setTimeout(()=>{
-      console.log('this.props.allFilters in componentDidMount: ', this.props.allFilters);
-      console.log('this.props.filtersCreated in componentDidMount: ', this.props.filtersCreated);
-      console.log('this.props.myFilters in componentDidMount: ', this.props.myFilters);
+      let sortedFilters = arr.sort((f1,f2)=>{
+        return f1.dates.startYear - f2.dates.startYear;
+      }).sort((f1,f2)=>{
+        return f1.dates.startMonth - f2.dates.startMonth;
+      }).sort((f1,f2)=>{
+        return f1.dates.startDay - f2.dates.startDay;
+      }).sort((f1,f2)=>{
+        return f1.dates.startHour - f2.dates.startHour;
+      })
 
-  //  },2000);
+      const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+      this.setState({
+        dataSource: ds.cloneWithRows( sortedFilters )
+      })
+
+
+    }
 
 	}
 
@@ -107,6 +118,7 @@ class MyFiltersComponent extends Component {
 			this.setState({
 				dataSource: ds.cloneWithRows( sortedFilters )
 			})
+
 		}
 	}
 
@@ -218,43 +230,49 @@ class MyFiltersComponent extends Component {
             	</View>
           	</View>
           	  <View style={styles.eventListContainer}>
-            	<ListView
-              		dataSource={this.state.dataSource}
-              		renderRow={(rowData) => {
+              	<ListView
+                		dataSource={this.state.dataSource}
+                		renderRow={(rowData) => {
 
-                    console.log('rowData: ', rowData);
-              			console.log('-------------------------');
+                      console.log('rowData: ', rowData);
+                			console.log('-------------------------');
 
-              			if(rowData.coordinates) {
+                			if(rowData.coordinates) {
 
-							const poly = rowData.coordinates.map((point)=>{
-	              				return {
-	              					lat: point.latitude,
-	              					lng: point.longitude
-	              				}
-              				})
+  							        const poly = rowData.coordinates.map((point)=>{
+  	              				return {
+  	              					lat: point.latitude,
+  	              					lng: point.longitude
+  	              				}
+                				})
 
-              				poly.push(poly[0]);
+                				poly.push(poly[0]);
 
+                			  console.log('-------------------------');
 
-              			console.log('-------------------------');
+  						          let _isActive = _checkDates(rowData.dates);	
 
-						let _isActive = _checkDates(rowData.dates);							
+                        let userCreated = false;
 
-	                	return (
-	                		<View key={rowData.id} >									
-	                  			<SingleEvent { ...rowData } 
-                            isActive={ _isActive } 
-                            polyCoordsForGeo={ poly } />
-	                		</View>
-	                	)
-	                  
-               		} else {
-               			return null;
-               		}
-               	}
-              		}/>
-              </View>
+                        if(this.props.filtersCreated.indexOf(rowData.filterID) >= 0 ){
+                          userCreated = true;
+                        }						
+
+    	                	return (
+    	                		<View key={rowData.id} >									
+    	                  			<SingleEvent { ...rowData } 
+                                isActive={ _isActive } 
+                                polyCoordsForGeo={ poly }
+                                userCreated={userCreated} />
+    	                		</View>
+    	                	)
+  	                  
+                 		} else {
+                 			return null;
+                 		}
+                 	}
+              }/>
+            </View>
         </View>)
      }
         

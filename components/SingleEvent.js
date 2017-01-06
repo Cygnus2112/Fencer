@@ -25,6 +25,8 @@ import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 
+import Icon from 'react-native-vector-icons/FontAwesome';
+
 // use linear gradient on red and green lights
 
 const _formatTime = (hour, minute) => {
@@ -78,6 +80,9 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
+
+			//	console.log('this.props.userCreated: ', this.props.userCreated);
+
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
         		console.log('point is within polygon');
@@ -149,6 +154,7 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillReceiveProps(newProps,oldProps){
+
 		//if(newProps.filterImage !== oldProps.filterImage){
 			// console.log('filterImage data received in SingleEvent ');
 			// console.log('filterID: ', newProps.filterID);
@@ -215,9 +221,45 @@ class SingleEventComponent extends Component {
 
 	}
 //					<Text style={{fontSize: 14, textAlign: 'center'}}> {this.props.message} </Text>
+
+				  // {this.props.userCreated &&
+				  // 	(<View style={styles.bookmarkIcon}>
+				  // 		<Text>Cock</Text>
+				  //     <Icon name="bookmark" size={30} color="#0c12ce" />
+				  // 	</View>)
+				  // }
 	render(){
 		return (
 				<View style={this.props.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+
+			  	  {this.props.userCreated &&
+				  	(<View style={styles.bookmarkIcon}>
+				      <Icon name="bookmark" size={20} color="#0c12ce" />
+				  	</View>
+				  	)
+				  }
+				  {this.props.userCreated &&
+				  	(
+				  	<View style={styles.trashIcon}>
+				      <Icon name="trash-o" size={22} color="black" />
+				  	</View>
+				  	)
+				  }
+				  {this.props.userCreated &&
+				  	(
+				  	<View style={styles.shareIcon}>
+				      <Icon name="share-alt" size={20} color="black" />
+				  	</View>
+				  	)
+				  }
+				  {this.props.userCreated &&
+				  	(
+				  	<View style={styles.editIcon}>
+				      <Icon name="edit" size={20} color="black" />
+				  	</View>
+				  	)
+				  }
+
 				  <TouchableOpacity onPress={this.handleEventPress} >
 					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
 					  {this.props.isActive
@@ -357,6 +399,42 @@ const styles = StyleSheet.create({
 		marginRight: 5,
 		borderColor: 'black',
 		borderWidth:1
+	},
+	bookmarkIcon: {
+		height: 20,
+		width: 20,
+		// borderWidth: 1,
+		// borderColor: 'black',
+		position: 'absolute',
+		top: -2,
+		left: 10
+	},
+	trashIcon: {
+		height: 20,
+		width: 20,
+		// borderWidth: 1,
+		// borderColor: 'black',
+		position: 'absolute',
+		bottom: 5,
+		right: 1
+	},
+	shareIcon: {
+		height: 20,
+		width: 20,
+		// borderWidth: 1,
+		// borderColor: 'black',
+		position: 'absolute',
+		top: 2,
+		right: 2
+	},
+	editIcon: {
+		height: 20,
+		width: 20,
+		// borderWidth: 1,
+		// borderColor: 'black',
+		position: 'absolute',
+		bottom: 2,
+		left: 4
 	},
 	modalContainer: {
 	    position: 'absolute', 
