@@ -61,6 +61,12 @@ class MyFiltersComponent extends Component {
 		// this.setState({
 		// 	dataSource: ds.cloneWithRows( this.props.myFilters )
 		// })
+  //  setTimeout(()=>{
+      console.log('this.props.allFilters in componentDidMount: ', this.props.allFilters);
+      console.log('this.props.filtersCreated in componentDidMount: ', this.props.filtersCreated);
+      console.log('this.props.myFilters in componentDidMount: ', this.props.myFilters);
+
+  //  },2000);
 
 	}
 
@@ -69,8 +75,14 @@ class MyFiltersComponent extends Component {
     }
 
 	componentWillReceiveProps(newProps){
+    console.log('newProps.allFilters: ', newProps.allFilters);
+    console.log('newProps.filtersCreated: ', newProps.filtersCreated);
+    console.log('newProps.myFilters: ', newProps.myFilters);
+      console.log('-------------------------');
+
+
 	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
-		if(newProps.allFilters !== this.props.allFilters){		// THIS COMPARISON PROBABLY DOESN'T WORK
+		if(newProps.allFilters.length !== this.props.allFilters.length){		// THIS COMPARISON PROBABLY DOESN'T WORK
 			// console.log('=====================================')
 			
 			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
@@ -210,6 +222,7 @@ class MyFiltersComponent extends Component {
               		dataSource={this.state.dataSource}
               		renderRow={(rowData) => {
 
+                    console.log('rowData: ', rowData);
               			console.log('-------------------------');
 
               			if(rowData.coordinates) {
@@ -346,6 +359,7 @@ const mapStateToProps = (state) => {
     currentPosition: state.filterReducer.currentPosition,
     allFilters: state.filterReducer.allFilters,
     myFilters: state.authReducer.myFilters,
+    filtersCreated: state.authReducer.filtersCreated,
     username: state.authReducer.username,
     isLoadingAllFilters: state.filterReducer.isLoadingAllFilters
   }

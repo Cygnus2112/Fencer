@@ -8,7 +8,7 @@ const initialState = {
 	currentPosition: null,
   filterToUpload: null,
   filterUploadError: "",
-  allFilters: null,
+  allFilters: [],
   //myFilters: null,
   //filtersCreated: null,
   isLoadingFilterImage: false,
