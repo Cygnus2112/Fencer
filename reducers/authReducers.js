@@ -6,7 +6,8 @@ const initialState = {
   username: '',
   authErrorMsg: '',
   myFilters: null,
-  filtersCreated: null
+  filtersCreated: null,
+  isDeletingFilter: false
 }
 
 const authReducer = (state = initialState, action) => {
@@ -73,6 +74,15 @@ const authReducer = (state = initialState, action) => {
         myFilters: action.myFilters,
         filtersCreated: action.filtersCreated
       })
+    case ActionTypes.DELETE_FILTER_REQUEST:
+      return Object.assign({}, state, {
+        isDeletingFilter: true
+      })
+    case ActionTypes.DELETE_FILTER_SUCCESS:
+      return Object.assign({}, state, {
+        isDeletingFilter: false
+      })
+
     // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
     //   return Object.assign({}, state, {
     //    isLoadingFiltersCreated: true

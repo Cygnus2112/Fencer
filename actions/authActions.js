@@ -318,6 +318,62 @@ const loadMyFiltersSuccess = (data) => {
   }
 }
 
+export const DELETE_FILTER_REQUEST = 'DELETE_FILTER_REQUEST';
+export const DELETE_FILTER_SUCCESS = 'DELETE_FILTER_SUCCESS';
+
+export const deleteFilter = (dispatch, filterID) => {
+  dispatch(deleteFilterRequest());
+
+  AsyncStorage.getItem("fencer-token").then((value) => {
+    if(value){
+      AsyncStorage.getItem("fencer-username").then((username) => {
+        console.log('current username: ', username);
+        let token = value;
+
+        return fetch(utils.deleteFilterURL +"?username="+username+"&filterid="+filterID, {    
+          method: 'GET',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'x-access-token': token
+          }
+        })
+        .then(response => {
+          return response.json();
+        })
+        .then(response => {
+          console.log('2nd level response in auth deleteFilter: ');
+          console.log(response);
+          console.log('-------------------------');
+
+          dispatch(deleteFilterSuccess());
+                
+          Actions.myfilters();          //  TEMPORARY. will need to refresh filters, not simply reload the whole view
+                
+        })
+        .catch(err => {
+          console.error('Error in loadMyFilters:', err);
+        });
+      }).done();
+    } else {
+      console.log('token not found');
+              // dispatch(authFail());
+    }
+  }).done();
+}
+
+export const deleteFilterRequest = (filterID) => {
+  return {
+    type: DELETE_FILTER_REQUEST
+  }
+}
+
+export const deleteFilterSuccess = () => {
+  return {
+    type: DELETE_FILTER_SUCCESS
+  }
+}
+
 export const PURGE_REQUEST = 'PURGE_REQUEST';
 export const PURGE_SUCCESS = 'PURGE_SUCCESS';
 

@@ -10,13 +10,15 @@ import {
     Dimensions,
     AsyncStorage,
     Modal,
-    ActivityIndicator
+    ActivityIndicator,
+    Alert
 } from 'react-native';
 
 let utils = require('../utils');
 
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
+import * as authActions from '../actions/authActions';
 
 import GeoFencing from 'react-native-geo-fencing';
 
@@ -25,6 +27,7 @@ import { Actions } from 'react-native-router-flux';
 const { width, height } = Dimensions.get('window');
 const screenWidth = width;
 
+import Share from 'react-native-share';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 // use linear gradient on red and green lights
@@ -57,6 +60,9 @@ class SingleEventComponent extends Component {
 		super(props);
 
 		this.handleEventPress = this.handleEventPress.bind(this);
+		this.handleTrash = this.handleTrash.bind(this);
+		this.handleShare = this.handleShare.bind(this);
+
 		this.state = {
 			eventTitle: "",
 			startYear: "",
@@ -81,7 +87,7 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
-			//	console.log('this.props.userCreated: ', this.props.userCreated);
+		console.log('this.props.bitlyURL: ', this.props.bitlyURL);
 
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
@@ -153,7 +159,19 @@ class SingleEventComponent extends Component {
 		})
 	}
 
-	componentWillReceiveProps(newProps,oldProps){
+	componentWillReceiveProps(newProps){
+		if(newProps.isDeletingFilter === true){						// TEMPORARY WORKAROUND
+			this.setState({isLoadingFilter: true});
+		}
+
+		if(newProps.isDeletingFilter === false && this.props.isDeletingFilter === true){
+			this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
+			this.setState({isLoadingFilter: false});
+
+			Alert.alert('Success', 'Filter successfully deleted.', [
+				{text: 'okay', onPress: () => console.log('okay pressed')}
+        	])
+		}
 
 		//if(newProps.filterImage !== oldProps.filterImage){
 			// console.log('filterImage data received in SingleEvent ');
@@ -179,6 +197,32 @@ class SingleEventComponent extends Component {
 	// 		})
 	// 	}
 	// }
+
+	handleTrash(){
+		Alert.alert('Delete Filter', 'Are you sure you want to delete this filter? This cannot be undone.', [
+			{text: 'Cancel', onPress: () => console.log('Cancel Pressed'), style: 'cancel'},, 
+			{text: 'yes, delete', onPress: () => {
+				this.props.deleteFilter(this.props.filterID);
+                //console.log('OK Pressed!');
+		    }
+        }])
+	}
+
+	handleShare(){
+		let shareText = {
+                //  title: "React Native",
+            message: "Here is your new Fencer filter: " + this.props.title + " ",
+            url: this.props.bitlyURL,
+            subject: "Share Link" //  for email
+        };
+
+        Share.open(shareText)
+            .then((resp) => {
+                console.log('successfully sent filter???', resp);
+                console.log('#####################################################');
+               // this.props.clearProps();
+                //Actions.loading();
+            })}
 
 	handleEventPress(){		
 		//Actions.camera({filterURI: this.props.filterImage});
@@ -241,14 +285,18 @@ class SingleEventComponent extends Component {
 				  {this.props.userCreated &&
 				  	(
 				  	<View style={styles.trashIcon}>
-				      <Icon name="trash-o" size={22} color="black" />
+				  	  <TouchableOpacity onPress={this.handleTrash} >
+				      	<Icon name="trash-o" size={22} color="black" />
+				      </TouchableOpacity>
 				  	</View>
 				  	)
 				  }
 				  {this.props.userCreated &&
 				  	(
 				  	<View style={styles.shareIcon}>
-				      <Icon name="share-alt" size={20} color="black" />
+				  	  <TouchableOpacity onPress={this.handleShare} >
+				        <Icon name="share-alt" size={20} color="black" />
+				      </TouchableOpacity>
 				  	</View>
 				  	)
 				  }
@@ -261,7 +309,7 @@ class SingleEventComponent extends Component {
 				  }
 
 				  <TouchableOpacity onPress={this.handleEventPress} >
-					<Text style={this.props.isActive ? styles.textActive : styles.textInactive}> { this.props.title } </Text>
+					<Text style={this.props.isActive ? styles.textActive : styles.textActive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?
 					  	(<View style={styles.statusMessages}>
@@ -292,7 +340,7 @@ class SingleEventComponent extends Component {
 					  	</View>)
 					  }
 				  </TouchableOpacity>	
-			{this.state.isLoadingFilter
+			{this.state.isLoadingFilter || this.props.isDeletingFilter
 				?
 			(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
 				:
@@ -415,8 +463,8 @@ const styles = StyleSheet.create({
 		// borderWidth: 1,
 		// borderColor: 'black',
 		position: 'absolute',
-		bottom: 5,
-		right: 1
+		bottom: 6,
+		right: 2
 	},
 	shareIcon: {
 		height: 20,
@@ -433,8 +481,8 @@ const styles = StyleSheet.create({
 		// borderWidth: 1,
 		// borderColor: 'black',
 		position: 'absolute',
-		bottom: 2,
-		left: 4
+		bottom: 3,
+		left: 5
 	},
 	modalContainer: {
 	    position: 'absolute', 
@@ -467,19 +515,27 @@ const mapStateToProps = (state) => {
   return {
     currentPosition: state.filterReducer.currentPosition,
     //username: state.authReducer.username,
-    filterImage: state.filterReducer.filterImage
+    filterImage: state.filterReducer.filterImage,
+    isDeletingFilter: state.authReducer.isDeletingFilter,
+    myFilters: state.authReducer.myFilters,
+    username: state.authReducer.username,
   }
 }
 
-// const mapDispatchToProps = (dispatch) => {
-// 	return {
-// 		fetchFilterImage: (data) => {
-// 			filterActions.loadFilterImage(dispatch, data);
+const mapDispatchToProps = (dispatch) => {
+	return {
+		// fetchFilterImage: (data) => {
+		// 	filterActions.loadFilterImage(dispatch, data);
+		// },
+		deleteFilter: (filterID) => {
+			authActions.deleteFilter(dispatch, filterID);
+		},
+		getMyFilters: (data) => {
+    		filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
+    	}
+	}
+}
 
-// 		}
-// 	}
-// }
-
-const SingleEvent = connect(mapStateToProps, null)(SingleEventComponent);
+const SingleEvent = connect(mapStateToProps, mapDispatchToProps)(SingleEventComponent);
 export default SingleEvent;
 
