@@ -438,79 +438,119 @@ class DetailsModal extends Component {
           	          	this.props.toggleModal();
           	console.log("Modal has been closed.")}}>
             <View style={styles.modalContainer}>
-          	  <View style={styles.infoModal}>
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Geofilter details</Text>
-	            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Title: {this.props.title}</Text>
-	            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
-	           
-	           	<TouchableHighlight 
-                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                  onPress={() => {
-                    this.props.toggleModal();
-                    this.setState({modalVisible: !this.state.modalVisible})
-                  }
-                }>
-              	  <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-            	</TouchableHighlight>
-	          </View>
+          	  	<View style={this.props.message.length ? styles.infoModal : [styles.infoModal, {top: 120, bottom: 120}]}  >
+
+	          	    <View style={{position: 'absolute', top: 15, left: 10, right: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
+					  <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5 }}>Geofilter Details:</Text>
+		            </View>
+
+		              <View style={styles.details}>
+		                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Title:</Text>
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5, fontWeight: 'bold' }}>{this.props.title}</Text>
+			            </View>
+			            {!this.props.isActive &&
+			              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Starts:</Text> 
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)} at {_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text>
+						  </View>
+						}    
+						<View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
+							<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Ends:</Text> 
+							<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)} at {_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text>
+						</View>
+						{this.props.message.length 
+							? 
+						  (<View>
+							  <View style={{flexDirection: 'row', justifyContent: 'center'}}>    
+								<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize:18, margin: 5, textDecorationLine: 'underline' }}>Message</Text>  	
+				              </View>
+				              <View style={{ flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start'}}>  
+
+				            	  <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize:18, margin: 5 }}>{'"'}{this.props.message}{'"'}</Text>
+				          
+				              </View>
+				            </View>)
+						  	:
+						  	(null)
+			            }
+		              </View>
+
+		             	<View style={{position: 'absolute', bottom: 15, left: 10, right: 10, flexDirection: 'row', justifyContent: 'center'}}> 
+				           	<TouchableHighlight 
+			                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+			                  onPress={() => {
+			                    this.props.toggleModal();
+			                    this.setState({modalVisible: !this.state.modalVisible})
+			                  }
+			                }>
+			              	  	<Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+			            	</TouchableHighlight>
+		            	</View>
+
+	          	</View>
 	        </View>
 	    </Modal>
 		)
 	}
 }
 
-class EditModal extends Component {
-	constructor(props){
-		super(props);
+// class EditModal extends Component {
+// 	constructor(props){
+// 		super(props);
 		
-		this.state = {
-      		modalVisible: this.props.modalVisible
-    	}
-	}
+// 		this.state = {
+//       		modalVisible: this.props.modalVisible
+//     	}
+// 	}
 
-	render(){
-		return(
-      	<Modal
-          animationType={"none"}
-          transparent={true}
-          visible={this.state.modalVisible}
-          onRequestClose={() => { 
-          	          	this.props.toggleModal();
-          	console.log("Modal has been closed.")}}>
-            <View style={styles.modalContainer}>
-          <View style={styles.infoModal}>
+// 	render(){
+// 		return(
+//       	<Modal
+//           animationType={"none"}
+//           transparent={true}
+//           visible={this.state.modalVisible}
+//           onRequestClose={() => { 
+//           	          	this.props.toggleModal();
+//           	console.log("Modal has been closed.")}}>
+//             <View style={styles.modalContainer}>
+//           <View style={styles.infoModal}>
 
-	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Editing details for:</Text>
-	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>title: {this.props.title}</Text>
-	            		            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
-				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
+// 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Editing details for:</Text>
+// 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>title: {this.props.title}</Text>
+// 	            		            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
+// 				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
+// 				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
 	           
-	            	                <TouchableHighlight 
-                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                  onPress={() => {
-                    this.props.toggleModal();
-                    this.setState({modalVisible: !this.state.modalVisible})
-                  }
-                }>
-              <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-            </TouchableHighlight>
-	        </View>
-	        </View>
-	    </Modal>
-		)
-	}
-}
+// 	            	                <TouchableHighlight 
+//                   style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+//                   onPress={() => {
+//                     this.props.toggleModal();
+//                     this.setState({modalVisible: !this.state.modalVisible})
+//                   }
+//                 }>
+//               <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+//             </TouchableHighlight>
+// 	        </View>
+// 	        </View>
+// 	    </Modal>
+// 		)
+// 	}
+// }
 
 //<View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
 const styles = StyleSheet.create({
+	details: {
+		position: 'absolute',
+		top: 75,
+		left: 10, 
+		right: 10,
+	},
 	innerContainer: {
 		// height: 80, 
 		// width: 200, 
-		borderColor: 'black', 
-		borderWidth: 1, 
+		// borderColor: 'black', 
+		// borderWidth: 1, 
 		marginLeft:20,
 		marginRight:20
 	},
@@ -650,11 +690,11 @@ const styles = StyleSheet.create({
   	  infoModal: {
     position: 'absolute', 
     top: 60, 
-    left:40, 
-    right: 40, 
+    left:35, 
+    right: 35, 
     bottom: 60, 
     justifyContent: 'center', 
-    alignItems: 'center', 
+    alignItems: 'flex-start', 
    // backgroundColor:'white',
    backgroundColor: 'white',
     borderWidth:1, 
