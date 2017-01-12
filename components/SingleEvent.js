@@ -62,6 +62,8 @@ class SingleEventComponent extends Component {
 		this.handleEventPress = this.handleEventPress.bind(this);
 		this.handleTrash = this.handleTrash.bind(this);
 		this.handleShare = this.handleShare.bind(this);
+		this.handleDetails = this.handleDetails.bind(this);
+		this.handleEdit = this.handleEdit.bind(this);
 
 		this.state = {
 			eventTitle: "",
@@ -82,6 +84,8 @@ class SingleEventComponent extends Component {
 			isInRange: false,					
 			filterImage: null,
 			isLoadingFilter: false,
+			detailsPressed: false,
+			editPressed: false
 		}
 	}
 
@@ -224,6 +228,14 @@ class SingleEventComponent extends Component {
                 //Actions.loading();
             })}
 
+    handleDetails(){
+    	this.setState({ detailsPressed:!this.state.detailsPressed })
+    }
+
+    handleEdit(){
+    	this.setState({ editPressed:!this.state.editPressed })
+    }
+
 	handleEventPress(){		
 		//Actions.camera({filterURI: this.props.filterImage});
 
@@ -300,15 +312,25 @@ class SingleEventComponent extends Component {
 				  	</View>
 				  	)
 				  }
-				  {this.props.userCreated &&
-				  	(
+			{/*	  {this.props.userCreated && !this.props.isActive ?
+				  	(  
 				  	<View style={styles.editIcon}>
-				      <Icon name="edit" size={20} color="black" />
+				  	  <TouchableOpacity onPress={this.handleEdit} >
+				        <Icon name="edit" size={20} color="black" />
+				      </TouchableOpacity>
 				  	</View>
-				  	)
-				  }
+			   	)
+				  	:    
+				  	(    */}
+				  	<View style={styles.editIcon}>
+				  	  <TouchableOpacity onPress={this.handleDetails} >
+				      	<Icon name="file-text-o" size={17} color="black" />
+				      </TouchableOpacity >
+				  	</View>
+			{/*		  	)
+				  }*/}
 
-				  <TouchableOpacity onPress={this.handleEventPress} >
+				  <TouchableOpacity onPress={this.handleEventPress} style={styles.innerContainer} >
 					<Text style={this.props.isActive ? styles.textActive : styles.textActive}> { this.props.title } </Text>
 					  {this.props.isActive
 					  	?
@@ -337,15 +359,24 @@ class SingleEventComponent extends Component {
 					  	:
 					  	(<View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
 							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.startHour, this.state.startMinute)}</Text></Text>
+					  	
 					  	</View>)
 					  }
 				  </TouchableOpacity>	
-			{this.state.isLoadingFilter || this.props.isDeletingFilter
-				?
-			(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
-				:
-			(null)
-			}
+					{this.state.isLoadingFilter || this.props.isDeletingFilter
+						?
+					(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingFilter:false}) } } />)
+						:
+					this.state.detailsPressed
+						?
+					(<DetailsModal modalVisible={true} toggleModal={() => { this.handleDetails() }} {...this.props} />)
+						:
+					this.state.editPressed
+						?
+					(<EditModal modalVisible={true} toggleModal={() => { this.handleEdit() }} {...this.props} />)	
+						:
+					(null)
+					}
 
 				</View>
 			
@@ -369,7 +400,10 @@ class LoadingModal extends Component {
           animationType={"none"}
           transparent={true}
           visible={this.state.modalVisible}
-          onRequestClose={() => { console.log("Modal has been closed.")}}>
+          onRequestClose={() => { 
+
+          	console.log("Modal has been closed.")
+          }}>
             <View style={styles.modalContainer}>
           {/*    <View style={styles.loadingModal}>           
 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>	*/}
@@ -381,8 +415,105 @@ class LoadingModal extends Component {
 	}
 }
 
+class DetailsModal extends Component {
+	constructor(props){
+		super(props);
+		
+		this.state = {
+      		modalVisible: this.props.modalVisible
+    	}
+	}
+
+	componentDidMount(){
+		console.log('this.props in details modal: ', this.props);
+	}
+
+	render(){
+		return(
+      	<Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+          	          	this.props.toggleModal();
+          	console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+          	  <View style={styles.infoModal}>
+				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Geofilter details</Text>
+	            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Title: {this.props.title}</Text>
+	            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
+				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
+				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
+	           
+	           	<TouchableHighlight 
+                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                  onPress={() => {
+                    this.props.toggleModal();
+                    this.setState({modalVisible: !this.state.modalVisible})
+                  }
+                }>
+              	  <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+            	</TouchableHighlight>
+	          </View>
+	        </View>
+	    </Modal>
+		)
+	}
+}
+
+class EditModal extends Component {
+	constructor(props){
+		super(props);
+		
+		this.state = {
+      		modalVisible: this.props.modalVisible
+    	}
+	}
+
+	render(){
+		return(
+      	<Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+          	          	this.props.toggleModal();
+          	console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+          <View style={styles.infoModal}>
+
+	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Editing details for:</Text>
+	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>title: {this.props.title}</Text>
+	            		            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
+				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
+				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
+	           
+	            	                <TouchableHighlight 
+                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                  onPress={() => {
+                    this.props.toggleModal();
+                    this.setState({modalVisible: !this.state.modalVisible})
+                  }
+                }>
+              <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+            </TouchableHighlight>
+	        </View>
+	        </View>
+	    </Modal>
+		)
+	}
+}
+
 //<View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
 const styles = StyleSheet.create({
+	innerContainer: {
+		// height: 80, 
+		// width: 200, 
+		borderColor: 'black', 
+		borderWidth: 1, 
+		marginLeft:20,
+		marginRight:20
+	},
 	containerActive:{
 		height: 80, 
 		width: 280, 
@@ -458,31 +589,38 @@ const styles = StyleSheet.create({
 		left: 10
 	},
 	trashIcon: {
-		height: 20,
-		width: 20,
+		height: 30,
+		width: 30,
 		// borderWidth: 1,
 		// borderColor: 'black',
 		position: 'absolute',
-		bottom: 6,
-		right: 2
+		bottom: 1,
+		right: 1,
+		paddingTop: 4,
+		paddingLeft: 8
 	},
 	shareIcon: {
-		height: 20,
-		width: 20,
+		height: 30,
+		width: 30,
 		// borderWidth: 1,
 		// borderColor: 'black',
 		position: 'absolute',
-		top: 2,
-		right: 2
+		top: 0,
+		right: 1,
+		paddingTop: 3,
+		paddingLeft: 8
 	},
 	editIcon: {
-		height: 20,
-		width: 20,
+		height: 30,
+		width: 30,
 		// borderWidth: 1,
 		// borderColor: 'black',
 		position: 'absolute',
-		bottom: 3,
-		left: 5
+		bottom: 1,
+		left: 1,
+		paddingTop: 7,
+		paddingLeft: 4,
+		//zIndex:3
 	},
 	modalContainer: {
 	    position: 'absolute', 
@@ -508,7 +646,22 @@ const styles = StyleSheet.create({
 	    borderColor:'black', 
 	    borderRadius:10,
 	    padding: 10
-  	}
+  	},
+  	  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  }
 })
 
 const mapStateToProps = (state) => {

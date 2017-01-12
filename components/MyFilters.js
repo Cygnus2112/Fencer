@@ -86,9 +86,9 @@ class MyFiltersComponent extends Component {
     }
 
 	componentWillReceiveProps(newProps){
-    console.log('newProps.allFilters: ', newProps.allFilters);
-    console.log('newProps.filtersCreated: ', newProps.filtersCreated);
-    console.log('newProps.myFilters: ', newProps.myFilters);
+  //  console.log('newProps.allFilters: ', newProps.allFilters);
+  //  console.log('newProps.filtersCreated: ', newProps.filtersCreated);
+  //  console.log('newProps.myFilters: ', newProps.myFilters);
       console.log('-------------------------');
 
 

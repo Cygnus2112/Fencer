@@ -82,7 +82,7 @@ class WelcomeComponent extends Component{
 
     // }).catch(err => console.error('An error occurred', err));
 
-    console.log('this.props in Welcome: ', this.props);
+   // console.log('this.props in Welcome: ', this.props);
     console.log('-----------------------------------');
     console.log('this.props.currentPosition: in Welcome', this.props.currentPosition)
 

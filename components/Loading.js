@@ -48,7 +48,7 @@ class LoadingComponent extends Component{
         }
 
         //  REMOVE EVENT LISTENER
-        Actions.loading();
+       // Actions.loading();    //  calling in Actions instead
       }
 
 

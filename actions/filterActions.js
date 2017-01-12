@@ -110,9 +110,9 @@ const loadAllFiltersRequest = () => {
 }
 
 const loadAllFiltersSuccess = (filtersData) => {
-  console.log('++++++++++++++++++++');
-  console.log('filtersData in loadAllFiltersSuccess: ', filtersData);
-  console.log('++++++++++++++++++++');
+ // console.log('++++++++++++++++++++');
+//  console.log('filtersData in loadAllFiltersSuccess: ', filtersData);
+ // console.log('++++++++++++++++++++');
 	return {
     	type: LOAD_ALLFILTERS_SUCCESS,
     	allFilters: filtersData
@@ -123,7 +123,7 @@ export const LOAD_FILTER_IMAGE_REQUEST = 'LOAD_FILTER_IMAGE_REQUEST';
 export const LOAD_FILTER_IMAGE_SUCCESS = 'LOAD_FILTER_IMAGE_SUCCESS';
 
 export const loadFilterImage = (dispatch, data) => {
-  console.log('data in loadFilterImage: ', data);
+ // console.log('data in loadFilterImage: ', data);
   dispatch(loadFilterImageRequest());      
 
       AsyncStorage.getItem("fencer-token").then((token) => {
@@ -190,13 +190,17 @@ export const addFilterByID = (filter) => {
         },
         timeout: 120000
         })
-        .then(resp => {
+        .then((resp) => {
 
                 //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
 
-        //  console.log('response in addFilterByID: ', resp);
-          return resp
+        // console.log('response in addFilterByID: ', resp);
+          Actions.loading();
+          return resp;
         })
+        .catch(err => {
+          console.error('Error in addFilterByID:', err);
+        });
     } else {
       console.log('token not found in addFilterByID');
     }
