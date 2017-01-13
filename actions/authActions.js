@@ -41,6 +41,7 @@ export const signup = (dispatch,info) => {
             dispatch(signupSuccess({"token" : response.token, "username": info.username}));
 
           } else {
+            console.log('response when user or email already taken: ', response);
             dispatch(signupError(response));
           }
         } catch(e){
@@ -61,7 +62,7 @@ const signupRequest = (info) => {
 const signupError = (err) => {
   return {
     type: SIGNUP_ERROR,
-    errorMsg: err
+    errorMsg: err['ERROR']
   }
 }
 
@@ -362,15 +363,28 @@ export const deleteFilter = (dispatch, filterID) => {
   }).done();
 }
 
-export const deleteFilterRequest = (filterID) => {
+const deleteFilterRequest = (filterID) => {
   return {
     type: DELETE_FILTER_REQUEST
   }
 }
 
-export const deleteFilterSuccess = () => {
+const deleteFilterSuccess = () => {
   return {
     type: DELETE_FILTER_SUCCESS
+  }
+}
+
+export const CLEAR_ERROR_REQUEST = 'CLEAR_ERROR_REQUEST';
+
+export const clearError = (dispatch) => {
+  dispatch(clearErrorRequest());
+}
+
+
+const clearErrorRequest = () => {
+  return {
+    type: CLEAR_ERROR_REQUEST
   }
 }
 
@@ -418,6 +432,8 @@ const purgeSuccess = () => {
     type: PURGE_SUCCESS
   }
 }
+
+
 
 
 

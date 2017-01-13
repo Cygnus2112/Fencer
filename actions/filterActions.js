@@ -65,6 +65,8 @@ export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
 export const loadAllFilters = (dispatch, userData) => {
  // return dispatch => {
 
+  console.log('userData in loadAllFilters: ', userData);
+
     dispatch(loadAllFiltersRequest());			
 
     AsyncStorage.getItem("fencer-token").then((token) => {

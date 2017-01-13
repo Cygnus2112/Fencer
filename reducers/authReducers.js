@@ -82,6 +82,10 @@ const authReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isDeletingFilter: false
       })
+    case ActionTypes.CLEAR_ERROR_REQUEST:
+      return Object.assign({}, state, {
+        authErrorMsg: ''
+      })
 
     // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
     //   return Object.assign({}, state, {
