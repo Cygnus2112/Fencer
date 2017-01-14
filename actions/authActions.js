@@ -265,26 +265,27 @@ export const loadMyFilters = (dispatch) => {
             //  console.log('first response: ', response);
 
                   return response.json();
-              })
-              .then(response => {
-                console.log('2nd level response in auth loadMyFilters: ');
-                console.log(response);
+                })
+                .then(response => {
+                  console.log('2nd level response in auth loadMyFilters: ');
+                  console.log(response);
 
-                console.log('-------------------------');
+                  console.log('-------------------------');
 
-                let data = {
-                  username: response.username,
-                  myFilters: response.myFilters,
-                  filtersCreated: response.filtersCreated
-                }
+                  let data = {
+                    username: response.username,
+                    myFilters: response.myFilters,
+                    filtersCreated: response.filtersCreated
+                  }
 
-                dispatch(loadMyFiltersSuccess(data));
-                Actions.myfilters();
-                
-              })
-              .catch(err => {
-                console.error('Error in loadMyFilters:', err);
-              });
+                  dispatch(loadMyFiltersSuccess(data));
+                  
+                  Actions.myfilters();
+                  
+                })
+                .catch(err => {
+                  console.error('Error in loadMyFilters:', err);
+                });
 
                 // grab all filters???
 

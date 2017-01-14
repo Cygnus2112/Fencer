@@ -51,6 +51,23 @@ class Send extends Component {
       //  console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
+          let currentTime = new Date().getTime();
+          const { startMonth, startYear, startDay, startHour, startMinute} = this.props.selectedDates;
+          let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
+
+          console.log('startTime minus currentTime: ', (startTime - currentTime));
+
+          if((startTime - currentTime) < 1800000){
+            Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
+                    console.log('OK Pressed!');
+                  }
+            }])
+
+            return;
+
+          }
+
+
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
                 const errMessage = () => {
                   if(!this.props.uploadFilterComplete){

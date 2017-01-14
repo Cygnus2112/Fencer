@@ -22,7 +22,19 @@ export const initPosition = (dispatch) => {
         //Actions.main({currentPosition: newPos});
         Actions.main();
       },
-      (error) => console.log("Nav error: ", JSON.stringify(error)),
+      (error) => {
+
+        let tempPos = { lat: 41.5904151, lng: -93.80708270000002 };
+       
+               dispatch( updatePositionSuccess(tempPos) );
+
+        //Actions.main({currentPosition: newPos});
+        Actions.main();
+
+        console.log("Nav error: ", JSON.stringify(error)) 
+      }
+
+      ,
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     )
  // }

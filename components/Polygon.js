@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 
 import {
   StyleSheet,
@@ -301,7 +301,7 @@ class PolygonComponent extends Component {
         }
           {this.props.fenceCoordinates
             ?
-            (<View style={styles.buttonContainer}>
+            (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
               <TouchableOpacity
                 onPress={() => this.startOver(true)}
                 style={[styles.buttonStartOver, {width: 180 }]}>
@@ -326,7 +326,7 @@ class PolygonComponent extends Component {
             :
             this.state.editing 
             ?
-            (<View style={styles.buttonContainer}>
+            (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
               <TouchableOpacity
                 onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
@@ -386,7 +386,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     marginVertical: 10,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
 });
 

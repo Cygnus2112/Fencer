@@ -337,6 +337,11 @@ class TakePhotoComponent extends Component {
 
     //   <Image source={{uri: filterURI}} style={styles.filter}>
 
+               // <View style={[styles.backButton,{borderColor: 'white'}]}>
+               //    <TouchableOpacity onPress={ () => { Actions.pop() }}>
+               //      <Icon name="chevron-left" size={30} color="white"/>
+               //    </TouchableOpacity>
+               //  </View>     
 
     return (<View >
         {!this.state.applyFilter
@@ -345,12 +350,12 @@ class TakePhotoComponent extends Component {
        (<View style={styles.container}>
             {this.props.test
                 ?
-              (
-                <View style={[styles.backButton,{borderColor: 'white'}]}>
-                  <TouchableOpacity onPress={ () => { Actions.pop() }}>
-                    <Icon name="chevron-left" size={30} color="white"/>
-                  </TouchableOpacity>
-                </View>)
+              (<View style={styles.trash}>
+              <TouchableOpacity onPress={ () => { console.log('back pressed'); Actions.pop() }}>
+                  <Icon name="circle-with-cross" size={30} color="black" />
+              </TouchableOpacity>
+            </View>
+                )
                 :
               (<TouchableOpacity
                 style={styles.flashButton}
@@ -529,16 +534,18 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: 5,
    // left: (screenWidth/2) - 65,
+  // paddingBottom: 1,
     right:20,
     elevation:3,
     height:35,
     width:35,
-    // borderColor: 'black',
+ //   backgroundColor: 'blue',
+ //   borderColor: 'black',
     // backgroundColor: 'rgba(0,0,0,0.5)',
     // borderRadius:5,
     // justifyContent: 'center',
     // alignItems: 'center',
-    // borderWidth:1
+ //   borderWidth:1,
   },
   facebook: {
     position: 'absolute',
