@@ -100,7 +100,7 @@ class WelcomeComponent extends Component{
 
   loadMyFilters(){
 
-    if(this.isLoggedIn){
+    if(this.props.isLoggedIn){
       this.props.loadMyFilters();
     } else {
       Alert.alert('Oops!', 'You must be logged in to access My Geofilters. Tap Login to continue.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])

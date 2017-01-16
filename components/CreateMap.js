@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 
+let {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+
 import {
     View,
     Image,
@@ -92,10 +94,80 @@ class CreateMapComponent extends Component{
           </View>
 
           <View style={styles.searchBoxContainer}>
-            <View style={styles.searchBox}>
+        {/*    <View style={styles.searchBox}>
               <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
-            </View>
+            </View>   */}
+
+      <GooglePlacesAutocomplete
+        placeholder='Search'
+        minLength={2} // minimum length of text to search
+        autoFocus={false}
+        listViewDisplayed='auto'    // true/false/undefined
+        fetchDetails={true}
+        renderDescription={(row) => { 
+         // console.log('row in autocomplete: ', row);
+          return row.terms[0].value} 
+
+          }// display street only
+        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
+          //console.log(data);
+          console.log('-----------------------------------');
+          console.log('details.geometry: ', details.geometry);
+          console.log('-----------------------------------');
+        }}
+        getDefaultValue={() => {
+          return ''; // text input default value
+        }}
+        query={{
+          // available options: https://developers.google.com/places/web-service/autocomplete
+          key: 'AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k',
+          language: 'en', // language of the results
+          //types: '(cities)', // default: 'geocode'
+        }}
+        styles={{
+          zIndex: 150,
+          poweredContainer: {
+            height: 0
+          },
+          row: {
+            height: 30,
+            padding: 5,
+
+          },
+          description: {
+            fontWeight: 'bold',
+
+
+          },
+          predefinedPlacesDescription: {
+            color: '#1faadb',
+          },
+        }}
+
+      //  currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
+      //  currentLocationLabel="Current location"
+        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+
+        GoogleReverseGeocodingQuery={{
+          // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+        }}
+
+        GooglePlacesSearchQuery={{
+          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+          rankby: 'distance',
+          types: 'food',
+        }}
+
+
+        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+
+        //predefinedPlaces={[homePlace, workPlace]}
+      />
+
+
+
           </View>
+
           <View style={styles.mapContainer} >
             <Polygon lat={this.state.lat} lng={this.state.lng} />
           </View>
@@ -185,7 +257,8 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
-    top: 50,
+    //top: 50,
+    top: 250,                       //TEMPORARY!!!
     left: 5,
     right: 5,
     bottom: 5,
@@ -196,16 +269,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   searchBoxContainer: {
-    height: 45, 
+    //height: 45, 
+  //  height: 250,              //TEMPORARY!!!
     position: 'absolute',
     top: 0,
-    width: screenWidth,
+    left: 50,
+    right: 50,
+   // width: screenWidth,
     marginTop: 2,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    //borderColor: 'black',
-    //borderWidth: 1,
+ //   flexDirection: 'column',
+ //   justifyContent: 'center',
+ //   alignItems: 'center',
+    borderColor: 'black',
+    borderWidth: 1,
   },
   searchBox: {
     height: 40,

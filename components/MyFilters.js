@@ -11,7 +11,8 @@ import {
     Dimensions,
     ListView,
     TouchableHighlight,
-    Linking
+    Linking,
+    Modal
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -272,6 +273,10 @@ class MyFiltersComponent extends Component {
                  		}
                  	}
               }/>
+              <View style={styles.addById}>
+                <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Geofilter not showing up?</Text>
+                <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Tap here to add by ID</Text>
+              </View>
             </View>
         </View>)
      }
@@ -317,6 +322,73 @@ const _isActiveOrUpcoming = (dates) => {
     }
 }
 
+// class SearchModal extends Component {
+//   constructor(props){
+//     super(props);
+    
+//     this.state = {
+//           modalVisible: this.props.modalVisible
+//       }
+//   }
+
+//   componentDidMount(){
+//     console.log('this.props in search modal: ', this.props);
+//   }
+
+//   render(){
+//     return(
+//         <Modal
+//           animationType={"none"}
+//           transparent={true}
+//           visible={this.state.modalVisible}
+//           onRequestClose={() => { 
+//                         this.props.toggleModal();
+//             console.log("Modal has been closed.")}}>
+
+//             <View style={styles.modalContainer}>
+//                 <View style={this.props.message.length ? styles.infoModal : [styles.infoModal, {top: 120, bottom: 120}]}  >
+
+//                   <View style={{position: 'absolute', top: 15, left: 10, right: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
+//             <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5 }}>Geofilter Details:</Text>
+//                 </View>
+
+//                   <View style={styles.details}>
+//                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Title:</Text>
+//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5, fontWeight: 'bold' }}>{this.props.title}</Text>
+//                   </View>
+//                   {!this.props.isActive &&
+//                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Starts:</Text> 
+//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)} at {_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text>
+//               </View>
+//             }    
+//             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
+//               <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Ends:</Text> 
+//               <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)} at {_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text>
+//             </View>
+
+//                   </View>
+
+//                   <View style={{position: 'absolute', bottom: 15, left: 10, right: 10, flexDirection: 'row', justifyContent: 'center'}}> 
+//                     <TouchableHighlight 
+//                         style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+//                         onPress={() => {
+//                           this.props.toggleModal();
+//                           this.setState({modalVisible: !this.state.modalVisible})
+//                         }
+//                       }>
+//                           <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+//                     </TouchableHighlight>
+//                   </View>
+
+//               </View>
+//           </View>
+//       </Modal>
+//     )
+//   }
+// }
+
 
 
 const styles = StyleSheet.create({
@@ -344,15 +416,28 @@ const styles = StyleSheet.create({
     top: 100,
     left: 5,
     right: 5,
-    bottom: 50,
+    bottom: 0,
     paddingTop: 10,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
+    borderWidth: 1,
+    borderColor: 'black'
+  },
+  addById: {
+    position: 'absolute',
+    bottom: 0,
+    left: 60,
+    right: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f2',
+    borderWidth: 1,
+    borderColor: 'black'
   },
   eventListContainerContainer: {
     height: screenHeight - 50,
-    width: screenWidth,
+    width: screenWidth
   },
   fakeNavBar:{
   	height: 50,
