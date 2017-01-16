@@ -9,7 +9,8 @@ import {
     WebView,
     Dimensions,
     TouchableOpacity,
-    Linking
+    Linking,
+    Alert
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -99,8 +100,13 @@ class WelcomeComponent extends Component{
 
   loadMyFilters(){
 
-    //Actions.myfilters();
-    this.props.loadMyFilters();
+    if(this.isLoggedIn){
+      this.props.loadMyFilters();
+    } else {
+      Alert.alert('Oops!', 'You must be logged in to access My Geofilters. Tap Login to continue.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+    }
+
+    
 
   }
 

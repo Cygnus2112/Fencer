@@ -304,8 +304,8 @@ class PolygonComponent extends Component {
             (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
               <TouchableOpacity
                 onPress={() => this.startOver(true)}
-                style={[styles.buttonStartOver, {width: 180 }]}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>{"Discard & Start Over"}</Text>
+                style={[styles.buttonStartOver, {width: 200 }]}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Discard & Start Over"}</Text>
               </TouchableOpacity>
             </View>)
             :
@@ -315,12 +315,12 @@ class PolygonComponent extends Component {
               <TouchableOpacity
                 onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>Start Over</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
               <TouchableOpacity
                 onPress={() => this.finish()}
                 style={styles.buttonFinish}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>{"Submit"}</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Submit"}</Text>
               </TouchableOpacity>
             </View>)
             :
@@ -330,7 +330,7 @@ class PolygonComponent extends Component {
               <TouchableOpacity
                 onPress={() => this.startOver()}
                 style={styles.buttonStartOver}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}>Start Over</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Start Over</Text>
               </TouchableOpacity>
             </View>)
             :
@@ -363,23 +363,27 @@ const styles = StyleSheet.create({
   },
   buttonStartOver:{
     width: 120,
-    paddingHorizontal: 12,
+    height: 40,
     alignItems: 'center',
     marginHorizontal: 10,
     backgroundColor: 'red',
     paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingTop: 4,
     borderRadius: 15,
+    borderColor: 'black',
+    borderWidth: 1
   },
   buttonFinish:{
     width: 120,
-    paddingHorizontal: 12,
+    height: 40,
     alignItems: 'center',
     marginHorizontal: 10,
     backgroundColor: 'green',
     paddingHorizontal: 18,
-    paddingVertical: 12,
+    paddingTop: 4,
     borderRadius: 15,
+    borderColor: 'black',
+    borderWidth: 1
   },
   buttonContainer: {
     width: screenWidth - 50,

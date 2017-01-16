@@ -138,14 +138,21 @@ class LoginModal extends Component {
                 ?
               (<View style={styles.modalContainer}>
                   <View style={styles.modalInterior}>
+                    {this.props.alert &&
+                      (<View style={styles.alert} >
+                        <Text style={{fontSize: 18, color: 'red',textAlign: 'center'}} >You must be signed in to continue.</Text>
+                      </View>
 
-                    <View style={styles.username}>
+                        )
+                    }
+
+                    <View style={!this.props.alert ? styles.username : [styles.username,{top: 70}]}>
                       <TextInput placeholder="Username" style={styles.textInput} 
                         onChangeText={(username) => this.setState({username})}
                         value={this.state.username} />
                     </View>
 
-                    <View style={styles.password}>
+                    <View style={!this.props.alert ? styles.password : [styles.password,{top: 130}]}>
                       <TextInput placeholder="Password" 
                         style={styles.textInput} 
                         secureTextEntry={true}
@@ -153,7 +160,7 @@ class LoginModal extends Component {
                         value={this.state.password} />
                     </View>
 
-                  <View style={styles.signinButtonContainer}>
+                  <View style={!this.props.alert ? styles.signinButtonContainer : [styles.signinButtonContainer,{top: 200}]}>
                     <View style={styles.signinButtonBox}>
                       <Button
                         style={{fontSize: 18, color: 'black'}}
@@ -170,7 +177,7 @@ class LoginModal extends Component {
                         </Text>
                     </View>     */}
 
-                  <View style={ styles.signupContainer }> 
+                  <View style={!this.props.alert ? styles.signupContainer : [styles.signupContainer, {top: 270}]}> 
                     <View style={ styles.signup }> 
                       <TouchableOpacity onPress={ () => { this.toggleSignup() } } style={styles.button} >
                           <View style={ styles.header }>
@@ -281,6 +288,21 @@ class LoginModal extends Component {
 }
 
 const styles = StyleSheet.create({
+  alert: {
+    position: 'absolute',
+    top: 5,
+    left: 30,
+    right: 30,
+    elevation:3,
+    height: 50,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center' 
+   // backgroundColor:'white', 
+   // margin: 5, 
+   // marginTop:50, 
+   // borderRadius: 4
+  },
   username: {
     position: 'absolute',
     top: 30,

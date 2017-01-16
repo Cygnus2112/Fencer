@@ -291,7 +291,7 @@ this.setState({
                     ?
                   (<View style={ styles.buttonBoxDiscard }>
                     <Button
-                      style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                      style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white',borderRadius:4}}
                       styleDisabled={{color: 'red'}}
                       onPress={ () => {
 
@@ -308,14 +308,14 @@ this.setState({
                   (<View style={ styles.buttonBoxLarge} >
                     <View style={ [styles.buttonBox, {backgroundColor: 'red' }] }>
                       <Button
-                        style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                        style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white',borderRadius:4}}
                         onPress={( ) => { this.setState({png:{data: null}})} }>
                         Discard
                       </Button>
                     </View>
                     <View style={ [styles.buttonBox, {backgroundColor: 'green' }] }>
                       <Button
-                        style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                        style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white',borderRadius:4}}
                         styleDisabled={{color: 'red'}}
                         onPress={( ) => { this.props.submitUpload(this.state.png) } }>
                         {"Submit"}
@@ -326,10 +326,10 @@ this.setState({
                     :
                   (<View style={ styles.buttonBox }>
                     <Button
-                      style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'white',borderRadius:4}}
+                      style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white',borderRadius:4}}
                       styleDisabled={{color: 'red'}}
                       onPress={ this.handlePress }>
-                      {"Select"} Filter
+                      {"Select"}
                     </Button>
                   </View>)
                 }
@@ -452,35 +452,53 @@ const styles = StyleSheet.create({
   },
   buttonBox:{
     elevation:3,
-    padding:7,
+    padding:5,
     height:40,
     width: 130,
     overflow:'hidden',
     borderRadius:15,
     backgroundColor: '#0c12ce',
+    borderColor: 'black',
+    borderWidth: 1,
     // marginLeft: 40,
     // marginRight: 40
    // marginBottom: 5
   },
   buttonBoxLarge:{
-    height:40,
+    height:45,
     width: 300,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'flex-start',
+    // borderColor: 'black',
+    // borderWidth: 1,
   },
   buttonBoxDiscard:{
     elevation:3,
-    padding:7,
+    paddingTop:4,
     height:40,
-    width: 180,
+    width: 200,
     overflow:'hidden',
     borderRadius:15,
     backgroundColor: '#0c12ce',
     // marginLeft: 40,
     // marginRight: 40
-   // marginBottom: 5
+    //marginBottom: 10,
+    borderColor: 'black',
+    borderWidth: 1
   },
+  //   buttonBox:{
+  //   elevation:3,
+  //   padding:5,
+  //   height:40,
+  //   width: 130,
+  //   overflow:'hidden',
+  //   borderRadius:15,
+  //   backgroundColor: '#0c12ce',
+  //   marginLeft: 40,
+  //   marginRight: 40,
+  //   marginBottom: 10,
+  // },
   insidespinner: {
    // marginTop: 100,
     alignItems: 'center',

@@ -18,6 +18,8 @@ import {
  //   Share
 } from 'react-native';
 
+import LoginModal from './LoginModal';
+
 import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux'
@@ -41,13 +43,14 @@ class Send extends Component {
 
         this.state = {
             title: "",
-            message: ""
+            message: this.props.filterMessage || "",
+            showLoginModal: false
         }
     }
 
     handleSubmit(){
-        console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
-        console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
+    //    console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
+    //    console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
       //  console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
@@ -55,17 +58,7 @@ class Send extends Component {
           const { startMonth, startYear, startDay, startHour, startMinute} = this.props.selectedDates;
           let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
 
-          console.log('startTime minus currentTime: ', (startTime - currentTime));
-
-          if((startTime - currentTime) < 1800000){
-            Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
-                    console.log('OK Pressed!');
-                  }
-            }])
-
-            return;
-
-          }
+     //     console.log('startTime minus currentTime: ', (startTime - currentTime));
 
 
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
@@ -92,6 +85,17 @@ class Send extends Component {
                 // console.log(this.props.selectDatesComplete);
                 // console.log(this.props.chooseAreaComplete);
                 // console.log(this.props.filterTitle);
+            } else if((startTime - currentTime) < 1800000){
+            Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
+                    console.log('OK Pressed!');
+                  }
+            }])
+
+            return;
+
+            // } else if(!this.props.isLoggedIn){
+            //   console.log('not logged in!!!!');
+            //   this.setState({showLoginModal: true});
             } else {
                 let dataToSend = {
                     fenceCoordinates: this.props.fenceCoordinates,
@@ -164,7 +168,20 @@ class Send extends Component {
                           style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
                           onPress={()=> { 
 
-                            this.props.submitTitle({title: this.state.title, message: this.state.message}); 
+                            if(!this.state.title.length){
+                              Alert.alert('Oops!','Please name your geofilter before proceeding.', [{text: 'OK', onPress: () => {
+                                console.log('OK Pressed!');
+                              }}])
+
+
+                            } else if(!this.props.isLoggedIn){
+                                console.log('not logged in!!!!');
+                                this.setState({showLoginModal: true});
+                            } else {
+                              this.props.submitTitle({title: this.state.title, message: this.state.message});
+                            }
+
+                             
 
                          }
                         }>
@@ -210,6 +227,12 @@ class Send extends Component {
                 </View>
 
             </View>
+          {this.state.showLoginModal
+          ?
+          (<LoginModal alert={true} modalVisible={true} toggleModal={() => {this.setState( {showLoginModal: false}) } } />)
+          :
+          (null)
+        }
           </View>
             )
     }
@@ -225,13 +248,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#f9f9f2'
   },
   buttonBox:{
-    // elevation:3,
-    // padding:5,
-    // height:40,
-    // width: 130,
-    // overflow:'hidden',
-    // borderRadius:15,
-    // backgroundColor: '#0c12ce'
     elevation:3,
     padding:5,
     height:40,
@@ -241,12 +257,15 @@ const styles = StyleSheet.create({
     backgroundColor: '#0c12ce',
     position: 'absolute',
     left: (screenWidth/2) - 65,
-    bottom: 10
+    bottom: 10,
+    borderColor: 'black',
+    borderWidth: 1
   }
 });
 
 const mapStateToProps = (state) => {
   return {
+    isLoggedIn: state.authReducer.isLoggedIn,
     username: state.authReducer.username,
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     uploadFilterComplete: state.uploadReducer.uploadFilterComplete,
@@ -264,16 +283,9 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
-            if(info.title.length < 1){
-                Alert.alert('Oops!','Please name your geofilter before proceeding.', [{text: 'OK', onPress: () => {
-                    console.log('OK Pressed!');
-                  }
-                }])
-                // trigger error modal: "fence must have a title"
 
-            } else {
                 uploadActions.submitTitleAndMessage(dispatch, info)
-            }
+            
         },
         finalSumbit: (data) => {
             uploadActions.finalSubmitFilter(dispatch, data);
