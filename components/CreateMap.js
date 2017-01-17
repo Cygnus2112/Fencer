@@ -93,13 +93,17 @@ class CreateMapComponent extends Component{
             </TouchableOpacity>
           </View>
 
+          <View style={styles.mapContainer} >
+            <Polygon lat={this.state.lat} lng={this.state.lng} />  
+          </View>
+
           <View style={styles.searchBoxContainer}>
         {/*    <View style={styles.searchBox}>
               <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
             </View>   */}
 
       <GooglePlacesAutocomplete
-        placeholder='Search'
+        placeholder='Search Places'
         minLength={2} // minimum length of text to search
         autoFocus={false}
         listViewDisplayed='auto'    // true/false/undefined
@@ -108,7 +112,7 @@ class CreateMapComponent extends Component{
          // console.log('row in autocomplete: ', row);
           return row.terms[0].value} 
 
-          }// display street only
+        }// display street only
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
           //console.log(data);
           console.log('-----------------------------------');
@@ -125,14 +129,46 @@ class CreateMapComponent extends Component{
           //types: '(cities)', // default: 'geocode'
         }}
         styles={{
-          zIndex: 150,
+          container: {
+            paddingTop: 0,
+            zIndex: 150,
+           // borderColor: 'black',
+           // borderWidth: 1
+          },
+          textInputContainer: {
+           // backgroundColor: 'rgba(0,0,0,0)',
+            height: 40,
+            borderTopWidth: 0,
+            borderBottomWidth:0,
+            borderRadius: 0,
+            padding: 0
+          },
+          textInput: {
+            marginTop: 0,
+            marginBottom: 0,
+            marginLeft: 0,
+            marginRight: 0,
+            borderRadius: 0,
+          //  paddingLeft: 4,
+          //  position: 'absolute', 
+            // top: 0, 
+            // left: 0,
+            // right: 0,
+            // bottom: 0,
+            height: 43,
+            color: '#5d5d5d',
+            fontSize: 16
+          },
           poweredContainer: {
+            height: 0
+          },
+          powered: {
             height: 0
           },
           row: {
             height: 30,
             padding: 5,
-
+            backgroundColor: 'white'
           },
           description: {
             fontWeight: 'bold',
@@ -163,14 +199,8 @@ class CreateMapComponent extends Component{
 
         //predefinedPlaces={[homePlace, workPlace]}
       />
-
-
-
           </View>
 
-          <View style={styles.mapContainer} >
-            <Polygon lat={this.state.lat} lng={this.state.lng} />
-          </View>
           {this.state.infoPressed
               ?
             (<InfoModal modalVisible={true} toggleModal={() => { 
@@ -257,8 +287,8 @@ const styles = StyleSheet.create({
   },
   mapContainer: {
     position: 'absolute',
-    //top: 50,
-    top: 250,                       //TEMPORARY!!!
+    top: 50,
+   // top: 250,                       //TEMPORARY!!!
     left: 5,
     right: 5,
     bottom: 5,
@@ -266,7 +296,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'white',
     borderColor: 'black',
-    borderWidth: 1,
+    borderWidth: 1
   },
   searchBoxContainer: {
     //height: 45, 
@@ -280,8 +310,8 @@ const styles = StyleSheet.create({
  //   flexDirection: 'column',
  //   justifyContent: 'center',
  //   alignItems: 'center',
-    borderColor: 'black',
-    borderWidth: 1,
+     borderColor: 'black',
+   borderWidth: 1,
   },
   searchBox: {
     height: 40,
