@@ -30,7 +30,8 @@ const initialState = {
   bitlyURL: "",
   filterID: "",
   finalSubmitComplete: false,
-  mapModalDismissed: false
+  mapModalDismissed: false,
+  newMapRegion: {}
 }
 
 const uploadReducer = (state = initialState, action) => {
@@ -71,7 +72,8 @@ const uploadReducer = (state = initialState, action) => {
         fenceCoordinates: action.fenceCoordinates,
         isValidatingCoords: false,
         chooseAreaComplete: true,
-        currentView: 'send'
+        currentView: 'send',
+        newMapRegion: action.newMapRegion
       })
     case ActionTypes.CHOOSE_AREA_ERROR:
       return Object.assign({}, state, {

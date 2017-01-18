@@ -52,9 +52,11 @@ const submitFilterRequest = () => {
 }
 
 const submitFilterSuccess = (filterData) => {
+
 	return {
 		type: UPLOAD_FILTER_SUCCESS,
-		filterToUpload: filterData				//  could be something else (ie, filterData.filterURI)
+		filterToUpload: filterData			//  could be something else (ie, filterData.filterURI)
+		
 	}
 }
 
@@ -86,7 +88,8 @@ const chooseAreaRequest = () => {
 const chooseAreaSuccess = (coords) => {
 	return {
 		type: CHOOSE_AREA_SUCCESS,
-		fenceCoordinates: coords
+		fenceCoordinates: coords,
+		newMapRegion: coords.newMapRegion
 	}
 }
 

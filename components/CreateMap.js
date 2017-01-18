@@ -39,9 +39,11 @@ class CreateMapComponent extends Component{
     super(props);
     this.state = {
       polygon: false,
-      lat: this.props.currentPosition.lat || 37.78825,
-      lng: this.props.currentPosition.lng || -122.4324,
-      infoPressed: !this.props.mapModalDismissed
+      lat: this.props.newMapRegion.latitude || this.props.currentPosition.lat || 37.78825,
+      lng: this.props.newMapRegion.longitude || this.props.currentPosition.lng || -122.4324,
+      infoPressed: !this.props.mapModalDismissed,
+      placeSelected: false,
+      blurAutocomp: false
     }
   //  this.getCoords = this.getCoords.bind(this);
   //  this.addPolygon = this.addPolygon.bind(this);
@@ -68,6 +70,7 @@ class CreateMapComponent extends Component{
 
   componentDidMount(){
     console.log('CreateMap mounted.');
+    console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
    // this.getCoords();
   }
 
@@ -94,7 +97,7 @@ class CreateMapComponent extends Component{
           </View>
 
           <View style={styles.mapContainer} >
-            <Polygon lat={this.state.lat} lng={this.state.lng} />  
+            <Polygon lat={this.state.lat} lng={this.state.lng} place={this.state.placeSelected} blurAutocomp={() => this.setState({blurAutocomp: true})} />  
           </View>
 
           <View style={styles.searchBoxContainer}>
@@ -103,20 +106,29 @@ class CreateMapComponent extends Component{
             </View>   */}
 
       <GooglePlacesAutocomplete
+        blurAutocomp={this.state.blurAutocomp}
         placeholder='Search Places'
         minLength={2} // minimum length of text to search
         autoFocus={false}
         listViewDisplayed='auto'    // true/false/undefined
         fetchDetails={true}
         renderDescription={(row) => { 
-         // console.log('row in autocomplete: ', row);
-          return row.terms[0].value} 
+      //   console.log('row.terms in autocomplete: ', row.terms);
+
+          return row.terms[0].value + ' - ' + row.terms[1].value + ', ' + row.terms[2].value
+
+        } 
 
         }// display street only
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
           //console.log(data);
           console.log('-----------------------------------');
-          console.log('details.geometry: ', details.geometry);
+          console.log('details.geometry: ', details.geometry.location);
+          this.setState({
+            lat: details.geometry.location.lat,
+            lng: details.geometry.location.lng,
+            placeSelected: true
+          })
           console.log('-----------------------------------');
         }}
         getDefaultValue={() => {
@@ -190,8 +202,7 @@ class CreateMapComponent extends Component{
 
         GooglePlacesSearchQuery={{
           // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance',
-          types: 'food',
+          rankby: 'distance'
         }}
 
 
@@ -378,7 +389,8 @@ const mapStateToProps = (state) => {
     chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
     fenceError: state.uploadReducer.fenceError,
-    mapModalDismissed: state.uploadReducer.mapModalDismissed
+    mapModalDismissed: state.uploadReducer.mapModalDismissed,
+    newMapRegion: state.uploadReducer.newMapRegion
   }
 }
 
