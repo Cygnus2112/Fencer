@@ -22,6 +22,21 @@ const { width, height } = Dimensions.get('window');
 let screenWidth = width;
 let screenHeight= height;
 
+const _formatTime = (hour, minute) => {
+  let suffix = 'AM';
+  if(hour > 12){
+    hour = hour - 12;
+    suffix = 'PM';
+  }
+  if(hour === 12){
+    suffix = 'PM';
+  }
+  if(hour === 0){
+    hour = 12;
+  }
+  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
+}
+
 class Success extends Component {
 	constructor(props){
 		super(props);
@@ -40,8 +55,8 @@ class Success extends Component {
 		let startDate = startDateObj.toLocaleDateString();
 		let endDate = endDateObj.toLocaleDateString();
 
-		let startTime = startDateObj.toLocaleTimeString();
-		let endTime = endDateObj.toLocaleTimeString();
+	//	let startTime = startDateObj.toLocaleTimeString();
+	//	let endTime = endDateObj.toLocaleTimeString();
 
 		return(
 			<View style={styles.container}>
@@ -82,7 +97,7 @@ class Success extends Component {
 						Starts:
 					</Text>
 					<Text style={[styles.message] }>
-					 	{startDate + " " + startTime}
+					 	{startDate + " " +  _formatTime(this.props.dates.startHour, this.props.dates.startMinute)}
 					</Text>
 				  </View>
 				  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -90,7 +105,7 @@ class Success extends Component {
 						Ends: 
 					</Text>
 					<Text style={styles.message}>
-						{endDate + " " + endTime}
+						{endDate + " " + _formatTime(this.props.dates.endHour, this.props.dates.endMinute)}
 					</Text>
 				</View>
 
