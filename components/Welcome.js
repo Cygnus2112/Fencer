@@ -281,7 +281,7 @@ const mapDispatchToProps = (dispatch) => {
       authActions.logout(dispatch)
     },
     addFilter: (filter) => {
-      filterActions.addFilterByID(filter)
+      filterActions.addFilterByID(dispatch, filter)
     },
     loadMyFilters: () => {
       authActions.loadMyFilters(dispatch);

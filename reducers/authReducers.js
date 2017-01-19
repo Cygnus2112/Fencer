@@ -1,4 +1,16 @@
-import * as ActionTypes from '../actions/authActions';
+import * as AuthActionTypes from '../actions/authActions';
+
+import { ADD_TO_MYFILTERS, addToMyFilters } from '../actions/filterActions';
+
+//console.log('ADD_TO_MYFILTERS: ', ADD_TO_MYFILTERS);
+//console.log('addToMyFilters: ', addToMyFilters);
+
+let ActionTypes = Object.assign({}, AuthActionTypes, {
+        ADD_TO_MYFILTERS: ADD_TO_MYFILTERS,
+        addToMyFilters: addToMyFilters
+      })
+
+//console.log('ActionTypes in authReducers: ', ActionTypes);
 
 const initialState = {
   isFetchingAuth: false,
@@ -85,6 +97,14 @@ const authReducer = (state = initialState, action) => {
     case ActionTypes.CLEAR_ERROR_REQUEST:
       return Object.assign({}, state, {
         authErrorMsg: ''
+      })
+    case ActionTypes.ADD_TO_MYFILTERS:
+      let allFilters = state.myFilters.slice();
+      console.log('action.filter: ', action.filter);
+      allFilters.push(action.filter);
+      console.log('allFilters: ', allFilters);
+      return Object.assign({}, state, {
+        myFilters: allFilters
       })
 
     // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:

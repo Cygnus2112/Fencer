@@ -96,7 +96,13 @@ class ChooseDatesComponent extends Component{
 
       let initMinute = initStartTime.getMinutes();
 
+      let initEndMonth = initEndTime.getMonth();
+      let initEndDay = initEndTime.getDate();
+
       this.setState({
+        endMonth: initEndMonth,
+        endDay: initEndDay,
+        endText: initEndTime.toLocaleDateString(),
         startHour: initStartHour,
         endHour: initEndHour,
         startMinute: initMinute,

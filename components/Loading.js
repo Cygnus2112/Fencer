@@ -44,7 +44,7 @@ class LoadingComponent extends Component{
 
         for(filter in parsed){
           console.log('filter ID from url: ', parsed[filter]);
-          this.props.addFilter(parsed[filter])
+          this.props.addFilter({filter: parsed[filter], isSearch: false})
         }
 
         //  REMOVE EVENT LISTENER
@@ -94,9 +94,9 @@ const mapDispatchToProps = (dispatch) => {
     initPosition: () => {
     	filterActions.initPosition(dispatch)
     },
-    addFilter: (filter) => {
-      filterActions.addFilterByID(filter)
-    },
+    addFilter: (data) => {
+      filterActions.addFilterByID(dispatch, data)
+    }
   }
 }
 

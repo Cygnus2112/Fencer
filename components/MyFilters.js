@@ -12,7 +12,9 @@ import {
     ListView,
     TouchableHighlight,
     Linking,
-    Modal
+    Modal,
+    TextInput,
+    Alert
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -29,6 +31,9 @@ let screenWidth = width;
 let screenHeight= height;
 
 import Icon from 'react-native-vector-icons/Entypo';
+
+import Button from 'react-native-button';
+
 /*
 		Basic concept:
 			- on component (and/or application) mount, we ping back-end to get the user's events (or whatever we call them)
@@ -45,15 +50,34 @@ class MyFiltersComponent extends Component {
 
 		const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
+    this.handleSearch = this.handleSearch.bind(this);
+    this.reloadFilters = this.reloadFilters.bind(this);
+
 		this.state = {
 			//events: sampleEvents,
       // isLoadingFilter: false,
-			dataSource: ds.cloneWithRows( [] )
+			dataSource: ds.cloneWithRows( [] ),
+      searchPressed: false,
+      searchError: false
 		}
 	}
 
+  reloadFilters(filter) {
+    let allFilters = this.props.myFilters.slice();
+
+    if(filter){
+      allFilters.push(filter);
+    } 
+
+    this.props.getMyFilters({username: this.props.username, filters: allFilters || [] });
+  }
+
+    handleSearch(){
+      this.setState({ searchPressed:!this.state.searchPressed })
+    }
+
 	componentDidMount(){
-		//console.log('this.props in MyFilters: ', this.props);
+		console.log('array this.props.myFilters in MyFilters: ', Array.isArray(this.props.myFilters) );
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
@@ -82,14 +106,29 @@ class MyFiltersComponent extends Component {
 
 	}
 
-    componentWillUnmount(){
+  componentWillUnmount(){
       console.log('MyFilters un-mounting ... ');
     }
 
 	componentWillReceiveProps(newProps){
+      console.log('newProps in MyFilters!!!');
   //  console.log('newProps.allFilters: ', newProps.allFilters);
   //  console.log('newProps.filtersCreated: ', newProps.filtersCreated);
   //  console.log('newProps.myFilters: ', newProps.myFilters);
+      // if(newProps.newFilterAdded) {
+      //   this.reloadFilters();
+      //   this.props.clearNewFilter();
+      // }
+
+// By9qHCaUx
+// H1TyUATUl
+
+      if(newProps.searchError){
+        this.setState({searchError: true});
+      }
+      if(!newProps.searchError){
+        this.setState({searchError: false});
+      }
       console.log('-------------------------');
 
 
@@ -212,6 +251,14 @@ class MyFiltersComponent extends Component {
         } else {
 
       return(<View style={styles.container}>
+      {this.state.searchPressed
+            &&
+          (<SearchModal 
+              modalVisible={true} 
+              toggleModal={() => { this.handleSearch() }} 
+              reloadFilters={this.reloadFilters}
+              {...this.props} />)
+        }
 			<View style={styles.fakeNavBar}>
 				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
 					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
@@ -235,7 +282,7 @@ class MyFiltersComponent extends Component {
                 		dataSource={this.state.dataSource}
                 		renderRow={(rowData) => {
 
-                      console.log('rowData: ', rowData);
+                   //   console.log('rowData: ', rowData);
                 			console.log('-------------------------');
 
                 			if(rowData.coordinates) {
@@ -274,8 +321,10 @@ class MyFiltersComponent extends Component {
                  	}
               }/>
               <View style={styles.addById}>
-                <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Geofilter not showing up?</Text>
-                <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Tap here to add by ID</Text>
+                <TouchableOpacity onPress={this.handleSearch}>
+                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Geofilter not showing up?</Text>
+                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Tap here to add by ID</Text>
+                </TouchableOpacity>
               </View>
             </View>
         </View>)
@@ -389,9 +438,196 @@ const _isActiveOrUpcoming = (dates) => {
 //   }
 // }
 
+class SearchModal extends Component {
+  constructor(props){
+    super(props);
+
+    this.handleSearch = this.handleSearch.bind(this);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible,
+          filter: ''
+      }
+  }
+
+  componentWillReceiveProps(nextProps){
+    if(nextProps.searchError){
+
+      Alert.alert('Geofilter Not Found', "A Geofilter with that ID was not found.", [{text: 'OK', onPress: () => {
+            // clear prop
+
+            this.props.clearSearchError();
+
+            console.log('OK Pressed!');
+          }
+        }])
+
+    } 
+// rkBDPCT8l
+// ByEKvCpLg
+    if(nextProps.newFilterAdded && nextProps.newFilterAdded !== this.props.newFilterAdded){
+
+      console.log('nextProps.newFilterAdded: ', nextProps.newFilterAdded);
+
+      Alert.alert('Success!', "A new Geofilter has been added to My Filters.", [{text: 'OK', onPress: () => {
+            // clear prop
+
+            this.props.reloadFilters(nextProps.newFilterAdded);
+            this.props.clearNewFilter();
+            this.props.toggleModal();
+            this.setState({modalVisible: !this.state.modalVisible});
+
+            console.log('OK Pressed!');
+          }
+        }])
+
+    } 
+
+
+
+  }
+
+  handleSearch(){
+    this.props.addFilter({filter: this.state.filter, isSearch: true});
+  }
+
+  componentDidMount(){
+  //  console.log('this.props in filter search modal: ', this.props);
+  }
+
+  render(){
+    return(
+        <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+                        this.props.toggleModal();
+            console.log("Modal has been closed.")}}>
+
+            <View style={styles.modalContainer}>
+              <View style={ styles.searchModal } >
+
+                <View style={{position: 'absolute', top: 15, left: 10, right: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5 }}>Enter Geofilter ID:</Text>
+                </View>
+
+                  <View style={styles.details}>
+                    <View style={{flexDirection: 'row', justifyContent: 'center'}}>
+                      <TextInput 
+                          placeholder="Geofilter ID" 
+                          style={styles.textInput} 
+                          placeholderStyle={styles.placeholder}
+                          onChangeText={(filter) => this.setState({filter})}
+                          value={this.state.filter}/> 
+                    </View>
+                  </View>
+
+                  <View style={styles.signinButtonContainer}>
+                    <View style={styles.signinButtonBox}>
+                      <Button
+                        style={{fontSize: 18, color: 'black'}}
+                        styleDisabled={{color: 'red'}}
+                        onPress={ this.handleSearch }>
+                          Search
+                      </Button> 
+                    </View>
+                  </View>
+
+                  <View style={{position: 'absolute', bottom: 15, left: 10, right: 10, flexDirection: 'row', justifyContent: 'center'}}> 
+                    <TouchableHighlight 
+                        style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                        onPress={() => {
+                          this.props.toggleModal();
+                          this.setState({modalVisible: !this.state.modalVisible})
+                        }
+                      }>
+                          <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                    </TouchableHighlight>
+                  </View>
+
+              </View>
+          </View>
+      </Modal>
+    )
+  }
+}
+
 
 
 const styles = StyleSheet.create({
+  placeholder: {
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 18
+  },
+  textInput: {
+    fontFamily: 'RobotoCondensed-Regular',
+    backgroundColor: 'white', 
+    margin: 5, 
+    padding: 5,
+    width: 200,
+    fontSize: 18,
+    textAlign: 'center',
+  },
+  signinButtonContainer: {
+    position: 'absolute',
+    top: 160,
+    left: 30,
+    right: 30,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  signinButtonBox: {
+    elevation:3,
+    padding:10, 
+  //  margin: 5,
+    height:45, 
+    width: 200*.7, 
+    overflow:'hidden', 
+    borderRadius:4, 
+    backgroundColor: 'silver',
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  textActive: {
+    fontSize: 20, 
+    color: 'black', 
+    textAlign: 'center', 
+    fontWeight:'bold',
+    fontFamily: 'RobotoCondensed-Regular'
+  },
+  details: {
+    position: 'absolute',
+    top: 75,
+    left: 10, 
+    right: 10,
+  },
+  modalContainer: {
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      right: 0, 
+      bottom: 0, 
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center'
+  },
+  searchModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:35, 
+    right: 35, 
+    bottom: 60, 
+    justifyContent: 'center', 
+    alignItems: 'flex-start', 
+    // backgroundColor:'white',
+    backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
   container: {
     height: screenHeight - 25,
     flexDirection: 'column',
@@ -464,7 +700,9 @@ const mapStateToProps = (state) => {
     myFilters: state.authReducer.myFilters,
     filtersCreated: state.authReducer.filtersCreated,
     username: state.authReducer.username,
-    isLoadingAllFilters: state.filterReducer.isLoadingAllFilters
+    isLoadingAllFilters: state.filterReducer.isLoadingAllFilters,
+    searchError: state.filterReducer.searchError,
+    newFilterAdded: state.filterReducer.newFilterAdded
   }
 }
 
@@ -473,7 +711,16 @@ const mapDispatchToProps = (dispatch) => {
     getMyFilters: (data) => {
     //	console.log('data in MyFilters dispatch: ', data);
     	filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
-    }
+    },
+    addFilter: (data) => {
+      filterActions.addFilterByID(dispatch, data)
+    },
+    clearSearchError: () => {
+      filterActions.clearSearchError(dispatch)
+    },
+    clearNewFilter: () => {
+      filterActions.clearNewFilter(dispatch)
+    },
   }
 }
 

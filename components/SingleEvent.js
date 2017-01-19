@@ -91,7 +91,7 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
-		console.log('this.props.bitlyURL: ', this.props.bitlyURL);
+	//	console.log('this.props.bitlyURL: ', this.props.bitlyURL);
 
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
@@ -103,7 +103,7 @@ class SingleEventComponent extends Component {
         	//this.props.fetchFilterImage({ filterID: this.props.filterID });
 
       //  if(this.props.isActive){
-       		console.log('this.props.filterID in SingleEvent: ', this.props.filterID);
+      // 		console.log('this.props.filterID in SingleEvent: ', this.props.filterID);
        	//	this.props.fetchFilterImage({ filterID: this.props.filterID });
 
        		AsyncStorage.getItem("fencer-token").then((token) => {
@@ -140,7 +140,7 @@ class SingleEventComponent extends Component {
      //  	}
 
 	//	console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
-		console.log("##################################");
+	//	console.log("##################################");
 	//	console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
 
 		this.setState({

@@ -12,7 +12,9 @@ const initialState = {
   //myFilters: null,
   //filtersCreated: null,
   isLoadingFilterImage: false,
-  filterImage: null
+  filterImage: null,
+  searchError: false,
+  newFilterAdded: null
 }
 
 const filterReducer = (state = initialState, action) => {
@@ -81,8 +83,22 @@ const filterReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         filterUploadError: action.filterUploadError
       })
-
-
+    case ActionTypes.SEARCH_ERROR:
+      return Object.assign({}, state, {
+        searchError: true
+      })
+    case ActionTypes.CLEAR_SEARCH_ERROR:
+      return Object.assign({}, state, {
+        searchError: false
+      })
+    case ActionTypes.NEW_FILTER_ADDED:
+      return Object.assign({}, state, {
+        newFilterAdded: action.filter
+      })
+    case ActionTypes.CLEAR_NEW_FILTER:
+      return Object.assign({}, state, {
+        newFilterAdded: null
+      })
 
 
   	  // ... and many others for dealing with image rendering etc.

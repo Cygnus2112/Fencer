@@ -77,7 +77,7 @@ export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
 export const loadAllFilters = (dispatch, userData) => {
  // return dispatch => {
 
-  console.log('userData in loadAllFilters: ', userData);
+ // console.log('userData in loadAllFilters: ', userData);
 
     dispatch(loadAllFiltersRequest());			
 
@@ -188,14 +188,15 @@ const loadFilterImageSuccess = (filterImageData) => {
 }
 
 
-export const addFilterByID = (filter) => {
+export const addFilterByID = (dispatch, data) => {
   AsyncStorage.getItem("fencer-token").then((token) => {
     if(token){
       axios({
         method: 'post',
         url: utils.myFiltersURL,
         data: {
-          filterID: filter
+          filterID: data.filter,
+          isSearch: data.isSearch
         },
         headers: {
           'Accept': 'application/json',
@@ -207,10 +208,20 @@ export const addFilterByID = (filter) => {
         .then((resp) => {
 
                 //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
+          if(resp.data['NOTFOUND']){
+            dispatch(searchError());
 
-        // console.log('response in addFilterByID: ', resp);
-          Actions.loading();
-          return resp;
+          } else if(data.isSearch){
+            dispatch(newFilterAddedRequest(data.filter));
+            dispatch( addToMyFilters(data.filter) );
+
+          } else {
+            Actions.loading();
+            return resp;
+          }
+
+          console.log('response.data["NOTFOUND"] in addFilterByID: ', resp.data['NOTFOUND']);
+
         })
         .catch(err => {
           console.error('Error in addFilterByID:', err);
@@ -221,6 +232,58 @@ export const addFilterByID = (filter) => {
         }).done();
   
 }
+
+export const SEARCH_ERROR = 'SEARCH_ERROR';
+
+const searchError = () => {
+  return {
+    type: SEARCH_ERROR
+  }
+}
+
+export const CLEAR_SEARCH_ERROR = 'CLEAR_SEARCH_ERROR';
+
+export const clearSearchError = (dispatch) => {
+  dispatch(clearSearchErrorRequest());
+}
+
+const clearSearchErrorRequest = () => {
+  return {
+    type: CLEAR_SEARCH_ERROR
+  }
+}
+
+export const NEW_FILTER_ADDED = 'NEW_FILTER_ADDED';
+
+const newFilterAddedRequest = (filter) => {
+  return {
+    type: NEW_FILTER_ADDED,
+    filter: filter
+  }
+}
+
+export const ADD_TO_MYFILTERS = 'ADD_TO_MYFILTERS';
+
+export const addToMyFilters = (filter) => {
+  console.log('addToMyFilters called in filterActions');
+  return {
+    type: ADD_TO_MYFILTERS,
+    filter: filter
+  }
+}
+
+export const CLEAR_NEW_FILTER = 'CLEAR_NEW_FILTER';
+
+export const clearNewFilter = (dispatch) => {
+  dispatch(clearNewFilterRequest());
+}
+
+const clearNewFilterRequest = () => {
+  return {
+    type: CLEAR_NEW_FILTER
+  }
+}
+
 
 // export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';
 // export const LOAD_FILTERSCREATED_SUCCESS = 'LOAD_FILTERSCREATED_SUCCESS';

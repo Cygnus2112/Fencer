@@ -267,8 +267,8 @@ export const loadMyFilters = (dispatch) => {
                   return response.json();
                 })
                 .then(response => {
-                  console.log('2nd level response in auth loadMyFilters: ');
-                  console.log(response);
+                 // console.log('2nd level response in auth loadMyFilters: ');
+                //  console.log(response);
 
                   console.log('-------------------------');
 
