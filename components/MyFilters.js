@@ -63,10 +63,14 @@ class MyFiltersComponent extends Component {
 	}
 
   reloadFilters(filter) {
+    console.log('reloadFilters called in MyFilters');
     let allFilters = this.props.myFilters.slice();
 
     if(filter){
-      allFilters.push(filter);
+      if(allFilters.indexOf(filter) === -1){
+        console.log('new filter '+filter+' is not YET in this.props.myFilters ');
+        allFilters.push(filter);
+      }
     } 
 
     this.props.getMyFilters({username: this.props.username, filters: allFilters || [] });
@@ -120,8 +124,6 @@ class MyFiltersComponent extends Component {
       //   this.props.clearNewFilter();
       // }
 
-// By9qHCaUx
-// H1TyUATUl
 
       if(newProps.searchError){
         this.setState({searchError: true});
@@ -144,6 +146,8 @@ class MyFiltersComponent extends Component {
 				return _isActiveOrUpcoming(f.dates);					// we only show filters that are active or upcoming
 			})
 
+
+
 			let sortedFilters = arr.sort((f1,f2)=>{
 				return f1.dates.startYear - f2.dates.startYear;
 			}).sort((f1,f2)=>{
@@ -151,7 +155,7 @@ class MyFiltersComponent extends Component {
 			}).sort((f1,f2)=>{
 				return f1.dates.startDay - f2.dates.startDay;
 			}).sort((f1,f2)=>{
-				return f1.dates.startHour - f2.dates.startHour;
+				return f2.dates.startHour - f1.dates.startHour;
 			})
 
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -463,8 +467,7 @@ class SearchModal extends Component {
         }])
 
     } 
-// rkBDPCT8l
-// ByEKvCpLg
+
     if(nextProps.newFilterAdded && nextProps.newFilterAdded !== this.props.newFilterAdded){
 
       console.log('nextProps.newFilterAdded: ', nextProps.newFilterAdded);
@@ -482,11 +485,9 @@ class SearchModal extends Component {
         }])
 
     } 
-
-
-
   }
 
+  //  SymwKh0Ix
   handleSearch(){
     this.props.addFilter({filter: this.state.filter, isSearch: true});
   }

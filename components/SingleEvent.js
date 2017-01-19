@@ -91,7 +91,7 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
-	//	console.log('this.props.bitlyURL: ', this.props.bitlyURL);
+		console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
 
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
