@@ -557,7 +557,7 @@ const styles = StyleSheet.create({
 	containerActive:{
 		height: 80, 
 		width: 280, 
-		margin:10, 
+		margin: 7, 
 		paddingLeft:5,
 		paddingRight:5,
 		borderColor: 'black', 
@@ -571,7 +571,7 @@ const styles = StyleSheet.create({
 	containerInactive:{
 		height: 80, 
 		width: 280, 
-		margin:10, 
+		margin: 7, 
 		paddingLeft:5,
 		paddingRight:5,
 		borderColor: 'black', 

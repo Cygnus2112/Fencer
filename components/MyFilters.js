@@ -254,32 +254,33 @@ class MyFiltersComponent extends Component {
 
         } else {
 
-      return(<View style={styles.container}>
-      {this.state.searchPressed
-            &&
-          (<SearchModal 
-              modalVisible={true} 
-              toggleModal={() => { this.handleSearch() }} 
-              reloadFilters={this.reloadFilters}
-              {...this.props} />)
-        }
-			<View style={styles.fakeNavBar}>
-				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
-				</Image>
-			</View>
-			<View style={styles.titleContainer}>
-            <TouchableOpacity onPress={()=>{Actions.loading()}}>
-            	<View style={{width: 30, marginLeft: 15}}>
-              		<Icon name="home" size={30} color="#0c12ce"/>
-            	</View>
-            </TouchableOpacity>
-            	<View style={styles.searchBox}>
-              		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
-            	</View>
-            	<View style={{width: 30, marginRight: 15}}>
-              		<Icon name="info" size={30} color="#0c12ce"/>
-            	</View>
+      return(
+        <View style={styles.container}>
+            {this.state.searchPressed
+                  &&
+                (<SearchModal 
+                    modalVisible={true} 
+                    toggleModal={() => { this.handleSearch() }} 
+                    reloadFilters={this.reloadFilters}
+                    {...this.props} />)
+              }
+      			<View style={styles.fakeNavBar}>
+      				<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+      					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
+      				</Image>
+      			</View>
+			      <View style={styles.titleContainer}>
+                <TouchableOpacity onPress={()=>{Actions.loading()}}>
+                	<View style={{width: 30, marginLeft: 15}}>
+                  		<Icon name="home" size={30} color="#0c12ce"/>
+                	</View>
+                </TouchableOpacity>
+              	<View style={styles.searchBox}>
+                		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
+              	</View>
+              	<View style={{width: 30, marginRight: 15}}>
+                		<Icon name="info" size={30} color="#0c12ce"/>
+              	</View>
           	</View>
           	  <View style={styles.eventListContainer}>
               	<ListView
@@ -324,13 +325,15 @@ class MyFiltersComponent extends Component {
                  		}
                  	}
               }/>
+
+
+            </View>
               <View style={styles.addById}>
                 <TouchableOpacity onPress={this.handleSearch}>
-                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Geofilter not showing up?</Text>
-                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular'}} >Tap here to add by ID</Text>
+                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Geofilter not showing up?</Text>
+                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Tap here to add by ID</Text>
                 </TouchableOpacity>
               </View>
-            </View>
         </View>)
      }
         
@@ -369,7 +372,7 @@ const _isActiveOrUpcoming = (dates) => {
 
     if(currentTime > endTime){
     	console.log('_isActiveOrUpcoming: event has ended');
-		return false;
+		  return false;
     } else {
     	return true;
     }
@@ -457,7 +460,17 @@ class SearchModal extends Component {
   componentWillReceiveProps(nextProps){
     if(nextProps.searchError){
 
-      Alert.alert('Geofilter Not Found', "A Geofilter with that ID was not found.", [{text: 'OK', onPress: () => {
+      let errorCode;
+
+      if(nextProps.searchErrorCode === 'NOTFOUND') {
+        errorCode = 'Geofilter Not Found';
+      } else if(nextProps.searchErrorCode === 'ALREADYADDED'){
+        errorCode = 'Geofilter Already Added';
+      } else {
+        errorCode = 'Geofilter Expired';
+      }
+
+      Alert.alert(errorCode, nextProps.searchErrorMessage, [{text: 'OK', onPress: () => {
             // clear prop
 
             this.props.clearSearchError();
@@ -487,15 +500,28 @@ class SearchModal extends Component {
     } 
   }
 
-  //  SymwKh0Ix
   handleSearch(){
-    this.props.addFilter({filter: this.state.filter, isSearch: true});
+    if(this.state.filter.length !== 9){
+      Alert.alert('Error', "Geofilter ID must be 9 characters.", [{text: 'OK', onPress: () => {
+            // clear prop
+
+            console.log('OK Pressed!');
+          }
+        }])
+
+    } else {
+      this.props.addFilter({filter: this.state.filter, isSearch: true});      
+    }
+
+
+
   }
 
   componentDidMount(){
   //  console.log('this.props in filter search modal: ', this.props);
   }
 
+// B 1 o V Cekw x
   render(){
     return(
         <Modal
@@ -516,7 +542,8 @@ class SearchModal extends Component {
                   <View style={styles.details}>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                       <TextInput 
-                          placeholder="Geofilter ID" 
+                          placeholder="Geofilter ID"
+                          autoCorrect={false} 
                           style={styles.textInput} 
                           placeholderStyle={styles.placeholder}
                           onChangeText={(filter) => this.setState({filter})}
@@ -525,10 +552,11 @@ class SearchModal extends Component {
                   </View>
 
                   <View style={styles.signinButtonContainer}>
-                    <View style={styles.signinButtonBox}>
+                    <View style={this.state.filter.length === 9 ? styles.signinButtonBox : [styles.signinButtonBox, styles.buttonDisabled]}>
                       <Button
                         style={{fontSize: 18, color: 'black'}}
-                        styleDisabled={{color: 'red'}}
+                        styleDisabled={{color: 'silver'}}
+                        disabled={ this.state.filter.length !== 9 }
                         onPress={ this.handleSearch }>
                           Search
                       </Button> 
@@ -591,6 +619,10 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1
   },
+  buttonDisabled: {
+    backgroundColor: 'white',
+    borderColor: 'silver',
+  },
   textActive: {
     fontSize: 20, 
     color: 'black', 
@@ -651,15 +683,16 @@ const styles = StyleSheet.create({
   eventListContainer: {
   	position: 'absolute',
     top: 100,
-    left: 5,
-    right: 5,
-    bottom: 0,
-    paddingTop: 10,
+    left: 0,
+    right: 0,
+    bottom: 40,
+    paddingTop: 5,
+    paddingBottom: 5,
     justifyContent: 'flex-start',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
-    borderWidth: 1,
-    borderColor: 'black'
+    borderBottomColor: 'white',
+    borderBottomWidth: 2
   },
   addById: {
     position: 'absolute',
@@ -669,8 +702,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
-    borderWidth: 1,
-    borderColor: 'black'
+    // borderWidth: 1,
+    // borderColor: 'black'
   },
   eventListContainerContainer: {
     height: screenHeight - 50,
@@ -703,7 +736,9 @@ const mapStateToProps = (state) => {
     username: state.authReducer.username,
     isLoadingAllFilters: state.filterReducer.isLoadingAllFilters,
     searchError: state.filterReducer.searchError,
-    newFilterAdded: state.filterReducer.newFilterAdded
+    newFilterAdded: state.filterReducer.newFilterAdded,
+    searchErrorCode: state.filterReducer.searchErrorCode,
+    searchErrorMessage: state.filterReducer.searchErrorMessage
   }
 }
 

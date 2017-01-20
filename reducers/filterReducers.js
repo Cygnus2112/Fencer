@@ -14,7 +14,9 @@ const initialState = {
   isLoadingFilterImage: false,
   filterImage: null,
   searchError: false,
-  newFilterAdded: null
+  newFilterAdded: null,
+  searchErrorMessage: '',
+  searchErrorCode: ''
 }
 
 const filterReducer = (state = initialState, action) => {
@@ -85,11 +87,15 @@ const filterReducer = (state = initialState, action) => {
       })
     case ActionTypes.SEARCH_ERROR:
       return Object.assign({}, state, {
-        searchError: true
+        searchError: true,
+        searchErrorMessage: action.message,
+        searchErrorCode: action.code
       })
     case ActionTypes.CLEAR_SEARCH_ERROR:
       return Object.assign({}, state, {
-        searchError: false
+        searchError: false,
+        searchErrorMessage: '',
+        searchErrorCode: ''
       })
     case ActionTypes.NEW_FILTER_ADDED:
       return Object.assign({}, state, {

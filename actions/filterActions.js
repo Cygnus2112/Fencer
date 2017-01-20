@@ -206,10 +206,20 @@ export const addFilterByID = (dispatch, data) => {
         timeout: 120000
         })
         .then((resp) => {
-
+// ALREADYADDED
                 //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
-          if(resp.data['NOTFOUND']){
-            dispatch(searchError());
+          if( resp.data['NOTFOUND'] ){
+
+            dispatch(searchError('NOTFOUND', resp.data['NOTFOUND']));
+
+
+          } else if(resp.data['ALREADYADDED']) {
+
+            dispatch(searchError('ALREADYADDED', resp.data['ALREADYADDED']));
+
+          } else if(resp.data['EXPIRED']) {
+
+            dispatch(searchError('EXPIRED', resp.data['EXPIRED']));
 
           } else if(data.isSearch){
             dispatch(newFilterAddedRequest(data.filter));
@@ -235,9 +245,11 @@ export const addFilterByID = (dispatch, data) => {
 
 export const SEARCH_ERROR = 'SEARCH_ERROR';
 
-const searchError = () => {
+const searchError = (code, message) => {
   return {
-    type: SEARCH_ERROR
+    type: SEARCH_ERROR,
+    code: code,
+    message: message
   }
 }
 

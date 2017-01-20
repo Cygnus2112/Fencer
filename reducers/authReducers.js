@@ -100,9 +100,9 @@ const authReducer = (state = initialState, action) => {
       })
     case ActionTypes.ADD_TO_MYFILTERS:
       let allFilters = state.myFilters.slice();
-      console.log('action.filter: ', action.filter);
+    //  console.log('action.filter: ', action.filter);
       allFilters.push(action.filter);
-      console.log('allFilters: ', allFilters);
+    //  console.log('allFilters: ', allFilters);
       return Object.assign({}, state, {
         myFilters: allFilters
       })
