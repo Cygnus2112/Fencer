@@ -10,7 +10,8 @@ import {
     ActivityIndicator,
     Alert,
     Modal,
-    Linking         
+    Linking,
+    ScrollView         
 } from 'react-native';
 
 
@@ -197,7 +198,35 @@ this.setState({
 
     }     
 //height: 1920/4, width: 1080/4
-
+    /*                    :
+                      (        <View style={styles.guidelines}>
+                                  
+            <Text style={{fontSize: 20, paddingTop: 4,paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Images should be <Text style={{fontWeight: 'bold'}}>1080px</Text> wide by <Text style={{fontWeight: 'bold'}}>1920px</Text> high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- File size must be under <Text style={{fontWeight: 'bold'}}>1mb</Text>. (For best results, try to keep it under 400kb.)</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- To preview a filter on your device, tap <Text style={{fontWeight: 'bold'}}>"test"</Text> after selecting an image.</Text>
+            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Need help designing your filter? Tap the <Text style={{fontWeight: 'bold'}}>info</Text> icon for a list of free online resources.</Text>
+   
+       <View style={styles.guidelineTitle}>
+            <Text style={{fontSize: 20,color: 'red'}}>Filter image guidelines:</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text style={{fontSize: 14}}>Files must be in PNG format.</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>Images should be 1080px wide by 1920px high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>File size must be under 1mb. (For best results, try to keep it under 400kb.)</Text>
+          </View>
+          <View style={styles.guideline}>
+            <Text>To preview a filter on your device, tap "test" after selecting an image.</Text>
+          </View>
+                    <View style={styles.guideline}>
+            <Text>Need help designing your filter? Tap the info icon for a list of free apps and online resources.</Text>
+          </View> 
+        </View>)*/
 
     render(){
       // if(this.state.png.data){
@@ -244,7 +273,7 @@ this.setState({
                       </Image>)
                       :
                     this.state.png.data
-                      ?
+                      &&
                     (<Image source={{uri: `data:image/png;base64,${this.state.png.data}` }} resizeMode={'contain'} style={{height: 480*.94, width: 274*.94}}>
                         <View style={styles.testButton}>
                           <TouchableOpacity onPress={() => { this.handleTest( this.state.png.data ) } }>
@@ -252,34 +281,7 @@ this.setState({
                           </TouchableOpacity>
                         </View>
                       </Image>)
-                      :
-                      (        <View style={styles.guidelines}>
-                                  
-            <Text style={{fontSize: 20, paddingTop: 4,paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Images should be <Text style={{fontWeight: 'bold'}}>1080px</Text> wide by <Text style={{fontWeight: 'bold'}}>1920px</Text> high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- File size must be under <Text style={{fontWeight: 'bold'}}>1mb</Text>. (For best results, try to keep it under 400kb.)</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- To preview a filter on your device, tap <Text style={{fontWeight: 'bold'}}>"test"</Text> after selecting an image.</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Need help designing your filter? Tap the <Text style={{fontWeight: 'bold'}}>info</Text> icon for a list of free online resources.</Text>
-   {/*       <View style={styles.guidelineTitle}>
-            <Text style={{fontSize: 20,color: 'red'}}>Filter image guidelines:</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text style={{fontSize: 14}}>Files must be in PNG format.</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>Images should be 1080px wide by 1920px high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>File size must be under 1mb. (For best results, try to keep it under 400kb.)</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>To preview a filter on your device, tap "test" after selecting an image.</Text>
-          </View>
-                    <View style={styles.guideline}>
-            <Text>Need help designing your filter? Tap the info icon for a list of free apps and online resources.</Text>
-          </View> */}
-        </View>)
+
                   }
                   </Image>
                 
@@ -363,7 +365,7 @@ class InfoModal extends Component {
           modalVisible: this.props.modalVisible
       }
   }
-
+//<View style={styles.infoModal}>
   render(){
     return(
       <Modal
@@ -373,37 +375,61 @@ class InfoModal extends Component {
           onRequestClose={() => { console.log("Modal has been closed.")}}>
             <View style={styles.modalContainer}>
               <View style={styles.infoModal}>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, marginBottom: 15}}>Need help designing your geofilter? There are lots of great free photo editors available online. Here are a few of our favorites:</Text>
-                <TouchableOpacity onPress={()=>{Linking.openURL('https://www.picmonkey.com/')}}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>PicMonkey (picmonkey.com)</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{Linking.openURL('https://pixlr.com/editor/')}}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>Pixlr (pixlr.com/editor)</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={()=>{Linking.openURL('http://www.fotor.com/')}}>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, color: 'blue', margin: 5}}>Fotor (fotor.com)</Text>
-                </TouchableOpacity>
-                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:18, marginTop: 15, marginBottom: 10}}>{"If you need inspiration, Snapchat's geofilter site "} 
-                  <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://geofilters.snapchat.com/')}}> (geofilters.snapchat.com) </Text> 
-                    offers a variety of customizable Photoshop and Illustrator templates. (You can also <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://unlockables-odg-templates.storage.googleapis.com/geofilter-templates.zip')}}>download the filters in .zip format</Text>.)</Text>
-                <TouchableHighlight 
-                  style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                  onPress={() => {
-                    this.props.toggleModal();
-                    this.setState({modalVisible: !this.state.modalVisible})
-                  }
-                }>
-              <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-            </TouchableHighlight>
 
-              </View>
+                <ScrollView contentContainerStyle={styles.modalScroll}>
+                  <View style={{position: 'absolute', left: 10,right:10, height: 35, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 20, paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
+                  </View>
+                  <Text style={{marginTop: 40, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>- Images should be <Text style={{fontWeight: 'bold'}}>1080px</Text> wide by <Text style={{fontWeight: 'bold'}}>1920px</Text> high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>- File size must be under <Text style={{fontWeight: 'bold'}}>1mb</Text>. (For best results, try to keep it under 400kb.)</Text>
+                  <Text style={{paddingBottom:10, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6, borderBottomColor: 'black', borderBottomWidth: 1}}>- To preview a filter on your device, tap <Text style={{fontWeight: 'bold'}}>"test"</Text> after selecting an image.</Text>
+  
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, marginTop:10, marginBottom: 10}}>Need help designing your geofilter? There are lots of great free photo editors available online. Here are a few of our favorites:</Text>
+                
+                <View style={{position: 'absolute', left: 10,right:10, justifyContent: 'center', alignItems: 'center'}}>
+                  <TouchableOpacity onPress={()=>{Linking.openURL('https://www.picmonkey.com/')}}>
+                    <Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontSize:16, color: 'blue', margin: 5}}>PicMonkey (picmonkey.com)</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{Linking.openURL('https://pixlr.com/editor/')}}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, color: 'blue', margin: 5}}>Pixlr (pixlr.com/editor)</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={()=>{Linking.openURL('http://www.fotor.com/')}}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, color: 'blue', margin: 5}}>Fotor (fotor.com)</Text>
+                  </TouchableOpacity>
+                </View>
+
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, marginTop: 100, marginBottom: 10}}>{"If you need inspiration, Snapchat's geofilter site "} 
+                    <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://geofilters.snapchat.com/')}}> (geofilters.snapchat.com) </Text> 
+                      offers a variety of customizable Photoshop and Illustrator templates. (You can also <Text style={{fontWeight: 'bold'}} onPress={()=>{Linking.openURL('https://unlockables-odg-templates.storage.googleapis.com/geofilter-templates.zip')}}>download the filters in .zip format</Text>.)</Text>
+             
+                </ScrollView>
+                     <TouchableHighlight 
+                    style={{marginTop: 7, height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                    onPress={() => {
+                      this.props.toggleModal();
+                      this.setState({modalVisible: !this.state.modalVisible})
+                    }
+                  }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                  </TouchableHighlight>
             </View>
+          </View>
       </Modal>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  modalScroll: {
+    //margin:10,
+   // marginTop: 5,
+    //paddingTop: 5,
+    paddingBottom: 5,
+    backgroundColor:'white',
+        justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+  },
   container: {
     height: screenHeight - 75,
     paddingTop: 5,
@@ -487,18 +513,6 @@ const styles = StyleSheet.create({
     borderColor: 'black',
     borderWidth: 1
   },
-  //   buttonBox:{
-  //   elevation:3,
-  //   padding:5,
-  //   height:40,
-  //   width: 130,
-  //   overflow:'hidden',
-  //   borderRadius:15,
-  //   backgroundColor: '#0c12ce',
-  //   marginLeft: 40,
-  //   marginRight: 40,
-  //   marginBottom: 10,
-  // },
   insidespinner: {
    // marginTop: 100,
     alignItems: 'center',
@@ -532,7 +546,7 @@ const styles = StyleSheet.create({
     left:40, 
     right: 40, 
     bottom: 60, 
-    justifyContent: 'center', 
+    justifyContent: 'flex-start', 
     alignItems: 'center', 
    // backgroundColor:'white',
    backgroundColor: 'white',

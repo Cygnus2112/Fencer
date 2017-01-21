@@ -347,7 +347,7 @@ const _checkDates = (dates) => {
 
 	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
 	
-	console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+//	console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
 
 	let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
 	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
@@ -365,10 +365,15 @@ const _checkDates = (dates) => {
 const _isActiveOrUpcoming = (dates) => {
 	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
 	//console.log("event dates: ");
-	//console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
+	console.log(endYear, endMonth, endDay, endHour, endMinute);
 
 	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
 	let currentTime = Date.now();
+
+  // let currentTime2 = new Date(currentTime);
+  // console.log(currentTime2.toLocaleTimeString())
+  // console.log(currentTime2.getFullYear(), currentTime2.getMonth(), currentTime2.getDate(), currentTime2.getHours(), currentTime2.getMinutes());
+  // console.log('currentTime minus endTime: ', currentTime - endTime);
 
     if(currentTime > endTime){
     	console.log('_isActiveOrUpcoming: event has ended');
