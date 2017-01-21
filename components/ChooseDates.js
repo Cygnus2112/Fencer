@@ -8,7 +8,9 @@ import {
     DatePickerAndroid,
     TimePickerAndroid,
     Dimensions,
-    TouchableOpacity
+    TouchableOpacity,
+    TouchableHighlight,
+    Modal
 } from 'react-native';
 
 
@@ -64,7 +66,8 @@ class ChooseDatesComponent extends Component{
       startTimeText: '12:00PM',
       endHour: this.props.selectedDates.endHour || 18,
       endMinute: this.props.selectedDates.endMinute || 0,
-      endTimeText: '1:00PM'
+      endTimeText: '1:00PM',
+      infoPressed:false
     })
   }
 
@@ -336,7 +339,9 @@ class ChooseDatesComponent extends Component{
         </View>
 
         <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
-          <Image source={require('../assets/info_unedited.png')} style={{width: 31, height:31}}/>
+          <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+            <Image source={require('../assets/info_unedited.png')} style={{width: 31, height:31}}/>
+          </TouchableOpacity>
         </View>
           
      {/*    <View style={{height: 345, width: screenWidth,flexDirection: 'row', justifyContent: 'center',borderWidth: 1, borderColor: 'black'}}> */}
@@ -478,13 +483,82 @@ class ChooseDatesComponent extends Component{
               Submit
             </Button>
         </View>
-
+      {this.state.infoPressed
+        ?
+      (<InfoModal modalVisible={true} toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+        :
+      (null)
+      }
       </View>
     )
   }
 }
 //{height: 50, width: 175, backgroundColor: 'blue', borderWidth:2, borderColor: 'black', borderRadius: 4}
+
+class InfoModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+
+  render(){
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+
+            <View style={styles.modalContainer}>
+              <View style={styles.infoModal}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>The <Text style={{fontWeight: 'bold'}}>Start Date</Text> determines when your Geofilter becomes unlockable for users who are within your preset geofence area. The <Text style={{fontWeight: 'bold'}}>Start Date </Text>must be set for at least one hour from the current time. Currently, Geofilters can be live for a maximum of <Text style={{fontWeight: 'bold'}}>72 hours</Text>.</Text>
+
+
+ 
+                <TouchableHighlight 
+                      style={{marginTop: 45,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                      onPress={() => {
+                        
+                        this.props.toggleModal();
+                        this.setState({modalVisible: !this.state.modalVisible})
+                      }
+                  }>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                </TouchableHighlight>
+              </View >
+            </View>
+      </Modal>
+    )
+  }
+}
+
+
 const styles = StyleSheet.create({
+  modalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 130, 
+    left:40, 
+    right: 40, 
+    bottom: 130, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
   container: {
     // flex: 1,
     height: screenHeight - 75,
