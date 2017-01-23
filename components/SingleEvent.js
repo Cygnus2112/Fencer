@@ -177,30 +177,21 @@ class SingleEventComponent extends Component {
         	])
 		}
 
-		//if(newProps.filterImage !== oldProps.filterImage){
-			// console.log('filterImage data received in SingleEvent ');
-			// console.log('filterID: ', newProps.filterID);
-			// console.log("first 20 chars: ", newProps.filterImage.slice(0,20));
-			// console.log("last 20 chars: ", newProps.filterImage.slice(newProps.filterImage.length-20,newProps.filterImage.length-1));
-		//}
-	}
+		if(newProps.currentPosition !== this.props.currentPosition){
 
-	// componentWillReceiveProps(newProps,oldProps){
-	// 	if(newProps.eventTitle !== oldProps.eventTitle){
-	// 		this.setState({
-	// 			eventID: this.props.eventID,
-	// 			eventTitle: this.props.eventTitle,
-	// 			startDate: this.props.startDate,
-	// 			startTime: this.props.startTime,
-	// 			endDate: this.props.endDate,
-	// 			endTime: this.props.endTime,
-	// 			coords: this.props.coords,
-	// 			filterURI: this.props.filterURI,
-	// 			//filterURI: "../assets/thanksgiving.png",
-	// 			message: this.props.message
-	// 		})
-	// 	}
-	// }
+			console.log('new position received in SingleEvent: ', newProps.currentPosition);
+
+			GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
+	        	.then(() =>	{ 
+	        		console.log('new position is within polygon');
+	        		this.setState({
+	        			isInRange: true
+	        		})	
+	        	})
+		}
+
+
+	}
 
 	handleTrash(){
 		Alert.alert('Delete Filter', 'Are you sure you want to delete this filter? This cannot be undone.', [

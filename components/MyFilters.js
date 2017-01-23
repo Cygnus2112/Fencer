@@ -52,10 +52,12 @@ class MyFiltersComponent extends Component {
 
     this.handleSearch = this.handleSearch.bind(this);
     this.reloadFilters = this.reloadFilters.bind(this);
+    this.watchPosition = null;
 
 		this.state = {
 			//events: sampleEvents,
       // isLoadingFilter: false,
+      currentPosition: this.props.currentPosition,
 			dataSource: ds.cloneWithRows( [] ),
       searchPressed: false,
       searchError: false
@@ -89,7 +91,7 @@ class MyFiltersComponent extends Component {
         return _isActiveOrUpcoming(f.dates);          // we only show filters that are active or upcoming
       })
 
-      let sortedFilters = arr.sort((f1,f2)=>{
+      let sortedFilters = arr.sort((f1,f2)=> {
 
         let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
         let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
@@ -109,15 +111,39 @@ class MyFiltersComponent extends Component {
       this.setState({
         dataSource: ds.cloneWithRows( sortedFilters )
       })
-
-
     }
+
+    navigator.geolocation.getCurrentPosition((pos) => {
+      console.log('pos in navigator call: ', pos);
+
+        var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+        console.log('initialPosition in MyFilters: ', initialPosition);
+
+        this.setState({currentPosition: initialPosition});
+
+        this.props.updatePosition(initialPosition);
+      },
+      (error) => console.log("nav error in My Filters: ", JSON.stringify(error) ),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+
+    this.watchPosition = navigator.geolocation.watchPosition((pos) => {
+      var currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+      console.log('position changed in MyFilters. new position: ', currentPosition);
+
+      this.setState({currentPosition});
+      this.props.updatePosition(currentPosition);
+    });
 
 	}
 
   componentWillUnmount(){
-      console.log('MyFilters un-mounting ... ');
-    }
+    console.log('MyFilters un-mounting ... ');
+
+    navigator.geolocation.clearWatch(this.watchPosition);
+  }
 
 	componentWillReceiveProps(newProps){
       console.log('newProps in MyFilters!!!');
@@ -163,73 +189,6 @@ class MyFiltersComponent extends Component {
 	}
 
 	render(){
-		//	style={{height: 25, borderBottomWidth: 1, borderColor: 'black'
-		//	    <View style={{position: 'absolute', top: 30, left: 10, right: 10, bottom:50, paddingLeft:10, paddingRight:10,borderWidth: 1, borderRadius: 3, borderColor:'black'}}>
-        //	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20,color:'#0c12ce'}}>Lenses</Text>
-		//	<Text style={{fontFamily: 'RobotoCondensed-Regular',marginLeft: 10, marginBottom: 2,fontSize: 24,  textAlign: 'center', color: 'white'}}>Fencer</Text>
-
-				// 	<View style={{marginLeft: 10}}>
-				// 	<Icon name="menu" size={30} color="white" />
-				// </View>	
-  //  return(
-      // <View style={styles.container}>
-      //   <View style={styles.fakeNavBar}>
-      //     <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-      //       <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
-      //     </Image>
-      //     {this.props.isLoadingAllFilters
-      //       ?
-      //       (<View style={styles.eventListContainerContainer}><Spinner /></View>)
-      //       :
-      //       (<View style={styles.eventListContainerContainer}>
-      //         <View style={styles.titleContainer}>
-      //           <TouchableOpacity onPress={()=>{Actions.loading()}}>
-      //             <View style={{width: 30, marginLeft: 15}}>
-      //                 <Icon name="home" size={30} color="#0c12ce"/>
-      //             </View>
-      //           </TouchableOpacity>
-      //           <View style={styles.searchBox}>
-      //               <Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text> 
-      //           </View>
-      //           <View style={{width: 30, marginRight: 15}}>
-      //               <Icon name="info" size={30} color="#0c12ce"/>
-      //           </View>
-      //       </View>
-      //         <View style={styles.eventListContainer}>
-      //             <ListView
-      //                 dataSource={this.state.dataSource}
-      //                 renderRow={(rowData) => {
-      //                   console.log('-------------------------');
-      //                   if(rowData.coordinates) {
-      //                     const poly = rowData.coordinates.map((point)=>{
-      //                       return {
-      //                         lat: point.latitude,
-      //                         lng: point.longitude
-      //                       }
-      //                     })
-
-      //                     poly.push(poly[0]);
-      //                   console.log('-------------------------');
-
-      //                   let _isActive = _checkDates(rowData.dates);             
-
-      //                   return (
-      //                     <View key={rowData.id} >                  
-      //                         <SingleEvent { ...rowData } isActive={ _isActive } polyCoordsForGeo={poly}/>
-      //                     </View>
-      //                   )
-                        
-      //                 } else {
-      //                   return null;
-      //                 }
-      //               }
-      //                 }/>
-      //         </View>
-      //         </View>)
-      //     }
-      //   </View>
-      // </View>
-      // )
 
         if(this.props.isLoadingAllFilters){
 		      return (
@@ -758,6 +717,9 @@ const mapDispatchToProps = (dispatch) => {
     clearNewFilter: () => {
       filterActions.clearNewFilter(dispatch)
     },
+    updatePosition: (data) => {
+      filterActions.updatePosition(dispatch, data);
+    }
   }
 }
 

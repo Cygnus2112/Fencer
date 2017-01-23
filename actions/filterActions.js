@@ -39,22 +39,12 @@ export const initPosition = (dispatch) => {
  // }
 }
 
-export const updatePosition = (dispatch) => {
+export const updatePosition = (dispatch, data) => {
 
-	//return dispatch => {
-		dispatch(updatePositionRequest());
+	dispatch( updatePositionRequest() );
 
-		navigator.geolocation.getCurrentPosition((pos) => {
-    		let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+  dispatch( updatePositionSuccess(data) );
 
-    		console.log('position in filterActions: ', newPos);
-
-    		dispatch( updatePositionSuccess(newPos) );
-  		},
-  		(error) => console.log("Nav error: ", JSON.stringify(error)),
-  		{enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-		)
-	//}
 }
 
 const updatePositionRequest = () => {
