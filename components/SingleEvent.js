@@ -65,6 +65,9 @@ class SingleEventComponent extends Component {
 		this.handleDetails = this.handleDetails.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
 
+		this.currentTime = Date.now();
+		this.checkTime = null;
+
 		this.state = {
 			eventTitle: "",
 			startYear: "",
@@ -80,7 +83,7 @@ class SingleEventComponent extends Component {
 			filterID: null,
 			filterURI: null,
 			message: "",
-			isActive: false,
+			isActive: this.props.isActive,
 			isInRange: false,					
 			filterImage: null,
 			isLoadingFilter: false,
@@ -92,6 +95,19 @@ class SingleEventComponent extends Component {
 	componentDidMount(){
 
 		console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
+
+		this.checkTime = setInterval(() => {
+			this.currentTime = Date.now();
+
+			const {startYear, startMonth, startDay, startHour, startMinute} = this.props.dates;
+
+			let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute);
+
+			if(startTime < this.currentTime){
+				this.setState({isActive: true})
+			}
+
+		}, 1000);
 
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
@@ -159,7 +175,8 @@ class SingleEventComponent extends Component {
 			coordinates: this.props.coordinates,
 		//	filterURI: this.props.filterURI,
 			filterImage: this.props.filterImage,
-			message: this.props.message
+			message: this.props.message,
+			isActive: this.props.isActive
 		})
 	}
 
@@ -191,6 +208,10 @@ class SingleEventComponent extends Component {
 		}
 
 
+	}
+
+	componentWillUnmount(){
+		clearInterval(this.checkTime);
 	}
 
 	handleTrash(){
@@ -277,7 +298,7 @@ class SingleEventComponent extends Component {
 				  // }
 	render(){
 		return (
-				<View style={this.props.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
+				<View style={this.state.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
 
 			  	  {this.props.userCreated &&
 				  	(<View style={styles.bookmarkIcon}>
