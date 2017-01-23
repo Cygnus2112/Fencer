@@ -81,7 +81,6 @@ class MyFiltersComponent extends Component {
     }
 
 	componentDidMount(){
-		console.log('array this.props.myFilters in MyFilters: ', Array.isArray(this.props.myFilters) );
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
@@ -91,13 +90,19 @@ class MyFiltersComponent extends Component {
       })
 
       let sortedFilters = arr.sort((f1,f2)=>{
-        return f1.dates.startYear - f2.dates.startYear;
+
+        let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
+        let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+
+        return startTime1 - startTime2;
+
       }).sort((f1,f2)=>{
-        return f1.dates.startMonth - f2.dates.startMonth;
-      }).sort((f1,f2)=>{
-        return f1.dates.startDay - f2.dates.startDay;
-      }).sort((f1,f2)=>{
-        return f1.dates.startHour - f2.dates.startHour;
+
+        let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+        let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+
+
+        return endTime1 - endTime2;
       })
 
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -116,13 +121,6 @@ class MyFiltersComponent extends Component {
 
 	componentWillReceiveProps(newProps){
       console.log('newProps in MyFilters!!!');
-  //  console.log('newProps.allFilters: ', newProps.allFilters);
-  //  console.log('newProps.filtersCreated: ', newProps.filtersCreated);
-  //  console.log('newProps.myFilters: ', newProps.myFilters);
-      // if(newProps.newFilterAdded) {
-      //   this.reloadFilters();
-      //   this.props.clearNewFilter();
-      // }
 
 
       if(newProps.searchError){
@@ -133,30 +131,28 @@ class MyFiltersComponent extends Component {
       }
       console.log('-------------------------');
 
-
-	//	console.log('newProps.myFilters in componentWillReceiveProps: ', newProps.myFilters)
 		if(newProps.allFilters.length !== this.props.allFilters.length){		// THIS COMPARISON PROBABLY DOESN'T WORK
-			// console.log('=====================================')
-			
-			//console.log('is Array newProps.myFilters: ', Array.isArray(newProps.allFilters) );
 
-		//	let arr = newProps.allFilters;
 
 			let arr = newProps.allFilters.filter((f) => {
 				return _isActiveOrUpcoming(f.dates);					// we only show filters that are active or upcoming
 			})
 
+      let sortedFilters = arr.sort((f1,f2)=>{
+
+        let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
+        let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+
+        return startTime1 - startTime2;
+
+      }).sort((f1,f2)=>{
+
+        let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+        let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
 
 
-			let sortedFilters = arr.sort((f1,f2)=>{
-				return f1.dates.startYear - f2.dates.startYear;
-			}).sort((f1,f2)=>{
-				return f1.dates.startMonth - f2.dates.startMonth;
-			}).sort((f1,f2)=>{
-				return f1.dates.startDay - f2.dates.startDay;
-			}).sort((f1,f2)=>{
-				return f2.dates.startHour - f1.dates.startHour;
-			})
+        return endTime1 - endTime2;
+      })
 
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
