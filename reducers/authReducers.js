@@ -19,7 +19,8 @@ const initialState = {
   authErrorMsg: '',
   myFilters: null,
   filtersCreated: null,
-  isDeletingFilter: false
+  isDeletingFilter: false,
+  welcomeModalDismissed: false
 }
 
 const authReducer = (state = initialState, action) => {
@@ -105,6 +106,10 @@ const authReducer = (state = initialState, action) => {
     //  console.log('allFilters: ', allFilters);
       return Object.assign({}, state, {
         myFilters: allFilters
+      })
+    case ActionTypes.DISMISS_WELCOME_MODAL_REQUEST:
+      return Object.assign({}, state, {
+        welcomeModalDismissed: true
       })
 
     // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:

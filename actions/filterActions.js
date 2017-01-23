@@ -20,7 +20,7 @@ export const initPosition = (dispatch) => {
         dispatch( updatePositionSuccess(newPos) );
 
         //Actions.main({currentPosition: newPos});
-        Actions.main();
+        //Actions.main();
       },
       (error) => {
 
@@ -28,8 +28,7 @@ export const initPosition = (dispatch) => {
        
                dispatch( updatePositionSuccess(tempPos) );
 
-        //Actions.main({currentPosition: newPos});
-        Actions.main();
+        //Actions.main();
 
         console.log("Nav error: ", JSON.stringify(error)) 
       }

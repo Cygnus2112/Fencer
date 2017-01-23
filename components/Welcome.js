@@ -10,11 +10,16 @@ import {
     Dimensions,
     TouchableOpacity,
     Linking,
-    Alert
+    Alert,
+    Modal,
+    ScrollView,
+    TouchableHighlight
 } from 'react-native';
 
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
+
+import Icon from 'react-native-vector-icons/Entypo';
 
 //import Share from 'react-native-share';
 
@@ -55,12 +60,22 @@ class WelcomeComponent extends Component{
     this.loadMyFilters = this.loadMyFilters.bind(this);
 
     this.state = {
-      showLoginModal: false
+      showLoginModal: false,
+      infoPressed: false
     }
 
   }
 
   componentDidMount(){
+    console.log('this.props.username: ', this.props.username);
+    console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
+
+    if(!this.props.username && !this.props.welcomeModalDismissed){
+      this.setState({ infoPressed: true});
+    }
+
+
+
     //console.log('mounting Welcome...');
     //console.log('this.props.myFilters: ', this.props.myFilters);
 
@@ -166,28 +181,36 @@ class WelcomeComponent extends Component{
           </Image>
         </View>
         <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center',height: (screenHeight/2) - 62, width: screenWidth,borderBottomWidth:1,borderBottomColor: 'black'}}>
+           
+
+
           <Image source={require('../assets/map_with_pin_color.png')} style={{height: (screenHeight/2) - 62, width: screenWidth}}>
-          <View style={{
-             justifyContent: 'center',
-             alignItems: 'center',
-             padding:10,
-             marginTop: 10,
-             marginLeft: 10,
-             height:70,
-             width: 110,
-             overflow:'hidden',
-             borderRadius:15,
-             borderWidth:2,
-             borderColor: 'black',
-             backgroundColor: 'blue',
-           }}>
-              <Button
-                style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
-                styleDisabled={{color: 'red'}}
-                onPress={ this.handleCreate }>
-                Create New Geofilter
-              </Button>
-          </View>
+                <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
+                    <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+                      <Icon name="info" size={30} color="#0c12ce" />
+                    </TouchableOpacity>
+                </View>
+            <View style={{
+               justifyContent: 'center',
+               alignItems: 'center',
+               padding:10,
+               marginTop: 10,
+               marginLeft: 10,
+               height:70,
+               width: 110,
+               overflow:'hidden',
+               borderRadius:15,
+               borderWidth:2,
+               borderColor: 'black',
+               backgroundColor: 'blue',
+             }}>
+                <Button
+                  style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
+                  styleDisabled={{color: 'red'}}
+                  onPress={ this.handleCreate }>
+                  Create New Geofilter
+                </Button>
+            </View>
 
           </Image>
         </View>
@@ -258,7 +281,71 @@ class WelcomeComponent extends Component{
           (null)
         }
 
+      {this.state.infoPressed
+        ?
+      (<InfoModal modalVisible={true} dismissWelcomeModal={ this.props.dismissWelcomeModal } toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+        :
+      (null)
+      }
+
       </View>
+    )
+  }
+}
+
+class InfoModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+//<View style={styles.infoModal}>
+  render(){
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+              <View style={styles.infoModal}>
+
+                <ScrollView contentContainerStyle={styles.modalScroll}>
+                  <View style={{position: 'absolute', left: 10,right:10, height: 35, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 20, paddingLeft: 6}}>Welcome!</Text>
+                  </View>
+                  <Text style={{marginTop: 40, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Fencer is a fun new way to create and share your very own Snapchat Geofilters - for free!</Text>
+                  <View style={{position: 'absolute', left: 10,right:10, height: 35, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 16, paddingLeft: 6}}>What are Geofilters?</Text>
+                  </View>
+                  <Text style={{marginTop: 40, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Geofilters are location-based overlays that you can apply to any photo you take with your mobile camera. {"They're"} a great way to add a unique to touch to birthday parties, graduations, or any other shared experiences you wish to commemorate in a fun and memorable way.</Text>
+                   <View style={{position: 'absolute', left: 10,right:10, height: 25, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6, textDecorationLine: 'underline'}}>How it works</Text>
+                  </View>
+                  <Text style={{marginTop: 30, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>To create a geofilter, simply tap <Text style={{fontWeight: 'bold'}}>Create New Filter</Text> to get started. {"You'll"} be guided through the 4-step process of uploading your geofilter design, choosing dates and times the geofilter will be active, setting the geofence area that will determine where users can access your geofilter, and adding a title and optional message for anyone you invite to use it. 
+</Text>
+  
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, marginTop:10, paddingLeft: 6}}>Once a geofilter has been successfully submitted, a <Text style={{fontWeight: 'bold'}}>unique ID</Text> will be assigned to your geofilter, along with a pre-populated invite that you can send to your friends via SMS, email, or social media. This invite will contain directions and a link that allows users to quickly and easily add your new geofilter to their devices. (<Text style={{fontWeight: 'bold'}}>Note: Invitees will need to install Fencer on their devices in order to access and use your new geofilter.</Text>)</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, marginTop:10, paddingLeft: 6}}>Once a geofilter becomes active, users within your pre-defined geofence area will be able to access it by simply navigating to <Text style={{fontWeight: 'bold'}}>My Filters</Text>, finding the geofilter title in their list, and tapping on it to open the geofilter in their mobile camera. The geofilter will be automatically applied to any photos they take, which can then be posted to Snapchat, Facebook, Instagram, or any other social network. They can also share them via SMS and email.</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, marginTop:10, paddingLeft: 6}}>(To access these directions in the future, simply tap the info icon in the upper-right corner.)</Text>
+
+
+                </ScrollView>
+                     <TouchableHighlight 
+                    style={{marginTop: 7, height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                    onPress={() => {
+                      this.props.toggleModal();
+                      this.setState({modalVisible: !this.state.modalVisible});
+                      this.props.dismissWelcomeModal();
+                    }
+                  }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                  </TouchableHighlight>
+            </View>
+          </View>
+      </Modal>
     )
   }
 }
@@ -271,7 +358,8 @@ const mapStateToProps = (state) => {
     currentPosition: state.filterReducer.currentPosition,
     bitlyURL: state.uploadReducer.bitlyURL,
     finalSubmitComplete: state.uploadReducer.finalSubmitComplete,
-    myFilters: state.authReducer.myFilters 
+    myFilters: state.authReducer.myFilters, 
+    welcomeModalDismissed: state.authReducer.welcomeModalDismissed
   }
 }
 
@@ -285,6 +373,9 @@ const mapDispatchToProps = (dispatch) => {
     },
     loadMyFilters: () => {
       authActions.loadMyFilters(dispatch);
+    },
+    dismissWelcomeModal: () => {             //  I only want the Welcome modal to automatically popup once 
+      authActions.dismissWelcomeModal(dispatch);
     }
   }
 }
@@ -293,6 +384,35 @@ const Welcome = connect(mapStateToProps, mapDispatchToProps)(WelcomeComponent);
 export default Welcome;
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
+  modalScroll: {
+    paddingBottom: 5,
+    backgroundColor:'white',
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+  },
   fakeNavBar:{
     height: 50,
     width: screenWidth,

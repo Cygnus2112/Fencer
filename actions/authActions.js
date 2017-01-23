@@ -126,7 +126,8 @@ export const login = (dispatch, info) => {
                 let data = {
                   username: response.username,
                   myFilters: response.myFilters,
-                  filtersCreated: response.filtersCreated
+                  filtersCreated: response.filtersCreated,
+                  welcomeModalDismissed: response.welcomeModalDismissed
                 }
 
                 dispatch(authSuccess(data));
@@ -217,11 +218,14 @@ export const checkForToken = (dispatch) => {
                 let token = value;
 
                 dispatch(authSuccess(username));
+                Actions.main();
+
               })
 
             } else {
               console.log('token not found');
             	// dispatch(authFail());
+              Actions.main();
 
             }
 
@@ -275,7 +279,8 @@ export const loadMyFilters = (dispatch) => {
                   let data = {
                     username: response.username,
                     myFilters: response.myFilters,
-                    filtersCreated: response.filtersCreated
+                    filtersCreated: response.filtersCreated,
+                    welcomeModalDismissed: response.welcomeModalDismissed
                   }
 
                   dispatch(loadMyFiltersSuccess(data));
@@ -316,7 +321,8 @@ const loadMyFiltersSuccess = (data) => {
   return {
     type: LOAD_MY_FILTERS_SUCCESS,
     myFilters: data.myFilters,
-    filtersCreated: data.filtersCreated
+    filtersCreated: data.filtersCreated,
+    welcomeModalDismissed: data.welcomeModalDismissed
   }
 }
 
@@ -375,6 +381,69 @@ const deleteFilterSuccess = () => {
     type: DELETE_FILTER_SUCCESS
   }
 }
+
+export const DISMISS_WELCOME_MODAL_REQUEST = 'DISMISS_WELCOME_MODAL_REQUEST';
+export const DISMISS_WELCOME_MODAL_SUCCESS = 'DISMISS_WELCOME_MODAL_SUCCESS';
+
+export const dismissWelcomeModal = (dispatch) => {
+  dispatch(dismissWelcomeModalRequest())
+}
+
+const dismissWelcomeModalRequest = () => {
+  return {
+    type: DISMISS_WELCOME_MODAL_REQUEST
+  }
+}
+
+// const dismissWelcomeModalSuccess = () => {
+//   return {
+//     type: DISMISS_WELCOME_MODAL_SUCCESS
+//   }
+// }
+
+// Ugh, this was completely unnecessary ...
+
+// export const dismissWelcomeModal = (dispatch) => {
+//   dispatch(dismissWelcomeModalRequest());
+
+//   AsyncStorage.getItem("fencer-token").then((value) => {
+//     if(value){
+//       AsyncStorage.getItem("fencer-username").then((username) => {
+//         console.log('current username: ', username);
+//         let token = value;
+
+//         return fetch(utils.dismissModalURL +"?username="+username, {    
+//           method: 'GET',
+//           headers: {
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json',
+//             'x-access-token': token
+//           }
+//         })
+//         .then(response => {
+//           return response.json();
+//         })
+//         .then(response => {
+//           console.log('2nd level response in auth dismissModal: ');
+//           console.log(response);
+//           console.log('-------------------------');
+
+//           dispatch(dismissModalSuccess());
+              
+                
+//         })
+//         .catch(err => {
+//           console.error('Error in dismissModal:', err);
+//         });
+//       }).done();
+//     } else {
+//       console.log('token not found');
+//               // dispatch(authFail());
+//     }
+//   }).done();
+// }
+
+
 
 export const CLEAR_ERROR_REQUEST = 'CLEAR_ERROR_REQUEST';
 
