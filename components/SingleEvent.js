@@ -94,7 +94,7 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
-		console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
+	//	console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
 
 		this.checkTime = setInterval(() => {
 			this.currentTime = Date.now();
@@ -343,8 +343,8 @@ class SingleEventComponent extends Component {
 				  }*/}
 
 				  <TouchableOpacity onPress={this.handleEventPress} style={styles.innerContainer} >
-					<Text style={this.props.isActive ? styles.textActive : styles.textActive}> { this.props.title } </Text>
-					  {this.props.isActive
+					<Text style={this.state.isActive ? styles.textActive : styles.textActive}> { this.props.title } </Text>
+					  {this.state.isActive
 					  	?
 					  	(<View style={styles.statusMessages}>
 					  		<View style={{marginRight: 5,flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
@@ -437,7 +437,7 @@ class DetailsModal extends Component {
 	}
 
 	componentDidMount(){
-		console.log('this.props in details modal: ', this.props);
+	//	console.log('this.props in details modal: ', this.props);
 	}
 
 	render(){
@@ -461,7 +461,7 @@ class DetailsModal extends Component {
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Title:</Text>
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5, fontWeight: 'bold' }}>{this.props.title}</Text>
 			            </View>
-			            {!this.props.isActive &&
+			            {!this.state.isActive &&
 			              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Starts:</Text> 
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)} at {_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text>

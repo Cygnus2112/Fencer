@@ -30,6 +30,9 @@ class MainComponent extends Component {
 	componentDidMount(){
 		//console.log('this.props in Main: ', this.props)
 		console.log('-----------------------------------');
+		// if(this.props.isReferral){
+		// 	this.props.checkAuth();
+		// }
 	}
 
 
@@ -43,7 +46,7 @@ class MainComponent extends Component {
 	render(){
 	  return (
 	  	<View>
-			<Welcome />
+			<Welcome isReferral={ this.props.isReferral } />
 	  	</View>
 	  )
 	}
@@ -66,7 +69,10 @@ const mapDispatchToProps = (dispatch) => {
 	// console.log('boundActionCreators: ', bound);
   return {
   	authActions: bindActionCreators(authActions, dispatch),
-    filterActions: bindActionCreators(filterActions, dispatch)
+    filterActions: bindActionCreators(filterActions, dispatch),
+    // checkAuth: () => {
+    //   authActions.checkForToken(dispatch, true)
+    // }
   }
 }
 

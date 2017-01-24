@@ -28,39 +28,58 @@ class LoadingComponent extends Component{
 		super(props)
 	}
 	componentDidMount(){
-    console.log('Loading mounted ...');
-    Linking.addEventListener('url', (e) => {
-      console.log('deep link url received in Loading: ', e.url);
+    console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
 
-      console.log(`Deep Link URL: ${e.url}`);
+    if(!this.props.isReferral){
 
-    //     // if(!this.props.isLoggedIn){
-    //         // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
-    //    // } else {
+      Linking.addEventListener('url', (e) => {
+        console.log('deep link url received in Loading: ', e.url);
 
-      if(e.url !== currUrl){
-        currUrl = e.url;
-        const parsed = queryString.parse(e.url);
+       // console.log(`Deep Link URL: ${e.url}`);
 
-        for(filter in parsed){
-          console.log('filter ID from url: ', parsed[filter]);
-          this.props.addFilter({filter: parsed[filter], isSearch: false})
+      //     // if(!this.props.isLoggedIn){
+      //         // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+      //    // } else {
+
+        if(e.url !== currUrl){
+          currUrl = e.url;
+          const parsed = queryString.parse(e.url);
+
+          for(filter in parsed){
+            console.log('filter ID from url: ', parsed[filter]);
+            this.props.addFilter({filter: parsed[filter], isSearch: false})
+          }
+
+          //  REMOVE EVENT LISTENER
+         // Actions.loading();    //  calling in Actions instead
         }
 
-        //  REMOVE EVENT LISTENER
-       // Actions.loading();    //  calling in Actions instead
-      }
 
 
+      });
 
-    });
-   // AsyncStorage.removeItem("fencer-token").then((value) => {
-     // console.log('token removed');
-          this.props.checkAuth();
-          this.props.initPosition();
-   // });
+      this.props.checkAuth(this.props.isReferral);
+      this.props.initPosition();
+    } else {
+
+      this.props.checkAuth(this.props.isReferral);
+
+    }
+
 		
 	}
+
+  componentWillReceiveProps(nextProps){
+    console.log('componentWillReceiveProps called in Loading');
+
+    if(nextProps.isReferral){
+      console.log('nextProps.isReferral in Loading: ', nextProps.isReferral);
+
+    }
+
+
+
+  }
   //  <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
         // <Text style={{fontSize: 26}}>
         //   Loading ...
@@ -88,8 +107,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    checkAuth: () => {
-      authActions.checkForToken(dispatch)
+    checkAuth: (isReferral) => {
+      authActions.checkForToken(dispatch, isReferral)
     },
     initPosition: () => {
     	filterActions.initPosition(dispatch)

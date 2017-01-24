@@ -74,6 +74,14 @@ class WelcomeComponent extends Component{
       this.setState({ infoPressed: true});
     }
 
+    if(this.props.isReferral){
+      setTimeout(() => {
+        Alert.alert('New Geofilter Added!', 'Tap My Filters to acces your new geofilter.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+    
+
+      },150)
+     
+    }
 
 
     //console.log('mounting Welcome...');
@@ -119,6 +127,7 @@ class WelcomeComponent extends Component{
       this.props.loadMyFilters();
     } else {
       Alert.alert('Oops!', 'You must be logged in to access My Geofilters. Tap Login to continue.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+    
     }
 
     

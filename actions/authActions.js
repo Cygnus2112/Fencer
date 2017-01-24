@@ -208,7 +208,8 @@ export const AUTH_REQUEST = 'AUTH_REQUEST';
 export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
-export const checkForToken = (dispatch) => {
+export const checkForToken = (dispatch, isReferral) => {
+      console.log('checkForToken called in authActions');
       dispatch(authRequest());
 
     	AsyncStorage.getItem("fencer-token").then((value) => {
@@ -218,7 +219,7 @@ export const checkForToken = (dispatch) => {
                 let token = value;
 
                 dispatch(authSuccess(username));
-                Actions.main();
+                Actions.main({isReferral: isReferral});
 
               })
 

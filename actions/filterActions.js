@@ -211,11 +211,18 @@ export const addFilterByID = (dispatch, data) => {
             dispatch(searchError('EXPIRED', resp.data['EXPIRED']));
 
           } else if(data.isSearch){
+
             dispatch(newFilterAddedRequest(data.filter));
             dispatch( addToMyFilters(data.filter) );
 
           } else {
-            Actions.loading();
+          //  Actions.loading({isReferral:true});
+
+            dispatch(newFilterAddedRequest(data.filter));
+            dispatch( addToMyFilters(data.filter) );
+
+            Actions.loading({isReferral: true});
+
             return resp;
           }
 

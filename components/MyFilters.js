@@ -114,7 +114,7 @@ class MyFiltersComponent extends Component {
     }
 
     navigator.geolocation.getCurrentPosition((pos) => {
-      console.log('pos in navigator call: ', pos);
+     // console.log('pos in navigator call: ', pos);
 
         var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
@@ -320,7 +320,7 @@ const _checkDates = (dates) => {
 const _isActiveOrUpcoming = (dates) => {
 	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
 	//console.log("event dates: ");
-	console.log(endYear, endMonth, endDay, endHour, endMinute);
+//	console.log(endYear, endMonth, endDay, endHour, endMinute);
 
 	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
 	let currentTime = Date.now();
@@ -331,7 +331,7 @@ const _isActiveOrUpcoming = (dates) => {
   // console.log('currentTime minus endTime: ', currentTime - endTime);
 
     if(currentTime > endTime){
-    	console.log('_isActiveOrUpcoming: event has ended');
+   // 	console.log('_isActiveOrUpcoming: event has ended');
 		  return false;
     } else {
     	return true;
@@ -450,6 +450,7 @@ class SearchModal extends Component {
 
             this.props.reloadFilters(nextProps.newFilterAdded);
             this.props.clearNewFilter();
+
             this.props.toggleModal();
             this.setState({modalVisible: !this.state.modalVisible});
 
