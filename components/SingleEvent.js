@@ -94,6 +94,8 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
+		console.log('this.props in SingleEvent: ', this.props);
+
 	//	console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
 
 		this.checkTime = setInterval(() => {
@@ -556,7 +558,7 @@ const styles = StyleSheet.create({
 		position: 'absolute',
 		top: 75,
 		left: 10, 
-		right: 10,
+		right: 10
 	},
 	innerContainer: {
 		// height: 80, 

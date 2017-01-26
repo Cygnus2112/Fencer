@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+// import RNViewShot from "react-native-view-shot";
+
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -40,6 +42,9 @@ class PolygonComponent extends Component {
   constructor(props) {
     super(props);
 
+
+ //   this.takeSnapshot = this.takeSnapshot.bind(this);
+
     this.finish = this.finish.bind(this);
 
     this.startOver = this.startOver.bind(this);
@@ -68,6 +73,18 @@ class PolygonComponent extends Component {
       place: false
     };
   }
+
+  //   takeSnapshot(){
+  //               RNViewShot.takeSnapshot(this.refs["map"], {
+  //                 format: "jpeg",
+  //                 quality: 1.0,
+  //                 result: 'data-uri'
+  //               })
+  //               .then(uri => { 
+  //                 console.log('uri in this.takeSnapshot: ', uri);
+  //                 this.props.setMapPreview(uri)} )
+
+  // }
 
   componentDidMount(){
 
@@ -139,20 +156,18 @@ class PolygonComponent extends Component {
   }
 
   finish() {
+
+   // this.takeSnapshot();
+
+
+
     console.log('-------------------------------');
     console.log('this.state.region in finish(): ', this.state.region);
 
     const { polygons, editing } = this.state;
-  //  console.log('editing: ', editing)
-
-    // this.setState({
-    //   polygons: [...polygons, editing],
-    //   editing: null,
-    // });
 
     console.log('-------------------------------');
 
-//console.log('this.state in Polygon finish() func: ', this.state);
 
     setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
       //console.log('polygons array (after setTimeout): ', this.state.polygons);
@@ -170,6 +185,8 @@ class PolygonComponent extends Component {
       this.props.submitFence(dataToSend);
 
     },400)
+
+
   }
 
   startOver(hasProps){
@@ -251,7 +268,7 @@ class PolygonComponent extends Component {
     }
 
     return (
-      <View style={styles.container}>
+      <View collapsable={false} ref="map" style={styles.container}>
         {(!this.state.editing && !this.state.polygons.length && !this.state.markerPoints.length)
           ?
           (
@@ -458,7 +475,10 @@ const mapDispatchToProps = (dispatch) => {
     submitFence: (coords) => {
       console.log('coords in mapDispatch: ', coords);
       uploadActions.submitFenceCoordinates(dispatch, coords);
-    }
+    },
+    // setMapPreview: (uri) => {
+    //   uploadActions.setMapPreview(dispatch, uri);
+    // }
   }
 }
 

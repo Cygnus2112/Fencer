@@ -84,6 +84,7 @@ class Success extends Component {
 						{this.props.id}
 					</Text>
 				  </View>
+				  
 				  <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 					<Text style={styles.message}>
 						Title: 

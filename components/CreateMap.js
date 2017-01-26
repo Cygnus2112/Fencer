@@ -37,6 +37,7 @@ let screenWidth = width;
 class CreateMapComponent extends Component{
   constructor(props){
     super(props);
+
     this.state = {
       polygon: false,
       lat: this.props.newMapRegion.latitude || this.props.currentPosition.lat || 37.78825,
@@ -73,6 +74,24 @@ class CreateMapComponent extends Component{
     console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
    // this.getCoords();
   }
+
+  componentWillReceiveProps(nextProps){
+    console.log('componentWillReceiveProps called in CreateMap');
+    console.log('nextProps: ', nextProps);
+    if(nextProps.chooseAreaComplete){
+      console.log('nextProps.chooseAreaComplete');
+    }
+
+                //     RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
+                //   format: "jpeg",
+                //   quality: 1.0,
+                //   result: 'data-uri'
+                // })
+                // .then(
+                //     uri => {})
+  }
+
+
 
   render(){
 //<MapWithCoords polyCoords={polyCoords} polygon={this.state.polygon} lat={this.state.lat} lng={this.state.lng}/>

@@ -86,6 +86,7 @@ const chooseAreaRequest = () => {
 }
 
 const chooseAreaSuccess = (coords) => {
+	console.log('chooseAreaSuccess dispatched');
 	return {
 		type: CHOOSE_AREA_SUCCESS,
 		fenceCoordinates: coords,
@@ -102,7 +103,7 @@ const chooseAreaError = () => {
 export const SET_INFO_REQUEST = 'SET_INFO_REQUEST';
 
 export const submitTitleAndMessage = (dispatch, info) => {
-	console.log('info in submitTitleAndMessage: ', info);
+	//console.log('info in submitTitleAndMessage: ', info);
 	dispatch(submitInfoRequest(info));
 }
 
@@ -113,12 +114,25 @@ const submitInfoRequest = (info) => {
 	}
 }
 
+export const SET_MAP_PREVIEW = 'SET_MAP_PREVIEW';
+
+export const setMapPreview = (dispatch, uri) => {
+	dispatch( setMapPreviewRequest(uri) );
+}
+
+const setMapPreviewRequest = (uri) => {
+	return {
+		type: SET_MAP_PREVIEW,
+		uri: uri
+	}
+}
+
 export const FINAL_SUBMIT_REQUEST = 'FINAL_SUBMIT_REQUEST';
 export const FINAL_SUBMIT_SUCCESS = 'FINAL_SUBMIT_SUCCESS';
 export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
 
 export const finalSubmitFilter = (dispatch, data) => {
-	console.log('title in finalSubmitFilter: ', data.title);
+	console.log('data.message in finalSubmitFilter: ', data.message);
 	// console.log('filter data (first 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(0,20));
 	// console.log('filter data (last 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(data.filterToUpload.data.length-20,data.filterToUpload.data.length-1));
 
@@ -214,7 +228,7 @@ const finalSubmitRequest = () => {
 }
 
 const finalSubmitSuccess = (data) => {
-	console.log('data in finalSubmitSuccess: ', data);
+//	console.log('data in finalSubmitSuccess: ', data);
 	return {
 		type: FINAL_SUBMIT_SUCCESS,
 		bitlyURL: data.bitlyURL

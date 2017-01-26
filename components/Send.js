@@ -15,6 +15,7 @@ import {
     TextInput,
     AppState,
     Alert,
+    Modal,
  //   Share
 } from 'react-native';
 
@@ -35,6 +36,21 @@ const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
 
+const _formatTime = (hour, minute) => {
+  let suffix = 'AM';
+  if(hour > 12){
+    hour = hour - 12;
+    suffix = 'PM';
+  }
+  if(hour === 12){
+    suffix = 'PM';
+  }
+  if(hour === 0){
+    hour = 12;
+  }
+  return hour + ':' + (minute < 10 ? '0' + minute : minute) + suffix;
+}
+
 class Send extends Component {
     constructor(props){
         super(props);
@@ -42,14 +58,15 @@ class Send extends Component {
         this.handleSubmit = this.handleSubmit.bind(this);
 
         this.state = {
-            title: "",
+            title: this.props.filterTitle || "",
             message: this.props.filterMessage || "",
-            showLoginModal: false
+            showLoginModal: false,
+            showReviewModal: false
         }
     }
 
     handleSubmit(){
-    //    console.log('this.props.fenceCoordinates in handleSubmit: ', this.props.fenceCoordinates);
+        console.log('handleSubmit called ');
     //    console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
       //  console.log('AppState.currentState: ', AppState.currentState);
 
@@ -97,17 +114,17 @@ class Send extends Component {
             //   console.log('not logged in!!!!');
             //   this.setState({showLoginModal: true});
             } else {
-                let dataToSend = {
-                    fenceCoordinates: this.props.fenceCoordinates,
-                    selectedDates: this.props.selectedDates,
-                    filterToUpload: this.props.filterToUpload,
-                    title: this.state.title,
-                    message: this.state.message,
-                    username: this.props.username
-                }
-                this.props.finalSumbit(dataToSend);
+                // let dataToSend = {
+                //     fenceCoordinates: this.props.fenceCoordinates,
+                //     selectedDates: this.props.selectedDates,
+                //     filterToUpload: this.props.filterToUpload,
+                //     title: this.state.title,
+                //     message: this.state.message,
+                //     username: this.props.username
+                // }
+                // this.props.finalSumbit(dataToSend);
 
-                // we can send the actual text message in UploadActions or maybe on the backend.
+                this.setState({showReviewModal:true})
 
             }
         // },100)
@@ -135,14 +152,17 @@ class Send extends Component {
       //          // this.props.clearProps();
       //           //Actions.loading();
       //       })
-
-
       //   }
 
         
         if(newProps.filterTitle !== this.props.filterTitle){
             this.handleSubmit();
         }
+
+        // if( newProps.filterTitle ){                //  this triggers an infinite loop of filter submissions. WHY???
+        //   console.log('newProps.filterTitle');
+        //   this.handleSubmit();
+        // }
     }
 
 
@@ -173,19 +193,18 @@ class Send extends Component {
                                 console.log('OK Pressed!');
                               }}])
 
-
                             } else if(!this.props.isLoggedIn){
                                 console.log('not logged in!!!!');
                                 this.setState({showLoginModal: true});
+                            } else if(this.state.title === this.props.filterTitle){
+                                this.handleSubmit();
                             } else {
                               this.props.submitTitle({title: this.state.title, message: this.state.message});
                             }
 
-                             
-
                          }
                         }>
-                          Submit
+                          Review & Submit
                         </Button>
               </View>
               
@@ -228,17 +247,273 @@ class Send extends Component {
 
             </View>
           {this.state.showLoginModal
-          ?
-          (<LoginModal alert={true} modalVisible={true} toggleModal={() => {this.setState( {showLoginModal: false}) } } />)
-          :
-          (null)
-        }
+            ?
+            (<LoginModal alert={true} modalVisible={true} toggleModal={() => {this.setState( {showLoginModal: false}) } } />)
+            :
+            (null)
+          }
+          {this.state.showReviewModal
+            ?
+            (<ReviewModal {...this.props} title={ this.state.title } message={this.state.message} modalVisible={true} toggleModal={() => {this.setState( {showReviewModal: false}) } } />)
+            :
+            (null)
+          }
           </View>
             )
     }
 }
 
+class ReviewModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+//<View style={styles.infoModal}>
+
+  componentDidMount(){
+    console.log('this.props.filterToUpload.data in ReviewModal: ', this.props.filterToUpload.data);
+  }
+
+  render(){
+
+    let startDateObj = new Date(this.props.selectedDates.startYear, this.props.selectedDates.startMonth,this.props.selectedDates.startDay,this.props.selectedDates.startHour,this.props.selectedDates.startMinute);
+    let endDateObj = new Date(this.props.selectedDates.endYear, this.props.selectedDates.endMonth,this.props.selectedDates.endDay,this.props.selectedDates.endHour,this.props.selectedDates.endMinute);
+
+    let startDate = startDateObj.toLocaleDateString();
+    let endDate = endDateObj.toLocaleDateString();
+
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.modalContainer}>
+              <View style={styles.infoModal}>
+
+
+
+                  <View style={styles.cancel}>
+                    <TouchableOpacity onPress={ () => { 
+                        this.props.toggleModal();
+                        this.setState({modalVisible: !this.state.modalVisible});  } 
+                    }>
+                      <Icon name="circle-with-cross" size={30} color="black" />
+                    </TouchableOpacity>
+                  </View>
+
+                  <View style={styles.header} >
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'black', textDecorationLine: 'underline', fontSize: 22}}>Your Geofilter Details</Text>
+                  </View>
+       
+                  <View style={styles.filterAndMapPreview} >
+                    <Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} style={{height: 160, width: 90, borderWidth: 1, borderColor: 'black'}} />  
+                  </View>
+
+                  <View style={styles.details}>
+
+                      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <Text style={styles.message}>
+                            Title: 
+                          </Text>
+                          <Text style={[styles.message] }>
+                            {this.props.title}
+                          </Text>
+                      </View>
+                      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <Text style={styles.message}>
+                            Starts:
+                          </Text>
+
+                          <Text style={[styles.message] }>
+                            {startDate + " " +  _formatTime(this.props.selectedDates.startHour, this.props.selectedDates.startMinute)}
+                          </Text>
+                      </View>
+                      <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                          <Text style={styles.message}>
+                            Ends: 
+                          </Text>
+                          <Text style={styles.message}>
+                            {endDate + " " + _formatTime(this.props.selectedDates.endHour, this.props.selectedDates.endMinute)}
+                          </Text>
+                      </View>
+
+                    {this.props.message.length > 0 &&
+                      <View style={styles.messageContainer}>
+                        <View style={styles.messageHeader}>
+                          <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18,color: 'black', textDecorationLine: 'underline'}}>Message</Text>
+                        </View>
+                        <View style={{flexDirection: 'column'}}>
+                          <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'black', fontSize: 14}}>{'"'}{this.props.message}{'"'}</Text>
+                        </View>
+                      </View>
+
+                    }
+
+                </View>  
+
+
+
+                <View style={styles.finalSumbitButtonContainer}>
+  
+                  <TouchableHighlight 
+                    style={styles.finalSumbitButton}
+                    onPress={() => {
+                      // this.props.toggleModal();
+                      // this.setState({modalVisible: !this.state.modalVisible});
+
+                      let dataToSend = {
+                        fenceCoordinates: this.props.fenceCoordinates,
+                        selectedDates: this.props.selectedDates,
+                        filterToUpload: this.props.filterToUpload,
+                        title: this.props.title,
+                        message: this.props.message,
+                        username: this.props.username
+                      }
+
+                    //  console.log('dataToSend in ReviewModal: ', dataToSend);
+
+                      this.props.finalSumbit(dataToSend);
+
+                      this.props.toggleModal();
+                      this.setState({modalVisible: !this.state.modalVisible});
+                    }
+                  }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'black', fontSize: 20}}>Submit!</Text>
+                  </TouchableHighlight>
+
+                </View>
+
+          {/*        <TouchableHighlight 
+                    style={{marginTop: 7, height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                    onPress={() => {
+                      this.props.toggleModal();
+                      this.setState({modalVisible: !this.state.modalVisible});
+                    }
+                  }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                  </TouchableHighlight>   */}
+            </View>
+          </View>
+      </Modal>
+    )
+  }
+}
+
 const styles = StyleSheet.create({
+  modalScroll: {
+    paddingBottom: 5,
+    backgroundColor: 'white',
+    height: 300,
+    flexDirection: 'column',
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+  },
+  messageContainer: {
+    position: 'absolute',
+    left: 10,
+    right: 10,
+   // marginTop: 5,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    // borderWidth: 1,
+    // borderColor: 'black'
+
+  },
+  messageHeader: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  cancel: {
+    position: 'absolute',
+    top: 10,
+    right: 10
+  },
+  finalSumbitButtonContainer: {
+    position: 'absolute',
+    height: 42,
+    bottom: 10,
+    left: 10,
+    right: 10,
+    flexDirection: 'column',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    //     borderWidth: 1,
+    // borderColor: 'black'
+  },
+  finalSumbitButton: {
+   // marginTop: 7, 
+    height: 40, 
+    width: 130, 
+    backgroundColor: 'silver', 
+    borderColor: 'black', 
+    borderWidth: 1, 
+    borderRadius: 5,
+    paddingTop:3, 
+    alignItems: 'center',
+    borderRadius: 15
+  },
+  header: {
+    position: 'absolute',
+    top: 25,
+    left: 10, 
+    right: 10,
+    flexDirection: 'row',
+    justifyContent: 'center'
+  },
+  details: {
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    marginTop: 225,
+  //  bottom: 60,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  filterAndMapPreview: {
+    position: 'absolute',
+    left: 10,
+    right: 10,
+    marginTop: 55,
+    flexDirection: 'row',
+    justifyContent: 'center',
+    // borderWidth: 1,
+    // borderColor: 'black'
+  },
+  message: {
+    fontFamily: 'RobotoCondensed-Regular',
+    fontSize: 18,
+    color: 'black',
+      //marginLeft: 10,
+     // marginRight: 10
+  },
+  modalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 40, 
+    left:30, 
+    right: 30, 
+    bottom: 40, 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
   container: {
     // flex: 1,
     height: screenHeight - 75,
@@ -251,7 +526,7 @@ const styles = StyleSheet.create({
     elevation:3,
     padding:5,
     height:40,
-    width: 130,
+    width: 180,
     overflow:'hidden',
     borderRadius:15,
     backgroundColor: '#0c12ce',
@@ -276,7 +551,8 @@ const mapStateToProps = (state) => {
     filterTitle: state.uploadReducer.filterTitle,
     filterMessage: state.uploadReducer.filterMessage,
     bitlyURL: state.uploadReducer.bitlyURL,
-    finalSubmitComplete: state.uploadReducer.finalSubmitComplete   
+    finalSubmitComplete: state.uploadReducer.finalSubmitComplete,
+    mapPreviewURI: state.uploadReducer.mapPreviewURI   
   }
 }
 
