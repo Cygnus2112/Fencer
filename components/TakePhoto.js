@@ -41,8 +41,12 @@ import RNViewShot from "react-native-view-shot";
 import Button from 'react-native-button';
 
 const { width, height } = Dimensions.get('window');
+
 const screenWidth = width;
 const screenHeight = height;
+
+const imageHeight = screenHeight;
+const imageWidth = (imageHeight *1080)/1920;
 
 class TakePhotoComponent extends Component {
 	constructor(props){
@@ -70,10 +74,12 @@ class TakePhotoComponent extends Component {
 	}
 
     componentDidMount(){
-      console.log('TakePhoto mounted')
+      console.log('TakePhoto mounted');
+
     }
     componentWillUnmount(){
       console.log('TakePhoto un-mounting ... ');
+            console.log('screenHeight * .95: ', screenHeight * .95);
     }
 
 
@@ -482,12 +488,12 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     alignItems: 'center',
-    height: Dimensions.get('window').height,
-    width: Dimensions.get('window').width
+    height: imageHeight,
+    width: imageWidth
   },
   filter:{
-    width: screenWidth * .9, 
-    height: screenHeight *.95
+    width: imageWidth, 
+    height: imageHeight
   },
   capture: {
     flex: 0,
@@ -498,13 +504,13 @@ const styles = StyleSheet.create({
     margin: 40
   },
   photoAndFilter:{
-    width: screenWidth * .9, 
-    height: screenHeight * .95, 
-    marginBottom:20
+    width: imageWidth,
+    height: imageHeight, 
+ //   marginBottom:20
   },
   photo:{
-    width: screenWidth * .9,
-    height: screenHeight * .95,
+    width: imageWidth,
+    height: imageHeight,
    // backgroundColor:'transparent',
     backgroundColor: 'white',
     justifyContent: 'center',
@@ -515,13 +521,13 @@ const styles = StyleSheet.create({
   takePictureButton: {
     position: 'absolute',
     bottom: 25,
-    left: (screenWidth *.9)/2 - 50,
+    left: (imageWidth)/2 - 50,
     zIndex: 5
   },
   button: {
     position: 'absolute',
     bottom: 50,
-    left: (screenWidth/2) - 65,
+    left: (imageWidth) - 65,
     elevation:3,
     padding:7,
     height:40,

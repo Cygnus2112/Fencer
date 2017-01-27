@@ -704,8 +704,8 @@ const styles = StyleSheet.create({
   	  infoModal: {
     position: 'absolute', 
     top: 60, 
-    left:35, 
-    right: 35, 
+    left:30, 
+    right: 30, 
     bottom: 60, 
     justifyContent: 'center', 
     alignItems: 'flex-start', 
@@ -714,7 +714,7 @@ const styles = StyleSheet.create({
     borderWidth:1, 
     borderColor:'black', 
     borderRadius:10,
-    padding: 10
+    padding: 5
   }
 })
 

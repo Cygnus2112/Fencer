@@ -531,7 +531,7 @@ const styles = StyleSheet.create({
     borderRadius:15,
     backgroundColor: '#0c12ce',
     position: 'absolute',
-    left: (screenWidth/2) - 65,
+    left: (screenWidth/2) - 90,
     bottom: 10,
     borderColor: 'black',
     borderWidth: 1

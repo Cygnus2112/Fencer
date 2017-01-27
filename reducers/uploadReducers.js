@@ -31,6 +31,7 @@ const initialState = {
   filterID: "",
   finalSubmitComplete: false,
   mapModalDismissed: false,
+  filterModalDismissed: false,
   newMapRegion: {},
   mapPreviewURI: null
 }
@@ -138,6 +139,10 @@ const uploadReducer = (state = initialState, action) => {
     case ActionTypes.DISMISS_MAP_MODAL_REQUEST:
       return Object.assign({}, state, {
         mapModalDismissed: true
+      })
+    case ActionTypes.DISMISS_FILTER_MODAL_REQUEST:
+      return Object.assign({}, state, {
+        filterModalDismissed: true
       })
     case ActionTypes.SET_MAP_PREVIEW:
       return Object.assign({}, state, {

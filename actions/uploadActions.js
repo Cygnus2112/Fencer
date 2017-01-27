@@ -287,3 +287,16 @@ const dismissMapModalRequest = () => {
 	}
 }
 
+export const DISMISS_FILTER_MODAL_REQUEST = 'DISMISS_FILTER_MODAL_REQUEST';
+
+export const dismissFilterModal = (dispatch) => {
+//	Actions.loading();
+	dispatch( dismissFilterModalRequest() );
+}
+
+const dismissFilterModalRequest = () => {
+	return {
+		type: DISMISS_FILTER_MODAL_REQUEST
+	}
+}
+

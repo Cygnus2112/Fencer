@@ -7,8 +7,12 @@ import {
 } from 'react-native';
 
 const { width, height } = Dimensions.get('window');
+
 const screenWidth = width;
 const screenHeight = height;
+
+const imageHeight = screenHeight;
+const imageWidth = (imageHeight *1080)/1920;
 
 class PreviewWithFilter extends Component {
 	constructor(props){
@@ -21,8 +25,8 @@ class PreviewWithFilter extends Component {
 
 const styles = StyleSheet.create({
   filter:{
-    width: screenWidth * .9, 
-    height: screenHeight *.95
+    width: imageWidth, 
+    height: screenHeight
   }
 });
 
