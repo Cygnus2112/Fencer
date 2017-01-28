@@ -209,7 +209,7 @@ export const AUTH_SUCCESS = 'AUTH_SUCCESS';
 export const AUTH_FAIL = 'AUTH_FAIL';
 
 export const checkForToken = (dispatch, isReferral) => {
-      console.log('checkForToken called in authActions');
+    //  console.log('checkForToken called in authActions');
       dispatch(authRequest());
 
     	AsyncStorage.getItem("fencer-token").then((value) => {
@@ -249,7 +249,7 @@ const authSuccess = (username) => {
 export const LOAD_MY_FILTERS_REQUEST = 'LOAD_MY_FILTERS_REQUEST';
 export const LOAD_MY_FILTERS_SUCCESS = 'LOAD_MY_FILTERS_SUCCESS';
 
-export const loadMyFilters = (dispatch) => {
+export const loadMyFilters = (dispatch, isFromSuccessComponent) => {
         dispatch(loadMyFiltersRequest());
         AsyncStorage.getItem("fencer-token").then((value) => {
             if(value){
@@ -286,7 +286,12 @@ export const loadMyFilters = (dispatch) => {
 
                   dispatch(loadMyFiltersSuccess(data));
                   
-                  Actions.myfilters();
+                  if(isFromSuccessComponent){
+                    Actions.myfilters({type: "replace", isFromSuccessComponent: true});
+                  } else {
+                    Actions.myfilters();
+                  }
+                  
                   
                 })
                 .catch(err => {

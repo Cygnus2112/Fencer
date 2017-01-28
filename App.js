@@ -23,12 +23,12 @@ class AppComponent extends Component {
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading} initial={true} type='reset' />
-            <Scene key="success" component={Success} />
-            <Scene key="main" component={Main} />
-            <Scene key="upload" component={Upload} type='reset'/>
-            <Scene key="myfilters" component={MyFilters} type='reset'/>
-            <Scene key="camera" component={ TakePhoto } />
+            <Scene key="loading" component={Loading} initial={true} type='reset' animation='fade' />
+            <Scene key="success" component={Success} type='reset' animation='fade' />
+            <Scene key="main" component={Main} type='reset' animation='fade' />
+            <Scene key="upload" component={Upload} animation='fade'/>
+            <Scene key="myfilters" component={MyFilters} animation='fade'/>
+            <Scene key="camera" component={ TakePhoto } animation='fade' />
           </Scene>
         </Router>
       

@@ -14,7 +14,8 @@ import {
     Linking,
     Modal,
     TextInput,
-    Alert
+    Alert,
+    BackAndroid
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -84,6 +85,8 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 
+    console.log('MyFilters mounted.');
+
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
 		if(this.props.allFilters.length){
@@ -96,16 +99,26 @@ class MyFiltersComponent extends Component {
         let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
         let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
 
-        return startTime1 - startTime2;
+        if(startTime1 === startTime2){
+          let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+          let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
 
-      }).sort((f1,f2)=>{
+          return endTime1 - endTime2;
+        } else {  
+          return startTime1 - startTime2;
+        }
 
-        let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-        let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
 
 
-        return endTime1 - endTime2;
       })
+      // .sort((f1,f2)=>{
+
+      //   let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+      //   let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+
+
+      //   return endTime1 - endTime2;
+      // })
 
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -169,16 +182,24 @@ class MyFiltersComponent extends Component {
         let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
         let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
 
-        return startTime1 - startTime2;
+        if(startTime1 === startTime2){
+          let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+          let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
 
-      }).sort((f1,f2)=>{
+          return endTime1 - endTime2;
+        } else {  
+          return startTime1 - startTime2;
+        }
 
-        let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-        let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
-
-
-        return endTime1 - endTime2;
       })
+      // .sort((f1,f2)=>{
+
+        // let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+        // let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+
+
+      //   return endTime1 - endTime2;
+      // })
 
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
@@ -338,72 +359,6 @@ const _isActiveOrUpcoming = (dates) => {
     }
 }
 
-// class SearchModal extends Component {
-//   constructor(props){
-//     super(props);
-    
-//     this.state = {
-//           modalVisible: this.props.modalVisible
-//       }
-//   }
-
-//   componentDidMount(){
-//     console.log('this.props in search modal: ', this.props);
-//   }
-
-//   render(){
-//     return(
-//         <Modal
-//           animationType={"none"}
-//           transparent={true}
-//           visible={this.state.modalVisible}
-//           onRequestClose={() => { 
-//                         this.props.toggleModal();
-//             console.log("Modal has been closed.")}}>
-
-//             <View style={styles.modalContainer}>
-//                 <View style={this.props.message.length ? styles.infoModal : [styles.infoModal, {top: 120, bottom: 120}]}  >
-
-//                   <View style={{position: 'absolute', top: 15, left: 10, right: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
-//             <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5 }}>Geofilter Details:</Text>
-//                 </View>
-
-//                   <View style={styles.details}>
-//                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Title:</Text>
-//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5, fontWeight: 'bold' }}>{this.props.title}</Text>
-//                   </View>
-//                   {!this.props.isActive &&
-//                     <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Starts:</Text> 
-//                     <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)} at {_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text>
-//               </View>
-//             }    
-//             <View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
-//               <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Ends:</Text> 
-//               <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)} at {_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text>
-//             </View>
-
-//                   </View>
-
-//                   <View style={{position: 'absolute', bottom: 15, left: 10, right: 10, flexDirection: 'row', justifyContent: 'center'}}> 
-//                     <TouchableHighlight 
-//                         style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-//                         onPress={() => {
-//                           this.props.toggleModal();
-//                           this.setState({modalVisible: !this.state.modalVisible})
-//                         }
-//                       }>
-//                           <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-//                     </TouchableHighlight>
-//                   </View>
-
-//               </View>
-//           </View>
-//       </Modal>
-//     )
-//   }
-// }
 
 class SearchModal extends Component {
   constructor(props){
@@ -474,15 +429,12 @@ class SearchModal extends Component {
       this.props.addFilter({filter: this.state.filter, isSearch: true});      
     }
 
-
-
   }
 
   componentDidMount(){
   //  console.log('this.props in filter search modal: ', this.props);
   }
 
-// B 1 o V Cekw x
   render(){
     return(
         <Modal

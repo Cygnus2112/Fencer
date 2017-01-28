@@ -21,7 +21,7 @@ class Spinner extends Component {
 	render(){
 		return (
 			<View style={styles.container}>
-				<ActivityIndicator style={styles.spinner} size={75} color="white" />
+				<ActivityIndicator style={styles.spinner} size={75} color="blue" />
 			</View>
 
 			)
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
 		flex: 1,
 		alignItems: 'center',
     	justifyContent: 'center',
-		backgroundColor: "#0000ff",
+		backgroundColor: "white",
 		width: screenWidth
 
 	},

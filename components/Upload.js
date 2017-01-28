@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     Dimensions,
+    BackAndroid
 } from 'react-native';
 
 import Button from 'react-native-button';
@@ -54,9 +55,28 @@ class UploadComponent extends Component {
 	constructor(props){
 		super(props);
 
+    this.onBackPress = this.onBackPress.bind(this);
+
 	}
+
+  onBackPress(){
+    console.log('back button pressed in UPLOAD');
+    return true;
+  }
+
   componentDidMount(){
+    console.log('main UPLOAD component mounted.')
     //  console.log('this.props.currentView in Upload: ', this.props.currentView);
+
+          
+    BackAndroid.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount(){
+    console.log('main UPLOAD component unmounting...')
+
+    BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress);
+
   }
 
   componentWillReceiveProps(newProps){

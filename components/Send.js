@@ -274,7 +274,7 @@ class ReviewModal extends Component {
 //<View style={styles.infoModal}>
 
   componentDidMount(){
-    console.log('this.props.filterToUpload.data in ReviewModal: ', this.props.filterToUpload.data);
+   // console.log('this.props.filterToUpload.data in ReviewModal: ', this.props.filterToUpload.data);
   }
 
   render(){

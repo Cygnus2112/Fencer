@@ -70,15 +70,12 @@ class LoadingComponent extends Component{
 	}
 
   componentWillReceiveProps(nextProps){
-    console.log('componentWillReceiveProps called in Loading');
+   // console.log('componentWillReceiveProps called in Loading');
 
     if(nextProps.isReferral){
       console.log('nextProps.isReferral in Loading: ', nextProps.isReferral);
 
     }
-
-
-
   }
   //  <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
         // <Text style={{fontSize: 26}}>

@@ -2,11 +2,7 @@ import React, { Component } from 'react';
 
 import {
     View,
-    Image,
-    Text,
     StyleSheet,
-    DatePickerAndroid,
-    TimePickerAndroid,
     Dimensions
 } from 'react-native';
 
@@ -24,13 +20,6 @@ class UploadNav extends Component {
 		super(props);
 
 	}
-
-			// <View style={{height: 100}}>
-			// <View style={styles.fakeNavBar}>
-			// 	<Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-			// 		<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
-			// 	</Image>
-			// </View>
 
 	render(){
 

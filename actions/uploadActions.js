@@ -175,7 +175,7 @@ export const finalSubmitFilter = (dispatch, data) => {
         									// SHOW SUCCESS MODAL
         	console.log('response.data.filterID in upload: ', response.data.filterID);
 
-        	Actions.success({title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, dates: data.selectedDates })
+        	Actions.success({type: 'reset', title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, dates: data.selectedDates })
 
         	let start = Date.now();
 

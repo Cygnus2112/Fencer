@@ -93,9 +93,9 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
+		console.log('SingleEvent mounted.');
 
-		console.log('this.props in SingleEvent: ', this.props);
-
+	//	console.log('this.props in SingleEvent: ', this.props);
 	//	console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
 
 		this.checkTime = setInterval(() => {
@@ -213,6 +213,8 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillUnmount(){
+		console.log('SingleEvent unmounting...');	
+
 		clearInterval(this.checkTime);
 	}
 
@@ -272,6 +274,8 @@ class SingleEventComponent extends Component {
 				this.setState({
 					isLoadingFilter: false
 				})
+
+				clearInterval(this.checkTime);
 			}
 		},50)
 

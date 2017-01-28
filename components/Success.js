@@ -7,7 +7,8 @@ import {
     TouchableNativeFeedback,
     Dimensions,
     Text,
-    TouchableOpacity
+    TouchableOpacity,
+    BackAndroid
 } from 'react-native';
 
 import * as authActions from '../actions/authActions';
@@ -41,11 +42,27 @@ class Success extends Component {
 	constructor(props){
 		super(props);
 
+		this.onBackPress = this.onBackPress.bind(this);
+
 	}
 
+	onBackPress(){
+	    console.log('back button pressed in SUCCESS');
+	    return true;
+  	}
+
 	componentDidMount(){
-		console.log('this.props in Success: ', this.props);
-	}
+		//console.log('this.props in Success: ', this.props);
+	
+	    BackAndroid.addEventListener('hardwareBackPress', this.onBackPress);
+  }
+
+  componentWillUnmount(){
+    console.log('main SUCCESS component unmounting...')
+
+    BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress);
+
+  }
 
 	render(){
 
@@ -234,7 +251,7 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = (dispatch) => {
   return {
     loadMyFilters: () => {
-      authActions.loadMyFilters(dispatch);
+      authActions.loadMyFilters(dispatch,true);
     },
     clearProps: () => {
       uploadActions.clearUploadProps(dispatch);

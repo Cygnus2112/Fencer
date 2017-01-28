@@ -7,9 +7,10 @@ import {
     TouchableOpacity,
     Text,
     Dimensions,
-    //  ListView,
     BackAndroid
+    //  ListView,
 } from 'react-native';
+
 
 // WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
 
@@ -55,8 +56,9 @@ class TakePhotoComponent extends Component {
 		this.takePicture = this.takePicture.bind(this);
     this.switchType = this.switchType.bind(this);
     this.switchFlash = this.switchFlash.bind(this);
-
     this.share = this.share.bind(this);
+
+    this.onBackPress = this.onBackPress.bind(this);
 
     this.onCancel = this.onCancel.bind(this);
     // this.handleZoom = this.handleZoom.bind(this);
@@ -73,14 +75,29 @@ class TakePhotoComponent extends Component {
     }
 	}
 
-    componentDidMount(){
-      console.log('TakePhoto mounted');
+  onBackPress(){
+    console.log('back button pressed in TAKEPHOTO???')
 
+    if (this.state.applyFilter) {
+      console.log('back button pressed in TAKEPHOTO??? (filter applied)')
+      this.setState({
+        applyFilter: !this.state.applyFilter
+      })
+      return true;
     }
-    componentWillUnmount(){
-      console.log('TakePhoto un-mounting ... ');
-            console.log('screenHeight * .95: ', screenHeight * .95);
-    }
+  }
+
+  componentDidMount(){
+    console.log('TakePhoto mounted ... ');
+
+    BackAndroid.addEventListener('hardwareBackPress', this.onBackPress );
+  }
+
+  componentWillUnmount(){
+    console.log('TakePhoto un-mounting ... ');
+      
+    BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress );
+  }
 
 
   // constructor(props) {
@@ -184,22 +201,6 @@ class TakePhotoComponent extends Component {
 
   //   this.setState({...this.state, image:newImage});
   // }
-
-  componentDidMount(){
-    let that = this;
-
-    BackAndroid.addEventListener('hardwareBackPress', function() {
-
-      if (that.state.applyFilter) {
-        that.setState({
-          applyFilter: !that.state.applyFilter
-        })
-        return true;
-      }
-
-      //return false;
-    });
-  }
       
 	takePicture() {
 	  	this.camera.capture()
