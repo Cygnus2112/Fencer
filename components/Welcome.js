@@ -79,7 +79,7 @@ class WelcomeComponent extends Component{
         Alert.alert('New Geofilter Added!', 'Tap My Filters to acces your new geofilter.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
     
 
-      },150)
+      },300)
      
     }
 
