@@ -188,12 +188,13 @@ class SingleEventComponent extends Component {
 		}
 
 		if(newProps.isDeletingFilter === false && this.props.isDeletingFilter === true){
-			this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
-			this.setState({isLoadingFilter: false});
 
-			Alert.alert('Success', 'Filter successfully deleted.', [
-				{text: 'okay', onPress: () => console.log('okay pressed')}
-        	])
+			this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
+			
+			Alert.alert('Success', 'Filter successfully deleted.', [{text: 'okay', onPress: () => {
+				console.log('okay pressed');
+				this.setState({isLoadingFilter: false});
+			}}])
 		}
 
 		if(newProps.currentPosition !== this.props.currentPosition){

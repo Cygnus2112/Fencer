@@ -56,6 +56,8 @@ class TakePhotoComponent extends Component {
 		this.takePicture = this.takePicture.bind(this);
     this.switchType = this.switchType.bind(this);
     this.switchFlash = this.switchFlash.bind(this);
+    this.handleTrash = this.handleTrash.bind(this);
+
     this.share = this.share.bind(this);
 
     this.onBackPress = this.onBackPress.bind(this);
@@ -78,6 +80,11 @@ class TakePhotoComponent extends Component {
   onBackPress(){
     console.log('back button pressed in TAKEPHOTO???')
 
+    if(this.props.test){
+      console.log('this.props.test === true');
+      Actions.pop();
+    }
+
     if (this.state.applyFilter) {
       console.log('back button pressed in TAKEPHOTO??? (filter applied)')
       this.setState({
@@ -97,6 +104,11 @@ class TakePhotoComponent extends Component {
     console.log('TakePhoto un-mounting ... ');
       
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress );
+  }
+
+  handleTrash() {
+    console.log('back pressed'); 
+    Actions.pop()
   }
 
 
@@ -358,8 +370,8 @@ class TakePhotoComponent extends Component {
             {this.props.test
                 ?
               (<View style={styles.trash}>
-              <TouchableOpacity onPress={ () => { console.log('back pressed'); Actions.pop() }}>
-                  <Icon name="circle-with-cross" size={30} color="black" />
+              <TouchableOpacity style={{zIndex: 50}} onPress={ this.handleTrash }>
+                  <Icon name="circle-with-cross" size={30} color="black" />  
               </TouchableOpacity>
             </View>
                 )
@@ -540,19 +552,15 @@ const styles = StyleSheet.create({
   trash: {
     position: 'absolute',
     top: 5,
-   // left: (screenWidth/2) - 65,
-  // paddingBottom: 1,
     right:20,
     elevation:3,
     height:35,
     width:35,
- //   backgroundColor: 'blue',
- //   borderColor: 'black',
-    // backgroundColor: 'rgba(0,0,0,0.5)',
-    // borderRadius:5,
     // justifyContent: 'center',
     // alignItems: 'center',
- //   borderWidth:1,
+   //     borderColor: 'black',
+   // borderWidth:1,
+   zIndex: 5
   },
   facebook: {
     position: 'absolute',

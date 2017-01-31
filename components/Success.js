@@ -108,8 +108,7 @@ class Success extends Component {
 				            .then((resp) => {
 				                console.log('successfully sent filter???', resp);
 				                console.log('#####################################################');
-				               // this.props.clearProps();
-				                //Actions.loading();
+
 				            })
 		                }}
 		                style={styles.buttonSend}>

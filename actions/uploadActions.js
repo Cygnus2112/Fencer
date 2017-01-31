@@ -264,7 +264,6 @@ export const CLEAR_PROPS_REQUEST = 'CLEAR_PROPS_REQUEST';
 export const CLEAR_PROPS_SUCCESS = 'CLEAR_PROPS_SUCCESS';
 
 export const clearUploadProps = (dispatch) => {
-//	Actions.loading();
 	dispatch(clearUploadPropsRequest());
 }
 
@@ -277,7 +276,6 @@ const clearUploadPropsRequest = () => {
 export const DISMISS_MAP_MODAL_REQUEST = 'DISMISS_MAP_MODAL_REQUEST';
 
 export const dismissMapModal = (dispatch) => {
-//	Actions.loading();
 	dispatch( dismissMapModalRequest() );
 }
 
@@ -290,7 +288,6 @@ const dismissMapModalRequest = () => {
 export const DISMISS_FILTER_MODAL_REQUEST = 'DISMISS_FILTER_MODAL_REQUEST';
 
 export const dismissFilterModal = (dispatch) => {
-//	Actions.loading();
 	dispatch( dismissFilterModalRequest() );
 }
 

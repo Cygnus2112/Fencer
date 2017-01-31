@@ -362,7 +362,7 @@ export const deleteFilter = (dispatch, filterID) => {
 
           dispatch(deleteFilterSuccess());
                 
-          Actions.myfilters();          //  TEMPORARY. will need to refresh filters, not simply reload the whole view
+         // Actions.myfilters();          //  TEMPORARY. will need to refresh filters, not simply reload the whole view
                 
         })
         .catch(err => {

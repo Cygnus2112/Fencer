@@ -251,7 +251,7 @@ class UploadFilter extends Component {
                 <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30 }}>
                     <TouchableOpacity onPress={() => { 
                       this.props.clearProps();
-                      Actions.loading(); 
+                      Actions.loading({isStartup: false}); 
                     }}>
                       <Icon name="home" size={30} color="#0c12ce" />
                     </TouchableOpacity >

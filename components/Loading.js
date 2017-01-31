@@ -58,15 +58,18 @@ class LoadingComponent extends Component{
 
       });
 
+ //   setTimeout(()=>{
+
       this.props.checkAuth(this.props.isReferral);
       this.props.initPosition();
+
+//    },5000);
+
     } else {
 
       this.props.checkAuth(this.props.isReferral);
 
     }
-
-		
 	}
 
   componentWillReceiveProps(nextProps){
@@ -77,19 +80,32 @@ class LoadingComponent extends Component{
 
     }
   }
-  //  <View style={{flex:1, justifyContent: 'center', alignItems: 'center'}} >
-        // <Text style={{fontSize: 26}}>
-        //   Loading ...
-        // </Text>
-//      </View>
-	render(){
-		return (
-	
-        <Spinner />
 
-		)
+	render(){
+		
+    if(this.props.isStartup){
+	    return (<View style={styles.container} >
+          <Image source={require('../assets/map2.png')} style={{height: 80, width: 80, paddingLeft:10, paddingTop:10}} >
+            <Image source={require('../assets/camera2.png')} style={{height: 60, width: 60}} /> 
+          </Image>
+      </View >)
+    } else {
+      return (<Spinner />)
+    }
+		
 	}
 }
+
+// 
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'blue'
+  }
+});
 
 const mapStateToProps = (state) => {
   return {

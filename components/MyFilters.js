@@ -246,7 +246,7 @@ class MyFiltersComponent extends Component {
       				</Image>
       			</View>
 			      <View style={styles.titleContainer}>
-                <TouchableOpacity onPress={()=>{Actions.loading()}}>
+                <TouchableOpacity onPress={()=>{Actions.loading({isStartup: false})}}>
                 	<View style={{width: 30, marginLeft: 15}}>
                   		<Icon name="home" size={30} color="#0c12ce"/>
                 	</View>
