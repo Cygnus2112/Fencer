@@ -66,7 +66,7 @@ class MyFiltersComponent extends Component {
 	}
 
   reloadFilters(filter) {
-    console.log('reloadFilters called in MyFilters');
+  //  console.log('reloadFilters called in MyFilters');
     let allFilters = this.props.myFilters.slice();
 
     if(filter){
@@ -85,7 +85,7 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 
-    console.log('MyFilters mounted.');
+   // console.log('MyFilters mounted.');
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
@@ -153,13 +153,13 @@ class MyFiltersComponent extends Component {
 	}
 
   componentWillUnmount(){
-    console.log('MyFilters un-mounting ... ');
+   // console.log('MyFilters un-mounting ... ');
 
     navigator.geolocation.clearWatch(this.watchPosition);
   }
 
 	componentWillReceiveProps(newProps){
-      console.log('newProps in MyFilters!!!');
+    //  console.log('newProps in MyFilters!!!');
 
 
       if(newProps.searchError){
@@ -306,8 +306,8 @@ class MyFiltersComponent extends Component {
             </View>
               <View style={styles.addById}>
                 <TouchableOpacity onPress={this.handleSearch}>
-                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Geofilter not showing up?</Text>
-                  <Text style={{fontSize: 14,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Tap here to add by ID</Text>
+                  <Text style={{fontSize: 16,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Geofilter not showing up?</Text>
+                  <Text style={{fontSize: 16,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center', textDecorationLine: 'underline'}} >Tap here to add by ID</Text>
                 </TouchableOpacity>
               </View>
         </View>)
@@ -455,7 +455,6 @@ class SearchModal extends Component {
                   <View style={styles.details}>
                     <View style={{flexDirection: 'row', justifyContent: 'center'}}>
                       <TextInput 
-                          placeholder="Geofilter ID"
                           autoCorrect={false} 
                           style={styles.textInput} 
                           placeholderStyle={styles.placeholder}
@@ -598,7 +597,7 @@ const styles = StyleSheet.create({
     top: 100,
     left: 0,
     right: 0,
-    bottom: 40,
+    bottom: 50,
     paddingTop: 5,
     paddingBottom: 5,
     justifyContent: 'flex-start',
@@ -612,6 +611,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 60,
     right: 60,
+    height: 50,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',

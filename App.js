@@ -18,17 +18,20 @@ import TakePhoto from './components/TakePhoto';
 import ApplyFilter from './components/ApplyFilter';
 import Success from './components/Success';
 
+import ReferralSignup from './components/ReferralSignup';
+
 class AppComponent extends Component {
   render() {
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading} initial={true} type='reset' animation='fade' isStartup='true' />
+            <Scene key="loading" component={Loading}              type='reset' animation='fade' isStartup='true' />
             <Scene key="success" component={Success} type='reset' animation='fade' />
             <Scene key="main" component={Main} type='reset' animation='fade' />
             <Scene key="upload" component={Upload} animation='fade'/>
             <Scene key="myfilters" component={MyFilters} animation='fade'/>
             <Scene key="camera" component={ TakePhoto } animation='fade' />
+            <Scene key="referral" component={ ReferralSignup } initial={true}  animation='fade' />
           </Scene>
         </Router>
       

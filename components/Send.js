@@ -16,10 +16,12 @@ import {
     AppState,
     Alert,
     Modal,
+    ActivityIndicator
  //   Share
 } from 'react-native';
 
 import LoginModal from './LoginModal';
+import Spinner from './Spinner';
 
 import { Actions } from 'react-native-router-flux';
 
@@ -61,7 +63,8 @@ class Send extends Component {
             title: this.props.filterTitle || "",
             message: this.props.filterMessage || "",
             showLoginModal: false,
-            showReviewModal: false
+            showReviewModal: false,
+            showLoadingModal: false
         }
     }
 
@@ -165,12 +168,16 @@ class Send extends Component {
         // }
     }
 
+        //     if(!this.props.isFinalSubmitting){
+        //   return (<View style={styles.loadingContainer}><Spinner/></View>)
+        // } else {
+        // return 
+
 
     render(){
-        return (
-          <View style={styles.container}>
-
-              <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
+      return(
+        <View style={styles.container}>
+            <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
                 <TouchableOpacity onPress={() => { 
                   this.props.clearProps();
                   Actions.loading({isStartup: false});
@@ -246,6 +253,7 @@ class Send extends Component {
                 </View>
 
             </View>
+
           {this.state.showLoginModal
             ?
             (<LoginModal alert={true} modalVisible={true} toggleModal={() => {this.setState( {showLoginModal: false}) } } />)
@@ -254,12 +262,25 @@ class Send extends Component {
           }
           {this.state.showReviewModal
             ?
-            (<ReviewModal {...this.props} title={ this.state.title } message={this.state.message} modalVisible={true} toggleModal={() => {this.setState( {showReviewModal: false}) } } />)
+            (<ReviewModal {...this.props} 
+                title={ this.state.title } 
+                message={this.state.message} 
+                modalVisible={true} 
+                showLoadingModal={() => {this.setState({showLoadingModal:true})}}
+                toggleModal={() => {this.setState( {showReviewModal: false}) } } />)
             :
             (null)
           }
-          </View>
-            )
+          {this.props.isFinalSubmitting
+              ?
+            (<LoadingModal modalVisible={true} toggleModal={() => {   } } />)
+              :
+            (null)
+          }
+
+
+
+          </View>)          
     }
 }
 
@@ -377,8 +398,9 @@ class ReviewModal extends Component {
                     //  console.log('dataToSend in ReviewModal: ', dataToSend);
 
                       this.props.finalSumbit(dataToSend);
-
+                      this.props.showLoadingModal();
                       this.props.toggleModal();
+
                       this.setState({modalVisible: !this.state.modalVisible});
                     }
                   }>
@@ -397,6 +419,36 @@ class ReviewModal extends Component {
                     <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
                   </TouchableHighlight>   */}
             </View>
+          </View>
+      </Modal>
+    )
+  }
+}
+
+class LoadingModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+
+  render(){
+    return(
+        <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+
+            console.log("Modal has been closed.")
+          }}>
+            <View style={styles.loadingModalContainer}>
+          {/*    <View style={styles.loadingModal}>           
+                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>  */}
+                <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+          {/*    </View>  */}
           </View>
       </Modal>
     )
@@ -499,6 +551,17 @@ const styles = StyleSheet.create({
     bottom: 0, 
     backgroundColor: 'rgba(0,0,0,0.5)'
   },
+  loadingModalContainer: {
+    position: 'absolute', 
+    top: 0, 
+    left: 0, 
+    right: 0, 
+    bottom: 0, 
+    backgroundColor: 'rgba(0,0,0,0.5)',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
   infoModal: {
     position: 'absolute', 
     top: 40, 
@@ -552,7 +615,8 @@ const mapStateToProps = (state) => {
     filterMessage: state.uploadReducer.filterMessage,
     bitlyURL: state.uploadReducer.bitlyURL,
     finalSubmitComplete: state.uploadReducer.finalSubmitComplete,
-    mapPreviewURI: state.uploadReducer.mapPreviewURI   
+    mapPreviewURI: state.uploadReducer.mapPreviewURI,
+    isFinalSubmitting: state.uploadReducer.isFinalSubmitting   
   }
 }
 

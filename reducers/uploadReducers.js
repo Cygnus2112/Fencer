@@ -33,7 +33,8 @@ const initialState = {
   mapModalDismissed: false,
   filterModalDismissed: false,
   newMapRegion: {},
-  mapPreviewURI: null
+  mapPreviewURI: null,
+  isFinalSubmitting: false
 }
 
 const uploadReducer = (state = initialState, action) => {
@@ -89,15 +90,16 @@ const uploadReducer = (state = initialState, action) => {
         filterTitle: action.info.title,
         filterMessage: action.info.message
       })
-    // case ActionTypes.FINAL_SUBMIT_REQUEST:
-    //   return Object.assign({}, state, {
-
-    //   })
+    case ActionTypes.FINAL_SUBMIT_REQUEST:
+      return Object.assign({}, state, {
+        isFinalSubmitting: true
+      })
     case ActionTypes.FINAL_SUBMIT_SUCCESS:
       return Object.assign({}, state, {
         bitlyURL: action.bitlyURL,
         filterID: action.filterID,              // MIGHT NOT NEED THIS
-        finalSubmitComplete: true               //  will need to move this to after text message is sent
+        finalSubmitComplete: true,               //  will need to move this to after text message is sent
+        isFinalSubmitting: false
       })
     case ActionTypes.CLEAR_PROPS_REQUEST:
       return Object.assign({}, state, {

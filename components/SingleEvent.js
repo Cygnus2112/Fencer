@@ -272,9 +272,14 @@ class SingleEventComponent extends Component {
 				Actions.camera({filterURI: this.state.filterURI});
 				console.log('opening camera. time elapsed: ', Date.now() - start);
 
+			setTimeout(() => {
+
 				this.setState({
 					isLoadingFilter: false
 				})
+
+			},50)
+
 
 				clearInterval(this.checkTime);
 			}
@@ -423,11 +428,11 @@ class LoadingModal extends Component {
 
           	console.log("Modal has been closed.")
           }}>
-            <View style={styles.modalContainer}>
+            <View collapsable={false} style={styles.modalContainer}>
           {/*    <View style={styles.loadingModal}>           
 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>	*/}
 	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
-	        {/*    </View>	*/}
+	      {/*     </View>	*/}
 	        </View>
 	    </Modal>
 		)
@@ -706,21 +711,21 @@ const styles = StyleSheet.create({
 	    borderRadius:10,
 	    padding: 10
   	},
-  	  infoModal: {
-    position: 'absolute', 
-    top: 60, 
-    left:30, 
-    right: 30, 
-    bottom: 60, 
-    justifyContent: 'center', 
-    alignItems: 'flex-start', 
-   // backgroundColor:'white',
-   backgroundColor: 'white',
-    borderWidth:1, 
-    borderColor:'black', 
-    borderRadius:10,
-    padding: 5
-  }
+  	infoModal: {
+	    position: 'absolute', 
+	    top: 60, 
+	    left:30, 
+	    right: 30, 
+	    bottom: 60, 
+	    justifyContent: 'center', 
+	    alignItems: 'flex-start', 
+	   // backgroundColor:'white',
+	    backgroundColor: 'white',
+	    borderWidth:1, 
+	    borderColor:'black', 
+	    borderRadius:10,
+	    padding: 5
+    }
 })
 
 const mapStateToProps = (state) => {

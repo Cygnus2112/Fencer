@@ -29,6 +29,7 @@ class LoadingComponent extends Component{
 	}
 	componentDidMount(){
     console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
+console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
 
     if(!this.props.isReferral){
 
@@ -37,9 +38,7 @@ class LoadingComponent extends Component{
 
        // console.log(`Deep Link URL: ${e.url}`);
 
-      //     // if(!this.props.isLoggedIn){
-      //         // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
-      //    // } else {
+
 
         if(e.url !== currUrl){
           currUrl = e.url;
@@ -47,14 +46,19 @@ class LoadingComponent extends Component{
 
           for(filter in parsed){
             console.log('filter ID from url: ', parsed[filter]);
-            this.props.addFilter({filter: parsed[filter], isSearch: false})
+
+            if(!this.props.isLoggedIn){
+             // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+            } else {
+
+              this.props.addFilter({filter: parsed[filter], isSearch: false})
+            }
+
           }
 
           //  REMOVE EVENT LISTENER
          // Actions.loading();    //  calling in Actions instead
         }
-
-
 
       });
 

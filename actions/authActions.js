@@ -4,6 +4,8 @@ import {
 
 let utils = require('../utils');
 
+import { addFilterByID } from './filterActions';
+
 import { Actions } from 'react-native-router-flux';
 
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
@@ -37,8 +39,19 @@ export const signup = (dispatch,info) => {
           if(response.token){
         	  AsyncStorage.setItem('fencer-token', response.token);
         	  AsyncStorage.setItem('fencer-username', info.username);
+
+            if(info.filterID){
+              dispatch(signupSuccess({"token" : response.token, "username": info.username}));
+
+              // call Actions.myfilters()
+              // call addFilterByID(dispatch, {filterID: filterID, isSearch: true})
+
+
+            } else{
+              dispatch(signupSuccess({"token" : response.token, "username": info.username}));
+            }
           	  
-            dispatch(signupSuccess({"token" : response.token, "username": info.username}));
+
 
           } else {
             console.log('response when user or email already taken: ', response);
@@ -130,8 +143,22 @@ export const login = (dispatch, info) => {
                   welcomeModalDismissed: response.welcomeModalDismissed
                 }
 
-                dispatch(authSuccess(data));
-                dispatch(loginSuccess({"token":response.token, "username": info.username}));
+                if(info.filterID){
+                  dispatch(authSuccess(data));
+                  dispatch(loginSuccess({"token":response.token, "username": info.username}));
+
+              // call Actions.myfilters()
+              // call addFilterByID(dispatch, {filterID: filterID, isSearch: true})
+
+
+                } else{
+
+                  dispatch(authSuccess(data));
+                  dispatch(loginSuccess({"token":response.token, "username": info.username}));
+
+                }
+
+
             
               })
               .catch(err => {

@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
-import { 
-  Modal, 
-  Text, 
-  TouchableHighlight, 
-  TouchableOpacity,
-  View,
-  TextInput,
-  StyleSheet,
-  Alert
+
+import {
+    View,
+    Image,
+    Text,
+    StyleSheet,
+    TouchableHighlight,
+    TouchableOpacity,
+    Dimensions,
+    Alert,
+    TextInput
 } from 'react-native';
 
 import Button from 'react-native-button';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
+import { Actions } from 'react-native-router-flux';
+const { width, height } = Dimensions.get('window');
+const screenWidth = width;
+
 import * as authActions from '../actions/authActions';
 
 const _validateEmail = (email) => {
@@ -21,63 +26,40 @@ const _validateEmail = (email) => {
   return regExString.test(email);
 }
 
-class LoginModal extends Component {
-  constructor(props){
-    super(props);
+class ReferralSignup extends Component {
+    constructor(props){
+        super(props);
 
-    this.toggleSignup = this.toggleSignup.bind(this);
+        this.toggleSignup = this.toggleSignup.bind(this);
 
-    this.handleSignIn = this.handleSignIn.bind(this);
-    this.handleSignUp = this.handleSignUp.bind(this);
+        this.handleSignIn = this.handleSignIn.bind(this);
+        this.handleSignUp = this.handleSignUp.bind(this);
 
-    this.state = {
-      modalVisible: this.props.modalVisible,
-      showSignup: false,
-      username: "",
-      password: "",
-      errorMsg: "",
-      signupEmail: "",
-      signupUsername: "",
-      signupPassword: ""
+        this.state = {
+          showSignup: false,
+          username: "",
+          password: "",
+          errorMsg: "",
+          signupEmail: "Email",
+          signupUsername: "",
+          signupPassword: "",
+          changeTextColorBecauseStupidBug: false
+        }
+
     }
-  }
 
-  componentDidMount(){
-   // console.log('this.props in LoginModal componentDidMount: ', this.props);
-  }
-
-  componentWillReceiveProps(newProps){
-    if(newProps.username !== this.props.username){
-      this.setState({
-        modalVisible: !this.state.modalVisible
-      })
-      this.props.toggleModal();
+    toggleSignup(){
+        this.setState({
+          showSignup: !this.state.showSignup,
+          username: "",
+          password: "",
+          errorMsg: "",
+          signupEmail: "",
+          signupUsername: "",
+          signupPassword: "",
+          changeTextColorBecauseStupidBug: false
+        })
     }
-    if(newProps.authErrorMsg.length){
-      // this.setState({
-      //   errorMsg: newProps.authErrorMsg
-      // })
-      Alert.alert('Oops!', newProps.authErrorMsg, [{text: 'OK', onPress: () => {
-            // clear prop
-            this.props.clearError();
-
-            console.log('OK Pressed!');
-          }
-        }])
-    }
-  }
-
-  toggleSignup(){
-    this.setState({
-      showSignup: !this.state.showSignup,
-      username: "",
-      password: "",
-      errorMsg: "",
-      signupEmail: "",
-      signupUsername: "",
-      signupPassword: ""
-    })
-  }
 // <View style={{position: 'absolute', top: 30, left: 30, right: 30, bottom: 30}}>
   
   handleSignIn(){
@@ -89,7 +71,8 @@ class LoginModal extends Component {
     } else {
       this.props.submitLogin({
         username: this.state.username,
-        password: this.state.password
+        password: this.state.password,
+        filterID: this.props.filterID
       })
     }
   }
@@ -119,33 +102,35 @@ class LoginModal extends Component {
       this.props.submitSignup({ 
         username: this.state.signupUsername,
         password: this.state.signupPassword,
-        email: this.state.signupEmail
+        email: this.state.signupEmail,
+        filterID: this.props.filterID
       })
     }
   }
 
+    render(){
+        return(<View style={styles.modalContainer}>
 
-  render() {
-    return (
-      
-          <Modal
-            animationType={"slide"}
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {}}
-            >
+                    <View style={styles.fakeNavBar}>
+                        <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+                            <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+                        </Image>
+                    </View>
+
+
+                    <View style={styles.welcome}>
+                        <Text style={styles.welcomeText}>
+                            Welcome!
+                        </Text>
+                        <Text style={styles.instructions}>
+                            Please sign in to activate your new geofilter.
+                        </Text>
+
+                    </View>
 
             {!this.state.showSignup
                 ?
-              (<View style={styles.modalContainer}>
-                  <View style={styles.modalInterior}>
-                    {this.props.alert &&
-                      (<View style={styles.alert} >
-                        <Text style={{fontSize: 18, color: 'red',textAlign: 'center'}} >You must be signed in to continue.</Text>
-                      </View>
-
-                        )
-                    }
+              (<View style={styles.modalInterior}>
 
                     <View style={!this.props.alert ? styles.username : [styles.username,{top: 70}]}>
                       <TextInput placeholder="Username" style={styles.textInput} 
@@ -172,12 +157,6 @@ class LoginModal extends Component {
                     </View>
                   </View>
 
-          {/*          <View style={ styles.error } >  
-                        <Text style={ styles.errorMsg }>
-                          {this.state.errorMsg}
-                        </Text>
-                    </View>     */}
-
                   <View style={!this.props.alert ? styles.signupContainer : [styles.signupContainer, {top: 270}]}> 
                     <View style={ styles.signup }> 
                       <TouchableOpacity onPress={ () => { this.toggleSignup() } } style={styles.button} >
@@ -193,33 +172,40 @@ class LoginModal extends Component {
                     </View>
                   </View>
 
-                    <View style={styles.dismiss}>                  
-                      <TouchableHighlight 
-                        style={styles.dismissButton}
-
-                        onPress={() => {
-                          this.setState({
-                            modalVisible: !this.state.modalVisible
-                          })
-                          this.props.toggleModal();
-                      }}>
-                        <Text style={{color: 'white'}}>Close</Text>
-                        
-                      </TouchableHighlight>
-                    </View>
-
-                </View>
-              </View>)
+                </View>)
 
                   :
-              (<View style={styles.modalContainer}>
-                <View style={styles.modalInterior}>
+              (<View style={styles.modalInterior}>
                   <View style={ styles.username }>
-                    <TextInput placeholder="Email" style={styles.input} 
+                  {this.state.changeTextColorBecauseStupidBug
+                    ?
+                    (<TextInput placeholder="Email" style={styles.textInput} 
                       autoCorrect={false}
                       onChangeText={(signupEmail) => this.setState({signupEmail})}
-                      value={this.state.signupEmail} />
+                      value={this.state.signupEmail} />)
+                    :
+                    (<TextInput placeholder="Email" style={[styles.textInput,{color: 'silver'}]} 
+                      onFocus={() => {
+                        this.setState({
+                            signupEmail: '',
+                            changeTextColorBecauseStupidBug: true
+                        })
+                      }}
+                      autoCorrect={false}
+                      onChangeText={(signupEmail) => { 
+                        if(!this.state.changeTextColorBecauseStupidBug){
+                            this.setState({
+                              changeTextColorBecauseStupidBug: true                              
+                            })
+
+                        }
+                        this.setState({signupEmail});  
+                      }}
+                      value={this.state.signupEmail} />)
+                  }
+
                   </View>
+
                   <View style={ styles.password }>
                     <TextInput placeholder="Username" style={styles.textInput} 
                       onChangeText={(signupUsername) => this.setState({signupUsername})}
@@ -243,12 +229,6 @@ class LoginModal extends Component {
                   </View>
                 </View>
 
-           {/*          <View style={ styles.error } >  
-                      <Text style={ styles.signupErrorMsg }>
-                        {this.state.signupErrorMsg}
-                      </Text>
-                  </View>   */}
-
                 <View style={ [styles.signupContainer, {top: 290}] }> 
                   <View style={ styles.signup }> 
                     <TouchableOpacity onPress={ ()=>{ this.toggleSignup() } } style={styles.button} >
@@ -264,28 +244,13 @@ class LoginModal extends Component {
                   </View>
                 </View>
 
-                  <View style={styles.dismiss}>                  
-                    <TouchableHighlight 
 
-                      style={styles.dismissButton}
-                      onPress={() => {
-                        
-                        this.setState({
-                          modalVisible: !this.state.modalVisible
-                        })
-                        this.props.toggleModal();
-                    }}>
-                      <Text style={{color: 'white'}}>Close</Text>
-                      
-                    </TouchableHighlight>
-                  </View>
-                </View>
-              </View>)
+                </View>)
+
             }
-          </Modal>
-      
-    );
-  }
+            </View>)
+
+    }
 }
 
 const styles = StyleSheet.create({
@@ -299,10 +264,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center' 
-   // backgroundColor:'white', 
-   // margin: 5, 
-   // marginTop:50, 
-   // borderRadius: 4
   },
   username: {
     position: 'absolute',
@@ -314,8 +275,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center', 
     backgroundColor:'white', 
-   // margin: 5, 
-   // marginTop:50, 
     borderRadius: 4
   },
   password: {
@@ -366,21 +325,33 @@ const styles = StyleSheet.create({
     left: 0, 
     right: 0, 
     bottom: 0, 
-    backgroundColor: 'rgba(0,0,0,0.5)'
+    backgroundColor: 'white'
   },
   modalInterior: {
+    position: 'absolute', 
+    top: 170, 
+    left:40, 
+    right: 40, 
+    bottom: 40, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: 'white',
+    // borderWidth:1, 
+    // borderColor:'black', 
+    borderRadius:10
+  },
+  welcome: {
     position: 'absolute', 
     top: 60, 
     left:40, 
     right: 40, 
-    bottom: 60, 
+    height: 100,
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: 'white',
-    borderWidth:1, 
-    borderColor:'black', 
-    borderRadius:10,
-   // padding: 10
+    // borderWidth:1, 
+    // borderColor:'black', 
+    borderRadius:10
   },
   container:{
     position: 'absolute', 
@@ -395,7 +366,6 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center'
-
   },
   textInput: {
     backgroundColor: 'white', 
@@ -404,6 +374,7 @@ const styles = StyleSheet.create({
     width: 200,
     fontSize: 18,
     textAlign: 'center',
+    color: 'blue'
   },
   signinButtonContainer: {
     position: 'absolute',
@@ -417,7 +388,6 @@ const styles = StyleSheet.create({
   signinButtonBox: {
     elevation:3,
     padding:10, 
-  //  margin: 5,
     height:45, 
     width: 200*.7, 
     overflow:'hidden', 
@@ -455,16 +425,11 @@ const styles = StyleSheet.create({
     right: 30,
     flexDirection: 'row',
     justifyContent: 'center',
-    alignItems: 'center',
-    // borderColor: 'black',
-    // borderWidth: 1
+    alignItems: 'center'
   },
   signup: {
-  //  height: 100,
     flexDirection: 'column',
-    justifyContent: 'center',
-    // borderColor: 'black',
-    // borderWidth: 1
+    justifyContent: 'center'
   },
   header: {
     justifyContent: 'center',
@@ -477,6 +442,13 @@ const styles = StyleSheet.create({
     fontSize: 16,
     marginBottom: 5
   },
+  welcomeText: { 
+    fontFamily: 'RobotoCondensed-Regular',
+    textAlign: 'center',
+    color: '#333333',
+    fontSize: 24,
+    marginBottom: 10,
+  },
   iambold: {
     textAlign: 'center',
     color: '#333333',
@@ -484,54 +456,32 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold'
   },
-  input: {
-   //  backgroundColor: 'white', 
-   //  margin: 3, 
-   //  // padding: 10,
-   //  padding: 5,
-   // // height: 45, 
-   //  width: 200*.7,
-   //  fontSize: 18,
-   //  textAlign: 'center'
-    backgroundColor: 'white', 
-    margin: 5, 
-    padding: 5,
-    width: 200,
-    fontSize: 18,
-    textAlign: 'center',
+  fakeNavBar:{
+    height: 50,
+    width: screenWidth,
+    backgroundColor: 'blue',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    elevation: 4
   }
-
 })
 
-const mapStateToProps = (state) => {
+// const mapStateToProps = (state) => {
+//   return {
 
-  return {
-    currentView: state.uploadReducer.currentView,
-   // selectDatesComplete: state.uploadReducer.selectDatesComplete,
-    username: state.authReducer.username,
-    authErrorMsg: state.authReducer.authErrorMsg
-   }
-}
+//   }
+// }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    submitSignup: (info) => {
-      authActions.signup(dispatch, info);
-    },
-    submitLogin: (info) => {
-      authActions.login(dispatch, info);
-    },
-    clearError: () => {
-      authActions.clearError(dispatch);
+    return {
+        submitSignup: (info) => {
+            authActions.signup(dispatch, info);
+        },
+        submitLogin: (info) => {
+            authActions.login(dispatch, info);
+        }
     }
-
-  }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
-
-
-
-
-
-
+export default connect(null, mapDispatchToProps)(ReferralSignup);
