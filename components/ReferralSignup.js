@@ -48,6 +48,19 @@ class ReferralSignup extends Component {
 
     }
 
+    componentWillReceiveProps(newProps){
+        if(newProps.authErrorMsg.length){
+
+            Alert.alert('Oops!', newProps.authErrorMsg, [{text: 'OK', onPress: () => {
+                // clear prop
+                this.props.clearError();
+
+                console.log('OK Pressed!');
+              }
+            }])
+        }
+    }
+
     toggleSignup(){
         this.setState({
           showSignup: !this.state.showSignup,
@@ -466,12 +479,12 @@ const styles = StyleSheet.create({
     elevation: 4
   }
 })
-
-// const mapStateToProps = (state) => {
-//   return {
-
-//   }
-// }
+ 
+const mapStateToProps = (state) => {
+  return {
+    authErrorMsg: state.authReducer.authErrorMsg
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
     return {
@@ -480,8 +493,11 @@ const mapDispatchToProps = (dispatch) => {
         },
         submitLogin: (info) => {
             authActions.login(dispatch, info);
+        },
+        clearError: () => {
+            authActions.clearError(dispatch);
         }
     }
 }
 
-export default connect(null, mapDispatchToProps)(ReferralSignup);
+export default connect(mapStateToProps, mapDispatchToProps)(ReferralSignup);

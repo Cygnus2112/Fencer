@@ -43,8 +43,8 @@ export const signup = (dispatch,info) => {
             if(info.filterID){
               dispatch(signupSuccess({"token" : response.token, "username": info.username}));
 
-              // call Actions.myfilters()
-              // call addFilterByID(dispatch, {filterID: filterID, isSearch: true})
+           //   Actions.myfilters();
+              addFilterByID(dispatch, {filter: info.filterID, isReferral: true});
 
 
             } else{
@@ -110,10 +110,10 @@ export const login = (dispatch, info) => {
       return response.json();
     })
     .then(response => {
-      console.log('response in login: ', response);
+     // console.log('response in login: ', response);
       try {
         if(response.token){        	
-          console.log('response.token: ', response.token);
+       //   console.log('response.token: ', response.token);
           AsyncStorage.setItem('fencer-username', info.username,()=>{
             AsyncStorage.setItem('fencer-token', response.token,()=>{
               return fetch(utils.userDataURL +"?username="+info.username, {    
@@ -131,10 +131,12 @@ export const login = (dispatch, info) => {
                   return response.json();
               })
               .then(response => {
-                console.log('2nd level response in auth login getUserData: ');
-                console.log(response);
+                //console.log('2nd level response in auth login getUserData: ');
+               // console.log(response);
 
                 console.log('-------------------------');
+
+                console.log('response.myFilters: ', response.myFilters);
 
                 let data = {
                   username: response.username,
@@ -144,14 +146,14 @@ export const login = (dispatch, info) => {
                 }
 
                 if(info.filterID){
+
                   dispatch(authSuccess(data));
                   dispatch(loginSuccess({"token":response.token, "username": info.username}));
 
-              // call Actions.myfilters()
-              // call addFilterByID(dispatch, {filterID: filterID, isSearch: true})
+                 // Actions.myfilters()
+                  addFilterByID(dispatch, {filter: info.filterID, isReferral: true})
 
-
-                } else{
+                } else {
 
                   dispatch(authSuccess(data));
                   dispatch(loginSuccess({"token":response.token, "username": info.username}));

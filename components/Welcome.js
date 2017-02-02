@@ -67,8 +67,9 @@ class WelcomeComponent extends Component{
   }
 
   componentDidMount(){
-    console.log('this.props.username: ', this.props.username);
-    console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
+   // console.log('this.props.username: ', this.props.username);
+   // console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
+   console.log('this.props.searchError in Welcome: ', this.props.searchError);
 
     if(!this.props.username && !this.props.welcomeModalDismissed){
       this.setState({ infoPressed: true});
@@ -76,11 +77,37 @@ class WelcomeComponent extends Component{
 
     if(this.props.isReferral){
       setTimeout(() => {
-        Alert.alert('New Geofilter Added!', 'Tap My Filters to acces your new geofilter.', [{text: 'OK', onPress: () => console.log('OK Pressed!')}])
+        Alert.alert('New Geofilter Added!', 'Tap My Filters to access your new geofilter.', 
+          [{text: 'OK', onPress: () => { 
+              this.props.clearNewFilter();
+              console.log('OK Pressed!');
+            }}])
     
 
       },300)
      
+    }
+
+    if(this.props.searchError){
+
+      let errorCode;
+
+      if(this.props.searchErrorCode === 'NOTFOUND') {
+        errorCode = 'Geofilter Not Found';
+      } else if(this.props.searchErrorCode === 'ALREADYADDED'){
+        errorCode = 'Geofilter Already Added';
+      } else {
+        errorCode = 'Geofilter Expired';
+      }
+
+      Alert.alert(errorCode, this.props.searchErrorMessage, [{text: 'OK', onPress: () => {
+            // clear prop
+
+            this.props.clearSearchError();
+
+            console.log('OK Pressed!');
+          }
+        }])
     }
 
 
@@ -368,7 +395,10 @@ const mapStateToProps = (state) => {
     bitlyURL: state.uploadReducer.bitlyURL,
     finalSubmitComplete: state.uploadReducer.finalSubmitComplete,
     myFilters: state.authReducer.myFilters, 
-    welcomeModalDismissed: state.authReducer.welcomeModalDismissed
+    welcomeModalDismissed: state.authReducer.welcomeModalDismissed,
+    searchError: state.filterReducer.searchError,
+    searchErrorCode: state.filterReducer.searchErrorCode,
+    searchErrorMessage: state.filterReducer.searchErrorMessage
   }
 }
 
@@ -385,6 +415,12 @@ const mapDispatchToProps = (dispatch) => {
     },
     dismissWelcomeModal: () => {             //  I only want the Welcome modal to automatically popup once 
       authActions.dismissWelcomeModal(dispatch);
+    },
+    clearSearchError: () => {
+      filterActions.clearSearchError(dispatch)
+    },
+    clearNewFilter: () => {
+      filterActions.clearNewFilter(dispatch)
     }
   }
 }

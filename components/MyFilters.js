@@ -108,17 +108,8 @@ class MyFiltersComponent extends Component {
           return startTime1 - startTime2;
         }
 
-
-
       })
-      // .sort((f1,f2)=>{
 
-      //   let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-      //   let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
-
-
-      //   return endTime1 - endTime2;
-      // })
 
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
@@ -192,14 +183,6 @@ class MyFiltersComponent extends Component {
         }
 
       })
-      // .sort((f1,f2)=>{
-
-        // let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-        // let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
-
-
-      //   return endTime1 - endTime2;
-      // })
 
 			const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 			this.setState({
@@ -207,6 +190,25 @@ class MyFiltersComponent extends Component {
 			})
 
 		}
+
+    // if(newProps.newFilterAdded && newProps.newFilterAdded !== this.props.newFilterAdded && this.props.isReferral){
+
+    //   console.log('newProps.newFilterAdded: ', newProps.newFilterAdded);
+
+    //   Alert.alert('Success!', "A new Geofilter has been added to My Filters.", [{text: 'OK', onPress: () => {
+    //         // clear prop
+
+    //         this.props.reloadFilters(newProps.newFilterAdded);
+    //         this.props.clearNewFilter();
+
+    //         console.log('OK Pressed!');
+    //       }
+    //     }])
+
+    // }
+
+
+
 	}
 
 	render(){
@@ -413,7 +415,8 @@ class SearchModal extends Component {
           }
         }])
 
-    } 
+    }
+
   }
 
   handleSearch(){
@@ -630,7 +633,7 @@ const styles = StyleSheet.create({
   	justifyContent: 'flex-start',
   	alignItems: 'center',
   	elevation: 4
-  },
+  }, 
   searchBox: {
     height: 45,
     width: screenWidth - 120,
@@ -648,8 +651,8 @@ const mapStateToProps = (state) => {
     filtersCreated: state.authReducer.filtersCreated,
     username: state.authReducer.username,
     isLoadingAllFilters: state.filterReducer.isLoadingAllFilters,
-    searchError: state.filterReducer.searchError,
     newFilterAdded: state.filterReducer.newFilterAdded,
+    searchError: state.filterReducer.searchError,
     searchErrorCode: state.filterReducer.searchErrorCode,
     searchErrorMessage: state.filterReducer.searchErrorMessage
   }

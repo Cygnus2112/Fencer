@@ -17,8 +17,8 @@ const initialState = {
   isLoggedIn: false,
   username: '',
   authErrorMsg: '',
-  myFilters: null,
-  filtersCreated: null,
+  myFilters: [],
+  filtersCreated: [],
   isDeletingFilter: false,
   welcomeModalDismissed: false
 }
@@ -64,7 +64,7 @@ const authReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         isLoggedIn: false,
         username: '',
-        myFilters: null,
+        myFilters: [],
         filtersCreated: null
       })
     case ActionTypes.AUTH_REQUEST:
@@ -100,7 +100,11 @@ const authReducer = (state = initialState, action) => {
         authErrorMsg: ''
       })
     case ActionTypes.ADD_TO_MYFILTERS:
-      let allFilters = state.myFilters.slice();
+      console.log('state in authReducers: ', state);
+      let allFilters = [];
+      if(state.myFilters.length > 0){
+        allFilters = state.myFilters.slice();
+      }
     //  console.log('action.filter: ', action.filter);
       allFilters.push(action.filter);
     //  console.log('allFilters: ', allFilters);

@@ -178,6 +178,7 @@ const loadFilterImageSuccess = (filterImageData) => {
 
 
 export const addFilterByID = (dispatch, data) => {
+  console.log('data in addFilterByID: ', data);
   AsyncStorage.getItem("fencer-token").then((token) => {
     if(token){
       axios({
@@ -185,7 +186,8 @@ export const addFilterByID = (dispatch, data) => {
         url: utils.myFiltersURL,
         data: {
           filterID: data.filter,
-          isSearch: data.isSearch
+          isSearch: data.isSearch,
+          isReferral: data.isReferral
         },
         headers: {
           'Accept': 'application/json',
@@ -201,14 +203,27 @@ export const addFilterByID = (dispatch, data) => {
 
             dispatch(searchError('NOTFOUND', resp.data['NOTFOUND']));
 
+            if(!data.isSearch){
+              Actions.loading();        
+            }
 
           } else if(resp.data['ALREADYADDED']) {
 
+            console.log('filter alread added. dispatching error...');
+
             dispatch(searchError('ALREADYADDED', resp.data['ALREADYADDED']));
+
+            if(!data.isSearch){
+              Actions.loading();        
+            }
 
           } else if(resp.data['EXPIRED']) {
 
             dispatch(searchError('EXPIRED', resp.data['EXPIRED']));
+
+            if(!data.isSearch){
+              Actions.loading();        
+            }
 
           } else if(data.isSearch){
 

@@ -10,6 +10,7 @@ import {
 } from 'react-native';
 
 import Spinner from './Spinner';
+import ReferralSignup from './ReferralSignup';
 
 const queryString = require('query-string');
 
@@ -29,38 +30,45 @@ class LoadingComponent extends Component{
 	}
 	componentDidMount(){
     console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
-console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
+    console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
 
-    if(!this.props.isReferral){
+    if(this.props.isReferral){
+      console.log('this.props.isReferral in Loading: ', this.props.isReferral);
+    }
 
-      Linking.addEventListener('url', (e) => {
-        console.log('deep link url received in Loading: ', e.url);
+ //   if(!this.props.isReferral){
 
-       // console.log(`Deep Link URL: ${e.url}`);
+  //    console.log('this.props.isReferral is UNDEFINED');
 
+      // Linking.addEventListener('url', (e) => {
+      //   console.log('deep link url received in Loading: ', e.url);
 
+      //  // console.log(`Deep Link URL: ${e.url}`);
 
-        if(e.url !== currUrl){
-          currUrl = e.url;
-          const parsed = queryString.parse(e.url);
+      //   if(e.url !== currUrl){
+      //     currUrl = e.url;
+      //     const parsed = queryString.parse(e.url);
 
-          for(filter in parsed){
-            console.log('filter ID from url: ', parsed[filter]);
+      //     for(filter in parsed){
+      //       console.log('filter ID from url: ', parsed[filter]);
 
-            if(!this.props.isLoggedIn){
-             // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
-            } else {
+      //       if(!this.props.isLoggedIn){
+      //        // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
 
-              this.props.addFilter({filter: parsed[filter], isSearch: false})
-            }
+      //         Actions.referral({filterID: parsed[filter]})
 
-          }
+      //       } else {
 
-          //  REMOVE EVENT LISTENER
-         // Actions.loading();    //  calling in Actions instead
-        }
+      //         this.props.addFilter({filter: parsed[filter], isSearch: false})
+      //       }
 
-      });
+      //     }
+
+      //     //  REMOVE EVENT LISTENER
+      //    // Actions.loading();    //  calling in Actions instead
+      //   }
+
+      // });
 
  //   setTimeout(()=>{
 
@@ -69,21 +77,21 @@ console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
 
 //    },5000);
 
-    } else {
+ //   } else {
 
-      this.props.checkAuth(this.props.isReferral);
+  //    this.props.checkAuth(this.props.isReferral);
 
-    }
+   // }
 	}
 
-  componentWillReceiveProps(nextProps){
-   // console.log('componentWillReceiveProps called in Loading');
+  // componentWillReceiveProps(nextProps){
+  //  // console.log('componentWillReceiveProps called in Loading');
 
-    if(nextProps.isReferral){
-      console.log('nextProps.isReferral in Loading: ', nextProps.isReferral);
+  //   if(nextProps.isReferral){
+  //     console.log('nextProps.isReferral in Loading: ', nextProps.isReferral);
 
-    }
-  }
+  //   }
+  // }
 
 	render(){
 		

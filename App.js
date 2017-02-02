@@ -1,6 +1,6 @@
 
 import React, { Component } from 'react';
-import {Scene, Router} from 'react-native-router-flux';
+import {Scene, Router, Actions} from 'react-native-router-flux';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -20,18 +20,59 @@ import Success from './components/Success';
 
 import ReferralSignup from './components/ReferralSignup';
 
+import { Linking } from 'react-native';
+const queryString = require('query-string');
+
+let currUrl;
+
 class AppComponent extends Component {
+  constructor(){
+    super();
+  }
+
+  componentDidMount(){
+    Linking.addEventListener('url', (e) => {
+        console.log('deep link url received in Loading: ', e.url);
+
+       // console.log(`Deep Link URL: ${e.url}`);
+
+        if(e.url !== currUrl){
+          currUrl = e.url;
+          const parsed = queryString.parse(e.url);
+
+          for(filter in parsed){
+            console.log('filter ID from url: ', parsed[filter]);
+
+            if(!this.props.isLoggedIn){
+             // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+
+              Actions.referral({filterID: parsed[filter]})
+
+            } else {
+
+              this.props.addFilter({filter: parsed[filter], isSearch: false})
+            }
+
+          }
+
+          //  REMOVE EVENT LISTENER
+         // Actions.loading();    //  calling in Actions instead
+        }
+
+      });
+  }
+
   render() {
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading}              type='reset' animation='fade' isStartup='true' />
+            <Scene key="loading" component={Loading}      initial={true}        type='reset' animation='fade' isStartup='true' />
             <Scene key="success" component={Success} type='reset' animation='fade' />
             <Scene key="main" component={Main} type='reset' animation='fade' />
             <Scene key="upload" component={Upload} animation='fade'/>
             <Scene key="myfilters" component={MyFilters} animation='fade'/>
             <Scene key="camera" component={ TakePhoto } animation='fade' />
-            <Scene key="referral" component={ ReferralSignup } initial={true}  animation='fade' />
+            <Scene key="referral" component={ ReferralSignup }      animation='fade' />
           </Scene>
         </Router>
       
@@ -39,27 +80,23 @@ class AppComponent extends Component {
   }
 }
 
-// const mapStateToProps = (state) => {
-// 	console.log('state.authReducer in Main: ', state.authReducer)
-//   return {
-//   	isLoggedIn: state.authReducer.isLoggedIn,
-//   	// authErrorMsg: state.authReducer.authErrorMsg,
-//   	// username: state.authReducer.username,
-//   	// isFetchingAuth: state.authReducer.isFetchingAuth,
-//   	//    currentPosition: state.filterReducer.currentPosition,
-//     isUpdatingPosition: state.filterReducer.isUpdatingPosition
-
-//   }
-// }
+const mapStateToProps = (state) => {
+  return {
+  	isLoggedIn: state.authReducer.isLoggedIn
+  }
+}
 
 const mapDispatchToProps = (dispatch) => {
   return {
   	authActions: bindActionCreators(authActions, dispatch),
     filterActions: bindActionCreators(filterActions, dispatch),
-    uploadActions: bindActionCreators(uploadActions, dispatch)
+    uploadActions: bindActionCreators(uploadActions, dispatch),
+    addFilter: (data) => {
+      filterActions.addFilterByID(dispatch, data)
+    }
   }
 }
 
-const App = connect(null, mapDispatchToProps)(AppComponent);
+const App = connect(mapStateToProps, mapDispatchToProps)(AppComponent);
 
 export default App;
