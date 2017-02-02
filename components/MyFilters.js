@@ -15,7 +15,8 @@ import {
     Modal,
     TextInput,
     Alert,
-    BackAndroid
+    BackAndroid,
+    ScrollView 
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -25,7 +26,8 @@ import { Actions } from 'react-native-router-flux';
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
 
-import SingleEvent from './SingleEvent'
+import SingleEvent from './SingleEvent';
+import InfoModal from './MyFiltersInfoModal';
 
 const { width, height } = Dimensions.get('window');
 let screenWidth = width;
@@ -61,7 +63,8 @@ class MyFiltersComponent extends Component {
       currentPosition: this.props.currentPosition,
 			dataSource: ds.cloneWithRows( [] ),
       searchPressed: false,
-      searchError: false
+      searchError: false,
+      infoPressed: false
 		}
 	}
 
@@ -257,8 +260,10 @@ class MyFiltersComponent extends Component {
                 		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
               	</View>
               	<View style={{width: 30, marginRight: 15}}>
+                  <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
                 		<Icon name="info" size={30} color="#0c12ce"/>
-              	</View>
+              	 </TouchableOpacity>
+                </View>
           	</View>
           	  <View style={styles.eventListContainer}>
               	<ListView
@@ -312,6 +317,12 @@ class MyFiltersComponent extends Component {
                   <Text style={{fontSize: 16,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center', textDecorationLine: 'underline'}} >Tap here to add by ID</Text>
                 </TouchableOpacity>
               </View>
+      {this.state.infoPressed
+        ?
+      (<InfoModal modalVisible={true} toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+        :
+      (null)
+      }    
         </View>)
      }
         
@@ -499,7 +510,30 @@ class SearchModal extends Component {
 
 
 
+
+
 const styles = StyleSheet.create({
+  modalScroll: {
+    paddingBottom: 5,
+    backgroundColor:'white',
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
   placeholder: {
     fontFamily: 'RobotoCondensed-Regular',
     fontSize: 18
