@@ -31,8 +31,39 @@ class AppComponent extends Component {
   }
 
   componentDidMount(){
+    Linking.getInitialURL().then((url) => {
+      if (url) {
+        console.log('Initial url is: ' + url   );             //   WILL NEED TO CHANGE UPON SWITCH TO FENCER.ME URL SCHEME
+        console.log('url sliced: ' + url.slice(url.length-9, url.length)   );
+
+
+        if(url !== currUrl){
+          currUrl = url;
+
+          const filterID = url.slice(url.length-9, url.length) 
+
+
+            console.log('filter ID from getInitialUrl: ', filterID );
+
+            if(!this.props.isLoggedIn){
+             // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
+
+              Actions.referral({ filterID: filterID })
+
+            } else {
+
+              this.props.addFilter({filter: filterID, isSearch: false})
+            }
+        }
+
+
+
+      }
+      }).catch(err => console.error('An error occurred with Linking.getInitialURL: ', err));
+
+
     Linking.addEventListener('url', (e) => {
-        console.log('deep link url received in Loading: ', e.url);
+        console.log('deep link url received in App component: ', e.url);
 
        // console.log(`Deep Link URL: ${e.url}`);
 
@@ -63,10 +94,17 @@ class AppComponent extends Component {
   }
 
   render() {
+    console.log('currUrl: ', currUrl);
+    setTimeout(()=>{
+      console.log('currUrl (one second later): ', currUrl);
+      console.log('!currUrl (one second later): ', !currUrl);
+      console.log('!!currUrl (one second later): ', !!currUrl);
+    },1000);
+
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading}      initial={true}        type='reset' animation='fade' isStartup='true' />
+            <Scene key="loading" component={Loading} initial={ !currUrl }        type='reset' animation='fade' isStartup='true' />
             <Scene key="success" component={Success} type='reset' animation='fade' />
             <Scene key="main" component={Main} type='reset' animation='fade' />
             <Scene key="upload" component={Upload} animation='fade'/>
