@@ -232,9 +232,8 @@ class SingleEventComponent extends Component {
 	handleShare(){
 		let shareText = {
                 //  title: "React Native",
-            message: "Here is your new Fencer filter: " + this.props.title + " ",
-            url: this.props.bitlyURL,
-            subject: "Share Link" //  for email
+			message: "Hi! I've created a geofilter I wanted to share with you:\n" + this.props.title + "\n" + this.props.bitlyURL + "\nTo access it, first download the Fencer app from the Google Play Store (play.google.com/store/apps/details?id=com.fencer), then open the enclosed link.",
+			subject: "You've Got a New Geofilter!" 
         };
 
         Share.open(shareText)

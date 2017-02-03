@@ -484,7 +484,7 @@ class InfoModal extends Component {
               <View style={styles.infoModal}>
                 <ScrollView contentContainerStyle={styles.infoModalScroll}>
 
-                  <Text style={{marginTop: 20, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>{"It's"} usually best to choose a name that reflects whatever your geofilter is commemorating (e.g., <Text style={{fontWeight: 'bold'}}>{"Dina's"} Bachelorette Party</Text> or <Text style={{fontWeight: 'bold'}}>Brady Family Reunion 2017</Text>), but feel free to get as creative as {"you'd"} like.</Text>
+                  <Text style={{marginTop: 20, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>{"It's"} often best to choose a name that reflects whatever your geofilter is commemorating (e.g., <Text style={{fontWeight: 'bold'}}>{"Dina's"} Bachelorette Party</Text> or <Text style={{fontWeight: 'bold'}}>Brady Family Reunion 2017</Text>), but feel free to get as creative as {"you'd"} like.</Text>
 
                   <Text style={{marginTop: 10, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>You can also add an optional message containing any additional details your invitees might need, like parking directions or contact info. This is especially useful for events like scavenger hunts and pub crawls!</Text>
 
