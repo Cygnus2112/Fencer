@@ -64,7 +64,8 @@ class Send extends Component {
             message: this.props.filterMessage || "",
             showLoginModal: false,
             showReviewModal: false,
-            showLoadingModal: false
+            showLoadingModal: false,
+            infoPressed: false
         }
     }
 
@@ -187,7 +188,9 @@ class Send extends Component {
               </View>
 
               <View style={{position: 'absolute', top: 8, right: 10, width: 30,height:30}}>
-                <Icon name="info" size={30} color="#0c12ce" />
+                <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+                  <Icon name="info" size={30} color="#0c12ce" />
+                </TouchableOpacity>
               </View>
 
               <View style={styles.buttonBox}>
@@ -277,6 +280,12 @@ class Send extends Component {
               :
             (null)
           }
+      {this.state.infoPressed
+        ?
+      (<InfoModal modalVisible={true} dismissWelcomeModal={ this.props.dismissWelcomeModal } toggleModal={() => { this.setState({ infoPressed: false}) }} />)
+        :
+      (null)
+      }
 
 
 
@@ -455,7 +464,81 @@ class LoadingModal extends Component {
   }
 }
 
+class InfoModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
+//<View style={styles.infoModal}>
+  render(){
+    return(
+      <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { console.log("Modal has been closed.")}}>
+            <View style={styles.infoModalContainer}>
+              <View style={styles.infoModal}>
+                <ScrollView contentContainerStyle={styles.infoModalScroll}>
+
+                  <Text style={{marginTop: 20, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>{"It's"} usually best to choose a name that reflects whatever your geofilter is commemorating (e.g., <Text style={{fontWeight: 'bold'}}>{"Dina's"} Bachelorette Party</Text> or <Text style={{fontWeight: 'bold'}}>Brady Family Reunion 2017</Text>), but feel free to get as creative as {"you'd"} like.</Text>
+
+                  <Text style={{marginTop: 10, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>You can also add an optional message containing any additional details your invitees might need, like parking directions or contact info. This is especially useful for events like scavenger hunts and pub crawls!</Text>
+
+                  <Text style={{marginTop: 10, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Once your new geofilter is successfully submitted, press <Text style={{fontWeight: 'bold'}}>Send to Friends</Text> to share it via SMS, email, or social media. <Text style={{fontWeight: 'bold'}}>Note:</Text> Invitees will need to install Fencer on their devices to access your new geofilter.</Text>
+         
+                </ScrollView>
+                  <TouchableHighlight 
+                    style={{marginTop: 7, height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                    onPress={() => {
+                      this.props.toggleModal();
+                      this.setState({modalVisible: !this.state.modalVisible});
+                    }
+                  }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                  </TouchableHighlight>
+            </View>
+          </View>
+      </Modal>
+    )
+  }
+}
+
 const styles = StyleSheet.create({
+  infoModalContainer: {
+      position: 'absolute', 
+      top: 0, 
+      left: 0, 
+      right: 0, 
+      bottom: 0, 
+      backgroundColor: 'rgba(0,0,0,0.5)',
+      justifyContent: 'center',
+      alignItems: 'center'
+  },
+  infoModal: {
+    position: 'absolute', 
+    top: 60, 
+    left:40, 
+    right: 40, 
+    bottom: 60, 
+    justifyContent: 'flex-start', 
+    alignItems: 'center', 
+   // backgroundColor:'white',
+   backgroundColor: 'white',
+    borderWidth:1, 
+    borderColor:'black', 
+    borderRadius:10,
+    padding: 10
+  },
+  infoModalScroll: {
+    paddingBottom: 5,
+    backgroundColor:'white',
+    justifyContent: 'flex-start', 
+    alignItems: 'flex-start',
+  },
   modalScroll: {
     paddingBottom: 5,
     backgroundColor: 'white',
@@ -623,8 +706,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
-
-                uploadActions.submitTitleAndMessage(dispatch, info)
+          uploadActions.submitTitleAndMessage(dispatch, info)
             
         },
         finalSumbit: (data) => {
