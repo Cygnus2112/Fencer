@@ -100,13 +100,11 @@ class Send extends Component {
                   }
                 }])
 
-                // trigger error modal: 'oops! one or more of the steps is incomplete...'
-                // console.log('oops! one or more of the steps is incomplete...');
-                // console.log(this.props.uploadFilterComplete);
-                // console.log(this.props.selectDatesComplete);
-                // console.log(this.props.chooseAreaComplete);
-                // console.log(this.props.filterTitle);
-            } else if((startTime - currentTime) < 1800000){
+
+            // } else if((startTime - currentTime) < 1800000){
+
+                          } else if((startTime - currentTime) < 600000){
+
             Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
                     console.log('OK Pressed!');
                   }
@@ -114,24 +112,12 @@ class Send extends Component {
 
             return;
 
-            // } else if(!this.props.isLoggedIn){
-            //   console.log('not logged in!!!!');
-            //   this.setState({showLoginModal: true});
+
             } else {
-                // let dataToSend = {
-                //     fenceCoordinates: this.props.fenceCoordinates,
-                //     selectedDates: this.props.selectedDates,
-                //     filterToUpload: this.props.filterToUpload,
-                //     title: this.state.title,
-                //     message: this.state.message,
-                //     username: this.props.username
-                // }
-                // this.props.finalSumbit(dataToSend);
 
                 this.setState({showReviewModal:true})
 
             }
-        // },100)
 
     }
 

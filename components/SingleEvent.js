@@ -88,7 +88,8 @@ class SingleEventComponent extends Component {
 			filterImage: null,
 			isLoadingFilter: false,
 			detailsPressed: false,
-			editPressed: false
+			editPressed: false,
+			isExpired: false
 		}
 	}
 
@@ -112,7 +113,7 @@ class SingleEventComponent extends Component {
 			let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute);
 
 			if(this.currentTime > endTime){
-				this.setState({isActive: false})
+				this.setState({isActive: false, isExpired: true})
 			}
 
 		}, 1000);
@@ -180,15 +181,20 @@ class SingleEventComponent extends Component {
 			startDate: this.props.dates.startDate,
 			startHour: this.props.dates.startHour,
 			startMinute: this.props.dates.startMinute,
-			endDate: this.props.dates.endDate,
+			endMonth: this.props.dates.endMonth,
+			endDay: this.props.dates.endDay,
 			endHour: this.props.dates.endHour,
 			endMinute: this.props.dates.endMinute,
+			endYear: this.props.dates.endYear,
 			coordinates: this.props.coordinates,
 		//	filterURI: this.props.filterURI,
 			filterImage: this.props.filterImage,
 			message: this.props.message,
 			isActive: this.props.isActive
 		})
+
+		//console.log('this.props.dates.endMonth in SingleEvent: ', this.props.dates.endMonth);
+		//console.log('type of this.props.dates.endMonth ', typeof this.props.dates.endMonth);
 	}
 
 	componentWillReceiveProps(newProps){
@@ -393,8 +399,13 @@ class SingleEventComponent extends Component {
 					  	</View>)
 					  	:
 					  	(<View style={{flexDirection:'row', justifyContent: 'center',alignItems: 'center'}}>
-							<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.startHour, this.state.startMinute)}</Text></Text>
-					  	
+					  		{this.state.isExpired
+					  		  	?
+							  (<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter expired <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.endMonth,this.state.endDay,this.state.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.endHour, this.state.endMinute)}</Text></Text>)
+					  		  	:
+							  (<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 14, textAlign: 'center', color:"#c6c6c6" }}>Filter unlocks <Text style={{fontWeight: 'bold'}}>{_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.state.startHour, this.state.startMinute)}</Text></Text>)
+					  		}
+							
 					  	</View>)
 					  }
 				  </TouchableOpacity>	

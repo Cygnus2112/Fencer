@@ -345,7 +345,7 @@ class MyFiltersComponent extends Component {
                 		dataSource={this.state.dataSource}
                 		renderRow={(rowData) => {
 
-                   //   console.log('rowData: ', rowData);
+                      console.log('rowData.dates: ', rowData.dates);
                 			console.log('-------------------------');
 
                 			if(rowData.coordinates) {

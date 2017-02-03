@@ -8,7 +8,9 @@ import {
     Dimensions,
     Text,
     TouchableOpacity,
-    BackAndroid
+    BackAndroid,
+    Clipboard,
+    ToastAndroid
 } from 'react-native';
 
 import * as authActions from '../actions/authActions';
@@ -47,7 +49,7 @@ class Success extends Component {
 	}
 
 	onBackPress(){
-	    console.log('back button pressed in SUCCESS');
+	   // console.log('back button pressed in SUCCESS');
 	    return true;
   	}
 
@@ -58,7 +60,7 @@ class Success extends Component {
   }
 
   componentWillUnmount(){
-    console.log('main SUCCESS component unmounting...')
+   // console.log('main SUCCESS component unmounting...')
 
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress);
 
@@ -89,9 +91,16 @@ class Success extends Component {
 					<Text style={[styles.message, {textAlign: 'center', fontSize: 20}]}>
 						New geofilter created. 
 					</Text>
-					<Text style={[styles.message, {textAlign: 'center', fontSize: 20}]}>
-						ID: <Text style={{fontWeight: 'bold'}}>{this.props.id}</Text> 
-					</Text>
+					<View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
+					<Text style={[styles.message, {textAlign: 'center', fontSize: 20}]}>ID: <Text style={{fontWeight: 'bold'}}>{this.props.id} </Text></Text>
+						<TouchableOpacity onPress={()=>{
+							Clipboard.setString(this.props.id);
+							ToastAndroid.showWithGravity('Geofilter ID copied to clipboard!', ToastAndroid.SHORT, ToastAndroid.BOTTOM);
+						}}>
+							<Icon name="clipboard" size={20} color="#0c12ce"/>
+						</TouchableOpacity>
+					</View>
+	
 				</View>
 
 				<View style={styles.buttons}>
@@ -143,16 +152,6 @@ class Success extends Component {
 }
 
 const styles = StyleSheet.create({
-	// check: {
-	// 	flex: 1,
-	// 	width: screenWidth,
-	// 	flexDirection: 'row',
-	// 	justifyContent: 'center',
-	// 	alignItems: 'center',
-	// 	borderBottomColor: 'black',
-	// 	borderBottomWidth: 2,
-	// 	elevation: 3,
-	// },
 	check: {
 		position: 'absolute',
 		top: 0,
