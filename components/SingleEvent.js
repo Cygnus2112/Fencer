@@ -102,11 +102,17 @@ class SingleEventComponent extends Component {
 			this.currentTime = Date.now();
 
 			const {startYear, startMonth, startDay, startHour, startMinute} = this.props.dates;
-
 			let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute);
 
 			if(startTime < this.currentTime){
 				this.setState({isActive: true})
+			}
+
+			const {endYear, endMonth, endDay, endHour, endMinute} = this.props.dates;
+			let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute);
+
+			if(this.currentTime > endTime){
+				this.setState({isActive: false})
 			}
 
 		}, 1000);
@@ -118,6 +124,9 @@ class SingleEventComponent extends Component {
         			isInRange: true
         		})	
         	})
+        	.catch(() => {
+	        	console.log('position is NOT within polygon')
+	        })
         	//this.props.fetchFilterImage({ filterID: this.props.filterID });
 
       //  if(this.props.isActive){
@@ -207,6 +216,9 @@ class SingleEventComponent extends Component {
 	        		this.setState({
 	        			isInRange: true
 	        		})	
+	        	})
+	        	.catch(() => {
+	        		console.log('position is NOT within polygon')
 	        	})
 		}
 

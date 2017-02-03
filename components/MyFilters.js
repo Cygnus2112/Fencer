@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 const queryString = require('query-string');
-
+let utils = require('../utils');
 import {
     View,
     Image,
@@ -16,7 +16,8 @@ import {
     TextInput,
     Alert,
     BackAndroid,
-    ScrollView 
+    ScrollView,
+    AsyncStorage
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -55,7 +56,9 @@ class MyFiltersComponent extends Component {
 
     this.handleSearch = this.handleSearch.bind(this);
     this.reloadFilters = this.reloadFilters.bind(this);
+    this.checkIfDeleted = this.checkIfDeleted.bind(this);
     this.watchPosition = null;
+    this.checkInterval = null;
 
 		this.state = {
 			//events: sampleEvents,
@@ -68,15 +71,67 @@ class MyFiltersComponent extends Component {
 		}
 	}
 
-  reloadFilters(filter) {
+  checkIfDeleted(filterID){
+    console.log('checking to see if filter is deleted...');
+
+      AsyncStorage.getItem("fencer-token").then((value) => {
+        if(value){
+          AsyncStorage.getItem("fencer-username").then((username) => {
+            console.log('current username: ', username);
+            let token = value;
+
+            return fetch(utils.checkIfDeletedURL +"?username="+username+"&filterid="+filterID, {    
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+                'x-access-token': token
+              }
+            })
+            .then(response => {
+              return response.json();
+            })
+            .then(response => {
+              console.log('2nd level response in auth checkIfDeleted: ');
+              console.log(response);
+              console.log('-------------------------');
+
+             // console.log("response['response'] ", response['response']);
+             // console.log("response['response'] (double quotes) ", response["response"]);
+
+              if(response['result'] === 'false'){
+                console.log('received false from checkIfDeleted!!!');
+                this.reloadFilters(filterID, true);
+              };
+                    
+            })
+            .catch(err => {
+              console.error('Error in checkIfDeleted:', err);
+            });
+          }).done();
+        } else {
+          console.log('token not found');
+        }
+      }).done();
+
+  }
+
+  reloadFilters(filter, remove) {
   //  console.log('reloadFilters called in MyFilters');
     let allFilters = this.props.myFilters.slice();
 
     if(filter){
-      if(allFilters.indexOf(filter) === -1){
+      if(remove){
+        if(allFilters.indexOf(filter) !== -1){
+          let idx = allFilters.indexOf(filter);
+          let newArr = allFilters.slice(0, idx).concat(allFilters.slice(idx + 1));
+          allFilters = newArr;
+        }
+      } else if(allFilters.indexOf(filter) === -1){
         console.log('new filter '+filter+' is not YET in this.props.myFilters ');
         allFilters.push(filter);
       }
+
     } 
 
     this.props.getMyFilters({username: this.props.username, filters: allFilters || [] });
@@ -88,7 +143,23 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 
-   // console.log('MyFilters mounted.');
+   console.log('MyFilters mounted.');
+
+
+      this.checkInterval = setInterval(()=>{
+
+        let arr = this.props.allFilters.filter((f) => {
+          return _isActiveOrUpcoming(f.dates);          // we only show filters that are active or upcoming
+        })
+
+        arr.forEach((filter) => {
+          console.log('in arr.forEach. filter.filterID= ', filter.filterID );
+
+          this.checkIfDeleted(filter.filterID)
+
+        })
+
+      },120000);
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
@@ -118,6 +189,9 @@ class MyFiltersComponent extends Component {
       this.setState({
         dataSource: ds.cloneWithRows( sortedFilters )
       })
+
+
+
     }
 
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -150,6 +224,7 @@ class MyFiltersComponent extends Component {
    // console.log('MyFilters un-mounting ... ');
 
     navigator.geolocation.clearWatch(this.watchPosition);
+    clearInterval(this.checkInterval);
   }
 
 	componentWillReceiveProps(newProps){
