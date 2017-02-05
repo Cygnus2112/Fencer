@@ -101,9 +101,7 @@ class Send extends Component {
                 }])
 
 
-            // } else if((startTime - currentTime) < 1800000){
-
-                          } else if((startTime - currentTime) < 600000){
+             } else if((startTime - currentTime) < 1800000){
 
             Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
                     console.log('OK Pressed!');
@@ -326,7 +324,7 @@ class ReviewModal extends Component {
                   </View>
        
                   <View style={styles.filterAndMapPreview} >
-                    <Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} style={{height: 160, width: 90, borderWidth: 1, borderColor: 'black'}} />  
+                    <Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 160, width: 90, borderWidth: 1, borderColor: 'black'}} />  
                   </View>
 
                   <View style={styles.details}>

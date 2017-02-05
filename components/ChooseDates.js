@@ -146,12 +146,10 @@ class ChooseDatesComponent extends Component{
 
       let endTime = new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute);
 
-    //  if(newStartTime < currentTime + 3600000) {        //  Start Time must be at least one hour from now
-if(newStartTime < currentTime + 600000) {       
+      if(newStartTime < currentTime + 3600000) {        //  Start Time must be at least one hour from now
+   
           let d = new Date().getTime();
-       //   let initStartTime = new Date(d + 3600000);
-
-       let initStartTime = new Date(d + 600000);
+          let initStartTime = new Date(d + 3600000);
 
           let initStartHour = initStartTime.getHours();
           let initMinute = initStartTime.getMinutes();
@@ -165,11 +163,10 @@ if(newStartTime < currentTime + 600000) {
             startTimeText: _formatTime(initStartHour, initMinute)
           });
 
-   //       if(endTime.getTime() < initStartTime.getTime() + 3600000){      //  End Time must be at least one hour after Start Time
-          if(endTime.getTime() < initStartTime.getTime() + 600000){      
+          if(endTime.getTime() < initStartTime.getTime() + 3600000){      //  End Time must be at least one hour after Start Time
+     
 
-            // let newEndTime = new Date(initStartTime.getTime() + 3600000);
-                   let newEndTime = new Date(initStartTime.getTime() + 600000);
+             let newEndTime = new Date(initStartTime.getTime() + 3600000);
 
             this.setState({
               endYear: newEndTime.getFullYear(),

@@ -39,7 +39,7 @@
             <category android:name="android.intent.category.BROWSABLE" />
     <!-- Accepts URIs that begin with "http://app.petar.tech/user/” -->
             <data android:scheme="http"
-                  android:host="fence.r"/>
+                  android:host="fencer.me"/>
         </intent-filter>
 
       </activity>
