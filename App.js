@@ -95,16 +95,11 @@ class AppComponent extends Component {
 
   render() {
     console.log('currUrl: ', currUrl);
-    setTimeout(()=>{
-      console.log('currUrl (one second later): ', currUrl);
-      console.log('!currUrl (one second later): ', !currUrl);
-      console.log('!!currUrl (one second later): ', !!currUrl);
-    },1000);
 
     return (
         <Router>
           <Scene key="root" hideNavBar={true}>
-            <Scene key="loading" component={Loading} initial={ !currUrl }        type='reset' animation='fade' isStartup='true' />
+            <Scene key="loading" component={Loading} initial={ true }        type='reset' animation='fade' isStartup='true' />
             <Scene key="success" component={Success} type='reset' animation='fade' />
             <Scene key="main" component={Main} type='reset' animation='fade' />
             <Scene key="upload" component={Upload} animation='fade'/>

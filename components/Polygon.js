@@ -283,7 +283,7 @@ class PolygonComponent extends Component {
               {this.state.place &&
                   (
                     <MapView.Marker
-                        image={pin_red}
+                        pinColor={'red'}
                         onPress={() => {console.log('marker pressed')}}
                         coordinate={{
                           latitude: this.props.lat,
@@ -308,7 +308,7 @@ class PolygonComponent extends Component {
 
           {this.state.place &&
                   (<MapView.Marker
-                        image={pin_red}
+                        pinColor={'red'}
                         onPress={() => {console.log('marker pressed')}}
                         coordinate={{
                           latitude: this.props.lat,
@@ -339,14 +339,11 @@ class PolygonComponent extends Component {
                   strokeWidth={2}/>
               )}
               {this.state.markerPoints.map((point) => { 
-               // console.log('-------------------COCK----------------------');
-
-              //  console.log('in this.state.markerPoints.map for some reason...');
 
                   return(                
                     <MapView.Marker
                       key={point.key}
-                      image={pin_blue}
+                      pinColor={'blue'}
                       onPress={() => {console.log('marker pressed')}}
                       coordinate={{
                         latitude: point.lat,

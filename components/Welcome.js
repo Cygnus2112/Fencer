@@ -242,7 +242,6 @@ class WelcomeComponent extends Component{
              }}>
                 <Button
                   style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
-                  styleDisabled={{color: 'red'}}
                   onPress={ this.handleCreate }>
                   Create New Geofilter
                 </Button>
@@ -255,7 +254,7 @@ class WelcomeComponent extends Component{
           <View style={{
              position: 'absolute', 
              right: 10,
-             top: 150,
+             bottom: 10,
              justifyContent: 'center',
              alignItems: 'center',
              padding:10,
@@ -270,7 +269,6 @@ class WelcomeComponent extends Component{
            }}>
               <Button
                 style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 18, color: 'white'}}
-                styleDisabled={{color: 'red'}}
                 onPress={ this.loadMyFilters } >
                 My Geofilters
               </Button>
