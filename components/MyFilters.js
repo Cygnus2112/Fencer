@@ -149,11 +149,13 @@ class MyFiltersComponent extends Component {
       this.checkInterval = setInterval(()=>{
 
         let arr = this.props.allFilters.filter((f) => {
-          return _isActiveOrUpcoming(f.dates);          // we only show filters that are active or upcoming
+          if(f.startUTC){
+            return _isActiveOrUpcoming(f.startUTC, f.endUTC);          // we only show filters that are active or upcoming
+          }
+
         })
 
         arr.forEach((filter) => {
-          console.log('in arr.forEach. filter.filterID= ', filter.filterID );
 
           this.checkIfDeleted(filter.filterID)
 
@@ -165,17 +167,25 @@ class MyFiltersComponent extends Component {
 
 		if(this.props.allFilters.length){
       let arr = this.props.allFilters.filter((f) => {
-        return _isActiveOrUpcoming(f.dates);          // we only show filters that are active or upcoming
+        if(f.startUTC){
+          return _isActiveOrUpcoming(f.startUTC, f.endUTC);  // we only show filters that are active or upcoming
+        }
+                  
       })
 
       let sortedFilters = arr.sort((f1,f2)=> {
 
-        let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
-        let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+       // let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
+       // let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+        let startTime1 = f1.startUTC;
+        let startTime2 = f2.startUTC;
 
         if(startTime1 === startTime2){
-          let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-          let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+        //  let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+        //  let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+
+          let endTime1 = f1.endUTC;
+          let endTime2 = f2.endUTC;
 
           return endTime1 - endTime2;
         } else {  
@@ -243,17 +253,26 @@ class MyFiltersComponent extends Component {
 
 
 			let arr = newProps.allFilters.filter((f) => {
-				return _isActiveOrUpcoming(f.dates);					// we only show filters that are active or upcoming
+        if(f.startUTC){
+          return _isActiveOrUpcoming(f.startUTC, f.endUTC);         // we only show filters that are active or upcoming  
+        }
+
 			})
 
       let sortedFilters = arr.sort((f1,f2)=>{
 
-        let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
-        let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+     //   let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
+      //  let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
+
+        let startTime1 = f1.startUTC;
+        let startTime2 = f2.startUTC;
 
         if(startTime1 === startTime2){
-          let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-          let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+    //      let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
+    //      let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
+
+          let endTime1 = f1.endUTC;
+          let endTime2 = f2.endUTC;
 
           return endTime1 - endTime2;
         } else {  
@@ -268,24 +287,6 @@ class MyFiltersComponent extends Component {
 			})
 
 		}
-
-    // if(newProps.newFilterAdded && newProps.newFilterAdded !== this.props.newFilterAdded && this.props.isReferral){
-
-    //   console.log('newProps.newFilterAdded: ', newProps.newFilterAdded);
-
-    //   Alert.alert('Success!', "A new Geofilter has been added to My Filters.", [{text: 'OK', onPress: () => {
-    //         // clear prop
-
-    //         this.props.reloadFilters(newProps.newFilterAdded);
-    //         this.props.clearNewFilter();
-
-    //         console.log('OK Pressed!');
-    //       }
-    //     }])
-
-    // }
-
-
 
 	}
 
@@ -345,10 +346,11 @@ class MyFiltersComponent extends Component {
                 		dataSource={this.state.dataSource}
                 		renderRow={(rowData) => {
 
-                      console.log('rowData.dates: ', rowData.dates);
+                     // console.log('rowData.startUTC: ', rowData.startUTC);
+                     // console.log('rowData: ', rowData);
                 			console.log('-------------------------');
 
-                			if(rowData.coordinates) {
+                			if(rowData.coordinates && rowData.startUTC) {
 
   							        const poly = rowData.coordinates.map((point)=>{
   	              				return {
@@ -361,7 +363,7 @@ class MyFiltersComponent extends Component {
 
                 			  console.log('-------------------------');
 
-  						          let _isActive = _checkDates(rowData.dates);	
+  						          let _isActive = _checkDates(rowData.startUTC, rowData.endUTC);	
 
                         let userCreated = false;
 
@@ -406,17 +408,9 @@ class MyFiltersComponent extends Component {
 
 //toggleLoading={ () => {this.setState({isLoadingFilter: !this.state.isLoadingFilter})} }
 
-const _checkDates = (dates) => {
-	//IS THERE A REASON WHY I DIDN'T JUST COMPARE DATE.NOW()???
+const _checkDates = (startTime, endTime) => {
 
-	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
-	
-//	console.log(startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute);
-
-	let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
-	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
 	let currentTime = Date.now();
-
 
 	if(currentTime < startTime || currentTime > endTime){
 		return false;
@@ -426,18 +420,8 @@ const _checkDates = (dates) => {
 
 }
 
-const _isActiveOrUpcoming = (dates) => {
-	const { startYear, startMonth, startDay, startHour, startMinute, endYear, endMonth, endDay, endHour, endMinute } = dates;
-	//console.log("event dates: ");
-//	console.log(endYear, endMonth, endDay, endHour, endMinute);
-
-	let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute).getTime();
+const _isActiveOrUpcoming = (startTime, endTime) => {
 	let currentTime = Date.now();
-
-  // let currentTime2 = new Date(currentTime);
-  // console.log(currentTime2.toLocaleTimeString())
-  // console.log(currentTime2.getFullYear(), currentTime2.getMonth(), currentTime2.getDate(), currentTime2.getHours(), currentTime2.getMinutes());
-  // console.log('currentTime minus endTime: ', currentTime - endTime);
 
     if(currentTime > endTime){
    // 	console.log('_isActiveOrUpcoming: event has ended');

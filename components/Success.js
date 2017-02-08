@@ -68,15 +68,6 @@ class Success extends Component {
 
 	render(){
 
-		let startDateObj = new Date(this.props.dates.startYear, this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startHour,this.props.dates.startMinute);
-		let endDateObj = new Date(this.props.dates.endYear, this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endHour,this.props.dates.endMinute);
-
-		let startDate = startDateObj.toLocaleDateString();
-		let endDate = endDateObj.toLocaleDateString();
-
-	//	let startTime = startDateObj.toLocaleTimeString();
-	//	let endTime = endDateObj.toLocaleTimeString();
-
 		return(
 			<View style={styles.container}>
 				<View style={styles.check} >

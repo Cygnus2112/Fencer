@@ -9,18 +9,20 @@ const initialState = {
   selectDatesComplete: false,
   chooseAreaComplete: false,
   sendToFriendsComplete: false,
-  selectedDates: {
-    startMonth: null,
-    startDay: null,
-    startYear: null,
-    endMonth: null,
-    endDay: null,
-    endYear: null,
-    startHour: null,
-    endHour: null,
-    startMinute: null,
-    endMinute: null
-  },
+  //selectedDates: {
+  //   startMonth: null,
+  //   startDay: null,
+  //   startYear: null,
+  //   endMonth: null,
+  //   endDay: null,
+  //   endYear: null,
+  //   startHour: null,
+  //   endHour: null,
+  //   startMinute: null,
+  //   endMinute: null
+  // },
+  startUTC: null,
+  endUTC: null,
   fenceCoordinates: null,
   filterUploadError: "",
   fenceError: "",
@@ -40,7 +42,7 @@ const initialState = {
 const uploadReducer = (state = initialState, action) => {
   switch(action.type){
     case ActionTypes.LOAD_VIEW_REQUEST: 
-      console.log('action.currentView in uploadReducer: ', action.currentView);
+      //console.log('action.currentView in uploadReducer: ', action.currentView);
       return Object.assign({}, state, {
         currentView: action.currentView
       })
@@ -62,7 +64,9 @@ const uploadReducer = (state = initialState, action) => {
       })
     case ActionTypes.SUBMIT_DATES_REQUEST:
       return Object.assign({}, state, {
-        selectedDates: action.selectedDates,
+      //  selectedDates: action.selectedDates,
+        startUTC: action.startUTC,
+        endUTC: action.endUTC,
         selectDatesComplete: true,
         currentView: 'area'
       })
@@ -107,18 +111,20 @@ const uploadReducer = (state = initialState, action) => {
           selectDatesComplete: false,
           chooseAreaComplete: false,
           sendToFriendsComplete: false,
-          selectedDates: {
-            startMonth: null,
-            startDay: null,
-            startYear: null,
-            endMonth: null,
-            endDay: null,
-            endYear: null,
-            startHour: null,
-            endHour: null,
-            startMinute: null,
-            endMinute: null
-          },
+          // selectedDates: {
+          //   startMonth: null,
+          //   startDay: null,
+          //   startYear: null,
+          //   endMonth: null,
+          //   endDay: null,
+          //   endYear: null,
+          //   startHour: null,
+          //   endHour: null,
+          //   startMinute: null,
+          //   endMinute: null
+          // },
+          startUTC: null,
+          endUTC: null,
           filterToUpload: null,
           fenceCoordinates: null,
           filterTitle: null,
@@ -150,17 +156,6 @@ const uploadReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         mapPreviewURI: action.uri
       })
-
-
-
-    // case ActionTypes.CLEAR_SEND_DATA_REQUEST:
-    //   return Object.assign({}, state, {
-    //     bitlyURL: "",
-    //     filterID: "",
-    //     sendToFriendsComplete: true         
-    //   })
-
-
     default:
       return state;
   }

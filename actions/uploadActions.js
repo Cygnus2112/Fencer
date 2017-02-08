@@ -28,7 +28,8 @@ export const submitDates = (dispatch, dates) => {			// will do all date validati
 const submitDatesRequest = (dates) => {			// will do all date validation on front end
 	return {
 		type: SUBMIT_DATES_REQUEST,
-		selectedDates: dates
+		startUTC: dates.startUTC,
+		endUTC: dates.endUTC
 	}
 }
 
@@ -153,7 +154,8 @@ export const finalSubmitFilter = (dispatch, data) => {
 					"coordinates": data.fenceCoordinates.fenceCoords,
 					"message": data.message,
 					//"image": data.filterToUpload.data,			
-					"dates": data.selectedDates
+					"startUTC": data.startUTC,
+					"endUTC": data.endUTC
 				}
               }),
               headers: {
@@ -175,7 +177,7 @@ export const finalSubmitFilter = (dispatch, data) => {
         									// SHOW SUCCESS MODAL
         	console.log('response.data.filterID in upload: ', response.data.filterID);
 
-        	Actions.success({type: 'reset', title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, dates: data.selectedDates })
+        	Actions.success({type: 'reset', title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, startUTC: data.startUTC, endUTC: data.endUTC })
 
         	let start = Date.now();
 

@@ -22,7 +22,6 @@ import * as uploadActions from '../actions/uploadActions';
 import Button from 'react-native-button';
 import { Actions } from 'react-native-router-flux';
 
-//import Icon from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const { width, height } = Dimensions.get('window');
@@ -53,21 +52,28 @@ class ChooseDatesComponent extends Component{
     this.launchTime = this.launchTime.bind(this);
 
     this.state = ({
-      startMonth: this.props.selectedDates.startMonth || (new Date()).getMonth(),
-      startDay: this.props.selectedDates.startDay || (new Date()).getDate(),
-      startYear: this.props.selectedDates.startYear || (new Date()).getFullYear(),
-      endMonth: this.props.selectedDates.endMonth || (new Date()).getMonth(),
-      endDay: this.props.selectedDates.endDay || (new Date()).getDate(),
-      endYear: this.props.selectedDates.endYear || (new Date()).getFullYear(),
+      // startMonth: this.props.selectedDates.startMonth || (new Date()).getMonth(),
+      // startDay: this.props.selectedDates.startDay || (new Date()).getDate(),
+      // startYear: this.props.selectedDates.startYear || (new Date()).getFullYear(),
+      // endMonth: this.props.selectedDates.endMonth || (new Date()).getMonth(),
+      // endDay: this.props.selectedDates.endDay || (new Date()).getDate(),
+      // endYear: this.props.selectedDates.endYear || (new Date()).getFullYear(),
+      startMonth: this.props.startUTC ? new Date(this.props.startUTC).getMonth() : (new Date()).getMonth(),
+      startDay: this.props.startUTC ? new Date(this.props.startUTC).getDate() : (new Date()).getDate(),
+      startYear: this.props.startUTC ? new Date(this.props.startUTC).getFullYear() : (new Date()).getFullYear(),
+      endMonth: this.props.endUTC ? new Date(this.props.endUTC).getMonth() : (new Date()).getMonth(),
+      endDay: this.props.endUTC ? new Date(this.props.endUTC).getDate() : (new Date()).getDate(),
+      endYear: this.props.endUTC ? new Date(this.props.endUTC).getFullYear() : (new Date()).getFullYear(),
+
       startText: (new Date()).toLocaleDateString(),
       endText: (new Date()).toLocaleDateString(),
-      startHour: this.props.selectedDates.startHour || 17,
-      startMinute: this.props.selectedDates.startMinute || 0,
+      startHour: this.props.startUTC ? new Date(this.props.startUTC).getHours() : 17,
+      startMinute: this.props.startUTC ? new Date(this.props.startUTC).getMinutes() : 0,
       startTimeText: '12:00PM',
-      endHour: this.props.selectedDates.endHour || 18,
-      endMinute: this.props.selectedDates.endMinute || 0,
+      endHour: this.props.endUTC ? new Date(this.props.endUTC).getHours() : 18,
+      endMinute: this.props.endUTC ? new Date(this.props.endUTC).getMinutes() : 0,
       endTimeText: '1:00PM',
-      infoPressed:false
+      infoPressed: false
     })
   }
 
@@ -76,17 +82,21 @@ class ChooseDatesComponent extends Component{
   //    console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
   //    console.log('-------------------------------');
 
-    if(typeof(this.props.selectedDates.startMonth) === 'number'){
+    // if(typeof(this.props.selectedDates.startMonth) === 'number'){
+    if(typeof(this.props.startUTC) === 'number'){
 
-      const { startMonth, startYear, startDay, endMonth, endYear, endDay } = this.props.selectedDates;
-      const startString = new Date(startYear, startMonth, startDay);
-      const endString = new Date(endYear, endMonth, endDay);
+      // const { startMonth, startYear, startDay, endMonth, endYear, endDay } = this.props.selectedDates;
+      // const startString = new Date(startYear, startMonth, startDay);
+      // const endString = new Date(endYear, endMonth, endDay);
+
+      const startString = new Date( this.props.startUTC );
+      const endString = new Date( this.props.endUTC );
 
       this.setState({
         startText: startString.toLocaleDateString(), 
         endText: endString.toLocaleDateString(),
-        startTimeText: _formatTime(this.props.selectedDates.startHour, this.props.selectedDates.startMinute),
-        endTimeText: _formatTime(this.props.selectedDates.endHour, this.props.selectedDates.endMinute)
+        startTimeText: _formatTime(startString.getHours(), startString.getMinutes()),
+        endTimeText: _formatTime(endString.getHours(), endString.getMinutes())
       })
     } else {
       let currentTime = new Date().getTime();
@@ -169,6 +179,7 @@ class ChooseDatesComponent extends Component{
              let newEndTime = new Date(initStartTime.getTime() + 3600000);
 
             this.setState({
+              endUTC: newEndTime.getTime(),
               endYear: newEndTime.getFullYear(),
               endMonth: newEndTime.getMonth(),
               endDay: newEndTime.getDate(),
@@ -179,9 +190,9 @@ class ChooseDatesComponent extends Component{
           }
 
           
-      } else if (newStartTime > endTime.getTime()) {      //  Start Time must be before End Time
+      } else if (newStartTime >= endTime.getTime()) {      //  Start Time must be before End Time
 
-            let newEndTime = new Date(endTime.getTime() + 3600000);
+            let newEndTime = new Date(newStartTime + 3600000);
             this.setState({
               endYear: newEndTime.getFullYear(),
               endMonth: newEndTime.getMonth(),
@@ -193,7 +204,7 @@ class ChooseDatesComponent extends Component{
 
       } else if((endTime.getTime() - newStartTime) < 3600000 ) {
 
-            let newEndTime = new Date(endTime.getTime() + 3600000);
+            let newEndTime = new Date(newStartTime + 3600000);
 
             this.setState({
               endYear: newEndTime.getFullYear(),
@@ -236,7 +247,8 @@ class ChooseDatesComponent extends Component{
       if(endTime.getTime() < newStartTime){
 
         if(newStartTime - endTime.getTime() > 259200000){   //  if the length of active time is greater than 72 hours
-          let newEndTime = new Date(endTime.getTime() + 259200000)
+          let newEndTime = new Date(endTime.getTime() + 259200000);
+
           this.setState({
             startYear: endTime.getFullYear(),
             startMonth: endTime.getMonth(),
@@ -317,17 +329,9 @@ class ChooseDatesComponent extends Component{
           })
         } 
     } catch ({code, message}) {
-      console.warn(`Error in datepicker: `, message);
+      console.log(`Error in datepicker: `, message);
     }
   };
-  // <View style={{justifyContent: 'center', alignItems: 'center',height: 50, width:175, borderWidth:2, borderColor: 'black', borderRadius: 4}}>
-  //   <Text style={{fontSize: 20}}>
-  //     { this.state.startText }
-  //   </Text>
-  // </View>
-
-//                  <Image source={require('../assets/ic_date_range_black_24dp.png')} style={{height:35, width:35}} />
-
 
   render(){
     return (
@@ -470,18 +474,14 @@ class ChooseDatesComponent extends Component{
         <View style={styles.buttonBox}>
             <Button
               style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
-              onPress={()=> { this.props.submitDates({
-                startMonth: this.state.startMonth,
-                startDay: this.state.startDay,
-                startYear: this.state.startYear,
-                endMonth: this.state.endMonth,
-                endDay: this.state.endDay,
-                endYear: this.state.endYear,
-                startHour: this.state.startHour,
-                startMinute: this.state.startMinute,
-                endHour: this.state.endHour,
-                endMinute: this.state.endMinute
-              })}
+              onPress={()=> { 
+                let startUTC = new Date(this.state.startYear, this.state.startMonth, this.state.startDay, this.state.startHour, this.state.startMinute).getTime();
+                let endUTC = new Date(this.state.endYear, this.state.endMonth, this.state.endDay, this.state.endHour, this.state.endMinute).getTime();
+
+                this.props.submitDates({
+                  startUTC: startUTC,
+                  endUTC: endUTC
+                })}
             }>
               Submit
             </Button>
@@ -633,7 +633,8 @@ const styles = StyleSheet.create({
 const mapStateToProps = (state) => {
   return {
     selectDatesComplete: state.uploadReducer.selectDatesComplete,
-    selectedDates: state.uploadReducer.selectedDates
+    startUTC: state.uploadReducer.startUTC,
+    endUTC: state.uploadReducer.endUTC
   }
 }
 

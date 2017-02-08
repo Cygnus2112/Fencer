@@ -17,10 +17,6 @@ import * as uploadActions from '../actions/uploadActions';
 import * as filterActions from '../actions/filterActions';
 
 import MapView from 'react-native-maps';
-//import WebViewBridge from 'react-native-webview-bridge';
-
-let pin_blue = require('../assets/pin_blue.png');
-let pin_red = require('../assets/pin_red.png');
 
 const { width, height } = Dimensions.get('window');
 let screenWidth = width;

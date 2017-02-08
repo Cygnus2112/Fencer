@@ -70,17 +70,16 @@ class Send extends Component {
     }
 
     handleSubmit(){
-        console.log('handleSubmit called ');
+    //    console.log('handleSubmit called ');
     //    console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
       //  console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
           let currentTime = new Date().getTime();
-          const { startMonth, startYear, startDay, startHour, startMinute} = this.props.selectedDates;
-          let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
+          // const { startMonth, startYear, startDay, startHour, startMinute} = this.props.selectedDates;
+          // let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
 
-     //     console.log('startTime minus currentTime: ', (startTime - currentTime));
-
+          let startTime = this.props.startUTC;
 
             if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
                 const errMessage = () => {
@@ -293,8 +292,8 @@ class ReviewModal extends Component {
 
   render(){
 
-    let startDateObj = new Date(this.props.selectedDates.startYear, this.props.selectedDates.startMonth,this.props.selectedDates.startDay,this.props.selectedDates.startHour,this.props.selectedDates.startMinute);
-    let endDateObj = new Date(this.props.selectedDates.endYear, this.props.selectedDates.endMonth,this.props.selectedDates.endDay,this.props.selectedDates.endHour,this.props.selectedDates.endMinute);
+    let startDateObj = new Date(this.props.startUTC);
+    let endDateObj = new Date(this.props.endUTC);
 
     let startDate = startDateObj.toLocaleDateString();
     let endDate = endDateObj.toLocaleDateString();
@@ -307,8 +306,6 @@ class ReviewModal extends Component {
           onRequestClose={() => { console.log("Modal has been closed.")}}>
             <View style={styles.modalContainer}>
               <View style={styles.infoModal}>
-
-
 
                   <View style={styles.cancel}>
                     <TouchableOpacity onPress={ () => { 
@@ -343,7 +340,7 @@ class ReviewModal extends Component {
                           </Text>
 
                           <Text style={[styles.message] }>
-                            {startDate + " " +  _formatTime(this.props.selectedDates.startHour, this.props.selectedDates.startMinute)}
+                            {startDate + " " +  _formatTime(startDateObj.getHours(), startDateObj.getMinutes())}
                           </Text>
                       </View>
                       <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -351,7 +348,7 @@ class ReviewModal extends Component {
                             Ends: 
                           </Text>
                           <Text style={styles.message}>
-                            {endDate + " " + _formatTime(this.props.selectedDates.endHour, this.props.selectedDates.endMinute)}
+                            {endDate + " " + _formatTime(endDateObj.getHours(), endDateObj.getMinutes())}
                           </Text>
                       </View>
 
@@ -381,7 +378,9 @@ class ReviewModal extends Component {
 
                       let dataToSend = {
                         fenceCoordinates: this.props.fenceCoordinates,
-                        selectedDates: this.props.selectedDates,
+                      //  selectedDates: this.props.selectedDates,
+                        startUTC: this.props.startUTC,
+                        endUTC: this.props.endUTC,
                         filterToUpload: this.props.filterToUpload,
                         title: this.props.title,
                         message: this.props.message,
@@ -676,7 +675,9 @@ const mapStateToProps = (state) => {
     uploadFilterComplete: state.uploadReducer.uploadFilterComplete,
     selectDatesComplete: state.uploadReducer.selectDatesComplete,
     fenceCoordinates: state.uploadReducer.fenceCoordinates,
-    selectedDates: state.uploadReducer.selectedDates,
+ //   selectedDates: state.uploadReducer.selectedDates,
+    startUTC: state.uploadReducer.startUTC,
+    endUTC: state.uploadReducer.endUTC,
     filterToUpload: state.uploadReducer.filterToUpload,
     filterTitle: state.uploadReducer.filterTitle,
     filterMessage: state.uploadReducer.filterMessage,

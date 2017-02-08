@@ -102,15 +102,19 @@ class SingleEventComponent extends Component {
 		this.checkTime = setInterval(() => {
 			this.currentTime = Date.now();
 
-			const {startYear, startMonth, startDay, startHour, startMinute} = this.props.dates;
-			let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute);
+		//	const {startYear, startMonth, startDay, startHour, startMinute} = this.props.dates;
+		//	let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute);
+			let startTime = this.props.startUTC;
+
 
 			if(startTime < this.currentTime){
 				this.setState({isActive: true})
 			}
 
-			const {endYear, endMonth, endDay, endHour, endMinute} = this.props.dates;
-			let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute);
+			// const {endYear, endMonth, endDay, endHour, endMinute} = this.props.dates;
+			// let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute);
+
+			let endTime = this.props.endUTC;
 
 			if(this.currentTime > endTime){
 				this.setState({isActive: false, isExpired: true})
@@ -171,21 +175,24 @@ class SingleEventComponent extends Component {
 	//	console.log("##################################");
 	//	console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
 
+		let st = new Date(this.props.startUTC);
+		let en = new Date(this.props.endUTC);
+
 		this.setState({
 			//eventID: this.props.eventID,
 			filterID: this.props.filterID,
 			eventTitle: this.props.title,
-			startYear: this.props.dates.startYear,
-			startMonth: this.props.dates.startMonth,
-			startDay: this.props.dates.startDay,
-			startDate: this.props.dates.startDate,
-			startHour: this.props.dates.startHour,
-			startMinute: this.props.dates.startMinute,
-			endMonth: this.props.dates.endMonth,
-			endDay: this.props.dates.endDay,
-			endHour: this.props.dates.endHour,
-			endMinute: this.props.dates.endMinute,
-			endYear: this.props.dates.endYear,
+			startYear: st.getFullYear(),
+			startMonth: st.getMonth(),
+			startDay: st.getDate(),
+			startDate: this.props.startUTC,
+			startHour: st.getHours(),
+			startMinute: st.getMinutes(),
+			endMonth: en.getMonth(),
+			endDay: en.getDate(),
+			endHour: en.getHours(),
+			endMinute: en.getMinutes(),
+			endYear: en.getFullYear(),
 			coordinates: this.props.coordinates,
 		//	filterURI: this.props.filterURI,
 			filterImage: this.props.filterImage,
@@ -466,8 +473,18 @@ class DetailsModal extends Component {
 		super(props);
 		
 		this.state = {
-      		modalVisible: this.props.modalVisible
-    	}
+      		modalVisible: this.props.modalVisible,
+      		startYear: new Date(this.props.startUTC).getFullYear(),
+      		startMonth: new Date(this.props.startUTC).getMonth(),
+      		startDay: new Date(this.props.startUTC).getDate(),
+      		startHour: new Date(this.props.startUTC).getHours(),
+      		startMinute: new Date(this.props.startUTC).getMinutes(),
+      		endYear: new Date(this.props.endUTC).getFullYear(),
+      		endMonth: new Date(this.props.endUTC).getMonth(),
+      		endDay: new Date(this.props.endUTC).getDate(),
+      		endHour: new Date(this.props.endUTC).getHours(),
+      		endMinute: new Date(this.props.endUTC).getMinutes()
+      	}
 	}
 
 	componentDidMount(){
@@ -498,12 +515,12 @@ class DetailsModal extends Component {
 			            {!this.state.isActive &&
 			              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Starts:</Text> 
-			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)} at {_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text>
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.state.startMonth, this.state.startDay, this.state.startYear)} at {_formatTime(this.state.startHour, this.state.startMinute)}</Text>
 						  </View>
 						}    
 						<View style={{flexDirection: 'row', justifyContent: 'space-between', marginBottom: 10}}>       
 							<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Ends:</Text> 
-							<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)} at {_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text>
+							<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{_formatDate(this.state.endMonth, this.state.endDay, this.state.endYear)} at {_formatTime(this.state.endHour, this.state.endMinute)}</Text>
 						</View>
 						{this.props.message.length 
 							? 
