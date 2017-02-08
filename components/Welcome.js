@@ -351,12 +351,12 @@ class InfoModal extends Component {
                     <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 20, paddingLeft: 6}}>Welcome!</Text>
                   </View>
                   <Text style={{marginTop: 40, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Fencer is a fun new way to create and share your very own Snapchat Geofilters - for free!</Text>
-                  <View style={{position: 'absolute', left: 10,right:10, height: 35, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 16, paddingLeft: 6}}>What are Geofilters?</Text>
+                  <View style={{position: 'absolute', left: 10,right:10, height: 35}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 16, paddingLeft: 6}}>{"What are Geofilters?"}</Text>
                   </View>
-                  <Text style={{marginTop: 40, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Geofilters are location-based overlays that you can apply to any photo you take with your mobile camera. {"They're"} a great way to add a unique to touch to birthday parties, graduations, or any other shared experiences you wish to commemorate in a fun and memorable way.</Text>
-                   <View style={{position: 'absolute', left: 10,right:10, height: 25, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6, textDecorationLine: 'underline'}}>How it works</Text>
+                  <Text style={{marginTop: 30, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Geofilters are location-based overlays that you can apply to any photo you take with your mobile camera. {"They're"} a great way to add a unique to touch to birthday parties, graduations, or any other shared experiences you wish to commemorate in a fun and memorable way.</Text>
+                   <View style={{position: 'absolute', left: 10,right:10, height: 25}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6, textDecorationLine: 'underline'}}>{"How it works"}</Text>
                   </View>
                   <Text style={{marginTop: 30, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>To create a geofilter, simply tap <Text style={{fontWeight: 'bold'}}>Create New Filter</Text> to get started. {"You'll"} be guided through the 4-step process of uploading your geofilter design, choosing dates and times the geofilter will be active, setting the geofence area that will determine where users can access your geofilter, and adding a title and optional message for anyone you invite to use it. 
 </Text>

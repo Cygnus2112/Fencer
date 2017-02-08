@@ -204,42 +204,7 @@ class UploadFilter extends Component {
       });
 
     }     
-//height: 1920/4, width: 1080/4
-    /*                    :
-                      (        <View style={styles.guidelines}>
-                                  
-            <Text style={{fontSize: 20, paddingTop: 4,paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Images should be <Text style={{fontWeight: 'bold'}}>1080px</Text> wide by <Text style={{fontWeight: 'bold'}}>1920px</Text> high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- File size must be under <Text style={{fontWeight: 'bold'}}>1mb</Text>. (For best results, try to keep it under 400kb.)</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- To preview a filter on your device, tap <Text style={{fontWeight: 'bold'}}>"test"</Text> after selecting an image.</Text>
-            <Text style={{fontSize: 12, padding: 3,paddingLeft: 6}}>- Need help designing your filter? Tap the <Text style={{fontWeight: 'bold'}}>info</Text> icon for a list of free online resources.</Text>
-   
-       <View style={styles.guidelineTitle}>
-            <Text style={{fontSize: 20,color: 'red'}}>Filter image guidelines:</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text style={{fontSize: 14}}>Files must be in PNG format.</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>Images should be 1080px wide by 1920px high, with a transparent background. (Images exceeding max dimensions will be resized to fit.)</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>File size must be under 1mb. (For best results, try to keep it under 400kb.)</Text>
-          </View>
-          <View style={styles.guideline}>
-            <Text>To preview a filter on your device, tap "test" after selecting an image.</Text>
-          </View>
-                    <View style={styles.guideline}>
-            <Text>Need help designing your filter? Tap the info icon for a list of free apps and online resources.</Text>
-          </View> 
-        </View>)*/
-
     render(){
-      // if(this.state.png.data){
-      //   console.log('this.state.png.data (first 20 chars): ', this.state.png.data.slice(0,20));
-      //   console.log('this.state.png.data (last 20 chars): ', this.state.png.data.slice(this.state.png.data.length-20,this.state.png.data.length-1));
-      // }
 
       if(this.props.isValidatingImage){
         return ( <Spinner /> );
@@ -384,8 +349,8 @@ class InfoModal extends Component {
               <View style={styles.infoModal}>
 
                 <ScrollView contentContainerStyle={styles.modalScroll}>
-                  <View style={{position: 'absolute', left: 10,right:10, height: 35, flexDirection: 'row', justifyContent: 'center', alignItems: 'center'}}>
-                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 20, paddingLeft: 6}}>Filter {"Image"} Guidelines</Text>
+                  <View style={{position: 'absolute', top: 10, left: 10,right:10, height: 35}}>
+                    <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 20, paddingLeft: 6}}>{"Filter Image Guidelines"}</Text>
                   </View>
                   <View style={{ marginTop: 40, flexDirection: 'column', justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                     <Text style={{ fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>- Files must be in <Text style={{fontWeight: 'bold'}}>PNG</Text> format.</Text>

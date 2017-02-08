@@ -143,7 +143,7 @@ class MyFiltersComponent extends Component {
 
 	componentDidMount(){
 
-   console.log('MyFilters mounted.');
+   //console.log('MyFilters mounted.');
 
 
       this.checkInterval = setInterval(()=>{
