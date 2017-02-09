@@ -51,21 +51,18 @@ class CreateMapComponent extends Component{
   }
 
   componentDidMount(){
-    console.log('CreateMap mounted.');
-    console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
+   // console.log('CreateMap mounted.');
+   // console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
    // this.getCoords();
   }
 
   componentWillReceiveProps(nextProps){
-    console.log('componentWillReceiveProps called in CreateMap');
-    console.log('nextProps: ', nextProps);
-    if(nextProps.chooseAreaComplete){
-      console.log('nextProps.chooseAreaComplete');
-    }
-
+    // console.log('componentWillReceiveProps called in CreateMap');
+    // console.log('nextProps: ', nextProps);
+    // if(nextProps.chooseAreaComplete){
+    //   console.log('nextProps.chooseAreaComplete');
+    // }
   }
-
-
 
   render(){
     return(
@@ -110,8 +107,8 @@ class CreateMapComponent extends Component{
         }// display street only
         onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
           //console.log(data);
-          console.log('-----------------------------------');
-          console.log('details.geometry: ', details.geometry.location);
+         // console.log('-----------------------------------');
+         // console.log('details.geometry: ', details.geometry.location);
           this.setState({
             lat: details.geometry.location.lat,
             lng: details.geometry.location.lng,

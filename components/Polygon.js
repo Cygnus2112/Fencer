@@ -36,7 +36,6 @@ class PolygonComponent extends Component {
   constructor(props) {
     super(props);
 
-
  //   this.takeSnapshot = this.takeSnapshot.bind(this);
 
     this.finish = this.finish.bind(this);
@@ -82,9 +81,8 @@ class PolygonComponent extends Component {
 
   componentDidMount(){
 
-    console.log('Polygon mounted.');
-    console.log('this.props.currentPosition in Polygon: ',this.props.currentPosition);
-    //console.log('this.state in Polygon: ', this.state);
+   // console.log('Polygon mounted.');
+   // console.log('this.props.currentPosition in Polygon: ',this.props.currentPosition);
 
     if(this.props.fenceCoordinates){
 
@@ -230,7 +228,15 @@ class PolygonComponent extends Component {
             style={styles.map}
             region={this.state.region}
             onRegionChange={this.onRegionChange}
-            onPress={e => this.onPress(e)}
+            onPress={e => {
+              // console.log('map pressed.');
+              // if(this.props.chooseAreaComplete){
+              //   console.log('this.props.chooseAreaComplete === true');
+              // }
+
+
+              this.onPress(e);
+            }}
             {...mapOptions}>
             
               {this.state.place &&
@@ -255,7 +261,13 @@ class PolygonComponent extends Component {
             style={ styles.map }
             region={this.state.region}
             onRegionChange={this.onRegionChange}
-            onPress={e => this.onPress(e)}
+            onPress={e => {
+              if(!this.props.chooseAreaComplete){
+                this.onPress(e)
+
+              }
+              
+            }}
             {...mapOptions}
           >
 
