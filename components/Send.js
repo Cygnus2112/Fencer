@@ -281,7 +281,9 @@ class ReviewModal extends Component {
                   </View>
        
                   <View style={styles.filterAndMapPreview} >
-                    <Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 160, width: 90, borderWidth: 1, borderColor: 'black'}} />  
+                    <View style={{height: 162, width: 92, borderColor: 'black', borderWidth: 1}}>
+                      <Image source={{uri: `data:image/png;base64,${this.props.filterToUpload.data}` }} resizeMode={'contain'} style={{height: 160, width: 90}} />  
+                    </View>
                   </View>
 
                   <View style={styles.details}>

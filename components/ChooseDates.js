@@ -509,19 +509,20 @@ class InfoModal extends Component {
             <View style={styles.modalContainer}>
               <View style={styles.infoModal}>
                   <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>The <Text style={{fontWeight: 'bold'}}>Start Date</Text> determines when your Geofilter becomes unlockable for users who are within your preset geofence area. The <Text style={{fontWeight: 'bold'}}>Start Date </Text>must be set for at least one hour from the current time. Currently, Geofilters can be live for a maximum of <Text style={{fontWeight: 'bold'}}>72 hours</Text>.</Text>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:16, margin: 5}}>If a Geofilter is shared with a user in a different time zone, the start and end times will adjust according to whichever time zone in which the user is located (i.e., if you are in L.A. and set a start time for 5:00PM, it will appear as 8:00PM to a user in New York).</Text>
 
-
- 
-                <TouchableHighlight 
-                      style={{marginTop: 45,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                      onPress={() => {
-                        
-                        this.props.toggleModal();
-                        this.setState({modalVisible: !this.state.modalVisible})
-                      }
-                  }>
-                  <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-                </TouchableHighlight>
+                <View style={{position: 'absolute', bottom: 10, left: 10, right: 10, justifyContent: 'center', alignItems: 'center'}}>
+                  <TouchableHighlight 
+                        style={{marginTop: 15,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                        onPress={() => {
+                          
+                          this.props.toggleModal();
+                          this.setState({modalVisible: !this.state.modalVisible})
+                        }
+                    }>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
+                  </TouchableHighlight>
+                </View>
               </View >
             </View>
       </Modal>
@@ -541,11 +542,11 @@ const styles = StyleSheet.create({
   },
   infoModal: {
     position: 'absolute', 
-    top: 130, 
-    left:40, 
-    right: 40, 
-    bottom: 130, 
-    justifyContent: 'center', 
+    top: 90, 
+    left: 30, 
+    right: 30, 
+    bottom: 90, 
+    justifyContent: 'flex-start', 
     alignItems: 'center', 
     backgroundColor: 'white',
     borderWidth:1, 
