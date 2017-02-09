@@ -11,11 +11,9 @@ import {
     Dimensions,
     ListView,
     TouchableHighlight,
-    Linking,
     Modal,
     TextInput,
     Alert,
-    BackAndroid,
     ScrollView,
     AsyncStorage
 } from 'react-native';
@@ -37,16 +35,6 @@ let screenHeight= height;
 import Icon from 'react-native-vector-icons/Entypo';
 
 import Button from 'react-native-button';
-
-/*
-		Basic concept:
-			- on component (and/or application) mount, we ping back-end to get the user's events (or whatever we call them)
-				- can also do this on startup/welcome screen (prob should)
-
-			- sorting/filtering the events array is going to be a pain. Will need to:
-				- filter out events that have already finished (if they're not deleted on back-end)
-				- sort based on 1) start year, 2) start month, 3) start day, 4) start time, 5) end day, 6) end time
-*/
 
 class MyFiltersComponent extends Component {
 	constructor(props){
@@ -92,8 +80,8 @@ class MyFiltersComponent extends Component {
               return response.json();
             })
             .then(response => {
-              console.log('2nd level response in auth checkIfDeleted: ');
-              console.log(response);
+            //  console.log('2nd level response in auth checkIfDeleted: ');
+            //  console.log(response);
               console.log('-------------------------');
 
              // console.log("response['response'] ", response['response']);
@@ -238,8 +226,6 @@ class MyFiltersComponent extends Component {
   }
 
 	componentWillReceiveProps(newProps){
-    //  console.log('newProps in MyFilters!!!');
-
 
       if(newProps.searchError){
         this.setState({searchError: true});
@@ -333,7 +319,7 @@ class MyFiltersComponent extends Component {
                 	</View>
                 </TouchableOpacity>
               	<View style={styles.searchBox}>
-                		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Filters</Text>	
+                		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Geofilters</Text>	
               	</View>
               	<View style={{width: 30, marginRight: 15}}>
                   <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >

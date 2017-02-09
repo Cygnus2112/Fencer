@@ -13,7 +13,6 @@ import {
 import Button from 'react-native-button';
 
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 import * as authActions from '../actions/authActions';
 
 const _validateEmail = (email) => {
@@ -485,14 +484,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   input: {
-   //  backgroundColor: 'white', 
-   //  margin: 3, 
-   //  // padding: 10,
-   //  padding: 5,
-   // // height: 45, 
-   //  width: 200*.7,
-   //  fontSize: 18,
-   //  textAlign: 'center'
     backgroundColor: 'white', 
     margin: 5, 
     padding: 5,
@@ -529,9 +520,3 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
-
-
-
-
-
-

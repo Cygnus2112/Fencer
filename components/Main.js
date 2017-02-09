@@ -1,16 +1,8 @@
-// When component mounts, check 1) geocoords, and 2) if user is logged in (token)
-
-// While checking, show loading screen.
-
-// After we get coords and isLoggedIn, show welcome screen. 
-
 import React, { Component } from 'react';
 
 import {
     View,
-    Image,
-    StyleSheet,
-    Text
+    StyleSheet
 } from 'react-native';
 
 import { connect } from 'react-redux';
@@ -27,22 +19,6 @@ class MainComponent extends Component {
 
 	}
 
-	componentDidMount(){
-		//console.log('this.props in Main: ', this.props)
-		console.log('-----------------------------------');
-		// if(this.props.isReferral){
-		// 	this.props.checkAuth();
-		// }
-	}
-
-
-		// {this.props.isUpdatingLocation
-		// 	?
-		//   (<LoadingScreen />)
-		// 	:
-		//   (<Welcome />)
-
-		// }
 	render(){
 	  return (
 	  	<View>
@@ -65,8 +41,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-	// let bound = bindActionCreators(filterActions, dispatch);
-	// console.log('boundActionCreators: ', bound);
   return {
   	authActions: bindActionCreators(authActions, dispatch),
     filterActions: bindActionCreators(filterActions, dispatch),

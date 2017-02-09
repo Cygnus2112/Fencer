@@ -8,8 +8,6 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
-// import RNViewShot from "react-native-view-shot";
-
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -99,21 +97,6 @@ class PolygonComponent extends Component {
 
       })
     }
-   // console.log('this.props.lat in Polygon component: ', this.props.lat);
-    // navigator.geolocation.getCurrentPosition(
-    //   (position) => {
-        
-    //     let point = {
-    //       lat: position.coords.latitude,
-    //       lng: position.coords.longitude
-    //     }
-    //     this.setState({
-    //       currPosition: point
-    //     })
-    //   },
-    //   (error) => alert(error.message),
-    //   { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    // );
   }
 
   componentWillReceiveProps(newProps){
@@ -134,28 +117,12 @@ class PolygonComponent extends Component {
     }
   }
 
-  // shouldComponentUpdate(nextProps, nextState){
-  //   if(nextState.editing){
-  //     if(nextState.editing.coordinates.length >= 4){
-  //       console.log(nextState.editing.coordinates.length + ' coordinates')
-
-  //       this.finish();
-
-  //     }
-  //   }
-  //   return true;
-  // }
-
   onRegionChange(region) {
    // console.log('region in onRegionChange: ', region);
     this.setState({ region });
   }
 
   finish() {
-
-   // this.takeSnapshot();
-
-
 
     console.log('-------------------------------');
     console.log('this.state.region in finish(): ', this.state.region);
@@ -240,17 +207,7 @@ class PolygonComponent extends Component {
 
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
 
-      // let coordsMap = this.state.editing.coordinates.map((coord) => {
-      //   return [coord.latitude, coord.longitude];
-      // })
-      // let firstCoord = coordsMap[0];
-      // coordsMap.push(firstCoord);
-
       console.log('-------------------------------');
-
-      // GeoFencing.containsLocation(this.state.currPosition, coordsMap)
-      //   .then(() => console.log('point is within polygon'))
-      //   .catch(() => console.log('point is NOT within polygon'))
 
     }
 

@@ -11,9 +11,7 @@ import {
     ScrollView,
     ListView,
     Dimensions,
-    Linking,
     TextInput,
-    AppState,
     Alert,
     Modal,
     ActivityIndicator
@@ -70,9 +68,6 @@ class Send extends Component {
     }
 
     handleSubmit(){
-    //    console.log('handleSubmit called ');
-    //    console.log('this.props.selectedDates in handleSubmit: ', this.props.selectedDates);
-      //  console.log('AppState.currentState: ', AppState.currentState);
 
         // setTimeout(()=>{
           let currentTime = new Date().getTime();
@@ -119,43 +114,13 @@ class Send extends Component {
     }
 
     componentWillReceiveProps(newProps){
-      //  if(newProps.finalSubmitComplete !== this.props.finalSubmitComplete){
-      // //   if(newProps.filterTitle !== this.props.filterTitle){
-
-      //       console.log('newProps.bitlyURL: ', newProps.bitlyURL);
-      //       console.log('this.props.bitlyURL: ', this.props.bitlyURL);
-
-      //       let shareText = {
-      //           //  title: "React Native",
-      //           message: "Here is your new Fencer filter: " + this.state.title + " ",
-      //           url: newProps.bitlyURL,
-      //           subject: "Share Link" //  for email
-      //       };
-
-      //       Share.open(shareText)
-      //       .then((resp) => {
-      //           console.log('successfully sent filter???', resp);
-      //           console.log('#####################################################');
-      //          // this.props.clearProps();
-      //           //Actions.loading();
-      //       })
-      //   }
 
         
         if(newProps.filterTitle !== this.props.filterTitle){
             this.handleSubmit();
         }
 
-        // if( newProps.filterTitle ){                //  this triggers an infinite loop of filter submissions. WHY???
-        //   console.log('newProps.filterTitle');
-        //   this.handleSubmit();
-        // }
-    }
-
-        //     if(!this.props.isFinalSubmitting){
-        //   return (<View style={styles.loadingContainer}><Spinner/></View>)
-        // } else {
-        // return 
+    } 
 
 
     render(){
@@ -283,11 +248,6 @@ class ReviewModal extends Component {
     this.state = {
           modalVisible: this.props.modalVisible
       }
-  }
-//<View style={styles.infoModal}>
-
-  componentDidMount(){
-   // console.log('this.props.filterToUpload.data in ReviewModal: ', this.props.filterToUpload.data);
   }
 
   render(){

@@ -5,8 +5,6 @@ import {
     Image,
     Text,
     StyleSheet,
-    DatePickerAndroid,
-    TimePickerAndroid,
     Dimensions,
     TouchableOpacity
 } from 'react-native';
@@ -27,11 +25,6 @@ class StepFourComponent extends Component {
 		super(props);
 		//this.handlePress = this.handlePress.bind(this);
 	}
-
-	// handlePress() {
-	// 	uploadActions.loadView('send')
-	
-	// }
 
 	render(){
 		return (

@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 
 import {
     View,
-    Image,
     Text,
     StyleSheet,
-    DatePickerAndroid,
-    TimePickerAndroid,
     Dimensions,
     TouchableOpacity
 } from 'react-native';
@@ -28,10 +25,6 @@ class StepOneComponent extends Component {
 
 		//this.handlePress = this.handlePress.bind(this);
 	}
-
-	// handlePress(){
-	// 	uploadActions.loadView('upload')
-	// }
 
 	render(){
 		return (

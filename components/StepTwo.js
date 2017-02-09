@@ -2,11 +2,8 @@ import React, { Component } from 'react';
 
 import {
     View,
-    Image,
     Text,
     StyleSheet,
-    DatePickerAndroid,
-    TimePickerAndroid,
     Dimensions,
     TouchableOpacity
 } from 'react-native';
@@ -26,17 +23,7 @@ class StepTwoComponent extends Component {
 	constructor(props){
 		super(props);
 
-		//this.handlePress = this.handlePress.bind(this);
-
 	}
-
-	componentDidMount(){
-		//console.log('this.props in StepTwo: ', this.props)
-	}
-
-	// handlePress(){
-	// 	uploadActions.loadView('dates')
-	// }
 
 	render(){
 		return (

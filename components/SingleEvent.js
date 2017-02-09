@@ -94,10 +94,6 @@ class SingleEventComponent extends Component {
 	}
 
 	componentDidMount(){
-		console.log('SingleEvent mounted.');
-
-	//	console.log('this.props in SingleEvent: ', this.props);
-	//	console.log('filter ID and title in SingleEvent: ', this.props.filterID + ' ' + this.props.title);
 
 		this.checkTime = setInterval(() => {
 			this.currentTime = Date.now();
@@ -133,10 +129,6 @@ class SingleEventComponent extends Component {
 	        	console.log('position is NOT within polygon')
 	        })
         	//this.props.fetchFilterImage({ filterID: this.props.filterID });
-
-      //  if(this.props.isActive){
-      // 		console.log('this.props.filterID in SingleEvent: ', this.props.filterID);
-       	//	this.props.fetchFilterImage({ filterID: this.props.filterID });
 
        		AsyncStorage.getItem("fencer-token").then((token) => {
         	  if(token){
@@ -239,7 +231,7 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillUnmount(){
-		console.log('SingleEvent unmounting...');	
+		//console.log('SingleEvent unmounting...');	
 
 		clearInterval(this.checkTime);
 	}
@@ -263,8 +255,8 @@ class SingleEventComponent extends Component {
 
         Share.open(shareText)
             .then((resp) => {
-                console.log('successfully sent filter???', resp);
-                console.log('#####################################################');
+             //   console.log('successfully sent filter???', resp);
+             //   console.log('#####################################################');
                // this.props.clearProps();
                 //Actions.loading();
             })}
@@ -278,60 +270,58 @@ class SingleEventComponent extends Component {
     }
 
 	handleEventPress(){		
-		//Actions.camera({filterURI: this.props.filterImage});
-
 		// HOW DO WE DELAY THIS TRANSITION UNTIL THE FILTER IS LOADED???
 
-		let start = Date.now();
+		if(this.state.isExpired){
+			Alert.alert('Geofilter Expired', 'This Geofilter expired on '+_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear) +' at '+_formatTime(this.state.startHour, this.state.startMinute)+'.', [{text: 'okay', onPress: () => {
+				console.log('okay pressed');
+				this.setState({isLoadingFilter: false});
+			}}])
 
-		this.setState({
-			isLoadingFilter: true
-		})
+		} else if(!this.state.isActive){
+			Alert.alert('Geofilter Not Active Yet', 'This Geofilter does not become active until '+_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear) +' at '+_formatTime(this.state.startHour, this.state.startMinute)+'.', [{text: 'okay', onPress: () => {
+				console.log('okay pressed');
+				this.setState({isLoadingFilter: false});
+			}}])
 
-		let that = this;
 
-		let interval = setInterval(()=>{
-			if(that.state.filterURI){
-				clearInterval(interval);
-				Actions.camera({filterURI: this.state.filterURI});
-				console.log('opening camera. time elapsed: ', Date.now() - start);
+		} else {
+			if(!this.state.isInRange){
+				Alert.alert('Out of Range', "You are out of range of this Geofilter's designated geofence area.", [{text: 'okay', onPress: () => {
+					console.log('okay pressed');
+					this.setState({isLoadingFilter: false});
+				}}])
 
-			setTimeout(() => {
 
+			} else {
+				let start = Date.now();
 				this.setState({
-					isLoadingFilter: false
+					isLoadingFilter: true
 				})
+				let that = this;
+				let interval = setInterval(()=>{
+					if(that.state.filterURI){
+						clearInterval(interval);
+						Actions.camera({filterURI: this.state.filterURI});
+					//	console.log('opening camera. time elapsed: ', Date.now() - start);
 
-			},50)
+						setTimeout(() => {
+							this.setState({
+								isLoadingFilter: false
+							})
+						},50)
+						clearInterval(this.checkTime);
+					}
+				},50)
+			}	
+		}
 
 
-				clearInterval(this.checkTime);
-			}
-		},50)
-
-		//Actions.camera({filterURI: this.state.filterURI});
 
 		// either load the filter or an 'out of bounds/event not started yet' popup
 
-		// if within bounds and event dates:
-		// 1) launch camera
-		// 2) ping API to get filter
-		// 3) start minting $$$ bitchezzzzzzzzz
-
-		// we only need to convert an image to base64 if a user chooses to share it.
-
-		// TODO: add 'event owner' field to display if the user created the filter?
-		//		-- will have extra options (cancel, revise, etc.);
-
 	}
-//					<Text style={{fontSize: 14, textAlign: 'center'}}> {this.props.message} </Text>
 
-				  // {this.props.userCreated &&
-				  // 	(<View style={styles.bookmarkIcon}>
-				  // 		<Text>Cock</Text>
-				  //     <Icon name="bookmark" size={30} color="#0c12ce" />
-				  // 	</View>)
-				  // }
 	render(){
 		return (
 				<View style={this.state.isActive ? this.state.isInRange ? [styles.containerActive, {borderColor: 'gold', borderWidth: 2}] : styles.containerActive : styles.containerInactive}>		
@@ -487,10 +477,6 @@ class DetailsModal extends Component {
       	}
 	}
 
-	componentDidMount(){
-	//	console.log('this.props in details modal: ', this.props);
-	}
-
 	render(){
 		return(
       	<Modal
@@ -504,13 +490,13 @@ class DetailsModal extends Component {
           	  	<View style={this.props.message.length ? styles.infoModal : [styles.infoModal, {top: 120, bottom: 120}]}  >
 
 	          	    <View style={{position: 'absolute', top: 15, left: 10, right: 10, justifyContent: 'center', alignItems: 'center', marginBottom: 20}}>
-					  <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5 }}>Geofilter Details:</Text>
+					  <Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 20, margin: 5, textDecorationLine: 'underline' }}>Geofilter Details</Text>
 		            </View>
 
 		              <View style={styles.details}>
 		                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
 			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>Title:</Text>
-			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5, fontWeight: 'bold' }}>{this.props.title}</Text>
+			            	<Text style={{fontFamily: 'RobotoCondensed-Regular', fontSize: 18, margin: 5 }}>{this.props.title}</Text>
 			            </View>
 			            {!this.state.isActive &&
 			              <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
@@ -558,68 +544,26 @@ class DetailsModal extends Component {
 	}
 }
 
-// class EditModal extends Component {
-// 	constructor(props){
-// 		super(props);
-		
-// 		this.state = {
-//       		modalVisible: this.props.modalVisible
-//     	}
-// 	}
-
-// 	render(){
-// 		return(
-//       	<Modal
-//           animationType={"none"}
-//           transparent={true}
-//           visible={this.state.modalVisible}
-//           onRequestClose={() => { 
-//           	          	this.props.toggleModal();
-//           	console.log("Modal has been closed.")}}>
-//             <View style={styles.modalContainer}>
-//           <View style={styles.infoModal}>
-
-// 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Editing details for:</Text>
-// 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>title: {this.props.title}</Text>
-// 	            		            <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Starts: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.startMonth,this.props.dates.startDay,this.props.dates.startYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.startHour, this.props.dates.startMinute)}</Text></Text> 
-// 				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color:"#c6c6c6" }}>Ends: <Text style={{fontWeight: 'bold'}}>{_formatDate(this.props.dates.endMonth,this.props.dates.endDay,this.props.dates.endYear)}</Text> at <Text style={{fontWeight: 'bold'}}>{_formatTime(this.props.dates.endHour, this.props.dates.endMinute)}</Text></Text> 
-// 				<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>message: {this.props.message}</Text>  	
-	           
-// 	            	                <TouchableHighlight 
-//                   style={{height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-//                   onPress={() => {
-//                     this.props.toggleModal();
-//                     this.setState({modalVisible: !this.state.modalVisible})
-//                   }
-//                 }>
-//               <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-//             </TouchableHighlight>
-// 	        </View>
-// 	        </View>
-// 	    </Modal>
-// 		)
-// 	}
-// }
-
-//<View style={{position: 'absolute', top: 75, left:50, right: 50, bottom: 75, justifyContent: 'center', alignItems: 'center', backgroundColor:'blue',borderWidth:1, borderColor:'black', borderRadius:10}}>
 const styles = StyleSheet.create({
 	details: {
 		position: 'absolute',
 		top: 75,
-		left: 10, 
-		right: 10
+		left: 5, 
+		right: 5
 	},
 	innerContainer: {
 		// height: 80, 
 		// width: 200, 
 		// borderColor: 'black', 
-		// borderWidth: 1, 
+	 //    borderWidth: 1, 
 		marginLeft:20,
-		marginRight:20
+		marginRight:20,
+		marginBottom: 25
 	},
 	containerActive:{
-		height: 80, 
-		width: 280, 
+		height: 100, 
+		//width: 280, 
+		width: screenWidth - 20,
 		margin: 7, 
 		paddingLeft:5,
 		paddingRight:5,
@@ -627,13 +571,15 @@ const styles = StyleSheet.create({
 		borderWidth: 1, 
 		borderRadius: 4,
 		flexDirection: 'column',
-		justifyContent: 'space-around',
+	//	justifyContent: 'space-around',
+	    justifyContent: 'center',
 		backgroundColor: 'white',
 		elevation: 5
 	},
 	containerInactive:{
-		height: 80, 
-		width: 280, 
+		height: 100, 
+		//width: 280, 
+		width: screenWidth - 20,
 		margin: 7, 
 		paddingLeft:5,
 		paddingRight:5,
@@ -641,7 +587,9 @@ const styles = StyleSheet.create({
 		borderWidth: 1, 
 		borderRadius: 4,
 		flexDirection: 'column',
-		justifyContent: 'space-around',
+	//	justifyContent: 'space-around',
+	//	justifyContent: 'flex-start',
+	    justifyContent: 'center',
 		backgroundColor: '#e3e3e5',
 		elevation: 5
 	},
@@ -662,7 +610,9 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		alignItems: 'center',
-		padding: 5
+		paddingTop: 2,
+		// borderColor: 'black',
+		// borderWidth:1
 	},
 	greenLight:{
 		height: 15,
@@ -705,19 +655,17 @@ const styles = StyleSheet.create({
 	shareIcon: {
 		height: 30,
 		width: 30,
-		// borderWidth: 1,
-		// borderColor: 'black',
 		position: 'absolute',
-		top: 0,
-		right: 1,
+		// top: 0,
+		// right: 1,
+		bottom: 0,
+		left: (screenWidth/2) - 25,
 		paddingTop: 3,
 		paddingLeft: 8
 	},
 	editIcon: {
 		height: 30,
 		width: 30,
-		// borderWidth: 1,
-		// borderColor: 'black',
 		position: 'absolute',
 		bottom: 1,
 		left: 1,
@@ -753,7 +701,7 @@ const styles = StyleSheet.create({
   	infoModal: {
 	    position: 'absolute', 
 	    top: 60, 
-	    left:30, 
+	    left: 30, 
 	    right: 30, 
 	    bottom: 60, 
 	    justifyContent: 'center', 

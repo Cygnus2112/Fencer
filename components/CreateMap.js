@@ -50,25 +50,6 @@ class CreateMapComponent extends Component{
   //  this.addPolygon = this.addPolygon.bind(this);
   }
 
-  // addPolygon(){
-  //   this.setState({
-  //     polygon: !this.state.polygon
-  //   })
-  // }
-
-  // getCoords(){
-  //   navigator.geolocation.getCurrentPosition(     // will DEFINITELY have to redux this one
-  //     (pos) => {
-  //       this.setState({
-  //         lat: pos.coords.latitude,
-  //         lng: pos.coords.longitude
-  //       })
-  //     },
-  //     (error) => console.log("Geolocation error: ", JSON.stringify(error)),
-  //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-  //   )
-  // }
-
   componentDidMount(){
     console.log('CreateMap mounted.');
     console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
@@ -82,22 +63,11 @@ class CreateMapComponent extends Component{
       console.log('nextProps.chooseAreaComplete');
     }
 
-                //     RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
-                //   format: "jpeg",
-                //   quality: 1.0,
-                //   result: 'data-uri'
-                // })
-                // .then(
-                //     uri => {})
   }
 
 
 
   render(){
-//<MapWithCoords polyCoords={polyCoords} polygon={this.state.polygon} lat={this.state.lat} lng={this.state.lng}/>
-//      <TouchableNativeFeedback onLongPress={this.addPolygon}>
-//      </TouchableNativeFeedback>
-//          <Polygon lat={this.state.lat} lng={this.state.lng} />
     return(
         <View style={styles.container}>
           <View style={{position: 'absolute', top: 8, left: 10, width: 30, height: 30}}>
@@ -132,7 +102,6 @@ class CreateMapComponent extends Component{
         listViewDisplayed='auto'    // true/false/undefined
         fetchDetails={true}
         renderDescription={(row) => { 
-      //   console.log('row.terms in autocomplete: ', row.terms);
 
           return row.terms[0].value + ' - ' + row.terms[1].value + ', ' + row.terms[2].value
 
@@ -180,12 +149,6 @@ class CreateMapComponent extends Component{
             marginLeft: 0,
             marginRight: 0,
             borderRadius: 0,
-          //  paddingLeft: 4,
-          //  position: 'absolute', 
-            // top: 0, 
-            // left: 0,
-            // right: 0,
-            // bottom: 0,
             height: 43,
             color: '#5d5d5d',
             fontSize: 16
@@ -289,23 +252,6 @@ class InfoModal extends Component {
     )
   }
 }
-// Basic directions
-// To begin, tap anywhere to set a point on the map. In order to be valid, a fence must have a minimum of three points and a maximum of four. 
-
-// Thumbnail image of geofence. (Maybe both rectangle and triangle.)
-
-
-// Tap "Submit" when finished or "Start Over" to discard your geofence and start again. 
-
-// To change a map's target area, use the search field or scroll to your preferred location.
-
-// Location information contained in (dictated by, encoded in) your geofence will be used
-// to determine if a user is within your geofence area, and thus able to access your geofilter. GPS positioning on mobile devices isn't
-// always precise, so it's best to err on generous side when setting an area (say +10% your venue coordinates) (what???? argh. intended venue?)
-
-// 
-
-//  For best results, place geofence points in clockwise fashion. 
 
 const styles = StyleSheet.create({
   container: {
@@ -318,7 +264,6 @@ const styles = StyleSheet.create({
   mapContainer: {
     position: 'absolute',
     top: 50,
-   // top: 250,                       //TEMPORARY!!!
     left: 5,
     right: 5,
     bottom: 5,
@@ -329,8 +274,6 @@ const styles = StyleSheet.create({
     borderWidth: 1
   },
   searchBoxContainer: {
-    //height: 45, 
-  //  height: 250,              //TEMPORARY!!!
     position: 'absolute',
     top: 0,
     left: 50,
@@ -381,23 +324,11 @@ const styles = StyleSheet.create({
    // padding: 10
   },
   modalScroll: {
-    //zIndex: 5,
-    // position: 'absolute', 
-    // top: 70, 
-    // left:45, 
-    // right: 45, 
-    // bottom: 100, 
-  //  justifyContent: 'center', 
-  //  alignItems: 'center', 
     margin:10,
     marginTop: 5,
     paddingTop: 5,
     paddingBottom: 5,
-    backgroundColor:'white',
-    // borderWidth:1, 
-    // borderColor:'black', 
-    //padding: 5
-
+    backgroundColor:'white'
   }
 });
 

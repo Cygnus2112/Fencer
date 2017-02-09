@@ -21,10 +21,6 @@ const initialState = {
 
 const filterReducer = (state = initialState, action) => {
   switch(action.type){
-  	// case ActionTypes.UPDATE_POSITION_REQUEST:
-  	//   return Object.assign({}, state, {
-  	//   	currentPosition: ActionTypes.currentPosition
-  	//   })
   	case ActionTypes.UPDATE_POSITION_REQUEST:
   	  return Object.assign({}, state, {
   	  	isUpdatingPosition: true
@@ -52,8 +48,6 @@ const filterReducer = (state = initialState, action) => {
         isLoadingFilterImage: false,
         filterImage: action.filterImage
       })
-
-
   	// case ActionTypes.LOAD_MYFILTERS_REQUEST:
   	//   return Object.assign({}, state, {
   	//   	isLoadingMyFilters: true
@@ -105,10 +99,6 @@ const filterReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         newFilterAdded: null
       })
-
-
-  	  // ... and many others for dealing with image rendering etc.
-
     default:
       return state;
   }

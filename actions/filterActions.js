@@ -113,9 +113,6 @@ const loadAllFiltersRequest = () => {
 }
 
 const loadAllFiltersSuccess = (filtersData) => {
- // console.log('++++++++++++++++++++');
-//  console.log('filtersData in loadAllFiltersSuccess: ', filtersData);
- // console.log('++++++++++++++++++++');
 	return {
     	type: LOAD_ALLFILTERS_SUCCESS,
     	allFilters: filtersData
@@ -241,7 +238,7 @@ export const addFilterByID = (dispatch, data) => {
             return resp;
           }
 
-          console.log('response.data["NOTFOUND"] in addFilterByID: ', resp.data['NOTFOUND']);
+       //   console.log('response.data["NOTFOUND"] in addFilterByID: ', resp.data['NOTFOUND']);
 
         })
         .catch(err => {
@@ -288,7 +285,7 @@ const newFilterAddedRequest = (filter) => {
 export const ADD_TO_MYFILTERS = 'ADD_TO_MYFILTERS';
 
 export const addToMyFilters = (filter) => {
-  console.log('addToMyFilters called in filterActions');
+ // console.log('addToMyFilters called in filterActions');
   return {
     type: ADD_TO_MYFILTERS,
     filter: filter
@@ -390,18 +387,3 @@ const clearNewFilterRequest = () => {
 //     filterUploadError: reason
 //   }
 // }
-
-
-    //   myFilters:
-
-    //   {
-    //     'xbh1234' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}],
-    //     'ehb3929' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}],
-    //     'pna4958' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}]
-    //   }
-
-    // filtersCreated:
-
-    //   {
-    //     'xbh1234' : [{lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}, {lat: ... , lng ...}]
-    //   }

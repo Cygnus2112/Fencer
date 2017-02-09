@@ -5,7 +5,6 @@ import {
     Image,
     StyleSheet,
     Text,
-    AsyncStorage,
     Linking
 } from 'react-native';
 
@@ -29,69 +28,16 @@ class LoadingComponent extends Component{
 		super(props)
 	}
 	componentDidMount(){
-    console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
-    console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
+    // console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
+    // console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
 
-    if(this.props.isReferral){
-      console.log('this.props.isReferral in Loading: ', this.props.isReferral);
-    }
 
- //   if(!this.props.isReferral){
 
-  //    console.log('this.props.isReferral is UNDEFINED');
-
-      // Linking.addEventListener('url', (e) => {
-      //   console.log('deep link url received in Loading: ', e.url);
-
-      //  // console.log(`Deep Link URL: ${e.url}`);
-
-      //   if(e.url !== currUrl){
-      //     currUrl = e.url;
-      //     const parsed = queryString.parse(e.url);
-
-      //     for(filter in parsed){
-      //       console.log('filter ID from url: ', parsed[filter]);
-
-      //       if(!this.props.isLoggedIn){
-      //        // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
-
-      //         Actions.referral({filterID: parsed[filter]})
-
-      //       } else {
-
-      //         this.props.addFilter({filter: parsed[filter], isSearch: false})
-      //       }
-
-      //     }
-
-      //     //  REMOVE EVENT LISTENER
-      //    // Actions.loading();    //  calling in Actions instead
-      //   }
-
-      // });
-
- //   setTimeout(()=>{
 
       this.props.checkAuth(this.props.isReferral);
       this.props.initPosition();
 
-//    },5000);
-
- //   } else {
-
-  //    this.props.checkAuth(this.props.isReferral);
-
-   // }
 	}
-
-  // componentWillReceiveProps(nextProps){
-  //  // console.log('componentWillReceiveProps called in Loading');
-
-  //   if(nextProps.isReferral){
-  //     console.log('nextProps.isReferral in Loading: ', nextProps.isReferral);
-
-  //   }
-  // }
 
 	render(){
 		

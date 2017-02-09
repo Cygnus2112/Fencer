@@ -9,18 +9,6 @@ const initialState = {
   selectDatesComplete: false,
   chooseAreaComplete: false,
   sendToFriendsComplete: false,
-  //selectedDates: {
-  //   startMonth: null,
-  //   startDay: null,
-  //   startYear: null,
-  //   endMonth: null,
-  //   endDay: null,
-  //   endYear: null,
-  //   startHour: null,
-  //   endHour: null,
-  //   startMinute: null,
-  //   endMinute: null
-  // },
   startUTC: null,
   endUTC: null,
   fenceCoordinates: null,
@@ -42,7 +30,6 @@ const initialState = {
 const uploadReducer = (state = initialState, action) => {
   switch(action.type){
     case ActionTypes.LOAD_VIEW_REQUEST: 
-      //console.log('action.currentView in uploadReducer: ', action.currentView);
       return Object.assign({}, state, {
         currentView: action.currentView
       })
@@ -111,18 +98,6 @@ const uploadReducer = (state = initialState, action) => {
           selectDatesComplete: false,
           chooseAreaComplete: false,
           sendToFriendsComplete: false,
-          // selectedDates: {
-          //   startMonth: null,
-          //   startDay: null,
-          //   startYear: null,
-          //   endMonth: null,
-          //   endDay: null,
-          //   endYear: null,
-          //   startHour: null,
-          //   endHour: null,
-          //   startMinute: null,
-          //   endMinute: null
-          // },
           startUTC: null,
           endUTC: null,
           filterToUpload: null,

@@ -29,28 +29,6 @@ const { width, height } = Dimensions.get('window');
 let screenHeight = height;
 let screenWidth = width;
 
-/********************** wrapper for all upload filter-related components ********************/
-
-// what props will be passed in?
-// isLoggedIn
-// filterUploadComplete
-// selectDatesComplete
-// 
-
-/*
-
-so if we do something like ...
-
-	<View>
-		<UploadNav { ...this.state.propsToSend } />
-		<MainView { ...this.state.propsToSend } />
-	</View>
-
-... how will we tell each component what view we're on?
-
-
-*/
-
 class UploadComponent extends Component {
 	constructor(props){
 		super(props);

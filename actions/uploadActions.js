@@ -133,10 +133,7 @@ export const FINAL_SUBMIT_SUCCESS = 'FINAL_SUBMIT_SUCCESS';
 export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
 
 export const finalSubmitFilter = (dispatch, data) => {
-	console.log('data.message in finalSubmitFilter: ', data.message);
-	// console.log('filter data (first 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(0,20));
-	// console.log('filter data (last 20 chara) in finalSubmitFilter: ', data.filterToUpload.data.slice(data.filterToUpload.data.length-20,data.filterToUpload.data.length-1));
-
+	//console.log('data.message in finalSubmitFilter: ', data.message);
 	dispatch( finalSubmitRequest() );
 
 	let filterData = data.filterToUpload.data;
@@ -200,8 +197,6 @@ export const finalSubmitFilter = (dispatch, data) => {
           		console.log('total upload time (client-side): ', Date.now() - start);
 
           		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
-
-          		//console.log('response in filterimages POST (client side): ', resp);
             	return resp
         	})
 
@@ -212,10 +207,6 @@ export const finalSubmitFilter = (dispatch, data) => {
         	//dispatch(finalSubmitSuccess( ));
         	console.error('error in finalSubmitFilter:', err);
         })      
-        // .catch((err) => {
-        // 	//dispatch(finalSubmitSuccess( ));
-        // 	console.error('level 2 error in finalSubmitFilter:', err);
-        // });  
         } else {
             // dispatch(authFail());
             console.log('token not found???');

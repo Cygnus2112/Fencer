@@ -23,25 +23,6 @@ class ApplyFilterComponent extends Component{
 
     }
 
-    componentDidMount(){
-
-    //   Image.prefetch(this.props.filterURI).then(() => {    // see if this speeds things up
-    //      // this.setState({
-    //      //      imageLoaded: true
-    //      //  })
-    //   })
-
-       // setTimeout(() => {
-
-    //  1)  CHANGE SETTIMEOUT TO COMPONENT WILL RECEIVE PROPS
-    //          ... or Redux it    
-    //  2)  SHARE BUTTON SHOULDN'T APPEAR TILL IMG IS READY  
-
-    //  this may be happening too early...
-
-         // },1000)
-    }
-
     render(){
 
       let dataURI = "data:image/png;base64,"+this.props.filterURI;
@@ -98,9 +79,6 @@ const styles = StyleSheet.create({
     // marginBottom: 20,
   },
   container: {
-    //flex: 1,
-    //width: undefined,
-    //height: undefined,
     width: screenWidth,
     height: screenHeight,
     flexDirection: 'column',
@@ -111,9 +89,7 @@ const styles = StyleSheet.create({
   photoAndFilter:{
     width: screenWidth * .9, 
     height: screenHeight * .95, 
-    marginBottom:20,
-    // borderColor: 'red', 
-    // borderWidth: 2 
+    marginBottom:20
   },
   photo:{
     width: screenWidth * .9,
@@ -121,15 +97,11 @@ const styles = StyleSheet.create({
    // backgroundColor:'transparent',
     backgroundColor: 'white',
     justifyContent: 'center',
-    alignItems: 'center',
-    // borderColor: 'blue', 
-    // borderWidth: 2
+    alignItems: 'center'
   },
   filter:{
     width: screenWidth * .9, 
-    height: screenHeight *.95,
-    // borderColor: 'green', 
-    // borderWidth: 2
+    height: screenHeight *.95
   },
   button: {
     position: 'absolute',

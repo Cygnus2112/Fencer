@@ -430,56 +430,6 @@ const dismissWelcomeModalRequest = () => {
   }
 }
 
-// const dismissWelcomeModalSuccess = () => {
-//   return {
-//     type: DISMISS_WELCOME_MODAL_SUCCESS
-//   }
-// }
-
-// Ugh, this was completely unnecessary ...
-
-// export const dismissWelcomeModal = (dispatch) => {
-//   dispatch(dismissWelcomeModalRequest());
-
-//   AsyncStorage.getItem("fencer-token").then((value) => {
-//     if(value){
-//       AsyncStorage.getItem("fencer-username").then((username) => {
-//         console.log('current username: ', username);
-//         let token = value;
-
-//         return fetch(utils.dismissModalURL +"?username="+username, {    
-//           method: 'GET',
-//           headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'x-access-token': token
-//           }
-//         })
-//         .then(response => {
-//           return response.json();
-//         })
-//         .then(response => {
-//           console.log('2nd level response in auth dismissModal: ');
-//           console.log(response);
-//           console.log('-------------------------');
-
-//           dispatch(dismissModalSuccess());
-              
-                
-//         })
-//         .catch(err => {
-//           console.error('Error in dismissModal:', err);
-//         });
-//       }).done();
-//     } else {
-//       console.log('token not found');
-//               // dispatch(authFail());
-//     }
-//   }).done();
-// }
-
-
-
 export const CLEAR_ERROR_REQUEST = 'CLEAR_ERROR_REQUEST';
 
 export const clearError = (dispatch) => {
@@ -538,11 +488,50 @@ const purgeSuccess = () => {
   }
 }
 
+// const dismissWelcomeModalSuccess = () => {
+//   return {
+//     type: DISMISS_WELCOME_MODAL_SUCCESS
+//   }
+// }
 
+// Ugh, this was completely unnecessary ...
 
+// export const dismissWelcomeModal = (dispatch) => {
+//   dispatch(dismissWelcomeModalRequest());
 
+//   AsyncStorage.getItem("fencer-token").then((value) => {
+//     if(value){
+//       AsyncStorage.getItem("fencer-username").then((username) => {
+//         console.log('current username: ', username);
+//         let token = value;
 
+//         return fetch(utils.dismissModalURL +"?username="+username, {    
+//           method: 'GET',
+//           headers: {
+//             'Accept': 'application/json',
+//             'Content-Type': 'application/json',
+//             'x-access-token': token
+//           }
+//         })
+//         .then(response => {
+//           return response.json();
+//         })
+//         .then(response => {
+//           console.log('2nd level response in auth dismissModal: ');
+//           console.log(response);
+//           console.log('-------------------------');
 
-
-
-
+//           dispatch(dismissModalSuccess());
+              
+                
+//         })
+//         .catch(err => {
+//           console.error('Error in dismissModal:', err);
+//         });
+//       }).done();
+//     } else {
+//       console.log('token not found');
+//               // dispatch(authFail());
+//     }
+//   }).done();
+// }

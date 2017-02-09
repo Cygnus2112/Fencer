@@ -78,9 +78,6 @@ class ChooseDatesComponent extends Component{
   }
 
   componentDidMount(){
-  //    console.log('ChooseDates component mounting... ');
-  //    console.log('this.props.selectedDates in ChooseDates: ', this.props.selectedDates);
-  //    console.log('-------------------------------');
 
     // if(typeof(this.props.selectedDates.startMonth) === 'number'){
     if(typeof(this.props.startUTC) === 'number'){
@@ -126,12 +123,6 @@ class ChooseDatesComponent extends Component{
 
 
     }
-  }
-
-  componentWillReceiveProps(newProps, oldProps){
-    console.log('---------------------------------')
-    console.log('new props incoming in ChooseDates ...');
-    console.log('---------------------------------')
   }
 
   async launchTime(stateKey, options) {
