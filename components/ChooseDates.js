@@ -103,6 +103,7 @@ class ChooseDatesComponent extends Component{
         endMonth: initEndMonth,
         startDay: initStartTime.getDate(),
         endDay: initEndDay,
+        startText: initStartTime.toLocaleDateString(),
         endText: initEndTime.toLocaleDateString(),
         startHour: initStartHour,
         endHour: initEndHour,
