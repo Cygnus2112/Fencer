@@ -52,12 +52,6 @@ class ChooseDatesComponent extends Component{
     this.launchTime = this.launchTime.bind(this);
 
     this.state = ({
-      // startMonth: this.props.selectedDates.startMonth || (new Date()).getMonth(),
-      // startDay: this.props.selectedDates.startDay || (new Date()).getDate(),
-      // startYear: this.props.selectedDates.startYear || (new Date()).getFullYear(),
-      // endMonth: this.props.selectedDates.endMonth || (new Date()).getMonth(),
-      // endDay: this.props.selectedDates.endDay || (new Date()).getDate(),
-      // endYear: this.props.selectedDates.endYear || (new Date()).getFullYear(),
       startMonth: this.props.startUTC ? new Date(this.props.startUTC).getMonth() : (new Date()).getMonth(),
       startDay: this.props.startUTC ? new Date(this.props.startUTC).getDate() : (new Date()).getDate(),
       startYear: this.props.startUTC ? new Date(this.props.startUTC).getFullYear() : (new Date()).getFullYear(),
@@ -79,12 +73,7 @@ class ChooseDatesComponent extends Component{
 
   componentDidMount(){
 
-    // if(typeof(this.props.selectedDates.startMonth) === 'number'){
     if(typeof(this.props.startUTC) === 'number'){
-
-      // const { startMonth, startYear, startDay, endMonth, endYear, endDay } = this.props.selectedDates;
-      // const startString = new Date(startYear, startMonth, startDay);
-      // const endString = new Date(endYear, endMonth, endDay);
 
       const startString = new Date( this.props.startUTC );
       const endString = new Date( this.props.endUTC );
@@ -110,7 +99,9 @@ class ChooseDatesComponent extends Component{
       let initEndDay = initEndTime.getDate();
 
       this.setState({
+        startMonth: initStartTime.getMonth(),
         endMonth: initEndMonth,
+        startDay: initStartTime.getDate(),
         endDay: initEndDay,
         endText: initEndTime.toLocaleDateString(),
         startHour: initStartHour,
@@ -161,6 +152,7 @@ class ChooseDatesComponent extends Component{
             startDay: initStartTime.getDate(),
             startHour: initStartHour,
             startMinute: initMinute,
+            startText: initStartTime.toLocaleDateString(),
             startTimeText: _formatTime(initStartHour, initMinute)
           });
 
@@ -176,6 +168,7 @@ class ChooseDatesComponent extends Component{
               endDay: newEndTime.getDate(),
               endHour: newEndTime.getHours(),
               endMinute: newEndTime.getMinutes(),
+              endText: newEndTime.toLocaleDateString(),
               endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
           }
@@ -190,6 +183,7 @@ class ChooseDatesComponent extends Component{
               endDay: newEndTime.getDate(),
               endHour: newEndTime.getHours(),
               endMinute: newEndTime.getMinutes(),
+              endText: newEndTime.toLocaleDateString(),
               endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
 
@@ -203,6 +197,7 @@ class ChooseDatesComponent extends Component{
               endDay: newEndTime.getDate(),
               endHour: newEndTime.getHours(),
               endMinute: newEndTime.getMinutes(),
+              endText: newEndTime.toLocaleDateString(),
               endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
           

@@ -435,7 +435,7 @@ const mapDispatchToProps = (dispatch) => {
       uploadActions.clearFenceProps(dispatch);
     },
     submitFence: (coords) => {
-      console.log('coords in mapDispatch: ', coords);
+     // console.log('coords in mapDispatch: ', coords);
       uploadActions.submitFenceCoordinates(dispatch, coords);
     },
     // setMapPreview: (uri) => {

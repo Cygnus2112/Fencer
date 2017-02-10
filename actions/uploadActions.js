@@ -11,8 +11,6 @@ export const loadView = (dispatch, view) => {
 }
 
 export const loadViewRequest = (view) => {
-	console.log('loadViewRequest dispatched!!!');
-
 	return {
 		type: LOAD_VIEW_REQUEST,
 		currentView: view
@@ -87,7 +85,7 @@ const chooseAreaRequest = () => {
 }
 
 const chooseAreaSuccess = (coords) => {
-	console.log('chooseAreaSuccess dispatched');
+	//console.log('chooseAreaSuccess dispatched');
 	return {
 		type: CHOOSE_AREA_SUCCESS,
 		fenceCoordinates: coords,
@@ -172,7 +170,7 @@ export const finalSubmitFilter = (dispatch, data) => {
         	dispatch(finalSubmitSuccess({filterID: response.data.filterID, bitlyURL: response.data.bitlyURL}));  // NAVIGATE BACK TO HOME
 
         									// SHOW SUCCESS MODAL
-        	console.log('response.data.filterID in upload: ', response.data.filterID);
+        	//console.log('response.data.filterID in upload: ', response.data.filterID);
 
         	Actions.success({type: 'reset', title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, startUTC: data.startUTC, endUTC: data.endUTC })
 

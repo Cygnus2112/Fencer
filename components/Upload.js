@@ -38,12 +38,12 @@ class UploadComponent extends Component {
 	}
 
   onBackPress(){
-    console.log('back button pressed in UPLOAD');
+  //  console.log('back button pressed in UPLOAD');
     return true;
   }
 
   componentDidMount(){
-    console.log('main UPLOAD component mounted.')
+   // console.log('main UPLOAD component mounted.')
     //  console.log('this.props.currentView in Upload: ', this.props.currentView);
 
           
@@ -51,7 +51,7 @@ class UploadComponent extends Component {
   }
 
   componentWillUnmount(){
-    console.log('main UPLOAD component unmounting...')
+    //console.log('main UPLOAD component unmounting...')
 
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress);
 
