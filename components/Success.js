@@ -10,7 +10,9 @@ import {
     TouchableOpacity,
     BackAndroid,
     Clipboard,
-    ToastAndroid
+    ToastAndroid,
+    Modal,
+    ActivityIndicator
 } from 'react-native';
 
 import * as authActions from '../actions/authActions';
@@ -43,6 +45,10 @@ const _formatTime = (hour, minute) => {
 class Success extends Component {
 	constructor(props){
 		super(props);
+
+		this.state = {
+			isLoadingMyFilters: false
+		}
 
 		this.onBackPress = this.onBackPress.bind(this);
 
@@ -117,6 +123,9 @@ class Success extends Component {
 				<View style={[styles.buttons,{top: 460}]}>
 					<TouchableOpacity
 		                onPress={() => {
+		                	this.setState({
+		                		isLoadingMyFilters: true
+		                	})
 		                	this.props.loadMyFilters();
 		                	this.props.clearProps();
 		                }}
@@ -135,6 +144,10 @@ class Success extends Component {
 		            </TouchableOpacity>
 
 				</View>
+				{this.state.isLoadingMyFilters
+						&&
+					(<LoadingModal modalVisible={true} toggleModal={() => {this.setState( {isLoadingMyFilters:false}) } } />)
+				}
 			</View>
 		)
 
@@ -142,7 +155,48 @@ class Success extends Component {
 
 }
 
+class LoadingModal extends Component {
+	constructor(props){
+		super(props);
+		
+		this.state = {
+      		modalVisible: this.props.modalVisible
+    	}
+	}
+
+	componentDidMount(){
+		console.log('LoadingModal mounted ...');
+	}
+
+	render(){
+		return(
+      	<Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+
+          	console.log("Modal has been closed.")
+          }}>
+            <View collapsable={false} style={styles.modalContainer}>
+              <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+	        </View>
+	    </Modal>
+		)
+	}
+}
+
 const styles = StyleSheet.create({
+	modalContainer: {
+	    position: 'absolute', 
+	    top: 0, 
+	    left: 0, 
+	    right: 0, 
+	    bottom: 0, 
+	    backgroundColor: 'rgba(0,0,0,0.5)',
+	    justifyContent: 'center',
+	    alignItems: 'center'
+	},
 	check: {
 		position: 'absolute',
 		top: 0,

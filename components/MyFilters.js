@@ -275,27 +275,9 @@ class MyFiltersComponent extends Component {
 		}
 
 	}
-
+//          {/* <Spinner />  */}
+//   <LoadingModal modalVisible={true} />
 	render(){
-
-        if(this.props.isLoadingAllFilters){
-		      return (
-            <View style={styles.container}>
-              <View style={styles.fakeNavBar}>
-                <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-                  <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
-                </Image>
-              </View>
-              <Spinner />
-            </View>)
-        } else if(this.state.isLoadingFilter){
-          return (
-            <View style={styles.container}>
-              <Text>Loading da filter...</Text>
-            </View>
-            )
-
-        } else {
 
       return(
         <View style={styles.container}>
@@ -312,68 +294,77 @@ class MyFiltersComponent extends Component {
       					<Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} />	
       				</Image>
       			</View>
-			      <View style={styles.titleContainer}>
-                <TouchableOpacity onPress={()=>{Actions.loading({isStartup: false})}}>
-                	<View style={{width: 30, marginLeft: 15}}>
-                  		<Icon name="home" size={30} color="#0c12ce"/>
+  			      <View style={styles.titleContainer}>
+                  <TouchableOpacity onPress={()=>{Actions.loading({isStartup: false})}}>
+                  	<View style={{width: 30, marginLeft: 15}}>
+                    		<Icon name="home" size={30} color="#0c12ce"/>
+                  	</View>
+                  </TouchableOpacity>
+                	<View style={styles.searchBox}>
+                  		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Geofilters</Text>	
                 	</View>
-                </TouchableOpacity>
-              	<View style={styles.searchBox}>
-                		<Text style={{textAlign: 'center',fontFamily: 'RobotoCondensed-Regular',fontWeight:'bold', fontSize: 24,color:'#0c12ce'}}>My Geofilters</Text>	
-              	</View>
-              	<View style={{width: 30, marginRight: 15}}>
-                  <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
-                		<Icon name="info" size={30} color="#0c12ce"/>
-              	 </TouchableOpacity>
-                </View>
-          	</View>
+                	<View style={{width: 30, marginRight: 15}}>
+                    <TouchableOpacity onPress={() => {this.setState({infoPressed: true})}} >
+                  		<Icon name="info" size={30} color="#0c12ce"/>
+                	 </TouchableOpacity>
+                  </View>
+            	</View>
           	  <View style={styles.eventListContainer}>
-              	<ListView
-                		dataSource={this.state.dataSource}
-                		renderRow={(rowData) => {
+                {this.props.isLoadingAllFilters
+                  ?
+                  (<Spinner /> )
+                  :
+                  (<ListView
+                    dataSource={this.state.dataSource}
+                    renderRow={(rowData) => {
 
                      // console.log('rowData.startUTC: ', rowData.startUTC);
                      // console.log('rowData: ', rowData);
-                			console.log('-------------------------');
+                      console.log('-------------------------');
 
-                			if(rowData.coordinates && rowData.startUTC) {
+                      if(rowData.coordinates && rowData.startUTC) {
 
-  							        const poly = rowData.coordinates.map((point)=>{
-  	              				return {
-  	              					lat: point.latitude,
-  	              					lng: point.longitude
-  	              				}
-                				})
+                        const poly = rowData.coordinates.map((point)=>{
+                          return {
+                            lat: point.latitude,
+                            lng: point.longitude
+                          }
+                        })
 
-                				poly.push(poly[0]);
+                        poly.push(poly[0]);
 
-                			  console.log('-------------------------');
+                        console.log('-------------------------');
 
-  						          let _isActive = _checkDates(rowData.startUTC, rowData.endUTC);	
+                        let _isActive = _checkDates(rowData.startUTC, rowData.endUTC);  
 
                         let userCreated = false;
 
                         if(this.props.filtersCreated.indexOf(rowData.filterID) >= 0 ){
                           userCreated = true;
-                        }						
+                        }           
 
-    	                	return (
-    	                		<View key={rowData.id} >									
-    	                  			<SingleEvent { ...rowData } 
+                        return (
+                          <View key={rowData.id} >                  
+                              <SingleEvent { ...rowData } 
                                 isActive={ _isActive } 
                                 polyCoordsForGeo={ poly }
                                 userCreated={userCreated} />
-    	                		</View>
-    	                	)
-  	                  
-                 		} else {
-                 			return null;
-                 		}
-                 	}
-              }/>
+                          </View>
+                        )
+                      
+                    } else {
+                      return null;
+                    }
+                  }
+                }/>)
 
 
-            </View>
+                }
+
+
+              </View>
+
+
               <View style={styles.addById}>
                 <TouchableOpacity onPress={this.handleSearch}>
                   <Text style={{fontSize: 16,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Geofilter not showing up?</Text>
@@ -389,7 +380,7 @@ class MyFiltersComponent extends Component {
         </View>)
      }
         
-    }
+    
 }
 
 //toggleLoading={ () => {this.setState({isLoadingFilter: !this.state.isLoadingFilter})} }
@@ -554,7 +545,36 @@ class SearchModal extends Component {
 }
 
 
+class LoadingModal extends Component {
+  constructor(props){
+    super(props);
+    
+    this.state = {
+          modalVisible: this.props.modalVisible
+      }
+  }
 
+  componentDidMount(){
+    console.log('LoadingModal mounted ...');
+  }
+
+  render(){
+    return(
+        <Modal
+          animationType={"none"}
+          transparent={true}
+          visible={this.state.modalVisible}
+          onRequestClose={() => { 
+
+            console.log("Modal has been closed.")
+          }}>
+            <View collapsable={false} style={styles.modalContainer}>
+                <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+          </View>
+      </Modal>
+    )
+  }
+}
 
 
 const styles = StyleSheet.create({

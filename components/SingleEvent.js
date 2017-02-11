@@ -197,9 +197,9 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillReceiveProps(newProps){
-		if(newProps.isDeletingFilter === true){						// TEMPORARY WORKAROUND
-			this.setState({isLoadingFilter: true});
-		}
+		// if(newProps.isDeletingFilter === true){						// TEMPORARY WORKAROUND
+		// 	this.setState({isLoadingFilter: true});
+		// }
 
 		if(newProps.isDeletingFilter === false && this.props.isDeletingFilter === true){
 
@@ -207,7 +207,7 @@ class SingleEventComponent extends Component {
 			
 			Alert.alert('Success', 'Filter successfully deleted.', [{text: 'okay', onPress: () => {
 				console.log('okay pressed');
-				this.setState({isLoadingFilter: false});
+				//this.setState({isLoadingFilter: false});
 			}}])
 		}
 
@@ -437,6 +437,10 @@ class LoadingModal extends Component {
     	}
 	}
 
+	componentDidMount(){
+		console.log('LoadingModal mounted ...');
+	}
+
 	render(){
 		return(
       	<Modal
@@ -450,13 +454,15 @@ class LoadingModal extends Component {
             <View collapsable={false} style={styles.modalContainer}>
           {/*    <View style={styles.loadingModal}>           
 	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>	*/}
-	            	<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
+<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
 	      {/*     </View>	*/}
 	        </View>
 	    </Modal>
 		)
 	}
 }
+
+//	            	
 
 class DetailsModal extends Component {
 	constructor(props){
