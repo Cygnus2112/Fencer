@@ -97,9 +97,6 @@ class SingleEventComponent extends Component {
 
 		this.props.getCurrentTime();
 
-	//	console.warn("componentDidMount called in SingleEvent");
-	//	console.warn('---------------------------------------');
-
 
 		// this.checkTime = setInterval(() => {
 		// 	this.currentTime = Date.now();
@@ -113,50 +110,52 @@ class SingleEventComponent extends Component {
 		// 	}
 		// }, 2000);
 
-        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
-        	.then(() =>	{ 
-        		console.log('point is within polygon');
-        		this.setState({
-        			isInRange: true
-        		})	
-        	})
-        	.catch(() => {
-	        	console.log('position is NOT within polygon')
-	        })
-        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
+		if(this.props.currentPosition){
 
-       		AsyncStorage.getItem("fencer-token").then((token) => {
-        	  if(token){
+	        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
+	        	.then(() =>	{ 
+	        		console.log('point is within polygon');
+	        		this.setState({
+	        			isInRange: true
+	        		})	
+	        	})
+	        	.catch(() => {
+		        	console.log('position is NOT within polygon')
+		        })
+	        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
 
-  				return fetch(utils.filterImagesURL+"?filterid="+this.props.filterID, {   
-    			  method: 'GET',
-    			  headers: {
-        			'Accept': 'application/json',
-        			'Content-Type': 'application/json',
-        			'x-access-token': token
-        		  }
-    		  })
-    		  .then(response => {
-        		//  console.log('first response: ', response);
-          		return response.json();
-    		  })
-    		  .then(response => {
+	       		AsyncStorage.getItem("fencer-token").then((token) => {
+	        	  if(token){
 
-        		//dispatch(loadFilterImageSuccess(response));
-        		this.setState({
-        			filterURI: response.data
-        		})
-            
-    		  })
-			  .catch(err => {
-			      console.error('Error in loadFilterImage:', err);
-		      });
-  			  } else {
-            	// dispatch(authFail());
-        	  }
-    		  }).done();
+	  				return fetch(utils.filterImagesURL+"?filterid="+this.props.filterID, {   
+	    			  method: 'GET',
+	    			  headers: {
+	        			'Accept': 'application/json',
+	        			'Content-Type': 'application/json',
+	        			'x-access-token': token
+	        		  }
+	    		  })
+	    		  .then(response => {
+	        		//  console.log('first response: ', response);
+	          		return response.json();
+	    		  })
+	    		  .then(response => {
 
-     //  	}
+	        		//dispatch(loadFilterImageSuccess(response));
+	        		this.setState({
+	        			filterURI: response.data
+	        		})
+	            
+	    		  })
+				  .catch(err => {
+				      console.error('Error in loadFilterImage:', err);
+			      });
+	  			  } else {
+	            	// dispatch(authFail());
+	        	  }
+	    		  }).done();
+
+        }
 
 		let st = new Date(this.props.startUTC);
 		let en = new Date(this.props.endUTC);
