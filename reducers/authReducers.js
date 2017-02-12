@@ -1,5 +1,7 @@
 import * as AuthActionTypes from '../actions/authActions';
 
+//console.log('navigator in Auth Actions: ', navigator);
+
 import { ADD_TO_MYFILTERS, addToMyFilters } from '../actions/filterActions';
 
 let ActionTypes = Object.assign({}, AuthActionTypes, {
@@ -15,11 +17,16 @@ const initialState = {
   myFilters: [],
   filtersCreated: [],
   isDeletingFilter: false,
-  welcomeModalDismissed: false
+  welcomeModalDismissed: false,
+  currentTime: null
 }
 
 const authReducer = (state = initialState, action) => {
   switch(action.type){
+    case ActionTypes.CURRENT_TIME:
+      return Object.assign({}, state, {
+        currentTime: action.time
+      })
     case ActionTypes.SIGNUP_REQUEST:
       return Object.assign({}, state, {
         isFetchingAuth: true,
@@ -110,16 +117,6 @@ const authReducer = (state = initialState, action) => {
       return Object.assign({}, state, {
         welcomeModalDismissed: true
       })
-
-    // case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
-    //   return Object.assign({}, state, {
-    //    isLoadingFiltersCreated: true
-    //   })
-    // case ActionTypes.LOAD_FILTERSCREATED_SUCCESS:
-    //   return Object.assign({}, state, {
-    //    isLoadingFiltersCreated: false,
-    //    filtersCreated: action.filtersCreated
-    //  })
     default:
       return state;
   }

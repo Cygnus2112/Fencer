@@ -71,7 +71,7 @@ export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
 export const CHOOSE_AREA_ERROR = 'CHOOSE_AREA_ERROR';
 
 export const submitFenceCoordinates = (dispatch, coords) => {
-	console.log('coords in submitFenceCoordinates: ', coords);
+	//console.log('coords in submitFenceCoordinates: ', coords);
 
 	dispatch( chooseAreaRequest() );
 	dispatch( chooseAreaSuccess(coords) );
@@ -192,7 +192,7 @@ export const finalSubmitFilter = (dispatch, data) => {
           	})
           	.then(resp => {
 
-          		console.log('total upload time (client-side): ', Date.now() - start);
+          		//console.log('total upload time (client-side): ', Date.now() - start);
 
           		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
             	return resp

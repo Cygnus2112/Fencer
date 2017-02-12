@@ -24,6 +24,7 @@ import { Actions } from 'react-native-router-flux';
 
 import { connect } from 'react-redux';
 import * as filterActions from '../actions/filterActions';
+import * as authActions from '../actions/authActions';
 
 import SingleEvent from './SingleEvent';
 import InfoModal from './MyFiltersInfoModal';
@@ -60,7 +61,7 @@ class MyFiltersComponent extends Component {
 	}
 
   checkIfDeleted(filterID){
-    console.log('checking to see if filter is deleted...');
+   // console.log('checking to see if filter is deleted...');
 
       AsyncStorage.getItem("fencer-token").then((value) => {
         if(value){
@@ -80,21 +81,15 @@ class MyFiltersComponent extends Component {
               return response.json();
             })
             .then(response => {
-            //  console.log('2nd level response in auth checkIfDeleted: ');
-            //  console.log(response);
-              console.log('-------------------------');
-
-             // console.log("response['response'] ", response['response']);
-             // console.log("response['response'] (double quotes) ", response["response"]);
 
               if(response['result'] === 'false'){
-                console.log('received false from checkIfDeleted!!!');
+             //   console.log('received false from checkIfDeleted!!!');
                 this.reloadFilters(filterID, true);
               };
                     
             })
             .catch(err => {
-              console.error('Error in checkIfDeleted:', err);
+              console.log('Error in checkIfDeleted:', err);
             });
           }).done();
         } else {
@@ -105,7 +100,6 @@ class MyFiltersComponent extends Component {
   }
 
   reloadFilters(filter, remove) {
-  //  console.log('reloadFilters called in MyFilters');
     let allFilters = this.props.myFilters.slice();
 
     if(filter){
@@ -116,7 +110,7 @@ class MyFiltersComponent extends Component {
           allFilters = newArr;
         }
       } else if(allFilters.indexOf(filter) === -1){
-        console.log('new filter '+filter+' is not YET in this.props.myFilters ');
+      //  console.log('new filter '+filter+' is not YET in this.props.myFilters ');
         allFilters.push(filter);
       }
 
@@ -130,10 +124,6 @@ class MyFiltersComponent extends Component {
     }
 
 	componentDidMount(){
-
-   //console.log('MyFilters mounted.');
-
-
       this.checkInterval = setInterval(()=>{
 
         let arr = this.props.allFilters.filter((f) => {
@@ -162,15 +152,10 @@ class MyFiltersComponent extends Component {
       })
 
       let sortedFilters = arr.sort((f1,f2)=> {
-
-       // let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
-       // let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
         let startTime1 = f1.startUTC;
         let startTime2 = f2.startUTC;
 
         if(startTime1 === startTime2){
-        //  let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-        //  let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
 
           let endTime1 = f1.endUTC;
           let endTime2 = f2.endUTC;
@@ -193,35 +178,37 @@ class MyFiltersComponent extends Component {
     }
 
     navigator.geolocation.getCurrentPosition((pos) => {
-     // console.log('pos in navigator call: ', pos);
-
         var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-        console.log('initialPosition in MyFilters: ', initialPosition);
 
         this.setState({currentPosition: initialPosition});
 
         this.props.updatePosition(initialPosition);
       },
-      (error) => console.log("nav error in My Filters: ", JSON.stringify(error) ),
+      (error) => console.warn("nav error in My Filters: ", JSON.stringify(error) ),
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
 
-    this.watchPosition = navigator.geolocation.watchPosition((pos) => {
-      var currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
+      this.props.watchPosition();
 
-      console.log('position changed in MyFilters. new position: ', currentPosition);
+    // this.watchPosition = navigator.geolocation.watchPosition((pos) => {
+    //     var currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
-      this.setState({currentPosition});
-      this.props.updatePosition(currentPosition);
-    });
+    //     console.warn('position changed in MyFilters. new position: ', currentPosition);
+
+    //     this.setState({currentPosition});
+    //     this.props.updatePosition(currentPosition);
+    //   },
+    //   (error) => console.warn("watchPosition error in My Filters: ", JSON.stringify(error) ),
+    //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    // );
 
 	}
 
   componentWillUnmount(){
-   // console.log('MyFilters un-mounting ... ');
+    this.props.clearTimer();
 
-    navigator.geolocation.clearWatch(this.watchPosition);
+    //navigator.geolocation.clearWatch(this.watchPosition);
+    this.props.clearWatch();
     clearInterval(this.checkInterval);
   }
 
@@ -233,7 +220,6 @@ class MyFiltersComponent extends Component {
       if(!newProps.searchError){
         this.setState({searchError: false});
       }
-      console.log('-------------------------');
 
 		if(newProps.allFilters.length !== this.props.allFilters.length){		// THIS COMPARISON PROBABLY DOESN'T WORK
 
@@ -246,17 +232,10 @@ class MyFiltersComponent extends Component {
 			})
 
       let sortedFilters = arr.sort((f1,f2)=>{
-
-     //   let startTime1 = new Date(f1.dates.startYear, f1.dates.startMonth, f1.dates.startDay, f1.dates.startHour, f1.dates.startMinute).getTime();
-      //  let startTime2 = new Date(f2.dates.startYear, f2.dates.startMonth, f2.dates.startDay, f2.dates.startHour, f2.dates.startMinute).getTime();
-
         let startTime1 = f1.startUTC;
         let startTime2 = f2.startUTC;
 
         if(startTime1 === startTime2){
-    //      let endTime1 = new Date(f1.dates.endYear, f1.dates.endMonth, f1.dates.endDay, f1.dates.endHour, f1.dates.endMinute).getTime();
-    //      let endTime2 = new Date(f2.dates.endYear, f2.dates.endMonth, f2.dates.endDay, f2.dates.endHour, f2.dates.endMinute).getTime();
-
           let endTime1 = f1.endUTC;
           let endTime2 = f2.endUTC;
 
@@ -275,8 +254,7 @@ class MyFiltersComponent extends Component {
 		}
 
 	}
-//          {/* <Spinner />  */}
-//   <LoadingModal modalVisible={true} />
+
 	render(){
 
       return(
@@ -295,7 +273,7 @@ class MyFiltersComponent extends Component {
       				</Image>
       			</View>
   			      <View style={styles.titleContainer}>
-                  <TouchableOpacity onPress={()=>{Actions.loading({isStartup: false})}}>
+                  <TouchableOpacity onPress={()=>{ Actions.loading( {isStartup: false} ) }}>
                   	<View style={{width: 30, marginLeft: 15}}>
                     		<Icon name="home" size={30} color="#0c12ce"/>
                   	</View>
@@ -320,7 +298,7 @@ class MyFiltersComponent extends Component {
 
                      // console.log('rowData.startUTC: ', rowData.startUTC);
                      // console.log('rowData: ', rowData);
-                      console.log('-------------------------');
+                   //   console.log('-------------------------');
 
                       if(rowData.coordinates && rowData.startUTC) {
 
@@ -333,7 +311,7 @@ class MyFiltersComponent extends Component {
 
                         poly.push(poly[0]);
 
-                        console.log('-------------------------');
+                       // console.log('-------------------------');
 
                         let _isActive = _checkDates(rowData.startUTC, rowData.endUTC);  
 
@@ -439,7 +417,7 @@ class SearchModal extends Component {
 
             this.props.clearSearchError();
 
-            console.log('OK Pressed!');
+         //   console.log('OK Pressed!');
           }
         }])
 
@@ -447,7 +425,7 @@ class SearchModal extends Component {
 
     if(nextProps.newFilterAdded && nextProps.newFilterAdded !== this.props.newFilterAdded){
 
-      console.log('nextProps.newFilterAdded: ', nextProps.newFilterAdded);
+   //   console.log('nextProps.newFilterAdded: ', nextProps.newFilterAdded);
 
       Alert.alert('Success!', "A new Geofilter has been added to My Filters.", [{text: 'OK', onPress: () => {
             // clear prop
@@ -555,7 +533,7 @@ class LoadingModal extends Component {
   }
 
   componentDidMount(){
-    console.log('LoadingModal mounted ...');
+   // console.log('LoadingModal mounted ...');
   }
 
   render(){
@@ -566,7 +544,7 @@ class LoadingModal extends Component {
           visible={this.state.modalVisible}
           onRequestClose={() => { 
 
-            console.log("Modal has been closed.")
+          //  console.log("Modal has been closed.")
           }}>
             <View collapsable={false} style={styles.modalContainer}>
                 <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
@@ -774,6 +752,15 @@ const mapDispatchToProps = (dispatch) => {
     },
     updatePosition: (data) => {
       filterActions.updatePosition(dispatch, data);
+    },
+    clearTimer: () => {
+      authActions.clearTimer(dispatch);
+    },
+    watchPosition: () => {
+      filterActions.watchPosition(dispatch);
+    },
+    clearWatch: () => {
+      filterActions.clearWatch(dispatch);
     }
   }
 }

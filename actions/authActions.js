@@ -14,7 +14,7 @@ export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 
 export const signup = (dispatch,info) => {
 //  return dispatch => {
-  console.log('info in authActions signup: ', info);
+ // console.log('info in authActions signup: ', info);
     dispatch(signupRequest(info));
 
       //return fetch('http://localhost:8080/signup', {
@@ -54,7 +54,7 @@ export const signup = (dispatch,info) => {
 
 
           } else {
-            console.log('response when user or email already taken: ', response);
+         //   console.log('response when user or email already taken: ', response);
             dispatch(signupError(response));
           }
         } catch(e){
@@ -91,7 +91,7 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export const login = (dispatch, info) => {
-    console.log('info in authActions login: ', info);
+  //  console.log('info in authActions login: ', info);
     dispatch(loginRequest(info));
 
     return fetch(utils.loginURL, {
@@ -134,9 +134,9 @@ export const login = (dispatch, info) => {
                 //console.log('2nd level response in auth login getUserData: ');
                // console.log(response);
 
-                console.log('-------------------------');
+             //   console.log('-------------------------');
 
-                console.log('response.myFilters: ', response.myFilters);
+             //   console.log('response.myFilters: ', response.myFilters);
 
                 let data = {
                   username: response.username,
@@ -173,17 +173,17 @@ export const login = (dispatch, info) => {
           })
 
         } else {
-          console.log('login error');
+        //  console.log('login error');
           dispatch(loginError());
           
         }
       } catch(e) {
-        console.log('try-catch error:', e);
+      //  console.log('try-catch error:', e);
         dispatch(loginError({"error2":e}));
       };
     })
     .catch(err => {
-      console.log('login error3:', err);
+    //  console.log('login error3:', err);
       dispatch(loginError({"error3":err}));
     });
 }
@@ -196,7 +196,7 @@ const loginRequest = (info) => {
 }
 
 const loginError = (msg) => {
-  console.log('loginError: ', msg);
+ // console.log('loginError: ', msg);
   return {
     type: LOGIN_ERROR
   }
@@ -370,7 +370,7 @@ export const deleteFilter = (dispatch, filterID) => {
   AsyncStorage.getItem("fencer-token").then((value) => {
     if(value){
       AsyncStorage.getItem("fencer-username").then((username) => {
-        console.log('current username: ', username);
+      //  console.log('current username: ', username);
         let token = value;
 
         return fetch(utils.deleteFilterURL +"?username="+username+"&filterid="+filterID, {    
@@ -385,9 +385,9 @@ export const deleteFilter = (dispatch, filterID) => {
           return response.json();
         })
         .then(response => {
-          console.log('2nd level response in auth deleteFilter: ');
-          console.log(response);
-          console.log('-------------------------');
+        //  console.log('2nd level response in auth deleteFilter: ');
+        //  console.log(response);
+        //  console.log('-------------------------');
 
           dispatch(deleteFilterSuccess());
                 
@@ -395,7 +395,7 @@ export const deleteFilter = (dispatch, filterID) => {
                 
         })
         .catch(err => {
-          console.error('Error in loadMyFilters:', err);
+          console.error('Error in deleteFilter:', err);
         });
       }).done();
     } else {
@@ -462,10 +462,10 @@ export const purgeExpiredFilters = (dispatch, token, username) => {
               return response.json();
     })
     .then(response => {
-            console.log('2nd level response in purgeExpiredFilters: ');
-            console.log(response);
+        //    console.log('2nd level response in purgeExpiredFilters: ');
+        //    console.log(response);
 
-            console.log('-------------------------');
+         //   console.log('-------------------------');
             dispatch(purgeSuccess());
             
     })
@@ -486,6 +486,38 @@ const purgeSuccess = () => {
   return {
     type: PURGE_SUCCESS
   }
+}
+
+export const CURRENT_TIME = 'CURRENT_TIME';
+export const CLEAR_TIMER = 'CLEAR_TIMER';
+
+let timers = [];
+
+export const getCurrentTime = (dispatch) => {
+  timer = setInterval(()=>{
+    let t = Date.now();
+    //console.log('--------------------------------------');
+    dispatch(currentTimeRequest(t));
+
+  },4000);
+
+  timers.push(timer);
+
+}
+
+const currentTimeRequest = (time) => {
+  return {
+    type: CURRENT_TIME,
+    time: time
+  }
+}
+
+export const clearTimer = (dispatch) => {
+  dispatch(()=>{
+      timers.forEach((t) => {
+        clearInterval(t);
+      })
+  })
 }
 
 // const dismissWelcomeModalSuccess = () => {

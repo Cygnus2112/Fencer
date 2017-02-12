@@ -7,7 +7,8 @@ import {
     TouchableOpacity,
     Text,
     Dimensions,
-    BackAndroid
+    BackAndroid,
+    Alert
     //  ListView,
 } from 'react-native';
 
@@ -72,7 +73,7 @@ class TakePhotoComponent extends Component {
 	}
 
   onBackPress(){
-    console.log('back button pressed in TAKEPHOTO???')
+  //  console.log('back button pressed in TAKEPHOTO???')
 
     if(this.props.test){
       console.log('this.props.test === true');
@@ -80,7 +81,7 @@ class TakePhotoComponent extends Component {
     }
 
     if (this.state.applyFilter) {
-      console.log('back button pressed in TAKEPHOTO??? (filter applied)')
+    //  console.log('back button pressed in TAKEPHOTO??? (filter applied)')
       this.setState({
         applyFilter: !this.state.applyFilter
       })
@@ -89,19 +90,30 @@ class TakePhotoComponent extends Component {
   }
 
   componentDidMount(){
-    console.log('TakePhoto mounted ... ');
+  //  console.log('TakePhoto mounted ... ');
 
     BackAndroid.addEventListener('hardwareBackPress', this.onBackPress );
   }
 
+  componentWillReceiveProps(newProps){
+    if(newProps.currentTime > this.props.endUTC){
+      Actions.pop();
+
+      Alert.alert('Geofilter Expired', "Sorry, but the Geofilter you are using has expired.", [{text: 'okay', onPress: () => {
+        console.log('okay pressed');
+      }}])
+
+    }
+  }
+
   componentWillUnmount(){
-    console.log('TakePhoto un-mounting ... ');
+  //  console.log('TakePhoto un-mounting ... ');
       
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress );
   }
 
   handleTrash() {
-    console.log('back pressed'); 
+ //   console.log('back pressed'); 
     Actions.pop()
   }
       
@@ -177,14 +189,14 @@ class TakePhotoComponent extends Component {
   }
 
   onCancel() {
-    console.log("CANCEL")
+   // console.log("CANCEL")
     //this.setState({visible:false});
   }
 
   share(platform){
 
     let start = Date.now();
-    console.log('getting snapshot...');
+   // console.log('getting snapshot...');
 
     //whatsapp works. facebook works.
 
@@ -195,8 +207,8 @@ class TakePhotoComponent extends Component {
                 })
                 .then(
                     uri => {
-                      console.log("Image saved to uri. Time to complete: ", Date.now()-start);
-                      console.log("----------------------------------------")
+                   //   console.log("Image saved to uri. Time to complete: ", Date.now()-start);
+                   //   console.log("----------------------------------------")
 
                    //   console.log('image uri: ', uri);
 
@@ -545,7 +557,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = (state) => {
   return {
-    filterImage: state.filterReducer.filterImage
+    filterImage: state.filterReducer.filterImage,
+    currentTime: state.authReducer.currentTime
   }
 }
 

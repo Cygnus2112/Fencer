@@ -48,24 +48,6 @@ const filterReducer = (state = initialState, action) => {
         isLoadingFilterImage: false,
         filterImage: action.filterImage
       })
-  	// case ActionTypes.LOAD_MYFILTERS_REQUEST:
-  	//   return Object.assign({}, state, {
-  	//   	isLoadingMyFilters: true
-  	//   })
-  	// case ActionTypes.LOAD_MYFILTERS_SUCCESS:
-  	//   return Object.assign({}, state, {
-  	//   	isLoadingMyFilters: false,
-  	//   	myFilters: action.myFilters
-  	//   })
-  	// case ActionTypes.LOAD_FILTERSCREATED_REQUEST:
-  	//   return Object.assign({}, state, {
-  	//   	isLoadingFiltersCreated: true
-  	//   })
-  	// case ActionTypes.LOAD_FILTERSCREATED_SUCCESS:
-  	//   return Object.assign({}, state, {
-  	//   	isLoadingFiltersCreated: false,
-  	//   	filtersCreated: action.filtersCreated
-  	//  })
     case ActionTypes.FILTER_TO_UPLOAD_REQUEST:
       return Object.assign({}, state, {
         isValidatingFilter: true

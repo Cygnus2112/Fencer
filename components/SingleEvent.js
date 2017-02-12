@@ -95,28 +95,23 @@ class SingleEventComponent extends Component {
 
 	componentDidMount(){
 
-		this.checkTime = setInterval(() => {
-			this.currentTime = Date.now();
+		this.props.getCurrentTime();
 
-		//	const {startYear, startMonth, startDay, startHour, startMinute} = this.props.dates;
-		//	let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute);
-			let startTime = this.props.startUTC;
+	//	console.warn("componentDidMount called in SingleEvent");
+	//	console.warn('---------------------------------------');
 
 
-			if(startTime < this.currentTime){
-				this.setState({isActive: true})
-			}
-
-			// const {endYear, endMonth, endDay, endHour, endMinute} = this.props.dates;
-			// let endTime = new Date(endYear, endMonth, endDay, endHour, endMinute);
-
-			let endTime = this.props.endUTC;
-
-			if(this.currentTime > endTime){
-				this.setState({isActive: false, isExpired: true})
-			}
-
-		}, 1000);
+		// this.checkTime = setInterval(() => {
+		// 	this.currentTime = Date.now();
+		// 	let startTime = this.props.startUTC;
+		// 	if(startTime < this.currentTime){
+		// 		this.setState({isActive: true})
+		// 	}
+		// 	let endTime = this.props.endUTC;
+		// 	if(this.currentTime > endTime){
+		// 		this.setState({isActive: false, isExpired: true})
+		// 	}
+		// }, 2000);
 
         GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
         	.then(() =>	{ 
@@ -163,10 +158,6 @@ class SingleEventComponent extends Component {
 
      //  	}
 
-	//	console.log("this.props.coordinates in SingleEvent: ", this.props.coordinates);
-	//	console.log("##################################");
-	//	console.log("this.props.filterImage in SingleEvent: ", this.props.filterImage);		//  NULL
-
 		let st = new Date(this.props.startUTC);
 		let en = new Date(this.props.endUTC);
 
@@ -191,15 +182,28 @@ class SingleEventComponent extends Component {
 			message: this.props.message,
 			isActive: this.props.isActive
 		})
-
-		//console.log('this.props.dates.endMonth in SingleEvent: ', this.props.dates.endMonth);
-		//console.log('type of this.props.dates.endMonth ', typeof this.props.dates.endMonth);
 	}
 
 	componentWillReceiveProps(newProps){
-		// if(newProps.isDeletingFilter === true){						// TEMPORARY WORKAROUND
-		// 	this.setState({isLoadingFilter: true});
-		// }
+
+	//	console.log('newProps.currentTime: ', newProps.currentTime);
+
+		//console.warn("newProps.currentPosition: ", newProps.currentPosition);
+
+		//console.warn("newProps.currentPosition !== this.props.currentPosition: ", newProps.currentPosition !== this.props.currentPosition);
+
+		let startTime = this.props.startUTC;
+
+		if(startTime < newProps.currentTime){
+			this.setState({isActive: true})
+		}
+
+		let endTime = this.props.endUTC;
+
+		if(newProps.currentTime > endTime){
+			this.setState({isActive: false, isExpired: true})
+		}
+
 
 		if(newProps.isDeletingFilter === false && this.props.isDeletingFilter === true){
 
@@ -213,17 +217,20 @@ class SingleEventComponent extends Component {
 
 		if(newProps.currentPosition !== this.props.currentPosition){
 
-			console.log('new position received in SingleEvent: ', newProps.currentPosition);
+			console.warn('new position received in SingleEvent: ', newProps.currentPosition);
 
 			GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 
-	        		console.log('new position is within polygon');
+	        		console.warn('new position is within polygon');
 	        		this.setState({
 	        			isInRange: true
 	        		})	
 	        	})
 	        	.catch(() => {
-	        		console.log('position is NOT within polygon')
+	        		this.setState({
+	        			isInRange: false
+	        		})	
+	        		console.warn('position is NOT within polygon')
 	        	})
 		}
 
@@ -231,9 +238,13 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillUnmount(){
-		//console.log('SingleEvent unmounting...');	
+		//console.warn('componentWillUnmount called in SingleEvent ');
+		//console.warn('----------------------------------------- ');		
 
-		clearInterval(this.checkTime);
+		//clearInterval(this.checkTime);
+
+
+		this.props.clearTimer();
 	}
 
 	handleTrash(){
@@ -302,7 +313,7 @@ class SingleEventComponent extends Component {
 				let interval = setInterval(()=>{
 					if(that.state.filterURI){
 						clearInterval(interval);
-						Actions.camera({filterURI: this.state.filterURI});
+						Actions.camera({filterURI: this.state.filterURI, endTime: this.props.endUTC});
 					//	console.log('opening camera. time elapsed: ', Date.now() - start);
 
 						setTimeout(() => {
@@ -729,6 +740,7 @@ const mapStateToProps = (state) => {
     isDeletingFilter: state.authReducer.isDeletingFilter,
     myFilters: state.authReducer.myFilters,
     username: state.authReducer.username,
+    currentTime: state.authReducer.currentTime,
   }
 }
 
@@ -742,6 +754,12 @@ const mapDispatchToProps = (dispatch) => {
 		},
 		getMyFilters: (data) => {
     		filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
+    	},
+    	getCurrentTime: () => {
+    		authActions.getCurrentTime(dispatch);
+    	},
+    	clearTimer: () => {
+    		authActions.clearTimer(dispatch);
     	}
 	}
 }

@@ -9,7 +9,6 @@ export const UPDATE_POSITION_REQUEST = 'UPDATE_POSITION_REQUEST';
 export const UPDATE_POSITION_SUCCESS = 'UPDATE_POSITION_SUCCESS';
 
 export const initPosition = (dispatch) => {
- // return dispatch => {
     dispatch(updatePositionRequest());
 
     navigator.geolocation.getCurrentPosition((pos) => {
@@ -18,29 +17,19 @@ export const initPosition = (dispatch) => {
         console.log('position in initPosition: ', newPos);
 
         dispatch( updatePositionSuccess(newPos) );
-
-        //Actions.main({currentPosition: newPos});
-        //Actions.main();
       },
       (error) => {
-
         let tempPos = { lat: 41.5904151, lng: -93.80708270000002 };
        
-               dispatch( updatePositionSuccess(tempPos) );
-
-        //Actions.main();
+        dispatch( updatePositionSuccess(tempPos) );
 
         console.log("Nav error: ", JSON.stringify(error)) 
-      }
-
-      ,
+      },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     )
- // }
 }
 
 export const updatePosition = (dispatch, data) => {
-
 	dispatch( updatePositionRequest() );
 
   dispatch( updatePositionSuccess(data) );
@@ -59,6 +48,44 @@ const updatePositionSuccess = (pos) => {
 		currentPosition: pos
 	}
 }
+
+export const WATCH_POSITION_REQUEST = 'WATCH_POSITION_REQUEST';
+
+let watches = [];
+
+export const watchPosition = (dispatch) => {
+    dispatch(watchPositionRequest());
+
+    let watch = navigator.geolocation.watchPosition((pos) => {
+        let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+
+        console.log('position in watchPosition: ', newPos);
+
+        dispatch( updatePositionSuccess(newPos) );
+      },
+      (error) => {
+        console.log("Nav error: ", JSON.stringify(error)) 
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    )
+    watches.push(watch);
+}
+
+const watchPositionRequest = () => {
+  return {
+    type: WATCH_POSITION_REQUEST
+  }
+}
+
+export const clearWatch = (dispatch) => {
+  dispatch(() => {
+    watches.forEach((w) => {
+      navigator.geolocation.clearWatch(w);
+    })
+  })
+}
+
+
 
 export const LOAD_ALLFILTERS_REQUEST = 'LOAD_ALLFILTERS_REQUEST';
 export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
@@ -175,7 +202,7 @@ const loadFilterImageSuccess = (filterImageData) => {
 
 
 export const addFilterByID = (dispatch, data) => {
-  console.log('data in addFilterByID: ', data);
+ // console.log('data in addFilterByID: ', data);
   AsyncStorage.getItem("fencer-token").then((token) => {
     if(token){
       axios({
@@ -206,7 +233,7 @@ export const addFilterByID = (dispatch, data) => {
 
           } else if(resp.data['ALREADYADDED']) {
 
-            console.log('filter alread added. dispatching error...');
+         //   console.log('filter alread added. dispatching error...');
 
             dispatch(searchError('ALREADYADDED', resp.data['ALREADYADDED']));
 

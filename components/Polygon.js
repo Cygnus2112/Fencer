@@ -80,13 +80,9 @@ class PolygonComponent extends Component {
   // }
 
   componentDidMount(){
-
-   // console.log('Polygon mounted.');
-   // console.log('this.props.currentPosition in Polygon: ',this.props.currentPosition);
-
     if(this.props.fenceCoordinates){
 
-      console.log('this.props.fenceCoordinates: ', this.props.fenceCoordinates);
+    //  console.log('this.props.fenceCoordinates: ', this.props.fenceCoordinates);
       this.setState({
         editing: {
           id: 0,
@@ -122,8 +118,8 @@ class PolygonComponent extends Component {
 
   finish() {
 
-    console.log('-------------------------------');
-    console.log('this.state.region in finish(): ', this.state.region);
+   // console.log('-------------------------------');
+   // console.log('this.state.region in finish(): ', this.state.region);
 
     const { polygons, editing } = this.state;
 
@@ -163,8 +159,6 @@ class PolygonComponent extends Component {
   }
 
   onPress(e) {
-    //console.log('e.nativeEvent.coordinate: ', e.nativeEvent.coordinate);
-   // console.log('this.state.markerPoints: ', this.state.markerPoints)
 
     this.props.blurAutocomp();
 
@@ -205,7 +199,7 @@ class PolygonComponent extends Component {
 
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
 
-      console.log('-------------------------------');
+    //  console.log('-------------------------------');
 
     }
 
@@ -224,6 +218,10 @@ class PolygonComponent extends Component {
           ?
           (
           <MapView
+
+            showsMyLocationButton={true}
+            showsPointsOfInterest={true}
+
             provider={this.props.provider}
             style={styles.map}
             region={this.state.region}
@@ -257,6 +255,10 @@ class PolygonComponent extends Component {
           :
           (        
           <MapView
+
+            showsMyLocationButton={true}
+            showsPointsOfInterest={true}
+
             provider={ this.props.provider }
             style={ styles.map }
             region={this.state.region}

@@ -30,10 +30,6 @@ class LoadingComponent extends Component{
 	componentDidMount(){
     // console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
     // console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
-
-
-
-
       this.props.checkAuth(this.props.isReferral);
       this.props.initPosition();
 

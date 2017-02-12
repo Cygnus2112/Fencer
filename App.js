@@ -94,7 +94,6 @@ class AppComponent extends Component {
   }
 
   render() {
-    console.log('currUrl: ', currUrl);
 
     return (
         <Router>
