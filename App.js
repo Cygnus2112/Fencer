@@ -20,7 +20,7 @@ import Success from './components/Success';
 
 import ReferralSignup from './components/ReferralSignup';
 
-import { Linking } from 'react-native';
+import { Linking, Animated } from 'react-native';
 const queryString = require('query-string');
 
 let currUrl;
@@ -103,7 +103,7 @@ class AppComponent extends Component {
             <Scene key="main" component={Main} type='reset' animation='fade' />
             <Scene key="upload" component={Upload} animation='fade'/>
             <Scene key="myfilters" component={MyFilters} animation='fade'/>
-            <Scene key="camera" component={ TakePhoto } animation='fade' />
+            <Scene key="camera" component={ TakePhoto } direction='vertical'  />
             <Scene key="referral" component={ ReferralSignup }      animation='fade' />
           </Scene>
         </Router>
@@ -111,6 +111,29 @@ class AppComponent extends Component {
     );
   }
 }
+
+// applyAnimation={(pos, navState) => {    
+//               console.log('navState: ', navState);
+//               console.log('pos: ', pos);
+
+//       Animated.timing(          // Uses easing functions
+//        pos,    // The value to drive
+//        {toValue: navState.index,
+//        useNativeDriver: true}            // Configuration
+//      ).start();  
+
+//            }}
+
+// applyAnimation={(pos, navState) => {    
+//               console.log('navState: ', navState);
+//               console.log('pos: ', pos);
+
+//              Animated.spring(
+//       pos, {
+//           bounciness: 0,
+//           toValue: 0,
+//           useNativeDriver: true  // added this
+//       }).start(); }}
 
 const mapStateToProps = (state) => {
   return {

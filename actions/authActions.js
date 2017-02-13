@@ -328,22 +328,14 @@ export const loadMyFilters = (dispatch, isFromSuccessComponent) => {
                 });
 
                 // grab all filters???
-
-              
-
                // purgeExpiredFilters(dispatch, value, username);
-
-
               }).done();
             } else {
               console.log('token not found');
               // dispatch(authFail());
 
             }
-
         }).done();
-
-
 }
 
 const loadMyFiltersRequest = () => {

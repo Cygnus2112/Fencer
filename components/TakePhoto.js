@@ -9,9 +9,7 @@ import {
     Dimensions,
     BackAndroid,
     Alert
-    //  ListView,
 } from 'react-native';
-
 
 // WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
 
@@ -22,19 +20,14 @@ import {
 
 import Icon from 'react-native-vector-icons/Entypo';
 
+import Camera from 'react-native-camera';
 import PreviewWithFilter from './PreviewWithFilter';
 import Preview from './Preview';
 
 import { connect } from 'react-redux';
-
-var ImagePicker = require('react-native-image-picker');
 import { Actions } from 'react-native-router-flux';
-
-import Camera from 'react-native-camera';
-
 import Share from 'react-native-share';
 import RNViewShot from "react-native-view-shot";
-import Button from 'react-native-button';
 
 const { width, height } = Dimensions.get('window');
 
@@ -76,7 +69,7 @@ class TakePhotoComponent extends Component {
   //  console.log('back button pressed in TAKEPHOTO???')
 
     if(this.props.test){
-      console.log('this.props.test === true');
+   //   console.log('this.props.test === true');
       Actions.pop();
     }
 
@@ -91,24 +84,21 @@ class TakePhotoComponent extends Component {
 
   componentDidMount(){
   //  console.log('TakePhoto mounted ... ');
-
     BackAndroid.addEventListener('hardwareBackPress', this.onBackPress );
   }
 
   componentWillReceiveProps(newProps){
     if(newProps.currentTime > this.props.endUTC){
-      Actions.pop();
 
       Alert.alert('Geofilter Expired', "Sorry, but the Geofilter you are using has expired.", [{text: 'okay', onPress: () => {
-        console.log('okay pressed');
+        Actions.pop();
       }}])
 
     }
   }
 
   componentWillUnmount(){
-  //  console.log('TakePhoto un-mounting ... ');
-      
+  //  console.log('TakePhoto un-mounting ... ');  
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress );
   }
 
@@ -206,9 +196,6 @@ class TakePhotoComponent extends Component {
                     uri => {
                    //   console.log("Image saved to uri. Time to complete: ", Date.now()-start);
                    //   console.log("----------------------------------------")
-
-                   //   console.log('image uri: ', uri);
-
                     if(platform) {
 
                       let shareImage = {
@@ -294,7 +281,7 @@ class TakePhotoComponent extends Component {
               </TouchableOpacity>)
             }
 
-       <Camera
+        <Camera
             ref={(cam) => {
               this.camera = cam;              //  the new (correct) callback refs style
             }}

@@ -284,12 +284,13 @@ class SingleEventComponent extends Component {
 		// HOW DO WE DELAY THIS TRANSITION UNTIL THE FILTER IS LOADED???
 
 		if(this.state.isExpired){
-			Alert.alert('Geofilter Expired', 'This Geofilter expired on '+_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear) +' at '+_formatTime(this.state.startHour, this.state.startMinute)+'.', [{text: 'okay', onPress: () => {
+			Alert.alert('Geofilter Expired', 'This Geofilter expired on '+_formatDate(this.state.endMonth,this.state.endDay,this.state.endYear) +' at '+_formatTime(this.state.endHour, this.state.endMinute)+'.', [{text: 'okay', onPress: () => {
 				console.log('okay pressed');
 				this.setState({isLoadingFilter: false});
 			}}])
 
-		} else if(!this.state.isActive){
+		} 
+		else if(!this.state.isActive){
 			Alert.alert('Geofilter Not Active Yet', 'This Geofilter does not become active until '+_formatDate(this.state.startMonth,this.state.startDay,this.state.startYear) +' at '+_formatTime(this.state.startHour, this.state.startMinute)+'.', [{text: 'okay', onPress: () => {
 				console.log('okay pressed');
 				this.setState({isLoadingFilter: false});
@@ -304,7 +305,8 @@ class SingleEventComponent extends Component {
 				}}])
 
 
-			} else {
+			} 
+			else {
 				let start = Date.now();
 				this.setState({
 					isLoadingFilter: true
@@ -313,7 +315,7 @@ class SingleEventComponent extends Component {
 				let interval = setInterval(()=>{
 					if(that.state.filterURI){
 						clearInterval(interval);
-						Actions.camera({filterURI: this.state.filterURI, endTime: this.props.endUTC});
+						Actions.camera({filterURI: this.state.filterURI, endUTC: this.props.endUTC});
 					//	console.log('opening camera. time elapsed: ', Date.now() - start);
 
 						setTimeout(() => {

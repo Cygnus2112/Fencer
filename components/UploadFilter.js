@@ -14,15 +14,6 @@ import {
     ScrollView         
 } from 'react-native';
 
-
-
-
-import RNFetchBlob from 'react-native-fetch-blob';
-const fs = RNFetchBlob.fs;
-
-
-
-
 import Spinner from './Spinner';
 
 import Button from 'react-native-button';
