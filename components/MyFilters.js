@@ -15,7 +15,8 @@ import {
     TextInput,
     Alert,
     ScrollView,
-    AsyncStorage
+    AsyncStorage,
+    ToastAndroid
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -46,7 +47,8 @@ class MyFiltersComponent extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     this.reloadFilters = this.reloadFilters.bind(this);
     this.checkIfDeleted = this.checkIfDeleted.bind(this);
-    this.watchPosition = null;
+    this.refreshLocation = this.refreshLocation.bind(this);
+   // this.watchPosition = null;
     this.checkInterval = null;
 
 		this.state = {
@@ -119,11 +121,31 @@ class MyFiltersComponent extends Component {
     this.props.getMyFilters({username: this.props.username, filters: allFilters || [] });
   }
 
-    handleSearch(){
+  handleSearch(){
       this.setState({ searchPressed:!this.state.searchPressed })
+  }
+
+  refreshLocation(toast){
+    if(toast){
+      ToastAndroid.showWithGravity('Refreshing geolocation ...', ToastAndroid.SHORT, ToastAndroid.CENTER);
     }
 
+    navigator.geolocation.getCurrentPosition((pos) => {
+        var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
+
+        this.setState({currentPosition: initialPosition});
+
+        this.props.updatePosition(initialPosition);
+      },
+      (error) => console.warn("nav error in My Filters: ", JSON.stringify(error) ),
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+  }
+
 	componentDidMount(){
+    this.refreshLocation();
+    this.props.watchPosition();
+
       this.checkInterval = setInterval(()=>{
 
         let arr = this.props.allFilters.filter((f) => {
@@ -176,19 +198,6 @@ class MyFiltersComponent extends Component {
 
 
     }
-
-    navigator.geolocation.getCurrentPosition((pos) => {
-        var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-        this.setState({currentPosition: initialPosition});
-
-        this.props.updatePosition(initialPosition);
-      },
-      (error) => console.warn("nav error in My Filters: ", JSON.stringify(error) ),
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    );
-
-      this.props.watchPosition();
 
     // this.watchPosition = navigator.geolocation.watchPosition((pos) => {
     //     var currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
@@ -295,9 +304,6 @@ class MyFiltersComponent extends Component {
                   (<ListView
                     dataSource={this.state.dataSource}
                     renderRow={(rowData) => {
-
-                     // console.log('rowData.startUTC: ', rowData.startUTC);
-                     // console.log('rowData: ', rowData);
                    //   console.log('-------------------------');
 
                       if(rowData.coordinates && rowData.startUTC) {
@@ -310,8 +316,6 @@ class MyFiltersComponent extends Component {
                         })
 
                         poly.push(poly[0]);
-
-                       // console.log('-------------------------');
 
                         let _isActive = _checkDates(rowData.startUTC, rowData.endUTC);  
 
@@ -341,6 +345,14 @@ class MyFiltersComponent extends Component {
 
 
               </View>
+
+                <View style={styles.refreshGeo}>
+                  <TouchableOpacity 
+                    onPress={()=>{ this.refreshLocation(true); }
+                  }>      
+                    <Icon name="compass" size={30} color="#0c12ce"/>       
+                  </TouchableOpacity>
+                </View>
 
 
               <View style={styles.addById}>
@@ -686,6 +698,18 @@ const styles = StyleSheet.create({
     borderBottomColor: 'white',
     borderBottomWidth: 2
   },
+  refreshGeo:{
+    position: 'absolute',
+    bottom: 0,
+    left: 0,
+    height: 50,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#f9f9f2',
+    paddingLeft: 15,
+    // borderWidth: 1,
+    // borderColor: 'black'
+  },
   addById: {
     position: 'absolute',
     bottom: 0,
@@ -695,8 +719,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#f9f9f2',
-    // borderWidth: 1,
-    // borderColor: 'black'
+
   },
   eventListContainerContainer: {
     height: screenHeight - 50,
