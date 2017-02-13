@@ -65,8 +65,7 @@ export const watchPosition = (dispatch) => {
       },
       (error) => {
         console.log("Nav error: ", JSON.stringify(error)) 
-      },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      }
     )
     watches.push(watch);
 }

@@ -196,9 +196,6 @@ class TakePhotoComponent extends Component {
   share(platform){
 
     let start = Date.now();
-   // console.log('getting snapshot...');
-
-    //whatsapp works. facebook works.
 
                 RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
                   format: "jpeg",
@@ -237,33 +234,12 @@ class TakePhotoComponent extends Component {
                 error => console.error("Oops, snapshot failed", error)
               )
 
-
-
   }
-
-  _handleFocusChange(e){
-    console.log('focus???')
-  }
-  _handleZoomChange(e){
-    console.log('zoom????')
-  }
-
 
   render() {
   //  let filterURI = "data:image/png;base64,"+this.props.filterImage;
 
-//          <Image source={{uri: filterURI}} style={styles.filter}>
-//            {this.state.filterInPreview ? (<Image source={{uri: filterURI}} style={styles.filter}>) : null} 
-  //  console.log('this.props.filterURI: ', this.props.filterURI);
-    let filterURI = "data:image/png;base64,"+this.props.filterURI;
-
-    //   <Image source={{uri: filterURI}} style={styles.filter}>
-
-               // <View style={[styles.backButton,{borderColor: 'white'}]}>
-               //    <TouchableOpacity onPress={ () => { Actions.pop() }}>
-               //      <Icon name="chevron-left" size={30} color="white"/>
-               //    </TouchableOpacity>
-               //  </View>     
+    let filterURI = "data:image/png;base64,"+this.props.filterURI;   
 
     return (<View >
         {!this.state.applyFilter
@@ -323,14 +299,13 @@ class TakePhotoComponent extends Component {
               this.camera = cam;              //  the new (correct) callback refs style
             }}
             style={styles.preview}
+            orientation={"portrait"}
             aspect={Camera.constants.Aspect.fill}
             type={this.state.camera.type}
             flashMode={this.state.camera.flashMode}
             mirrorImage={this.state.camera.mirror}
             defaultTouchToFocus
-            captureTarget={Camera.constants.CaptureTarget.temp}
-            onZoomChanged={this._handleZoomChange.bind(this)}
-            onFocusChanged={this._handleFocusChange.bind(this)}>  
+            captureTarget={Camera.constants.CaptureTarget.temp}>  
 
               <PreviewWithFilter filterURI={filterURI} />
 
@@ -376,12 +351,7 @@ class TakePhotoComponent extends Component {
               <Icon name="share" size={30} color="white"/>
             </TouchableOpacity>
           </View>
-
-        </View>
-
-          )
-
-
+        </View>)
       }
       </View>)
 

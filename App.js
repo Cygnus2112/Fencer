@@ -33,8 +33,8 @@ class AppComponent extends Component {
   componentDidMount(){
     Linking.getInitialURL().then((url) => {
       if (url) {
-        console.log('Initial url is: ' + url   );             //   WILL NEED TO CHANGE UPON SWITCH TO FENCER.ME URL SCHEME
-        console.log('url sliced: ' + url.slice(url.length-9, url.length)   );
+    //    console.log('Initial url is: ' + url   );             //   WILL NEED TO CHANGE UPON SWITCH TO FENCER.ME URL SCHEME
+    //    console.log('url sliced: ' + url.slice(url.length-9, url.length)   );
 
 
         if(url !== currUrl){
@@ -43,7 +43,7 @@ class AppComponent extends Component {
           const filterID = url.slice(url.length-9, url.length) 
 
 
-            console.log('filter ID from getInitialUrl: ', filterID );
+         //   console.log('filter ID from getInitialUrl: ', filterID );
 
             if(!this.props.isLoggedIn){
              // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.
@@ -63,7 +63,7 @@ class AppComponent extends Component {
 
 
     Linking.addEventListener('url', (e) => {
-        console.log('deep link url received in App component: ', e.url);
+    //    console.log('deep link url received in App component: ', e.url);
 
        // console.log(`Deep Link URL: ${e.url}`);
 
@@ -72,7 +72,7 @@ class AppComponent extends Component {
           const parsed = queryString.parse(e.url);
 
           for(filter in parsed){
-            console.log('filter ID from url: ', parsed[filter]);
+         //   console.log('filter ID from url: ', parsed[filter]);
 
             if(!this.props.isLoggedIn){
              // redirect to dedicated "referal signup" view. filter id will be passed as prop and then added on successful signup/login.

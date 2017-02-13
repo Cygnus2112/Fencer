@@ -65,6 +65,8 @@ class SingleEventComponent extends Component {
 		this.handleDetails = this.handleDetails.bind(this);
 		this.handleEdit = this.handleEdit.bind(this);
 
+		this.fetchImage = this.fetchImage.bind(this);
+
 		this.currentTime = Date.now();
 		this.checkTime = null;
 
@@ -93,10 +95,41 @@ class SingleEventComponent extends Component {
 		}
 	}
 
+	fetchImage(){
+		    AsyncStorage.getItem("fencer-token").then((token) => {
+	        	if(token){
+
+	  				return fetch(utils.filterImagesURL+"?filterid="+this.props.filterID, {   
+	    			  method: 'GET',
+	    			  headers: {
+	        			'Accept': 'application/json',
+	        			'Content-Type': 'application/json',
+	        			'x-access-token': token
+	        		  }
+	    		 	})
+	    		 	.then(response => {
+	        			//  console.log('first response: ', response);
+	          			return response.json();
+	    		 	})
+	    		 	.then(response => {
+
+	        			//dispatch(loadFilterImageSuccess(response));
+	        			this.setState({
+	        				filterURI: response.data
+	        			})
+	            
+	    		 	})
+				 	.catch(err => {
+				      	console.error('Error in loadFilterImage:', err);
+			     	});
+	  			} else {
+	            	// dispatch(authFail());
+	        	}
+	    	}).done();
+	}
+
 	componentDidMount(){
-
 		this.props.getCurrentTime();
-
 
 		// this.checkTime = setInterval(() => {
 		// 	this.currentTime = Date.now();
@@ -123,37 +156,11 @@ class SingleEventComponent extends Component {
 		        	console.log('position is NOT within polygon')
 		        })
 	        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
+        }
 
-	       		AsyncStorage.getItem("fencer-token").then((token) => {
-	        	  if(token){
+        if(this.props.isActive){
 
-	  				return fetch(utils.filterImagesURL+"?filterid="+this.props.filterID, {   
-	    			  method: 'GET',
-	    			  headers: {
-	        			'Accept': 'application/json',
-	        			'Content-Type': 'application/json',
-	        			'x-access-token': token
-	        		  }
-	    		  })
-	    		  .then(response => {
-	        		//  console.log('first response: ', response);
-	          		return response.json();
-	    		  })
-	    		  .then(response => {
-
-	        		//dispatch(loadFilterImageSuccess(response));
-	        		this.setState({
-	        			filterURI: response.data
-	        		})
-	            
-	    		  })
-				  .catch(err => {
-				      console.error('Error in loadFilterImage:', err);
-			      });
-	  			  } else {
-	            	// dispatch(authFail());
-	        	  }
-	    		  }).done();
+        	this.fetchImage();
 
         }
 
@@ -184,17 +191,14 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillReceiveProps(newProps){
-
-	//	console.log('newProps.currentTime: ', newProps.currentTime);
-
-		//console.warn("newProps.currentPosition: ", newProps.currentPosition);
-
-		//console.warn("newProps.currentPosition !== this.props.currentPosition: ", newProps.currentPosition !== this.props.currentPosition);
-
 		let startTime = this.props.startUTC;
 
 		if(startTime < newProps.currentTime){
 			this.setState({isActive: true})
+
+			if(!this.state.filterURI){
+				this.fetchImage();
+			}
 		}
 
 		let endTime = this.props.endUTC;
@@ -216,9 +220,9 @@ class SingleEventComponent extends Component {
 
 		if(newProps.currentPosition !== this.props.currentPosition){
 
-			console.warn('new position received in SingleEvent: ', newProps.currentPosition);
+		//	console.warn('new position received in SingleEvent: ', newProps.currentPosition);
 
-			GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
+			GeoFencing.containsLocation(newProps.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 
 	        		console.warn('new position is within polygon');
 	        		this.setState({
@@ -238,10 +242,7 @@ class SingleEventComponent extends Component {
 
 	componentWillUnmount(){
 		//console.warn('componentWillUnmount called in SingleEvent ');
-		//console.warn('----------------------------------------- ');		
-
 		//clearInterval(this.checkTime);
-
 
 		this.props.clearTimer();
 	}
@@ -325,11 +326,6 @@ class SingleEventComponent extends Component {
 				},50)
 			}	
 		}
-
-
-
-		// either load the filter or an 'out of bounds/event not started yet' popup
-
 	}
 
 	render(){
