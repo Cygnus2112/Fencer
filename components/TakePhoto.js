@@ -88,7 +88,7 @@ class TakePhotoComponent extends Component {
   }
 
   componentWillReceiveProps(newProps){
-    if(newProps.currentTime > this.props.endUTC){
+    if(newProps.currentTime > this.props.endUTC && this.props.currentTime <= this.props.endUTC){
 
       Alert.alert('Geofilter Expired', "Sorry, but the Geofilter you are using has expired.", [{text: 'okay', onPress: () => {
         Actions.pop();
@@ -210,10 +210,9 @@ class TakePhotoComponent extends Component {
                       })
                     } else {
                       let shareImage = {
-                      //  title: "React Native",
                         message: "",
                         url: uri,
-                        subject: "Share Link" //  for email
+                        subject: "Check out my pic" //  for email
                       };
                       Share.open(shareImage);
                     }

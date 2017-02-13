@@ -264,7 +264,7 @@ class InfoModal extends Component {
                   <View style={{marginTop: 5, position: 'absolute', left: 10,right:10, height: 35}}>
                     <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular', textDecorationLine: 'underline', fontSize: 16, paddingLeft: 6}}>{"What are Geofilters?"}</Text>
                   </View>
-                  <Text style={{marginTop: 30, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Geofilters are location-based overlays that you can apply to any photo you take with your mobile camera. {"They're"} a great way to add a unique to touch to birthday parties, graduations, or any other shared experiences you wish to commemorate in a fun and memorable way.</Text>
+                  <Text style={{marginTop: 30, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Geofilters are location-based overlays that you can apply to any photo you take with your mobile camera. {"They're"} a great way to add a unique touch to birthday parties, graduations, or any other shared experiences you wish to commemorate in a fun and memorable way.</Text>
                    <View style={{position: 'absolute', left: 10,right:10, height: 25}}>
                     <Text style={{textAlign: 'center', fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6, textDecorationLine: 'underline'}}>{"How it works"}</Text>
                   </View>
