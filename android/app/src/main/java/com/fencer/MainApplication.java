@@ -12,6 +12,7 @@ import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
 import com.facebook.react.shell.MainReactPackage;
 
+import com.RNFetchBlob.RNFetchBlobPackage;
 import com.airbnb.android.react.maps.MapsPackage;
 import fr.greweb.reactnativeviewshot.RNViewShotPackage;
 import cl.json.RNSharePackage;
@@ -33,6 +34,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
+          new RNFetchBlobPackage(),
           new VectorIconsPackage(),
           new ImageResizerPackage(),
           new ImagePickerPackage(),
