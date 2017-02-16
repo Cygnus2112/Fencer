@@ -34,7 +34,7 @@ class InfoModal extends Component {
               <View style={styles.infoModal}>
                 <ScrollView contentContainerStyle={styles.modalScroll}>
 
-                  <Text style={{marginTop: 20, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Tap any geofilter to open it in your camera. A geofilter can only be opened if it is <Text style={{fontWeight: 'bold'}}>unlocked</Text> -- i.e., if the geofilter is active and you are within its designated geofence area. </Text>
+                  <Text style={{marginTop: 20, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Tap any geofilter to open it in your camera. A geofilter can only be opened if it is <Text style={{fontWeight: 'bold'}}>unlocked</Text> -- i.e., if the geofilter is active and you are within its designated geofence area. (Note: Location services MUST be enabled on your device for {"Fencer's"} geofencing features to work. You will not be able to access any geofilters if location is not enabled.) </Text>
 
                   <Text style={{marginTop: 10, fontFamily: 'RobotoCondensed-Regular',fontSize: 16, padding: 3,paddingLeft: 6}}>Tap the <Icon name={"file-text-o"} size={17} color={"black"}/> icon to view relevant details, including Start Date, End Date, and any other additional information provided by the {"geofilter's"} creator. (Like driving directions, scavenger hunt details, etc.)</Text>
 

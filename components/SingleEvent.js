@@ -147,13 +147,13 @@ class SingleEventComponent extends Component {
 
 	        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 
-	        		console.log('point is within polygon');
+	        		//console.log('point is within polygon');
 	        		this.setState({
 	        			isInRange: true
 	        		})	
 	        	})
 	        	.catch(() => {
-		        	console.log('position is NOT within polygon')
+		        	//console.log('position is NOT within polygon')
 		        })
 	        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
         }
@@ -224,7 +224,7 @@ class SingleEventComponent extends Component {
 
 			GeoFencing.containsLocation(newProps.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 
-	        		console.warn('new position is within polygon');
+	        		//console.warn('new position is within polygon');
 	        		this.setState({
 	        			isInRange: true
 	        		})	
@@ -233,7 +233,7 @@ class SingleEventComponent extends Component {
 	        		this.setState({
 	        			isInRange: false
 	        		})	
-	        		console.warn('position is NOT within polygon')
+	        		//console.warn('position is NOT within polygon')
 	        	})
 		}
 

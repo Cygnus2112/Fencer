@@ -76,7 +76,7 @@ const uploadReducer = (state = initialState, action) => {
         currentView: 'send'
       })
     case ActionTypes.SET_INFO_REQUEST:
-      console.log('action.title, message in reducer ', action.info.title, action.info.message);
+    //  console.log('action.title, message in reducer ', action.info.title, action.info.message);
       return Object.assign({}, state, {
         filterTitle: action.info.title,
         filterMessage: action.info.message

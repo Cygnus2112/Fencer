@@ -50,7 +50,7 @@ class WelcomeComponent extends Component{
   componentDidMount(){
    // console.log('this.props.username: ', this.props.username);
    // console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
-   console.log('this.props.searchError in Welcome: ', this.props.searchError);
+  // console.log('this.props.searchError in Welcome: ', this.props.searchError);
 
     if(!this.props.username && !this.props.welcomeModalDismissed){
       this.setState({ infoPressed: true});
@@ -92,8 +92,8 @@ class WelcomeComponent extends Component{
     }
 
    // console.log('this.props in Welcome: ', this.props);
-    console.log('-----------------------------------');
-    console.log('this.props.currentPosition: in Welcome', this.props.currentPosition)
+  //  console.log('-----------------------------------');
+  //  console.log('this.props.currentPosition: in Welcome', this.props.currentPosition)
 
   }
 

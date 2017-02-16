@@ -50,20 +50,6 @@ class CreateMapComponent extends Component{
   //  this.addPolygon = this.addPolygon.bind(this);
   }
 
-  componentDidMount(){
-   // console.log('CreateMap mounted.');
-   // console.log('this.props.newMapRegion.latitude: ', this.props.newMapRegion.latitude);
-   // this.getCoords();
-  }
-
-  componentWillReceiveProps(nextProps){
-    // console.log('componentWillReceiveProps called in CreateMap');
-    // console.log('nextProps: ', nextProps);
-    // if(nextProps.chooseAreaComplete){
-    //   console.log('nextProps.chooseAreaComplete');
-    // }
-  }
-
   render(){
     return(
         <View style={styles.container}>

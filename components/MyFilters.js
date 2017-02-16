@@ -16,7 +16,8 @@ import {
     Alert,
     ScrollView,
     AsyncStorage,
-    ToastAndroid
+    ToastAndroid,
+    AppState
 } from 'react-native';
 
 import Spinner from './Spinner';
@@ -48,6 +49,9 @@ class MyFiltersComponent extends Component {
     this.reloadFilters = this.reloadFilters.bind(this);
     this.checkIfDeleted = this.checkIfDeleted.bind(this);
     this.refreshLocation = this.refreshLocation.bind(this);
+
+    this._handleAppStateChange = this._handleAppStateChange.bind(this);
+
    // this.watchPosition = null;
     this.checkInterval = null;
 
@@ -58,9 +62,20 @@ class MyFiltersComponent extends Component {
 			dataSource: ds.cloneWithRows( [] ),
       searchPressed: false,
       searchError: false,
-      infoPressed: false
+      infoPressed: false,
+      //currentAppState: AppState.currentState
 		}
 	}
+
+  _handleAppStateChange(currentAppState) {
+  //  console.warn('AppState changed. New state: ', currentAppState);
+  //  console.warn('Time: ', new Date().toLocaleTimeString())
+    if(currentAppState === 'active'){
+      this.props.watchPosition();
+    } else {
+      this.props.clearWatch();
+    }
+  }
 
   checkIfDeleted(filterID){
    // console.log('checking to see if filter is deleted...');
@@ -68,7 +83,7 @@ class MyFiltersComponent extends Component {
       AsyncStorage.getItem("fencer-token").then((value) => {
         if(value){
           AsyncStorage.getItem("fencer-username").then((username) => {
-            console.log('current username: ', username);
+         //   console.log('current username: ', username);
             let token = value;
 
             return fetch(utils.checkIfDeletedURL +"?username="+username+"&filterid="+filterID, {    
@@ -126,18 +141,27 @@ class MyFiltersComponent extends Component {
   }
 
   refreshLocation(toast){
-    if(toast){
-      ToastAndroid.showWithGravity('Refreshing geolocation ...', ToastAndroid.SHORT, ToastAndroid.CENTER);
-    }
-
     navigator.geolocation.getCurrentPosition((pos) => {
+        if(toast){
+          ToastAndroid.showWithGravity('Refreshing geolocation ...', ToastAndroid.SHORT, ToastAndroid.CENTER);
+        }
         var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
         this.setState({currentPosition: initialPosition});
 
         this.props.updatePosition(initialPosition);
       },
-      (error) => console.warn("nav error in My Filters: ", JSON.stringify(error) ),
+      (error) => {
+      //  console.warn("nav error in My Filters: ", JSON.stringify(error) );
+
+        setTimeout(() => {
+          Alert.alert('Location Not Enabled', "Location services must be enabled on your device for Fencer's geofencing features to work. Please change your settings and tap the compass icon to refresh.", [{text: 'OK', onPress: () => {
+             // console.log('OK Pressed!');
+            }
+          }])
+        },200);
+
+      },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
   }
@@ -146,22 +170,21 @@ class MyFiltersComponent extends Component {
     this.refreshLocation();
     this.props.watchPosition();
 
-      this.checkInterval = setInterval(()=>{
+    AppState.addEventListener('change', this._handleAppStateChange);
+
+    this.checkInterval = setInterval(()=>{
 
         let arr = this.props.allFilters.filter((f) => {
           if(f.startUTC){
             return _isActiveOrUpcoming(f.startUTC, f.endUTC);          // we only show filters that are active or upcoming
           }
-
         })
 
         arr.forEach((filter) => {
-
           this.checkIfDeleted(filter.filterID)
-
         })
 
-      },120000);
+    },120000);
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
 
@@ -189,14 +212,10 @@ class MyFiltersComponent extends Component {
 
       })
 
-
       const ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
       this.setState({
         dataSource: ds.cloneWithRows( sortedFilters )
       })
-
-
-
     }
 
     // this.watchPosition = navigator.geolocation.watchPosition((pos) => {
@@ -219,6 +238,9 @@ class MyFiltersComponent extends Component {
     //navigator.geolocation.clearWatch(this.watchPosition);
     this.props.clearWatch();
     clearInterval(this.checkInterval);
+
+    AppState.removeEventListener('change', this._handleAppStateChange);
+
   }
 
 	componentWillReceiveProps(newProps){

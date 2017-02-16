@@ -52,22 +52,55 @@ const updatePositionSuccess = (pos) => {
 export const WATCH_POSITION_REQUEST = 'WATCH_POSITION_REQUEST';
 
 let watches = [];
+let intervals = [];
 
-export const watchPosition = (dispatch) => {
+export const watchPosition = (dispatch) => {  
     dispatch(watchPositionRequest());
 
     let watch = navigator.geolocation.watchPosition((pos) => {
         let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
-
         console.log('position in watchPosition: ', newPos);
+        if(watches.length){
+          let prevWatch = watches.shift();
+          navigator.geolocation.clearWatch(prevWatch);
+        }
 
         dispatch( updatePositionSuccess(newPos) );
       },
       (error) => {
         console.log("Nav error: ", JSON.stringify(error)) 
-      }
-    )
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 20000}
+    );
     watches.push(watch);
+
+  let interval = setInterval(() => {
+    console.log('new interval starting ...');
+    if(intervals.length){
+      clearInterval(intervals.shift());
+    }
+
+    dispatch(watchPositionRequest());
+
+    watch = navigator.geolocation.watchPosition((pos) => {
+        let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
+       console.log('position in watchPosition: ', newPos);
+        if(watches.length){
+          let prevWatch = watches.shift();
+          navigator.geolocation.clearWatch(prevWatch);
+        }
+
+        dispatch( updatePositionSuccess(newPos) );
+      },
+      (error) => {
+        console.log("Nav error: ", JSON.stringify(error)) 
+      },
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 20000}
+    );
+    watches.push(watch);
+  },90000);
+
+  intervals.push(interval);
 }
 
 const watchPositionRequest = () => {
@@ -80,11 +113,12 @@ export const clearWatch = (dispatch) => {
   dispatch(() => {
     watches.forEach((w) => {
       navigator.geolocation.clearWatch(w);
+    });
+    intervals.forEach((i) => {
+      clearInterval(i);
     })
   })
 }
-
-
 
 export const LOAD_ALLFILTERS_REQUEST = 'LOAD_ALLFILTERS_REQUEST';
 export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
