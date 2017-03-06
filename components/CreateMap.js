@@ -46,8 +46,6 @@ class CreateMapComponent extends Component{
       placeSelected: false,
       blurAutocomp: false
     }
-  //  this.getCoords = this.getCoords.bind(this);
-  //  this.addPolygon = this.addPolygon.bind(this);
   }
 
   render(){
@@ -77,104 +75,101 @@ class CreateMapComponent extends Component{
               <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
             </View>   */}
 
-      <GooglePlacesAutocomplete
-        blurAutocomp={this.state.blurAutocomp}
-        placeholder='Search Places'
-        minLength={2} // minimum length of text to search
-        autoFocus={false}
-        listViewDisplayed='auto'    // true/false/undefined
-        fetchDetails={true}
-        renderDescription={(row) => { 
+          <GooglePlacesAutocomplete
+            blurAutocomp={this.state.blurAutocomp}
+            placeholder='Search Places'
+            minLength={2} // minimum length of text to search
+            autoFocus={false}
+            listViewDisplayed='auto'    // true/false/undefined
+            fetchDetails={true}
+            renderDescription={(row) => { 
 
-          return row.terms[0].value + ' - ' + row.terms[1].value + ', ' + row.terms[2].value
+              if(row.terms){
+                if(row.terms[1]){
+                  if(row.terms[2]){
+                    return row.terms[0].value + ' - ' + row.terms[1].value + ', ' + row.terms[2].value;
+                  } else {
+                    return row.terms[0].value + ' - ' + row.terms[1].value;
+                  }
 
-        } 
+                } else {
+                  return row.terms[0].value;
+                } 
+              }
 
-        }// display street only
-        onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          //console.log(data);
-         // console.log('-----------------------------------');
-         // console.log('details.geometry: ', details.geometry.location);
-          this.setState({
-            lat: details.geometry.location.lat,
-            lng: details.geometry.location.lng,
-            placeSelected: true
-          })
-          console.log('-----------------------------------');
-        }}
-        getDefaultValue={() => {
-          return ''; // text input default value
-        }}
-        query={{
-          // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k',
-          language: 'en', // language of the results
-          //types: '(cities)', // default: 'geocode'
-        }}
-        styles={{
-          container: {
-            paddingTop: 0,
-            zIndex: 150,
-           // borderColor: 'black',
-           // borderWidth: 1
-          },
-          textInputContainer: {
-           // backgroundColor: 'rgba(0,0,0,0)',
-            height: 40,
-            borderTopWidth: 0,
-            borderBottomWidth:0,
-            borderRadius: 0,
-            padding: 0
-          },
-          textInput: {
-            marginTop: 0,
-            marginBottom: 0,
-            marginLeft: 0,
-            marginRight: 0,
-            borderRadius: 0,
-            height: 43,
-            color: '#5d5d5d',
-            fontSize: 16
-          },
-          poweredContainer: {
-            height: 0
-          },
-          powered: {
-            height: 0
-          },
-          row: {
-            height: 30,
-            padding: 5,
-            backgroundColor: 'white'
-          },
-          description: {
-            fontWeight: 'bold',
+            }}
+              onPress={(data, details = null) => { // 'details' is provided when fetchDetails === true
+                this.setState({
+                  lat: details.geometry.location.lat,
+                  lng: details.geometry.location.lng,
+                  placeSelected: true
+                })
+               // console.log('-----------------------------------');
+              }}
+              getDefaultValue={() => {
+                return ''; // text input default value
+              }}
+              query={{
+                // available options: https://developers.google.com/places/web-service/autocomplete
+                key: 'AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k',
+                language: 'en', 
+                //types: '(cities)', // default: 'geocode'
+              }}
+              styles={{
+                container: {
+                  paddingTop: 0,
+                  zIndex: 150,
+                },
+                textInputContainer: {
+                 // backgroundColor: 'rgba(0,0,0,0)',
+                  height: 40,
+                  borderTopWidth: 0,
+                  borderBottomWidth:0,
+                  borderRadius: 0,
+                  padding: 0
+                },
+                textInput: {
+                  marginTop: 0,
+                  marginBottom: 0,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  borderRadius: 0,
+                  height: 43,
+                  color: '#5d5d5d',
+                  fontSize: 16
+                },
+                poweredContainer: {
+                  height: 0
+                },
+                powered: {
+                  height: 0
+                },
+                row: {
+                  height: 30,
+                  padding: 5,
+                  backgroundColor: 'white'
+                },
+                description: {
+                  fontWeight: 'bold',
+                },
+                predefinedPlacesDescription: {
+                  color: '#1faadb',
+                }
+              }}
 
+              nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
 
-          },
-          predefinedPlacesDescription: {
-            color: '#1faadb',
-          },
-        }}
+              GoogleReverseGeocodingQuery={{
+                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
+              }}
 
-      //  currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-      //  currentLocationLabel="Current location"
-        nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+              GooglePlacesSearchQuery={{
+                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
+                rankby: 'distance'
+              }}
 
-        GoogleReverseGeocodingQuery={{
-          // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        }}
-
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          rankby: 'distance'
-        }}
-
-
-        filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-
-        //predefinedPlaces={[homePlace, workPlace]}
-      />
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+          />
           </View>
 
           {this.state.infoPressed

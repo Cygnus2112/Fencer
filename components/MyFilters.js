@@ -147,6 +147,8 @@ class MyFiltersComponent extends Component {
         }
         var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
 
+       // console.log('initialPosition: ', initialPosition);
+
         this.setState({currentPosition: initialPosition});
 
         this.props.updatePosition(initialPosition);
@@ -155,14 +157,14 @@ class MyFiltersComponent extends Component {
       //  console.warn("nav error in My Filters: ", JSON.stringify(error) );
 
         setTimeout(() => {
-          Alert.alert('Location Not Enabled', "Location services must be enabled on your device for Fencer's geofencing features to work. Please change your settings and tap the compass icon to refresh.", [{text: 'OK', onPress: () => {
+          Alert.alert('Unable to Determine Location', "Location services must be enabled on your device for Fencer's geofencing features to work. Please ensure that you have a working internet connection and that location services are enabled, then tap the compass icon to refresh.", [{text: 'OK', onPress: () => {
              // console.log('OK Pressed!');
             }
           }])
         },200);
 
       },
-      {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+      {enableHighAccuracy: true, timeout: 20000, maximumAge: 0}
     );
   }
 

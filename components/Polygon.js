@@ -36,23 +36,16 @@ class PolygonComponent extends Component {
   constructor(props) {
     super(props);
 
- //   this.takeSnapshot = this.takeSnapshot.bind(this);
-
     this.finish = this.finish.bind(this);
-
     this.startOver = this.startOver.bind(this);
     this.onRegionChange = this.onRegionChange.bind(this);
 
     this.state = {
-    //  latitude: this.props.currentPosition.lat || LATITUDE,
-    //  longitude: this.props.currentPosition.lng || LONGITUDE,
       latitude: this.props.lat || LATITUDE,
       longitude: this.props.lng || LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
       region: {
-       // latitude: this.props.currentPosition.lat || LATITUDE,
-      //  longitude: this.props.currentPosition.lng || LONGITUDE,
         latitude: this.props.lat || LATITUDE,
         longitude: this.props.lng || LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
@@ -67,34 +60,18 @@ class PolygonComponent extends Component {
     };
   }
 
-  //   takeSnapshot(){
-  //               RNViewShot.takeSnapshot(this.refs["map"], {
-  //                 format: "jpeg",
-  //                 quality: 1.0,
-  //                 result: 'data-uri'
-  //               })
-  //               .then(uri => { 
-  //                 console.log('uri in this.takeSnapshot: ', uri);
-  //                 this.props.setMapPreview(uri)} )
-
-  // }
-
   componentDidMount(){
     if(this.props.fenceCoordinates){
-
-    //  console.log('this.props.fenceCoordinates: ', this.props.fenceCoordinates);
       this.setState({
         editing: {
           id: 0,
           coordinates: this.props.fenceCoordinates.fenceCoords
         }
-
       })
     }
   }
 
   componentWillReceiveProps(newProps){
-    
     if(newProps.lat !== this.props.lat || newProps.lng !== this.props.lng){
       this.setState({
         latitude: newProps.lat,
@@ -112,37 +89,19 @@ class PolygonComponent extends Component {
   }
 
   onRegionChange(region) {
-   // console.log('region in onRegionChange: ', region);
     this.setState({ region });
   }
 
   finish() {
-
-   // console.log('-------------------------------');
-   // console.log('this.state.region in finish(): ', this.state.region);
-
     const { polygons, editing } = this.state;
 
-    console.log('-------------------------------');
-
-
-    setTimeout(() => {                    // THIS DOESN'T APPEAR IMMEDIATELY
-      //console.log('polygons array (after setTimeout): ', this.state.polygons);
-      // for(let i=0; i < this.state.polygons[0].coordinates.length; i++){
-      //   let coords = this.state.polygons[0].coordinates[i];
-      //   console.log("coords.longitude: ",coords.longitude);c
-      // }
-
+    setTimeout(() => {                             // REWRITE AS A PROMISE ( or ES7 async/await )
       dataToSend = {
         fenceCoords: editing.coordinates,
         newMapRegion: this.state.region
       }
-
-      //this.props.submitFence(editing.coordinates);
       this.props.submitFence(dataToSend);
-
     },400)
-
 
   }
 
@@ -196,11 +155,8 @@ class PolygonComponent extends Component {
   }
 
   render() {
-
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
-
-    //  console.log('-------------------------------');
-
+      //  console.log('-------------------------------');
     }
 
     const mapOptions = {
@@ -209,7 +165,6 @@ class PolygonComponent extends Component {
 
     if (this.state.editing) {
       mapOptions.scrollEnabled = false;
-      //mapOptions.onPanDrag = e => this.onPress(e);
     }
 
     return (
@@ -227,32 +182,23 @@ class PolygonComponent extends Component {
             region={this.state.region}
             onRegionChange={this.onRegionChange}
             onPress={e => {
-              // console.log('map pressed.');
-              // if(this.props.chooseAreaComplete){
-              //   console.log('this.props.chooseAreaComplete === true');
-              // }
-
-
               this.onPress(e);
             }}
             {...mapOptions}>
             
-              {this.state.place &&
-                  (
+              {this.state.place && (
                     <MapView.Marker
                         pinColor={'red'}
                         onPress={() => {console.log('marker pressed')}}
                         coordinate={{
                           latitude: this.props.lat,
                           longitude: this.props.lng
-                        }} />
-
-                    )
+                        }} />)
               }
 
             </MapView>
           )
-          :
+            :
           (        
           <MapView
 
@@ -266,12 +212,9 @@ class PolygonComponent extends Component {
             onPress={e => {
               if(!this.props.chooseAreaComplete){
                 this.onPress(e)
-
               }
-              
             }}
-            {...mapOptions}
-          >
+            {...mapOptions}>
 
           {this.state.place &&
                   (<MapView.Marker
@@ -285,9 +228,6 @@ class PolygonComponent extends Component {
               }
 
               {this.state.polygons.map((polygon) => {
-
-               // console.log('in this.state.polygons.map for some reason...');
-
                 return(<MapView.Polygon
                   key={polygon.id}
                   coordinates={polygon.coordinates}
@@ -295,8 +235,6 @@ class PolygonComponent extends Component {
                   fillColor="rgba(255,0,0,0.5)"
                   strokeWidth={2}/>)
               }
-
-
               )}
               { this.state.editing && (
                 <MapView.Polygon
@@ -306,7 +244,6 @@ class PolygonComponent extends Component {
                   strokeWidth={2}/>
               )}
               {this.state.markerPoints.map((point) => { 
-
                   return(                
                     <MapView.Marker
                       key={point.key}
@@ -318,11 +255,10 @@ class PolygonComponent extends Component {
                       }} />)
               })}
 
-        </MapView>
-                    )
+          </MapView>)
         }
           {this.props.fenceCoordinates
-            ?
+              ?
             (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
               <TouchableOpacity
                 onPress={() => this.startOver(true)}
@@ -330,9 +266,9 @@ class PolygonComponent extends Component {
                   <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Discard & Start Over"}</Text>
               </TouchableOpacity>
             </View>)
-            :
+              :
             this.state.editing && this.state.editing.coordinates.length > 2
-            ?
+              ?
             (<View style={styles.buttonContainer}>
                 <TouchableOpacity
                   onPress={() => this.startOver()}
@@ -345,9 +281,9 @@ class PolygonComponent extends Component {
                     <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Submit"}</Text>
                 </TouchableOpacity>
             </View>)
-            :
+              :
             this.state.editing 
-            ?
+              ?
             (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
                 <TouchableOpacity
                   onPress={() => this.startOver()}
@@ -355,7 +291,7 @@ class PolygonComponent extends Component {
                     <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Start Over</Text>
                 </TouchableOpacity>
             </View>)
-            :
+              :
             (null)
           }
       </View>
@@ -431,7 +367,6 @@ const mapStateToProps = (state) => {
 
 
 const mapDispatchToProps = (dispatch) => {
-
   return {
     clearFenceProps: () => {
       uploadActions.clearFenceProps(dispatch);
@@ -439,10 +374,7 @@ const mapDispatchToProps = (dispatch) => {
     submitFence: (coords) => {
      // console.log('coords in mapDispatch: ', coords);
       uploadActions.submitFenceCoordinates(dispatch, coords);
-    },
-    // setMapPreview: (uri) => {
-    //   uploadActions.setMapPreview(dispatch, uri);
-    // }
+    }
   }
 }
 
