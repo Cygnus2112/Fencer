@@ -143,7 +143,7 @@ class SingleEventComponent extends Component {
 		// 	}
 		// }, 2000);
 
-		if(this.props.currentPosition){
+		if(this.props.currentPosition.lat){
 
 	        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 

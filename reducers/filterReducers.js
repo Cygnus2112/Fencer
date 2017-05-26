@@ -5,7 +5,7 @@ const initialState = {
 	isLoadingAllFilters: false,
 	//isLoadingFiltersCreated: false,
   isValidatingFilter: false,
-	currentPosition: null,
+	currentPosition: {lat: null, lng: null},
   filterToUpload: null,
   filterUploadError: "",
   allFilters: [],
