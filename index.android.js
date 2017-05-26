@@ -1,77 +1,20 @@
-import React, { Component } from 'react';
+import React, { Component } from 'react'
+import { Provider } from 'react-redux';
+import { AppRegistry } from 'react-native';
 
-import {
-  AppRegistry,
-  StyleSheet,
-  Text,
-  View,
-  Navigator,
-} from 'react-native';
+import App from './App'
 
-import {Scene, Router} from 'react-native-router-flux';
+import createStore from './createStore'
 
-import ApplyFilter from './components/ApplyFilter'
-import UploadFilter from './components/UploadFilter'
-import Welcome from './components/Welcome'
-import ChooseDates from './components/ChooseDates'
-import CreateMap from './components/CreateMap'
-import Polygon from './components/Polygon'
-import ChooseFriends from './components/ChooseFriends'
-import ViewBase64 from './components/ViewBase64'
-import MyFilters from './components/MyFilters'
-import SingleEvent from './components/SingleEvent'
-import TakePhoto from './components/TakePhoto'
-import WebBridgeEx from './components/WebBridgeEx'
+const store = createStore();
 
-import BridgeWrapper from './components/WebBridgeEx'
-
-
-// <Router>
-  // <Scene key="root" hideNavBar={true}>
-  //   <Scene key="welcome" component={Welcome} initial={ true } />
-  //   <Scene key="dates" component={ChooseDates} />
-  //   <Scene key="upload" component={UploadFilter}/>
-  //   <Scene key="createmap" component={CreateMap}/>
-  //   <Scene key="polygon" component={Polygon}/>
-  //   <Scene key="friends" component={ChooseFriends}/>
-  //   <Scene key="myfilters" component={MyFilters} />
-  // </Scene>
-// </Router>
-
-//<Scene key="bridge" component={WebBridgeEx} initial={ true } />
-class GeoSnap extends Component {
-  render() {
-    return (
-      <Router>
-        <Scene key="root" hideNavBar={true}>
-          <Scene key="bridge" component={ BridgeWrapper } initial={ true } />
-        </Scene>
-      </Router>
-    );
-  }
+const Fencer = () => {
+  return (
+    <Provider store={store}>
+      <App />
+    </Provider>
+  )
 }
 
-          // <Scene key="camera" component={ TakePhoto } initial={ true } />
-          // <Scene key="applyfilter" component={ ApplyFilter } />
-          // <Scene key="viewbase" component={ ViewBase64 } />
+AppRegistry.registerComponent('Fencer', () => Fencer);
 
-// const styles = StyleSheet.create({
-//   container: {
-//     flex: 1,
-//     justifyContent: 'center',
-//     alignItems: 'center',
-//     backgroundColor: '#F5FCFF',
-//   },
-//   welcome: {
-//     fontSize: 20,
-//     textAlign: 'center',
-//     margin: 10,
-//   },
-//   instructions: {
-//     textAlign: 'center',
-//     color: '#333333',
-//     marginBottom: 5,
-//   },
-// });
-
-AppRegistry.registerComponent('GeoSnap', () => GeoSnap);

@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+ import React, { Component } from 'react';
 
 import {
   StyleSheet,
@@ -8,80 +8,140 @@ import {
   TouchableOpacity,
 } from 'react-native';
 
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
+
+import * as uploadActions from '../actions/uploadActions';
+import * as filterActions from '../actions/filterActions';
+
 import MapView from 'react-native-maps';
 
-import WebViewBridge from 'react-native-webview-bridge';
-
 const { width, height } = Dimensions.get('window');
+let screenWidth = width;
+let screenHeight= height;
 
 const ASPECT_RATIO = width / height;
 const LATITUDE = 34.09829365;
 const LONGITUDE = -118.35329142;
-const LATITUDE_DELTA = 0.0922;
+//const LATITUDE_DELTA = 0.0922;      //  default
+const LATITUDE_DELTA = 0.01;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 let id = 0;
 
 const SPACE = 0.01; 
 
-export default class Polygon extends Component {
+let dataToSend = {};
+
+class PolygonComponent extends Component {
   constructor(props) {
     super(props);
+
+    this.finish = this.finish.bind(this);
+    this.startOver = this.startOver.bind(this);
+    this.onRegionChange = this.onRegionChange.bind(this);
 
     this.state = {
       latitude: this.props.lat || LATITUDE,
       longitude: this.props.lng || LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
+      region: {
+        latitude: this.props.lat || LATITUDE,
+        longitude: this.props.lng || LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
       polygons: [],
       editing: null,
+      polygonComplete: false,
       currPosition: null,
+      markerPoints: [],
+      place: false
     };
   }
 
   componentDidMount(){
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        
-        let point = {
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        }
-        this.setState({
-          currPosition: point
-        })
-      },
-      (error) => alert(error.message),
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  }
-
-  componentWillReceiveProps(newProps, oldProps){
-    if(newProps.lat !== oldProps.lat || newProps.lng !== oldProps.lng){
+    if(this.props.fenceCoordinates){
       this.setState({
-        latitude: newProps.lat,
-        longitude: newProps.lng
+        editing: {
+          id: 0,
+          coordinates: this.props.fenceCoordinates.fenceCoords
+        }
       })
     }
   }
 
+  componentWillReceiveProps(newProps){
+    if(newProps.lat !== this.props.lat || newProps.lng !== this.props.lng){
+      this.setState({
+        latitude: newProps.lat,
+        longitude: newProps.lng,
+        region: {
+            latitude: newProps.lat,
+            longitude: newProps.lng,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          
+        },
+        place: newProps.place
+      });
+    }
+  }
+
+  onRegionChange(region) {
+    this.setState({ region });
+  }
+
   finish() {
     const { polygons, editing } = this.state;
+
+    setTimeout(() => {                             // REWRITE AS A PROMISE ( or ES7 async/await )
+      dataToSend = {
+        fenceCoords: editing.coordinates,
+        newMapRegion: this.state.region
+      }
+      this.props.submitFence(dataToSend);
+    },400)
+
+  }
+
+  startOver(hasProps){
+    if(hasProps){
+      this.props.clearFenceProps();
+    }
     this.setState({
-      polygons: [...polygons, editing],
       editing: null,
-    });
+      polygons: [],
+      markerPoints: []
+    })
+    this.forceUpdate();
   }
 
   onPress(e) {
+
+    this.props.blurAutocomp();
+
+    if(this.state.markerPoints.length < 4) {
+
+      let currPoints = this.state.markerPoints;
+      let idx = currPoints.length;
+      currPoints.push({key:idx, lat: e.nativeEvent.coordinate.latitude, lng: e.nativeEvent.coordinate.longitude})
+
+      this.setState({
+        markerPoints: currPoints
+      })
+
+    }
+
     const { editing } = this.state;
-    if (!editing) {
+    if (!editing && !this.state.polygons.length ) {
       this.setState({
         editing: {
           id: id++,
           coordinates: [e.nativeEvent.coordinate],
         },
       });
-    } else {
+    } else if(!this.state.polygons.length && this.state.editing.coordinates.length < 4){
       this.setState({
         editing: {
           ...editing,
@@ -95,24 +155,8 @@ export default class Polygon extends Component {
   }
 
   render() {
-
     if(this.state.editing && this.state.editing.coordinates.length > 2 ){
-
-      // let coordsMap = this.state.editing.coordinates.map((coord) => {
-      //   return [coord.latitude, coord.longitude];
-      // })
-      // let firstCoord = coordsMap[0];
-      // coordsMap.push(firstCoord);
-      // console.log('-------------------------------');
-
-      // console.log('coordsMap in RENDER: ', coordsMap);
-      console.log('this.state.currPosition in RENDER: ', this.state.currPosition)
-
-
-      // GeoFencing.containsLocation(this.state.currPosition, coordsMap)
-      //   .then(() => console.log('point is within polygon'))
-      //   .catch(() => console.log('point is NOT within polygon'))
-
+      //  console.log('-------------------------------');
     }
 
     const mapOptions = {
@@ -121,77 +165,139 @@ export default class Polygon extends Component {
 
     if (this.state.editing) {
       mapOptions.scrollEnabled = false;
-      mapOptions.onPanDrag = e => this.onPress(e);
     }
 
     return (
-      <View style={styles.container}>
-        <MapView
-          provider={this.props.provider}
-          style={styles.map}
-          region={{
-            latitude: this.state.latitude || LATITUDE,
-            longitude: this.state.longitude || LONGITUDE,
-            latitudeDelta: LATITUDE_DELTA,
-            longitudeDelta: LONGITUDE_DELTA,
-          }}
-          onPress={e => this.onPress(e)}
-          {...mapOptions}
-        >
-          {this.state.polygons.map(polygon => (
-            <MapView.Polygon
-              key={polygon.id}
-              coordinates={polygon.coordinates}
-              strokeColor="#F00"
-              fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={2}/>
-          ))}
-          {this.state.editing && (
-            <MapView.Polygon
-              coordinates={this.state.editing.coordinates}
-              strokeColor="#000"
-              fillColor="rgba(255,0,0,0.5)"
-              strokeWidth={2}/>
-          )}
-          {this.state.currPosition && (
-            <MapView.Marker
-              onPress={() => {console.log('marker pressed')}}
-              coordinate={{
-                latitude: this.state.currPosition.lat,
-                longitude: this.state.currPosition.lng,
-              }}
-              centerOffset={{ x: -18, y: -60 }}
-              anchor={{ x: 0.69, y: 1 }}>
-              <Text style={{fontSize: 18}}>X</Text>
-            </MapView.Marker>
-          )}
-        </MapView>
-        <View style={styles.buttonContainer}>
-          {this.state.editing && (
-            <View>
+      <View collapsable={false} ref="map" style={styles.container}>
+        {(!this.state.editing && !this.state.polygons.length && !this.state.markerPoints.length)
+          ?
+          (
+          <MapView
+
+            showsMyLocationButton={true}
+            showsPointsOfInterest={true}
+
+            provider={this.props.provider}
+            style={styles.map}
+            region={this.state.region}
+            onRegionChange={this.onRegionChange}
+            onPress={e => {
+              this.onPress(e);
+            }}
+            {...mapOptions}>
+            
+              {this.state.place && (
+                    <MapView.Marker
+                        pinColor={'red'}
+                        onPress={() => {console.log('marker pressed')}}
+                        coordinate={{
+                          latitude: this.props.lat,
+                          longitude: this.props.lng
+                        }} />)
+              }
+
+            </MapView>
+          )
+            :
+          (        
+          <MapView
+
+            showsMyLocationButton={true}
+            showsPointsOfInterest={true}
+
+            provider={ this.props.provider }
+            style={ styles.map }
+            region={this.state.region}
+            onRegionChange={this.onRegionChange}
+            onPress={e => {
+              if(!this.props.chooseAreaComplete){
+                this.onPress(e)
+              }
+            }}
+            {...mapOptions}>
+
+          {this.state.place &&
+                  (<MapView.Marker
+                        pinColor={'red'}
+                        onPress={() => {console.log('marker pressed')}}
+                        coordinate={{
+                          latitude: this.props.lat,
+                          longitude: this.props.lng
+                        }} />
+                    )
+              }
+
+              {this.state.polygons.map((polygon) => {
+                return(<MapView.Polygon
+                  key={polygon.id}
+                  coordinates={polygon.coordinates}
+                  strokeColor="#F00"
+                  fillColor="rgba(255,0,0,0.5)"
+                  strokeWidth={2}/>)
+              }
+              )}
+              { this.state.editing && (
+                <MapView.Polygon
+                  coordinates={this.state.editing.coordinates}
+                  strokeColor="#000"
+                  fillColor="rgba(255,0,0,0.5)"
+                  strokeWidth={2}/>
+              )}
+              {this.state.markerPoints.map((point) => { 
+                  return(                
+                    <MapView.Marker
+                      key={point.key}
+                      pinColor={'blue'}
+                      onPress={() => {console.log('marker pressed')}}
+                      coordinate={{
+                        latitude: point.lat,
+                        longitude: point.lng
+                      }} />)
+              })}
+
+          </MapView>)
+        }
+          {this.props.fenceCoordinates
+              ?
+            (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
               <TouchableOpacity
-                onPress={() => this.finish()}
-                style={[styles.bubble, styles.button]}
-              >
-                <Text>Start Over</Text>
+                onPress={() => this.startOver(true)}
+                style={[styles.buttonStartOver, {width: 200 }]}>
+                  <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Discard & Start Over"}</Text>
               </TouchableOpacity>
-              <TouchableOpacity
-                onPress={() => this.finish()}
-                style={[styles.bubble, styles.button]}
-              >
-                <Text>Finish</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
+            </View>)
+              :
+            this.state.editing && this.state.editing.coordinates.length > 2
+              ?
+            (<View style={styles.buttonContainer}>
+                <TouchableOpacity
+                  onPress={() => this.startOver()}
+                  style={styles.buttonStartOver}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Start Over</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => this.finish()}
+                  style={styles.buttonFinish}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>{"Submit"}</Text>
+                </TouchableOpacity>
+            </View>)
+              :
+            this.state.editing 
+              ?
+            (<View style={[styles.buttonContainer, {justifyContent: 'center'}]}>
+                <TouchableOpacity
+                  onPress={() => this.startOver()}
+                  style={styles.buttonStartOver}>
+                    <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 20, color: 'white'}}>Start Over</Text>
+                </TouchableOpacity>
+            </View>)
+              :
+            (null)
+          }
       </View>
     );
   }
 }
-
-// Polygon.propTypes = {
-//   provider: MapView.ProviderPropType,
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -212,15 +318,66 @@ const styles = StyleSheet.create({
     width: 200,
     alignItems: 'stretch',
   },
-  button: {
-    width: 80,
-    paddingHorizontal: 12,
+  buttonStartOver:{
+    width: 120,
+    height: 40,
     alignItems: 'center',
     marginHorizontal: 10,
+    backgroundColor: 'red',
+    paddingHorizontal: 18,
+    paddingTop: 4,
+    borderRadius: 15,
+    borderColor: 'black',
+    borderWidth: 1
+  },
+  buttonFinish:{
+    width: 120,
+    height: 40,
+    alignItems: 'center',
+    marginHorizontal: 10,
+    backgroundColor: 'green',
+    paddingHorizontal: 18,
+    paddingTop: 4,
+    borderRadius: 15,
+    borderColor: 'black',
+    borderWidth: 1
   },
   buttonContainer: {
+    width: screenWidth - 50,
     flexDirection: 'row',
-    marginVertical: 20,
-    backgroundColor: 'transparent',
+    justifyContent: 'space-between',
+    marginVertical: 10,
+    backgroundColor: 'transparent'
   },
 });
+
+const mapStateToProps = (state) => {
+  return {
+    currentPosition: state.filterReducer.currentPosition,
+    isValidatingCoords: state.uploadReducer.isValidatingCoords,
+    chooseAreaComplete: state.uploadReducer.chooseAreaComplete,
+    fenceCoordinates: state.uploadReducer.fenceCoordinates,
+    fenceError: state.uploadReducer.fenceError,
+    selectedDates: state.uploadReducer.selectedDates,
+    filterToUpload: state.uploadReducer.filterToUpload       // TEMPORARY
+
+  }
+}
+
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    clearFenceProps: () => {
+      uploadActions.clearFenceProps(dispatch);
+    },
+    submitFence: (coords) => {
+     // console.log('coords in mapDispatch: ', coords);
+      uploadActions.submitFenceCoordinates(dispatch, coords);
+    }
+  }
+}
+
+
+const Polygon = connect(mapStateToProps, mapDispatchToProps)(PolygonComponent);
+export default Polygon;
