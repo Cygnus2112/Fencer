@@ -3,14 +3,11 @@ import * as ActionTypes from '../actions/filterActions';
 const initialState = {
 	isUpdatingPosition: false,
 	isLoadingAllFilters: false,
-	//isLoadingFiltersCreated: false,
   isValidatingFilter: false,
 	currentPosition: {lat: null, lng: null},
   filterToUpload: null,
   filterUploadError: "",
   allFilters: [],
-  //myFilters: null,
-  //filtersCreated: null,
   isLoadingFilterImage: false,
   filterImage: null,
   searchError: false,
@@ -27,7 +24,7 @@ const filterReducer = (state = initialState, action) => {
   	  })
   	case ActionTypes.UPDATE_POSITION_SUCCESS:
   	  return Object.assign({}, state, {
-  	  	currentPosition: action.currentPosition,		//  REMOVE IF GETTING GEO DATA ON FRONT END
+  	  	currentPosition: action.currentPosition,	
   	  	isUpdatingPosition: false
   	  })
     case ActionTypes.LOAD_ALLFILTERS_REQUEST:

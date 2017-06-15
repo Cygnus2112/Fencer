@@ -20,24 +20,20 @@ const screenHeight = height;
 class ApplyFilterComponent extends Component{
     constructor(props){
       super(props);
-
     }
 
     render(){
-
       let dataURI = "data:image/png;base64,"+this.props.filterURI;
 
       return(
-      <View style={styles.container}>
-
-        <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
-          <Image style={styles.photo} source={{ uri: this.props.photoURI}}>
-            <Image source={{uri: dataURI}} style={styles.filter}/>
-          </Image>  
-        </View>
+        <View style={styles.container}>
+          <View ref="photoAndFilter" collapsable={false} style={styles.photoAndFilter}>
+            <Image style={styles.photo} source={{ uri: this.props.photoURI}}>
+              <Image source={{uri: dataURI}} style={styles.filter}/>
+            </Image>  
+          </View>
             <View style={styles.button}>
               <TouchableOpacity onPress={()=>{
-                console.log("----------------------------------------")
 
                 RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
                   format: "jpeg",
@@ -57,8 +53,6 @@ class ApplyFilterComponent extends Component{
                         subject: "Share Link" //  for email
                       };
                       Share.open(shareImage);
-
-
                 },
                 error => console.error("Oops, snapshot failed", error)
               )}}>
@@ -67,8 +61,7 @@ class ApplyFilterComponent extends Component{
               </View>
             </TouchableOpacity>
           </View>
-
-      </View>
+        </View>
       )
     }
 }
@@ -94,7 +87,6 @@ const styles = StyleSheet.create({
   photo:{
     width: screenWidth * .9,
     height: screenHeight * .95,
-   // backgroundColor:'transparent',
     backgroundColor: 'white',
     justifyContent: 'center',
     alignItems: 'center'
@@ -117,5 +109,5 @@ const styles = StyleSheet.create({
   }
 });
 
-  const ApplyFilter = ApplyFilterComponent;
-  export default ApplyFilter;
+const ApplyFilter = ApplyFilterComponent;
+export default ApplyFilter;

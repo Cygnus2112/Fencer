@@ -13,16 +13,11 @@ export const initPosition = (dispatch) => {
 
     navigator.geolocation.getCurrentPosition((pos) => {
         let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
-
-        console.log('position in initPosition: ', newPos);
-
         dispatch( updatePositionSuccess(newPos) );
       },
       (error) => {
         let tempPos = { lat: 41.5904151, lng: -93.80708270000002 };
-       
         dispatch( updatePositionSuccess(tempPos) );
-
         console.log("Nav error: ", JSON.stringify(error)) 
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -31,9 +26,7 @@ export const initPosition = (dispatch) => {
 
 export const updatePosition = (dispatch, data) => {
 	dispatch( updatePositionRequest() );
-
   dispatch( updatePositionSuccess(data) );
-
 }
 
 const updatePositionRequest = () => {
@@ -55,11 +48,10 @@ let watches = [];
 let intervals = [];
 
 export const watchPosition = (dispatch) => {  
-    dispatch(watchPositionRequest());
+  dispatch(watchPositionRequest());
 
-    let watch = navigator.geolocation.watchPosition((pos) => {
+  let watch = navigator.geolocation.watchPosition((pos) => {
         let newPos = { lat: pos.coords.latitude, lng: pos.coords.longitude }
-        console.log('position in watchPosition: ', newPos);
         if(watches.length){
           let prevWatch = watches.shift();
           navigator.geolocation.clearWatch(prevWatch);
@@ -75,7 +67,6 @@ export const watchPosition = (dispatch) => {
     watches.push(watch);
 
   let interval = setInterval(() => {
-    console.log('new interval starting ...');
     if(intervals.length){
       clearInterval(intervals.shift());
     }
@@ -124,19 +115,11 @@ export const LOAD_ALLFILTERS_REQUEST = 'LOAD_ALLFILTERS_REQUEST';
 export const LOAD_ALLFILTERS_SUCCESS = 'LOAD_ALLFILTERS_SUCCESS';
 
 export const loadAllFilters = (dispatch, userData) => {
- // return dispatch => {
-
- // console.log('userData in loadAllFilters: ', userData);
-
-    dispatch(loadAllFiltersRequest());			
+    dispatch(loadAllFiltersRequest());		
 
     AsyncStorage.getItem("fencer-token").then((token) => {
         if(token){
-
-          //  console.log("userData.filters: ",userData.filters);
-
-            let filters = JSON.stringify(userData.filters);
-
+          let filters = JSON.stringify(userData.filters);
           return fetch(utils.allFiltersURL +"?username="+userData.username+"&filters="+filters, {   
       			method: 'GET',
       			headers: {
@@ -146,24 +129,18 @@ export const loadAllFilters = (dispatch, userData) => {
       			}
     		  })
     		  .then(response => {
-
       			 return response.json();
-
     		  })
     		  .then(response => {
-
       			dispatch(loadAllFiltersSuccess(response));
-						
     		  })
     		  .catch(err => {
             	console.error('Error in loadAllFilters:', err);
           });
-            	
         } else {
             // dispatch(authFail());
         }
     }).done();
- // }
 }
 
 const loadAllFiltersRequest = () => {
@@ -183,41 +160,32 @@ export const LOAD_FILTER_IMAGE_REQUEST = 'LOAD_FILTER_IMAGE_REQUEST';
 export const LOAD_FILTER_IMAGE_SUCCESS = 'LOAD_FILTER_IMAGE_SUCCESS';
 
 export const loadFilterImage = (dispatch, data) => {
- // console.log('data in loadFilterImage: ', data);
-  dispatch(loadFilterImageRequest());      
+    dispatch(loadFilterImageRequest());      
 
-      AsyncStorage.getItem("fencer-token").then((token) => {
-        if(token){
+    AsyncStorage.getItem("fencer-token").then((token) => {
+      if(token){
 
-  return fetch(utils.filterImagesURL+"?filterid="+data.filterID, {   
-    method: 'GET',
-    headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-        'x-access-token': token
-        }
-    })
-    .then(response => {
-        //  console.log('first response: ', response);
+        return fetch(utils.filterImagesURL+"?filterid="+data.filterID, {   
+            method: 'GET',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'x-access-token': token
+              }
+        })
+        .then(response => {
           return response.json();
-    })
-    .then(response => {
-
-        dispatch(loadFilterImageSuccess(response));
-            
-    })
-    .catch(err => {
-        console.error('Error in loadFilterImage:', err);
-    });
-
-
-  } else {
+        })
+        .then(response => {
+          dispatch(loadFilterImageSuccess(response));
+        })
+        .catch(err => {
+            console.error('Error in loadFilterImage:', err);
+        });
+      } else {
             // dispatch(authFail());
-        }
-    }).done();
-
-
-                     
+      }
+    }).done();                    
 }
 
 const loadFilterImageRequest = () => {
@@ -235,7 +203,6 @@ const loadFilterImageSuccess = (filterImageData) => {
 
 
 export const addFilterByID = (dispatch, data) => {
- // console.log('data in addFilterByID: ', data);
   AsyncStorage.getItem("fencer-token").then((token) => {
     if(token){
       axios({
@@ -254,8 +221,6 @@ export const addFilterByID = (dispatch, data) => {
         timeout: 120000
         })
         .then((resp) => {
-// ALREADYADDED
-                //  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
           if( resp.data['NOTFOUND'] ){
 
             dispatch(searchError('NOTFOUND', resp.data['NOTFOUND']));
@@ -265,9 +230,6 @@ export const addFilterByID = (dispatch, data) => {
             }
 
           } else if(resp.data['ALREADYADDED']) {
-
-         //   console.log('filter alread added. dispatching error...');
-
             dispatch(searchError('ALREADYADDED', resp.data['ALREADYADDED']));
 
             if(!data.isSearch){
@@ -275,7 +237,6 @@ export const addFilterByID = (dispatch, data) => {
             }
 
           } else if(resp.data['EXPIRED']) {
-
             dispatch(searchError('EXPIRED', resp.data['EXPIRED']));
 
             if(!data.isSearch){
@@ -283,13 +244,10 @@ export const addFilterByID = (dispatch, data) => {
             }
 
           } else if(data.isSearch){
-
             dispatch(newFilterAddedRequest(data.filter));
             dispatch( addToMyFilters(data.filter) );
 
           } else {
-          //  Actions.loading({isReferral:true});
-
             dispatch(newFilterAddedRequest(data.filter));
             dispatch( addToMyFilters(data.filter) );
 
@@ -297,9 +255,6 @@ export const addFilterByID = (dispatch, data) => {
 
             return resp;
           }
-
-       //   console.log('response.data["NOTFOUND"] in addFilterByID: ', resp.data['NOTFOUND']);
-
         })
         .catch(err => {
           console.error('Error in addFilterByID:', err);
@@ -307,8 +262,7 @@ export const addFilterByID = (dispatch, data) => {
     } else {
       console.log('token not found in addFilterByID');
     }
-        }).done();
-  
+  }).done();
 }
 
 export const SEARCH_ERROR = 'SEARCH_ERROR';
@@ -345,7 +299,6 @@ const newFilterAddedRequest = (filter) => {
 export const ADD_TO_MYFILTERS = 'ADD_TO_MYFILTERS';
 
 export const addToMyFilters = (filter) => {
- // console.log('addToMyFilters called in filterActions');
   return {
     type: ADD_TO_MYFILTERS,
     filter: filter
@@ -363,87 +316,3 @@ const clearNewFilterRequest = () => {
     type: CLEAR_NEW_FILTER
   }
 }
-
-
-// export const LOAD_FILTERSCREATED_REQUEST = 'LOAD_FILTERSCREATED_REQUEST';
-// export const LOAD_FILTERSCREATED_SUCCESS = 'LOAD_FILTERSCREATED_SUCCESS';
-
-// export const loadFiltersCreated = (userData) => {
-//   return dispatch => {
-
-//     dispatch(loadFiltersCreatedRequest());			
-
-//     AsyncStorage.getItem("fencer-token").then((token) => {
-//         if(token){
-//             //dispatch(authSuccess());
-//             return fetch(utils.filtersCreatedURL+"?username="+userData.username, {
-//       			method: 'GET',
-//       			headers: {
-//         			'Accept': 'application/json',
-//         			'Content-Type': 'application/json',
-//         			'x-access-token': token
-//       			}
-//     		})
-//     		.then(response => {
-//       			  return response.json();
-//     		})
-//     		.then(response => {
-//             // console.log('response in filter actions: ');
-//             // console.log(response);
-
-//       			dispatch(loadFiltersCreatedSuccess(response));
-						
-//     		})
-//     		.catch(err => {
-//             	console.error('Error in loadFiltersCreated:', err);
-//           	});
-            	
-//         } else {
-//             // dispatch(authFail());
-//         }
-//     }).done();
-//   }
-// }
-
-// const loadFiltersCreatedRequest = () => {
-// 	return {
-//     	type: LOAD_FILTERSCREATED_REQUEST
-//   	}
-// }
-
-// const loadFiltersCreatedSuccess = (filtersData) => {
-// 	return {
-//     	type: LOAD_FILTERSCREATED_SUCCESS,
-//     	filtersCreated: filtersData
-//   	}
-// }
-
-// export const FILTER_TO_UPLOAD_REQUEST = 'FILTER_TO_UPLOAD_REQUEST';
-// export const FILTER_TO_UPLOAD_SUCCESS = 'FILTER_TO_UPLOAD_SUCCESS';
-// export const FILTER_TO_UPLOAD_ERROR = 'FILTER_TO_UPLOAD_ERROR';
-
-// export const submitFilterToUpload = (dispatch, filter) => {
-//   dispatch( uploadFilterRequest() );
-
-//     // ... validate image. dispatch( uploadFilterError(error) );
-
-//   dispatch( uploadFilterSuccess(filter) );
-// }
-
-// const uploadFilterRequest = () => {
-//   return {
-//     type: FILTER_TO_UPLOAD_REQUEST
-//   }
-// }
-// const uploadFilterSuccess = (filter) => {
-//   return {
-//     type: FILTER_TO_UPLOAD_SUCCESS,
-//     filterToUpload: filter
-//   }
-// }
-// const uploadFilterError = (reason) => {
-//   return {
-//     type: FILTER_TO_UPLOAD_ERROR,
-//     filterUploadError: reason
-//   }
-// }

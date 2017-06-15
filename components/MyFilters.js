@@ -49,15 +49,11 @@ class MyFiltersComponent extends Component {
     this.reloadFilters = this.reloadFilters.bind(this);
     this.checkIfDeleted = this.checkIfDeleted.bind(this);
     this.refreshLocation = this.refreshLocation.bind(this);
-
     this._handleAppStateChange = this._handleAppStateChange.bind(this);
 
-   // this.watchPosition = null;
     this.checkInterval = null;
 
 		this.state = {
-			//events: sampleEvents,
-      // isLoadingFilter: false,
       currentPosition: this.props.currentPosition,
 			dataSource: ds.cloneWithRows( [] ),
       searchPressed: false,
@@ -68,8 +64,6 @@ class MyFiltersComponent extends Component {
 	}
 
   _handleAppStateChange(currentAppState) {
-  //  console.warn('AppState changed. New state: ', currentAppState);
-  //  console.warn('Time: ', new Date().toLocaleTimeString())
     if(currentAppState === 'active'){
       this.props.watchPosition();
     } else {
@@ -78,12 +72,9 @@ class MyFiltersComponent extends Component {
   }
 
   checkIfDeleted(filterID){
-   // console.log('checking to see if filter is deleted...');
-
       AsyncStorage.getItem("fencer-token").then((value) => {
         if(value){
           AsyncStorage.getItem("fencer-username").then((username) => {
-         //   console.log('current username: ', username);
             let token = value;
 
             return fetch(utils.checkIfDeletedURL +"?username="+username+"&filterid="+filterID, {    
@@ -98,12 +89,9 @@ class MyFiltersComponent extends Component {
               return response.json();
             })
             .then(response => {
-
               if(response['result'] === 'false'){
-             //   console.log('received false from checkIfDeleted!!!');
                 this.reloadFilters(filterID, true);
-              };
-                    
+              };       
             })
             .catch(err => {
               console.log('Error in checkIfDeleted:', err);
@@ -127,12 +115,9 @@ class MyFiltersComponent extends Component {
           allFilters = newArr;
         }
       } else if(allFilters.indexOf(filter) === -1){
-      //  console.log('new filter '+filter+' is not YET in this.props.myFilters ');
         allFilters.push(filter);
       }
-
     } 
-
     this.props.getMyFilters({username: this.props.username, filters: allFilters || [] });
   }
 
@@ -146,23 +131,15 @@ class MyFiltersComponent extends Component {
           ToastAndroid.showWithGravity('Refreshing geolocation ...', ToastAndroid.SHORT, ToastAndroid.CENTER);
         }
         var initialPosition =  { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-       // console.log('initialPosition: ', initialPosition);
-
         this.setState({currentPosition: initialPosition});
-
         this.props.updatePosition(initialPosition);
-      },
-      (error) => {
-      //  console.warn("nav error in My Filters: ", JSON.stringify(error) );
-
+    },
+    (error) => {
         setTimeout(() => {
           Alert.alert('Unable to Determine Location', "Location services must be enabled on your device for Fencer's geofencing features to work. Please ensure that you have a working internet connection and that location services are enabled, then tap the compass icon to refresh.", [{text: 'OK', onPress: () => {
              // console.log('OK Pressed!');
-            }
-          }])
+          }}])
         },200);
-
       },
       {enableHighAccuracy: true, timeout: 20000, maximumAge: 0}
     );
@@ -175,17 +152,14 @@ class MyFiltersComponent extends Component {
     AppState.addEventListener('change', this._handleAppStateChange);
 
     this.checkInterval = setInterval(()=>{
-
         let arr = this.props.allFilters.filter((f) => {
           if(f.startUTC){
             return _isActiveOrUpcoming(f.startUTC, f.endUTC);          // we only show filters that are active or upcoming
           }
         })
-
         arr.forEach((filter) => {
           this.checkIfDeleted(filter.filterID)
         })
-
     },120000);
 
 		this.props.getMyFilters({username: this.props.username, filters: this.props.myFilters || [] });
@@ -194,8 +168,7 @@ class MyFiltersComponent extends Component {
       let arr = this.props.allFilters.filter((f) => {
         if(f.startUTC){
           return _isActiveOrUpcoming(f.startUTC, f.endUTC);  // we only show filters that are active or upcoming
-        }
-                  
+        }        
       })
 
       let sortedFilters = arr.sort((f1,f2)=> {
@@ -219,49 +192,28 @@ class MyFiltersComponent extends Component {
         dataSource: ds.cloneWithRows( sortedFilters )
       })
     }
-
-    // this.watchPosition = navigator.geolocation.watchPosition((pos) => {
-    //     var currentPosition = { lat: pos.coords.latitude, lng: pos.coords.longitude };
-
-    //     console.warn('position changed in MyFilters. new position: ', currentPosition);
-
-    //     this.setState({currentPosition});
-    //     this.props.updatePosition(currentPosition);
-    //   },
-    //   (error) => console.warn("watchPosition error in My Filters: ", JSON.stringify(error) ),
-    //   {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    // );
-
 	}
 
   componentWillUnmount(){
     this.props.clearTimer();
-
-    //navigator.geolocation.clearWatch(this.watchPosition);
     this.props.clearWatch();
     clearInterval(this.checkInterval);
-
     AppState.removeEventListener('change', this._handleAppStateChange);
-
   }
 
 	componentWillReceiveProps(newProps){
-
-      if(newProps.searchError){
+    if(newProps.searchError){
         this.setState({searchError: true});
-      }
-      if(!newProps.searchError){
+    }
+    if(!newProps.searchError){
         this.setState({searchError: false});
-      }
+    }
 
-		if(newProps.allFilters.length !== this.props.allFilters.length){		// THIS COMPARISON PROBABLY DOESN'T WORK
-
-
+		if(newProps.allFilters.length !== this.props.allFilters.length){	
 			let arr = newProps.allFilters.filter((f) => {
         if(f.startUTC){
           return _isActiveOrUpcoming(f.startUTC, f.endUTC);         // we only show filters that are active or upcoming  
         }
-
 			})
 
       let sortedFilters = arr.sort((f1,f2)=>{
@@ -283,13 +235,10 @@ class MyFiltersComponent extends Component {
 			this.setState({
 				dataSource: ds.cloneWithRows( sortedFilters )
 			})
-
 		}
-
 	}
 
 	render(){
-
       return(
         <View style={styles.container}>
             {this.state.searchPressed
@@ -331,7 +280,6 @@ class MyFiltersComponent extends Component {
                    //   console.log('-------------------------');
 
                       if(rowData.coordinates && rowData.startUTC) {
-
                         const poly = rowData.coordinates.map((point)=>{
                           return {
                             lat: point.latitude,
@@ -351,7 +299,7 @@ class MyFiltersComponent extends Component {
 
                         return (
                           <View key={rowData.id} >                  
-                              <SingleEvent { ...rowData } 
+                            <SingleEvent { ...rowData } 
                                 isActive={ _isActive } 
                                 polyCoordsForGeo={ poly }
                                 userCreated={userCreated} />
@@ -363,11 +311,7 @@ class MyFiltersComponent extends Component {
                     }
                   }
                 }/>)
-
-
                 }
-
-
               </View>
 
                 <View style={styles.refreshGeo}>
@@ -377,8 +321,6 @@ class MyFiltersComponent extends Component {
                     <Icon name="compass" size={30} color="#0c12ce"/>       
                   </TouchableOpacity>
                 </View>
-
-
               <View style={styles.addById}>
                 <TouchableOpacity onPress={this.handleSearch}>
                   <Text style={{fontSize: 16,fontFamily: 'RobotoCondensed-Regular', textAlign: 'center'}} >Geofilter not showing up?</Text>
@@ -392,30 +334,20 @@ class MyFiltersComponent extends Component {
       (null)
       }    
         </View>)
-     }
-        
-    
+     }   
 }
-
-//toggleLoading={ () => {this.setState({isLoadingFilter: !this.state.isLoadingFilter})} }
-
 const _checkDates = (startTime, endTime) => {
-
 	let currentTime = Date.now();
-
 	if(currentTime < startTime || currentTime > endTime){
 		return false;
 	} else {
 		return true;
 	}
-
 }
 
 const _isActiveOrUpcoming = (startTime, endTime) => {
 	let currentTime = Date.now();
-
     if(currentTime > endTime){
-   // 	console.log('_isActiveOrUpcoming: event has ended');
 		  return false;
     } else {
     	return true;
@@ -430,7 +362,7 @@ class SearchModal extends Component {
     this.handleSearch = this.handleSearch.bind(this);
     
     this.state = {
-          modalVisible: this.props.modalVisible,
+          modalVisible: props.modalVisible,
           filter: ''
       }
   }
@@ -449,20 +381,11 @@ class SearchModal extends Component {
       }
 
       Alert.alert(errorCode, nextProps.searchErrorMessage, [{text: 'OK', onPress: () => {
-            // clear prop
-
-            this.props.clearSearchError();
-
-         //   console.log('OK Pressed!');
-          }
-        }])
-
+        this.props.clearSearchError();
+      }}])
     } 
 
     if(nextProps.newFilterAdded && nextProps.newFilterAdded !== this.props.newFilterAdded){
-
-   //   console.log('nextProps.newFilterAdded: ', nextProps.newFilterAdded);
-
       Alert.alert('Success!', "A new Geofilter has been added to My Filters.", [{text: 'OK', onPress: () => {
             // clear prop
 
@@ -475,28 +398,17 @@ class SearchModal extends Component {
             console.log('OK Pressed!');
           }
         }])
-
     }
-
   }
 
   handleSearch(){
     if(this.state.filter.length !== 9){
       Alert.alert('Error', "Geofilter ID must be 9 characters.", [{text: 'OK', onPress: () => {
-            // clear prop
-
-            console.log('OK Pressed!');
-          }
-        }])
-
+        console.log('OK Pressed!');
+      }}])
     } else {
       this.props.addFilter({filter: this.state.filter, isSearch: true});      
     }
-
-  }
-
-  componentDidMount(){
-  //  console.log('this.props in filter search modal: ', this.props);
   }
 
   render(){
@@ -506,7 +418,7 @@ class SearchModal extends Component {
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => { 
-                        this.props.toggleModal();
+            this.props.toggleModal();
             console.log("Modal has been closed.")}}>
 
             <View style={styles.modalContainer}>
@@ -564,12 +476,8 @@ class LoadingModal extends Component {
     super(props);
     
     this.state = {
-          modalVisible: this.props.modalVisible
+          modalVisible: props.modalVisible
       }
-  }
-
-  componentDidMount(){
-   // console.log('LoadingModal mounted ...');
   }
 
   render(){
@@ -579,8 +487,6 @@ class LoadingModal extends Component {
           transparent={true}
           visible={this.state.modalVisible}
           onRequestClose={() => { 
-
-          //  console.log("Modal has been closed.")
           }}>
             <View collapsable={false} style={styles.modalContainer}>
                 <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
@@ -785,7 +691,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     getMyFilters: (data) => {
-    //	console.log('data in MyFilters dispatch: ', data);
     	filterActions.loadAllFilters(dispatch, {username: data.username, filters: data.filters});
     },
     addFilter: (data) => {

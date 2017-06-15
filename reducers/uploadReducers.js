@@ -51,7 +51,6 @@ const uploadReducer = (state = initialState, action) => {
       })
     case ActionTypes.SUBMIT_DATES_REQUEST:
       return Object.assign({}, state, {
-      //  selectedDates: action.selectedDates,
         startUTC: action.startUTC,
         endUTC: action.endUTC,
         selectDatesComplete: true,
@@ -76,7 +75,6 @@ const uploadReducer = (state = initialState, action) => {
         currentView: 'send'
       })
     case ActionTypes.SET_INFO_REQUEST:
-    //  console.log('action.title, message in reducer ', action.info.title, action.info.message);
       return Object.assign({}, state, {
         filterTitle: action.info.title,
         filterMessage: action.info.message
@@ -88,8 +86,8 @@ const uploadReducer = (state = initialState, action) => {
     case ActionTypes.FINAL_SUBMIT_SUCCESS:
       return Object.assign({}, state, {
         bitlyURL: action.bitlyURL,
-        filterID: action.filterID,              // MIGHT NOT NEED THIS
-        finalSubmitComplete: true,               //  will need to move this to after text message is sent
+        filterID: action.filterID,              
+        finalSubmitComplete: true,              
         isFinalSubmitting: false
       })
     case ActionTypes.CLEAR_PROPS_REQUEST:

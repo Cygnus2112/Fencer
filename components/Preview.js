@@ -25,8 +25,6 @@ const styles = StyleSheet.create({
     width: screenWidth * .9, 
     height: screenHeight * .95, 
     marginBottom:20,
-    // borderColor: 'red', 
-    // borderWidth: 2 
   }
 });
 

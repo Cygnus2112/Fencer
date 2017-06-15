@@ -57,30 +57,14 @@ class UploadFilter extends Component {
       }
     }
 
-  //  componentDidMount(){
-
-   //   console.log('screenHeight: ', screenHeight);
-    //  console.log('screenWidth: ', screenWidth);
-
-     // FOR AVD TESTING:
-
-      // this.setState({
-      //   png: {data:baseUri}
-      // })
-  //  }
-
     handleTest( uri ){
       Actions.camera({test: true, filterURI: uri });
-
     }
 
     handlePress(){
-
-  //    setTimeout(() => {
       this.setState({
         isFetchingImage: true
       })
-  //    },200)
 
      ImagePicker.launchImageLibrary({}, (response) => {
         if (response.didCancel) {

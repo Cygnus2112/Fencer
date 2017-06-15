@@ -131,18 +131,6 @@ class SingleEventComponent extends Component {
 	componentDidMount(){
 		this.props.getCurrentTime();
 
-		// this.checkTime = setInterval(() => {
-		// 	this.currentTime = Date.now();
-		// 	let startTime = this.props.startUTC;
-		// 	if(startTime < this.currentTime){
-		// 		this.setState({isActive: true})
-		// 	}
-		// 	let endTime = this.props.endUTC;
-		// 	if(this.currentTime > endTime){
-		// 		this.setState({isActive: false, isExpired: true})
-		// 	}
-		// }, 2000);
-
 		if(this.props.currentPosition.lat){
 
 	        GeoFencing.containsLocation(this.props.currentPosition, this.props.polyCoordsForGeo)
@@ -155,7 +143,6 @@ class SingleEventComponent extends Component {
 	        	.catch(() => {
 		        	//console.log('position is NOT within polygon')
 		        })
-	        	//this.props.fetchFilterImage({ filterID: this.props.filterID });
         }
 
         if(this.props.isActive){
@@ -219,9 +206,6 @@ class SingleEventComponent extends Component {
 		}
 
 		if(newProps.currentPosition !== this.props.currentPosition){
-
-		//	console.warn('new position received in SingleEvent: ', newProps.currentPosition);
-
 			GeoFencing.containsLocation(newProps.currentPosition, this.props.polyCoordsForGeo)
 	        	.then(() =>	{ 
 	        		//console.warn('new position is within polygon');
@@ -241,9 +225,6 @@ class SingleEventComponent extends Component {
 	}
 
 	componentWillUnmount(){
-		//console.warn('componentWillUnmount called in SingleEvent ');
-		//clearInterval(this.checkTime);
-
 		this.props.clearTimer();
 	}
 
@@ -266,10 +247,6 @@ class SingleEventComponent extends Component {
 
         Share.open(shareText)
             .then((resp) => {
-             //   console.log('successfully sent filter???', resp);
-             //   console.log('#####################################################');
-               // this.props.clearProps();
-                //Actions.loading();
             })}
 
     handleDetails(){
@@ -358,24 +335,11 @@ class SingleEventComponent extends Component {
 				  	</View>
 				  	)
 				  }
-			{/*	  {this.props.userCreated && !this.props.isActive ?
-				  	(  
-				  	<View style={styles.editIcon}>
-				  	  <TouchableOpacity onPress={this.handleEdit} >
-				        <Icon name="edit" size={20} color="black" />
-				      </TouchableOpacity>
-				  	</View>
-			   	)
-				  	:    
-				  	(    */}
 				  	<View style={styles.editIcon}>
 				  	  <TouchableOpacity onPress={this.handleDetails} >
 				      	<Icon name="file-text-o" size={17} color="black" />
 				      </TouchableOpacity >
 				  	</View>
-			{/*		  	)
-				  }*/}
-
 				  <TouchableOpacity onPress={this.handleEventPress} style={styles.innerContainer} >
 					<Text style={this.state.isActive ? styles.textActive : styles.textActive}> { this.props.title } </Text>
 					  {this.state.isActive
@@ -460,10 +424,7 @@ class LoadingModal extends Component {
           	console.log("Modal has been closed.")
           }}>
             <View collapsable={false} style={styles.modalContainer}>
-          {/*    <View style={styles.loadingModal}>           
-	            	<Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>	*/}
-<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
-	      {/*     </View>	*/}
+				<ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
 	        </View>
 	    </Modal>
 		)
@@ -477,17 +438,17 @@ class DetailsModal extends Component {
 		super(props);
 		
 		this.state = {
-      		modalVisible: this.props.modalVisible,
-      		startYear: new Date(this.props.startUTC).getFullYear(),
-      		startMonth: new Date(this.props.startUTC).getMonth(),
-      		startDay: new Date(this.props.startUTC).getDate(),
-      		startHour: new Date(this.props.startUTC).getHours(),
-      		startMinute: new Date(this.props.startUTC).getMinutes(),
-      		endYear: new Date(this.props.endUTC).getFullYear(),
-      		endMonth: new Date(this.props.endUTC).getMonth(),
-      		endDay: new Date(this.props.endUTC).getDate(),
-      		endHour: new Date(this.props.endUTC).getHours(),
-      		endMinute: new Date(this.props.endUTC).getMinutes()
+      		modalVisible: props.modalVisible,
+      		startYear: new Date(props.startUTC).getFullYear(),
+      		startMonth: new Date(props.startUTC).getMonth(),
+      		startDay: new Date(props.startUTC).getDate(),
+      		startHour: new Date(props.startUTC).getHours(),
+      		startMinute: new Date(props.startUTC).getMinutes(),
+      		endYear: new Date(props.endUTC).getFullYear(),
+      		endMonth: new Date(props.endUTC).getMonth(),
+      		endDay: new Date(props.endUTC).getDate(),
+      		endHour: new Date(props.endUTC).getHours(),
+      		endMinute: new Date(props.endUTC).getMinutes()
       	}
 	}
 

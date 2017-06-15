@@ -50,14 +50,10 @@ class ReferralSignup extends Component {
 
     componentWillReceiveProps(newProps){
         if(newProps.authErrorMsg.length){
-
             Alert.alert('Oops!', newProps.authErrorMsg, [{text: 'OK', onPress: () => {
                 // clear prop
                 this.props.clearError();
-
-                console.log('OK Pressed!');
-              }
-            }])
+            }}])
         }
     }
 
@@ -73,14 +69,11 @@ class ReferralSignup extends Component {
           changeTextColorBecauseStupidBug: false
         })
     }
-// <View style={{position: 'absolute', top: 30, left: 30, right: 30, bottom: 30}}>
-  
   handleSignIn(){
     if(!this.state.username.length || !this.state.password.length){                
       Alert.alert('Oops!','Please fill out all fields.', [{text: 'OK', onPress: () => {
             console.log('OK Pressed!');
-          }
-        }])
+      }}])
     } else {
       this.props.submitLogin({
         username: this.state.username,
@@ -123,41 +116,36 @@ class ReferralSignup extends Component {
 
     render(){
         return(<View style={styles.modalContainer}>
-
-                    <View style={styles.fakeNavBar}>
-                        <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
-                            <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
-                        </Image>
-                    </View>
-
-
-                    <View style={styles.welcome}>
-                        <Text style={styles.welcomeText}>
-                            Welcome!
-                        </Text>
-                        <Text style={styles.instructions}>
-                            Please sign in to activate your new geofilter.
-                        </Text>
-
-                    </View>
+            <View style={styles.fakeNavBar}>
+              <Image source={require('../assets/map2.png')} style={{marginLeft: (screenWidth/2)-20,height: 40, width: 40, paddingLeft:5, paddingTop:5}} >
+                <Image source={require('../assets/camera2.png')} style={{height: 30, width: 30}} /> 
+              </Image>
+            </View>
+            <View style={styles.welcome}>
+              <Text style={styles.welcomeText}>
+                  Welcome!
+              </Text>
+              <Text style={styles.instructions}>
+                  Please sign in to activate your new geofilter.
+              </Text>
+            </View>
 
             {!this.state.showSignup
                 ?
               (<View style={styles.modalInterior}>
+                <View style={!this.props.alert ? styles.username : [styles.username,{top: 70}]}>
+                  <TextInput placeholder="Username" style={styles.textInput} 
+                    onChangeText={(username) => this.setState({username})}
+                    value={this.state.username} />
+                  </View>
 
-                    <View style={!this.props.alert ? styles.username : [styles.username,{top: 70}]}>
-                      <TextInput placeholder="Username" style={styles.textInput} 
-                        onChangeText={(username) => this.setState({username})}
-                        value={this.state.username} />
-                    </View>
-
-                    <View style={!this.props.alert ? styles.password : [styles.password,{top: 130}]}>
+                  <View style={!this.props.alert ? styles.password : [styles.password,{top: 130}]}>
                       <TextInput placeholder="Password" 
                         style={styles.textInput} 
                         secureTextEntry={true}
                         onChangeText={(password) => this.setState({password})}
                         value={this.state.password} />
-                    </View>
+                  </View>
 
                   <View style={!this.props.alert ? styles.signinButtonContainer : [styles.signinButtonContainer,{top: 200}]}>
                     <View style={styles.signinButtonBox}>
@@ -184,7 +172,6 @@ class ReferralSignup extends Component {
                       </TouchableOpacity >
                     </View>
                   </View>
-
                 </View>)
 
                   :
@@ -210,7 +197,6 @@ class ReferralSignup extends Component {
                             this.setState({
                               changeTextColorBecauseStupidBug: true                              
                             })
-
                         }
                         this.setState({signupEmail});  
                       }}
@@ -256,13 +242,9 @@ class ReferralSignup extends Component {
                     </TouchableOpacity >
                   </View>
                 </View>
-
-
-                </View>)
-
+              </View>)
             }
             </View>)
-
     }
 }
 

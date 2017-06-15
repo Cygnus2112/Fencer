@@ -22,7 +22,7 @@ class MainComponent extends Component {
 	render(){
 	  return (
 	  	<View>
-			<Welcome isReferral={ this.props.isReferral } />
+			  <Welcome isReferral={ this.props.isReferral } />
 	  	</View>
 	  )
 	}
@@ -31,9 +31,6 @@ class MainComponent extends Component {
 const mapStateToProps = (state) => {
   return {
   	isLoggedIn: state.authReducer.isLoggedIn,
-  	// authErrorMsg: state.authReducer.authErrorMsg,
-  	// username: state.authReducer.username,
-  	// isFetchingAuth: state.authReducer.isFetchingAuth,
   	currentPosition: state.filterReducer.currentPosition,
     isUpdatingPosition: state.filterReducer.isUpdatingPosition
 
@@ -43,10 +40,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
   	authActions: bindActionCreators(authActions, dispatch),
-    filterActions: bindActionCreators(filterActions, dispatch),
-    // checkAuth: () => {
-    //   authActions.checkForToken(dispatch, true)
-    // }
+    filterActions: bindActionCreators(filterActions, dispatch)
   }
 }
 

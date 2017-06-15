@@ -28,29 +28,22 @@ class LoadingComponent extends Component{
 		super(props)
 	}
 	componentDidMount(){
-    // console.log('Loading mounted ... this.props.isReferral: ', this.props.isReferral);
-    // console.log('this.props.isLoggedIn: ', this.props.isLoggedIn);
-      this.props.checkAuth(this.props.isReferral);
-      this.props.initPosition();
-
+    this.props.checkAuth(this.props.isReferral);
+    this.props.initPosition();
 	}
 
 	render(){
-		
     if(this.props.isStartup){
 	    return (<View style={styles.container} >
-          <Image source={require('../assets/map2.png')} style={{height: 80, width: 80, paddingLeft:10, paddingTop:10}} >
-            <Image source={require('../assets/camera2.png')} style={{height: 60, width: 60}} /> 
-          </Image>
+        <Image source={require('../assets/map2.png')} style={{height: 80, width: 80, paddingLeft:10, paddingTop:10}} >
+          <Image source={require('../assets/camera2.png')} style={{height: 60, width: 60}} /> 
+        </Image>
       </View >)
     } else {
       return (<Spinner />)
     }
-		
 	}
 }
-
-// 
 
 const styles = StyleSheet.create({
   container: {

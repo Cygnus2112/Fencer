@@ -53,75 +53,55 @@ const _formatTime = (hour, minute) => {
 
 class Send extends Component {
     constructor(props){
-        super(props);
+      super(props);
 
-        this.handleSubmit = this.handleSubmit.bind(this);
+      this.handleSubmit = this.handleSubmit.bind(this);
 
-        this.state = {
-            title: this.props.filterTitle || "",
-            message: this.props.filterMessage || "",
-            showLoginModal: false,
-            showReviewModal: false,
-            showLoadingModal: false,
-            infoPressed: false
-        }
+      this.state = {
+        title: props.filterTitle || "",
+        message: props.filterMessage || "",
+        showLoginModal: false,
+        showReviewModal: false,
+        showLoadingModal: false,
+        infoPressed: false
+      }
     }
 
     handleSubmit(){
+      let currentTime = new Date().getTime();
+      let startTime = this.props.startUTC;
 
-        // setTimeout(()=>{
-          let currentTime = new Date().getTime();
-          // const { startMonth, startYear, startDay, startHour, startMinute} = this.props.selectedDates;
-          // let startTime = new Date(startYear, startMonth, startDay, startHour, startMinute).getTime();
+      if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
+        const errMessage = () => {
+          if(!this.props.uploadFilterComplete){
+            return "Upload Filter";
+          } else if(!this.props.selectDatesComplete){
+            return "Select Dates";
+          } else if(!this.props.chooseAreaComplete) {
+            return "Choose Area";
+          } else {
+            return "Name Your Filter";
+          }
+        }
 
-          let startTime = this.props.startUTC;
-
-            if(!this.props.uploadFilterComplete || !this.props.selectDatesComplete || !this.props.chooseAreaComplete || !this.state.title){
-                const errMessage = () => {
-                  if(!this.props.uploadFilterComplete){
-                    return "Upload Filter";
-                  } else if(!this.props.selectDatesComplete){
-                    return "Select Dates";
-                  } else if(!this.props.chooseAreaComplete) {
-                    return "Choose Area";
-                  } else {
-                    return "Name Your Filter";
-                  }
-                }
-
-                Alert.alert('Oops!',"You geofilter is incomplete. Please complete the following step before proceeding:\n\n" + errMessage(), [{text: 'OK', onPress: () => {
-                    console.log('OK Pressed!');
-                  }
-                }])
-
-
-             } else if((startTime - currentTime) < 1800000){
-
-            Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
-                    console.log('OK Pressed!');
-                  }
-            }])
-
-            return;
-
-
-            } else {
-
-                this.setState({showReviewModal:true})
-
-            }
-
+        Alert.alert('Oops!',"You geofilter is incomplete. Please complete the following step before proceeding:\n\n" + errMessage(), [{text: 'OK', onPress: () => {
+          console.log('OK Pressed!');
+        }}])
+      } else if((startTime - currentTime) < 1800000){
+        Alert.alert('Oops!',"Please select a start time that is at least one hour from now.", [{text: 'OK', onPress: () => {
+          console.log('OK Pressed!');
+        }}])
+        return;
+      } else {
+        this.setState({showReviewModal:true})
+      }
     }
 
     componentWillReceiveProps(newProps){
-
-        
         if(newProps.filterTitle !== this.props.filterTitle){
-            this.handleSubmit();
+          this.handleSubmit();
         }
-
     } 
-
 
     render(){
       return(
@@ -196,11 +176,6 @@ class Send extends Component {
                             value={this.state.message} />
                     </View>
                   </View>
-
-              {/*    <View style={{height: 50, flexDirection: 'column', justifyContent: 'center', alignItems: 'center', borderColor:'black', borderWidth: 1}}> */}
-
-                 {/*    </View> */}
-
                 </View>
 
             </View>
@@ -234,10 +209,7 @@ class Send extends Component {
         :
       (null)
       }
-
-
-
-          </View>)          
+    </View>)          
     }
 }
 
@@ -246,8 +218,8 @@ class ReviewModal extends Component {
     super(props);
     
     this.state = {
-          modalVisible: this.props.modalVisible
-      }
+      modalVisible: props.modalVisible
+    }
   }
 
   render(){
@@ -335,9 +307,6 @@ class ReviewModal extends Component {
                   <TouchableHighlight 
                     style={styles.finalSumbitButton}
                     onPress={() => {
-                      // this.props.toggleModal();
-                      // this.setState({modalVisible: !this.state.modalVisible});
-
                       let dataToSend = {
                         fenceCoordinates: this.props.fenceCoordinates,
                       //  selectedDates: this.props.selectedDates,
@@ -348,8 +317,6 @@ class ReviewModal extends Component {
                         message: this.props.message,
                         username: this.props.username
                       }
-
-                    //  console.log('dataToSend in ReviewModal: ', dataToSend);
 
                       this.props.finalSumbit(dataToSend);
                       this.props.showLoadingModal();
@@ -362,16 +329,6 @@ class ReviewModal extends Component {
                   </TouchableHighlight>
 
                 </View>
-
-          {/*        <TouchableHighlight 
-                    style={{marginTop: 7, height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                    onPress={() => {
-                      this.props.toggleModal();
-                      this.setState({modalVisible: !this.state.modalVisible});
-                    }
-                  }>
-                    <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
-                  </TouchableHighlight>   */}
             </View>
           </View>
       </Modal>
@@ -399,10 +356,7 @@ class LoadingModal extends Component {
             console.log("Modal has been closed.")
           }}>
             <View style={styles.loadingModalContainer}>
-          {/*    <View style={styles.loadingModal}>           
-                <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20, color: 'blue'}}>Fetching filter...</Text>  */}
                 <ActivityIndicator style={{alignItems: 'center',justifyContent: 'center',padding: 8}} size={75} color="white" />
-          {/*    </View>  */}
           </View>
       </Modal>
     )
@@ -414,10 +368,9 @@ class InfoModal extends Component {
     super(props);
     
     this.state = {
-          modalVisible: this.props.modalVisible
-      }
+      modalVisible: props.modalVisible
+    }
   }
-//<View style={styles.infoModal}>
   render(){
     return(
       <Modal
@@ -654,7 +607,6 @@ const mapDispatchToProps = (dispatch) => {
     return {
         submitTitle: (info) => {
           uploadActions.submitTitleAndMessage(dispatch, info)
-            
         },
         finalSumbit: (data) => {
             uploadActions.finalSubmitFilter(dispatch, data);
@@ -662,7 +614,6 @@ const mapDispatchToProps = (dispatch) => {
         clearProps: (action) => {
             uploadActions.clearUploadProps(dispatch);
         }
-
     }
 }
 

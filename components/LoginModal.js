@@ -41,10 +41,6 @@ class LoginModal extends Component {
     }
   }
 
-  componentDidMount(){
-   // console.log('this.props in LoginModal componentDidMount: ', this.props);
-  }
-
   componentWillReceiveProps(newProps){
     if(newProps.username !== this.props.username){
       this.setState({
@@ -58,11 +54,9 @@ class LoginModal extends Component {
       // })
       Alert.alert('Oops!', newProps.authErrorMsg, [{text: 'OK', onPress: () => {
             // clear prop
-            this.props.clearError();
-
-            console.log('OK Pressed!');
-          }
-        }])
+          this.props.clearError();
+          console.log('OK Pressed!');
+      }}])
     }
   }
 
@@ -77,14 +71,11 @@ class LoginModal extends Component {
       signupPassword: ""
     })
   }
-// <View style={{position: 'absolute', top: 30, left: 30, right: 30, bottom: 30}}>
-  
   handleSignIn(){
     if(!this.state.username.length || !this.state.password.length){                
       Alert.alert('Oops!','Please fill out all fields.', [{text: 'OK', onPress: () => {
-            console.log('OK Pressed!');
-          }
-        }])
+        console.log('OK Pressed!');
+      }}])
     } else {
       this.props.submitLogin({
         username: this.state.username,
@@ -126,13 +117,11 @@ class LoginModal extends Component {
 
   render() {
     return (
-      
-          <Modal
-            animationType={"slide"}
-            transparent={true}
-            visible={this.state.modalVisible}
-            onRequestClose={() => {}}
-            >
+      <Modal
+        animationType={"slide"}
+        transparent={true}
+        visible={this.state.modalVisible}
+        onRequestClose={() => {}}>
 
             {!this.state.showSignup
                 ?
@@ -170,13 +159,6 @@ class LoginModal extends Component {
                       </Button> 
                     </View>
                   </View>
-
-          {/*          <View style={ styles.error } >  
-                        <Text style={ styles.errorMsg }>
-                          {this.state.errorMsg}
-                        </Text>
-                    </View>     */}
-
                   <View style={!this.props.alert ? styles.signupContainer : [styles.signupContainer, {top: 270}]}> 
                     <View style={ styles.signup }> 
                       <TouchableOpacity onPress={ () => { this.toggleSignup() } } style={styles.button} >
@@ -241,13 +223,6 @@ class LoginModal extends Component {
                     </Button> 
                   </View>
                 </View>
-
-           {/*          <View style={ styles.error } >  
-                      <Text style={ styles.signupErrorMsg }>
-                        {this.state.signupErrorMsg}
-                      </Text>
-                  </View>   */}
-
                 <View style={ [styles.signupContainer, {top: 290}] }> 
                   <View style={ styles.signup }> 
                     <TouchableOpacity onPress={ ()=>{ this.toggleSignup() } } style={styles.button} >
@@ -262,27 +237,22 @@ class LoginModal extends Component {
                     </TouchableOpacity >
                   </View>
                 </View>
-
                   <View style={styles.dismiss}>                  
                     <TouchableHighlight 
-
                       style={styles.dismissButton}
-                      onPress={() => {
-                        
+                      onPress={() => {                      
                         this.setState({
                           modalVisible: !this.state.modalVisible
                         })
                         this.props.toggleModal();
                     }}>
-                      <Text style={{color: 'white'}}>Close</Text>
-                      
+                      <Text style={{color: 'white'}}>Close</Text>    
                     </TouchableHighlight>
                   </View>
                 </View>
               </View>)
             }
-          </Modal>
-      
+      </Modal>
     );
   }
 }

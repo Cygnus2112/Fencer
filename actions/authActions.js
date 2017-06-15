@@ -8,16 +8,48 @@ import { addFilterByID } from './filterActions';
 
 import { Actions } from 'react-native-router-flux';
 
+export const AUTH_REQUEST = 'AUTH_REQUEST';
+export const AUTH_SUCCESS = 'AUTH_SUCCESS';
+export const AUTH_FAIL = 'AUTH_FAIL';
+
+export const checkForToken = (dispatch, isReferral) => {
+    dispatch(authRequest());
+
+    AsyncStorage.getItem("fencer-token").then((value) => {
+        if(value){
+          AsyncStorage.getItem("fencer-username").then((username) => {
+            let token = value;
+
+            dispatch(authSuccess(username));
+            Actions.main({isReferral: isReferral});
+
+          })
+        } else {
+          console.log('token not found');
+          Actions.main();
+        }
+    }).done();
+}
+
+const authRequest = () => {
+  return {
+    type: AUTH_REQUEST
+  }
+}
+
+const authSuccess = (username) => {
+  return {
+    type: AUTH_SUCCESS,
+    username: username
+  }
+}
+
 export const SIGNUP_REQUEST = 'SIGNUP_REQUEST';
 export const SIGNUP_ERROR = 'SIGNUP_ERROR';
 export const SIGNUP_SUCCESS = 'SIGNUP_SUCCESS';
 
 export const signup = (dispatch,info) => {
-//  return dispatch => {
- // console.log('info in authActions signup: ', info);
     dispatch(signupRequest(info));
-
-      //return fetch('http://localhost:8080/signup', {
       return fetch(utils.signupURL, {
         method: 'POST',
         mode: 'cors',
@@ -42,28 +74,18 @@ export const signup = (dispatch,info) => {
 
             if(info.filterID){
               dispatch(signupSuccess({"token" : response.token, "username": info.username}));
-
-           //   Actions.myfilters();
               addFilterByID(dispatch, {filter: info.filterID, isReferral: true});
-
-
             } else{
               dispatch(signupSuccess({"token" : response.token, "username": info.username}));
             }
-          	  
-
-
           } else {
-         //   console.log('response when user or email already taken: ', response);
             dispatch(signupError(response));
           }
         } catch(e){
-         // console.log('error response in SIGNUP: ', e);
           dispatch(signupError(e));
         }
       })
       .catch(err => console.error('Error in signup:', err));
- // }
 }
 
 const signupRequest = (info) => {
@@ -91,7 +113,6 @@ export const LOGIN_ERROR = 'LOGIN_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 
 export const login = (dispatch, info) => {
-  //  console.log('info in authActions login: ', info);
     dispatch(loginRequest(info));
 
     return fetch(utils.loginURL, {
@@ -106,14 +127,11 @@ export const login = (dispatch, info) => {
       })
     })
     .then(response => {
-      // if there's an error, we skip to the the 'error3' catch statement
       return response.json();
     })
     .then(response => {
-     // console.log('response in login: ', response);
       try {
         if(response.token){        	
-       //   console.log('response.token: ', response.token);
           AsyncStorage.setItem('fencer-username', info.username,()=>{
             AsyncStorage.setItem('fencer-token', response.token,()=>{
               return fetch(utils.userDataURL +"?username="+info.username, {    
@@ -125,19 +143,9 @@ export const login = (dispatch, info) => {
                   }
                 })
                 .then(response => {
-
-            //  console.log('first response: ', response);
-
                   return response.json();
               })
               .then(response => {
-                //console.log('2nd level response in auth login getUserData: ');
-               // console.log(response);
-
-             //   console.log('-------------------------');
-
-             //   console.log('response.myFilters: ', response.myFilters);
-
                 let data = {
                   username: response.username,
                   myFilters: response.myFilters,
@@ -146,45 +154,29 @@ export const login = (dispatch, info) => {
                 }
 
                 if(info.filterID){
-
                   dispatch(authSuccess(data));
                   dispatch(loginSuccess({"token":response.token, "username": info.username}));
-
-                 // Actions.myfilters()
                   addFilterByID(dispatch, {filter: info.filterID, isReferral: true})
-
                 } else {
-
                   dispatch(authSuccess(data));
                   dispatch(loginSuccess({"token":response.token, "username": info.username}));
-
                 }
-
-
-            
               })
               .catch(err => {
                 console.error('Error in checkForToken:', err);
               });
-
-
-
             })
           })
 
         } else {
-        //  console.log('login error');
-          dispatch(loginError());
-          
+          dispatch(loginError()); 
         }
       } catch(e) {
-      //  console.log('try-catch error:', e);
         dispatch(loginError({"error2":e}));
       };
     })
-    .catch(err => {
-    //  console.log('login error3:', err);
-      dispatch(loginError({"error3":err}));
+    .catch(e => {
+      dispatch(loginError({"error3":e}));
     });
 }
 
@@ -196,7 +188,6 @@ const loginRequest = (info) => {
 }
 
 const loginError = (msg) => {
- // console.log('loginError: ', msg);
   return {
     type: LOGIN_ERROR
   }
@@ -212,7 +203,6 @@ const loginSuccess = (user) => {
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 
 export const logout = (dispatch) => {
-  //return dispatch => {
     AsyncStorage.removeItem('fencer-token')
     	.then(result => {
     		AsyncStorage.removeItem('fencer-username')
@@ -224,54 +214,11 @@ export const logout = (dispatch) => {
 
     			});
     	});
-  //}
 }
 
 const logoutSuccess = () => {
   return {
     type: LOGOUT_SUCCESS
-  }
-}
-
-export const AUTH_REQUEST = 'AUTH_REQUEST';
-export const AUTH_SUCCESS = 'AUTH_SUCCESS';
-export const AUTH_FAIL = 'AUTH_FAIL';
-
-export const checkForToken = (dispatch, isReferral) => {
-    //  console.log('checkForToken called in authActions');
-      dispatch(authRequest());
-
-    	AsyncStorage.getItem("fencer-token").then((value) => {
-            if(value){
-            	AsyncStorage.getItem("fencer-username").then((username) => {
-                console.log('current username: ', username);
-                let token = value;
-
-                dispatch(authSuccess(username));
-                Actions.main({isReferral: isReferral});
-
-              })
-
-            } else {
-              console.log('token not found');
-            	// dispatch(authFail());
-              Actions.main();
-
-            }
-
-        }).done();
-}
-
-const authRequest = () => {
-  return {
-    type: AUTH_REQUEST
-  }
-}
-
-const authSuccess = (username) => {
-  return {
-    type: AUTH_SUCCESS,
-    username: username
   }
 }
 
@@ -295,17 +242,9 @@ export const loadMyFilters = (dispatch, isFromSuccessComponent) => {
                   }
                 })
                 .then(response => {
-
-            //  console.log('first response: ', response);
-
                   return response.json();
                 })
                 .then(response => {
-                 // console.log('2nd level response in auth loadMyFilters: ');
-                //  console.log(response);
-
-                  console.log('-------------------------');
-
                   let data = {
                     username: response.username,
                     myFilters: response.myFilters,
@@ -320,20 +259,13 @@ export const loadMyFilters = (dispatch, isFromSuccessComponent) => {
                   } else {
                     Actions.myfilters();
                   }
-                  
-                  
                 })
                 .catch(err => {
                   console.error('Error in loadMyFilters:', err);
                 });
-
-                // grab all filters???
-               // purgeExpiredFilters(dispatch, value, username);
               }).done();
             } else {
               console.log('token not found');
-              // dispatch(authFail());
-
             }
         }).done();
 }
@@ -362,7 +294,6 @@ export const deleteFilter = (dispatch, filterID) => {
   AsyncStorage.getItem("fencer-token").then((value) => {
     if(value){
       AsyncStorage.getItem("fencer-username").then((username) => {
-      //  console.log('current username: ', username);
         let token = value;
 
         return fetch(utils.deleteFilterURL +"?username="+username+"&filterid="+filterID, {    
@@ -377,14 +308,7 @@ export const deleteFilter = (dispatch, filterID) => {
           return response.json();
         })
         .then(response => {
-        //  console.log('2nd level response in auth deleteFilter: ');
-        //  console.log(response);
-        //  console.log('-------------------------');
-
-          dispatch(deleteFilterSuccess());
-                
-         // Actions.myfilters();          //  TEMPORARY. will need to refresh filters, not simply reload the whole view
-                
+          dispatch(deleteFilterSuccess()); 
         })
         .catch(err => {
           console.error('Error in deleteFilter:', err);
@@ -392,7 +316,6 @@ export const deleteFilter = (dispatch, filterID) => {
       }).done();
     } else {
       console.log('token not found');
-              // dispatch(authFail());
     }
   }).done();
 }
@@ -441,31 +364,23 @@ export const PURGE_SUCCESS = 'PURGE_SUCCESS';
 export const purgeExpiredFilters = (dispatch, token, username) => {
   dispatch(purgeRequest());
 
-  return fetch(utils.purgeFiltersURL +"?username="+username, {    // CHANGE BACK TO myFiltersURL
-            method: 'GET',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json',
-              'x-access-token': token
-            }
+  return fetch(utils.purgeFiltersURL +"?username="+username, {   
+      method: 'GET',
+      headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json',
+          'x-access-token': token
+      }
     })
     .then(response => {
-              console.log('-------------------------');
-              return response.json();
+        return response.json();
     })
     .then(response => {
-        //    console.log('2nd level response in purgeExpiredFilters: ');
-        //    console.log(response);
-
-         //   console.log('-------------------------');
-            dispatch(purgeSuccess());
-            
+      dispatch(purgeSuccess());   
     })
     .catch(err => {
         console.error('Error in purgeExpiredFilters:', err);
-      });
-
-
+    });
 }
 
 const purgeRequest = () => {
@@ -488,13 +403,9 @@ let timers = [];
 export const getCurrentTime = (dispatch) => {
   timer = setInterval(()=>{
     let t = Date.now();
-    //console.log('--------------------------------------');
     dispatch(currentTimeRequest(t));
-
   },4000);
-
   timers.push(timer);
-
 }
 
 const currentTimeRequest = (time) => {
@@ -511,51 +422,3 @@ export const clearTimer = (dispatch) => {
       })
   })
 }
-
-// const dismissWelcomeModalSuccess = () => {
-//   return {
-//     type: DISMISS_WELCOME_MODAL_SUCCESS
-//   }
-// }
-
-// Ugh, this was completely unnecessary ...
-
-// export const dismissWelcomeModal = (dispatch) => {
-//   dispatch(dismissWelcomeModalRequest());
-
-//   AsyncStorage.getItem("fencer-token").then((value) => {
-//     if(value){
-//       AsyncStorage.getItem("fencer-username").then((username) => {
-//         console.log('current username: ', username);
-//         let token = value;
-
-//         return fetch(utils.dismissModalURL +"?username="+username, {    
-//           method: 'GET',
-//           headers: {
-//             'Accept': 'application/json',
-//             'Content-Type': 'application/json',
-//             'x-access-token': token
-//           }
-//         })
-//         .then(response => {
-//           return response.json();
-//         })
-//         .then(response => {
-//           console.log('2nd level response in auth dismissModal: ');
-//           console.log(response);
-//           console.log('-------------------------');
-
-//           dispatch(dismissModalSuccess());
-              
-                
-//         })
-//         .catch(err => {
-//           console.error('Error in dismissModal:', err);
-//         });
-//       }).done();
-//     } else {
-//       console.log('token not found');
-//               // dispatch(authFail());
-//     }
-//   }).done();
-// }

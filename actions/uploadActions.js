@@ -23,7 +23,7 @@ export const submitDates = (dispatch, dates) => {			// will do all date validati
 	dispatch( submitDatesRequest(dates) )
 }
 
-const submitDatesRequest = (dates) => {			// will do all date validation on front end
+const submitDatesRequest = (dates) => {		
 	return {
 		type: SUBMIT_DATES_REQUEST,
 		startUTC: dates.startUTC,
@@ -38,10 +38,7 @@ export const UPLOAD_FILTER_ERROR = 'UPLOAD_FILTER_ERROR';
 export const submitFilter = (dispatch, filterData) => {
 	dispatch( submitFilterRequest() );
 
-		//  do filter validation here. 
-		// if successfull:
-
-	dispatch(submitFilterSuccess(filterData));  //  could be something else (ie, filterData.filterURI)
+	dispatch(submitFilterSuccess(filterData)); 
 }
 
 const submitFilterRequest = () => {
@@ -51,11 +48,9 @@ const submitFilterRequest = () => {
 }
 
 const submitFilterSuccess = (filterData) => {
-
 	return {
 		type: UPLOAD_FILTER_SUCCESS,
-		filterToUpload: filterData			//  could be something else (ie, filterData.filterURI)
-		
+		filterToUpload: filterData			
 	}
 }
 
@@ -71,8 +66,6 @@ export const CHOOSE_AREA_SUCCESS = 'CHOOSE_AREA_SUCCESS';
 export const CHOOSE_AREA_ERROR = 'CHOOSE_AREA_ERROR';
 
 export const submitFenceCoordinates = (dispatch, coords) => {
-	//console.log('coords in submitFenceCoordinates: ', coords);
-
 	dispatch( chooseAreaRequest() );
 	dispatch( chooseAreaSuccess(coords) );
 }
@@ -85,7 +78,6 @@ const chooseAreaRequest = () => {
 }
 
 const chooseAreaSuccess = (coords) => {
-	//console.log('chooseAreaSuccess dispatched');
 	return {
 		type: CHOOSE_AREA_SUCCESS,
 		fenceCoordinates: coords,
@@ -102,7 +94,6 @@ const chooseAreaError = () => {
 export const SET_INFO_REQUEST = 'SET_INFO_REQUEST';
 
 export const submitTitleAndMessage = (dispatch, info) => {
-	//console.log('info in submitTitleAndMessage: ', info);
 	dispatch(submitInfoRequest(info));
 }
 
@@ -131,7 +122,6 @@ export const FINAL_SUBMIT_SUCCESS = 'FINAL_SUBMIT_SUCCESS';
 export const FINAL_SUBMIT_ERROR = 'FINAL_SUBMIT_ERROR';
 
 export const finalSubmitFilter = (dispatch, data) => {
-	//console.log('data.message in finalSubmitFilter: ', data.message);
 	dispatch( finalSubmitRequest() );
 
 	let filterData = data.filterToUpload.data;
@@ -142,13 +132,12 @@ export const finalSubmitFilter = (dispatch, data) => {
               url: utils.filtersCreatedURL,
               method: 'post',
               data: JSON.stringify({
-                username: data.username, // DON'T FORGET TO REMOVE!!!
+                username: data.username,
                	filter: 			
                 {			
                 	"title": data.title,
 					"coordinates": data.fenceCoordinates.fenceCoords,
-					"message": data.message,
-					//"image": data.filterToUpload.data,			
+					"message": data.message,		
 					"startUTC": data.startUTC,
 					"endUTC": data.endUTC
 				}
@@ -165,12 +154,7 @@ export const finalSubmitFilter = (dispatch, data) => {
             return response
         })
         .then(response => {
-        	//console.log('response in finalSubmitFilter: ', response);
-
         	dispatch(finalSubmitSuccess({filterID: response.data.filterID, bitlyURL: response.data.bitlyURL}));  // NAVIGATE BACK TO HOME
-
-        									// SHOW SUCCESS MODAL
-        	//console.log('response.data.filterID in upload: ', response.data.filterID);
 
         	Actions.success({type: 'reset', title: data.title, id: response.data.filterID, bitlyURL: response.data.bitlyURL, startUTC: data.startUTC, endUTC: data.endUTC })
 
@@ -191,23 +175,15 @@ export const finalSubmitFilter = (dispatch, data) => {
             	timeout: 120000
           	})
           	.then(resp => {
-
-          		//console.log('total upload time (client-side): ', Date.now() - start);
-
-          		//  WILL NEED TO DISPATCH A FUNCTION THAT CLEARS THE FILTERTOUPLOAD PROP
             	return resp
-        	})
-
-        									
-            return response;			// WHY IS THIS HERE???
+        	})						
+            return response;			// ???
         })
         .catch((err) => {
-        	//dispatch(finalSubmitSuccess( ));
         	console.error('error in finalSubmitFilter:', err);
         })      
         } else {
-            // dispatch(authFail());
-            console.log('token not found???');
+            console.log('token not found');
         }
     }).done();			
 }
@@ -219,12 +195,10 @@ const finalSubmitRequest = () => {
 }
 
 const finalSubmitSuccess = (data) => {
-//	console.log('data in finalSubmitSuccess: ', data);
 	return {
 		type: FINAL_SUBMIT_SUCCESS,
 		bitlyURL: data.bitlyURL
 	}
-
 }
 
 export const CLEAR_FILTER_IMAGE_REQUEST = 'CLEAR_FILTER_IMAGE_REQUEST';
