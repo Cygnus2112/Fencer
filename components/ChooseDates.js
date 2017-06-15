@@ -52,27 +52,26 @@ class ChooseDatesComponent extends Component{
     this.launchTime = this.launchTime.bind(this);
 
     this.state = ({
-      startMonth: this.props.startUTC ? new Date(this.props.startUTC).getMonth() : (new Date()).getMonth(),
-      startDay: this.props.startUTC ? new Date(this.props.startUTC).getDate() : (new Date()).getDate(),
-      startYear: this.props.startUTC ? new Date(this.props.startUTC).getFullYear() : (new Date()).getFullYear(),
-      endMonth: this.props.endUTC ? new Date(this.props.endUTC).getMonth() : (new Date()).getMonth(),
-      endDay: this.props.endUTC ? new Date(this.props.endUTC).getDate() : (new Date()).getDate(),
-      endYear: this.props.endUTC ? new Date(this.props.endUTC).getFullYear() : (new Date()).getFullYear(),
+      startMonth: props.startUTC ? new Date(props.startUTC).getMonth() : (new Date()).getMonth(),
+      startDay: props.startUTC ? new Date(props.startUTC).getDate() : (new Date()).getDate(),
+      startYear: props.startUTC ? new Date(props.startUTC).getFullYear() : (new Date()).getFullYear(),
+      endMonth: props.endUTC ? new Date(props.endUTC).getMonth() : (new Date()).getMonth(),
+      endDay: props.endUTC ? new Date(props.endUTC).getDate() : (new Date()).getDate(),
+      endYear: props.endUTC ? new Date(props.endUTC).getFullYear() : (new Date()).getFullYear(),
 
       startText: (new Date()).toLocaleDateString(),
       endText: (new Date()).toLocaleDateString(),
-      startHour: this.props.startUTC ? new Date(this.props.startUTC).getHours() : 17,
-      startMinute: this.props.startUTC ? new Date(this.props.startUTC).getMinutes() : 0,
+      startHour: props.startUTC ? new Date(props.startUTC).getHours() : 17,
+      startMinute: props.startUTC ? new Date(props.startUTC).getMinutes() : 0,
       startTimeText: '12:00PM',
-      endHour: this.props.endUTC ? new Date(this.props.endUTC).getHours() : 18,
-      endMinute: this.props.endUTC ? new Date(this.props.endUTC).getMinutes() : 0,
+      endHour: props.endUTC ? new Date(props.endUTC).getHours() : 18,
+      endMinute: props.endUTC ? new Date(props.endUTC).getMinutes() : 0,
       endTimeText: '1:00PM',
       infoPressed: false
     })
   }
 
   componentDidMount(){
-
     if(typeof(this.props.startUTC) === 'number'){
 
       const startString = new Date( this.props.startUTC );
@@ -158,9 +157,7 @@ class ChooseDatesComponent extends Component{
           });
 
           if(endTime.getTime() < initStartTime.getTime() + 3600000){      //  End Time must be at least one hour after Start Time
-     
-
-             let newEndTime = new Date(initStartTime.getTime() + 3600000);
+            let newEndTime = new Date(initStartTime.getTime() + 3600000);
 
             this.setState({
               endUTC: newEndTime.getTime(),
@@ -173,8 +170,6 @@ class ChooseDatesComponent extends Component{
               endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
           }
-
-          
       } else if (newStartTime >= endTime.getTime()) {      //  Start Time must be before End Time
 
             let newEndTime = new Date(newStartTime + 3600000);
@@ -201,7 +196,6 @@ class ChooseDatesComponent extends Component{
               endText: newEndTime.toLocaleDateString(),
               endTimeText: _formatTime(newEndTime.getHours(), newEndTime.getMinutes())
             })
-          
       } 
 
 
@@ -337,9 +331,6 @@ class ChooseDatesComponent extends Component{
             <Image source={require('../assets/info_unedited.png')} style={{width: 31, height:31}}/>
           </TouchableOpacity>
         </View>
-          
-     {/*    <View style={{height: 345, width: screenWidth,flexDirection: 'row', justifyContent: 'center',borderWidth: 1, borderColor: 'black'}}> */}
-
           <View style={styles.dateFieldsContainer}>
             <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize:20}}>
               This filter will become
@@ -448,16 +439,7 @@ class ChooseDatesComponent extends Component{
                   </View>
 
                 </TouchableOpacity>
-
-        </View>
-
-     {/* </View> */}
-
-     {/*   <View style={styles.errorBox}>
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>Filter can be active for</Text>
-          <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16, color: 'red'}}>no more than 48 hours.</Text>
-        </View> */}
-      
+        </View>      
         <View style={styles.buttonBox}>
             <Button
               style={{fontFamily: 'RobotoCondensed-Regular', color: 'white',fontSize:20}}
@@ -483,7 +465,6 @@ class ChooseDatesComponent extends Component{
     )
   }
 }
-//{height: 50, width: 175, backgroundColor: 'blue', borderWidth:2, borderColor: 'black', borderRadius: 4}
 
 class InfoModal extends Component {
   constructor(props){
@@ -509,12 +490,12 @@ class InfoModal extends Component {
 
                 <View style={{position: 'absolute', bottom: 10, left: 10, right: 10, justifyContent: 'center', alignItems: 'center'}}>
                   <TouchableHighlight 
-                        style={{marginTop: 15,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
-                        onPress={() => {
+                      style={{marginTop: 15,height: 30, width: 55, backgroundColor: 'blue', borderColor: 'black', borderWidth: 1, borderRadius: 5, paddingTop:3, alignItems: 'center'}}
+                      onPress={() => {
                           
-                          this.props.toggleModal();
-                          this.setState({modalVisible: !this.state.modalVisible})
-                        }
+                        this.props.toggleModal();
+                        this.setState({modalVisible: !this.state.modalVisible})
+                      }
                     }>
                     <Text style={{fontFamily: 'RobotoCondensed-Regular', color: 'white'}}>Close</Text>
                   </TouchableHighlight>
@@ -629,7 +610,6 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     submitDates: (dates) => {
-      console.log('dates in mapDispatch: ', dates);
       uploadActions.submitDates(dispatch, dates)
     },
     clearProps: () => {

@@ -41,13 +41,13 @@ class PolygonComponent extends Component {
     this.onRegionChange = this.onRegionChange.bind(this);
 
     this.state = {
-      latitude: this.props.lat || LATITUDE,
-      longitude: this.props.lng || LONGITUDE,
+      latitude: props.lat || LATITUDE,
+      longitude: props.lng || LONGITUDE,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA,
       region: {
-        latitude: this.props.lat || LATITUDE,
-        longitude: this.props.lng || LONGITUDE,
+        latitude: props.lat || LATITUDE,
+        longitude: props.lng || LONGITUDE,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA,
       },
@@ -81,7 +81,6 @@ class PolygonComponent extends Component {
             longitude: newProps.lng,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
-          
         },
         place: newProps.place
       });
@@ -95,7 +94,7 @@ class PolygonComponent extends Component {
   finish() {
     const { polygons, editing } = this.state;
 
-    setTimeout(() => {                             // REWRITE AS A PROMISE ( or ES7 async/await )
+    setTimeout(() => {                             // REWRITE AS A PROMISE ( async/await )
       dataToSend = {
         fenceCoords: editing.coordinates,
         newMapRegion: this.state.region
@@ -187,13 +186,13 @@ class PolygonComponent extends Component {
             {...mapOptions}>
             
               {this.state.place && (
-                    <MapView.Marker
-                        pinColor={'red'}
-                        onPress={() => {console.log('marker pressed')}}
-                        coordinate={{
-                          latitude: this.props.lat,
-                          longitude: this.props.lng
-                        }} />)
+                <MapView.Marker
+                    pinColor={'red'}
+                    onPress={() => {console.log('marker pressed')}}
+                    coordinate={{
+                      latitude: this.props.lat,
+                      longitude: this.props.lng
+                    }} />)
               }
 
             </MapView>
@@ -360,11 +359,8 @@ const mapStateToProps = (state) => {
     fenceError: state.uploadReducer.fenceError,
     selectedDates: state.uploadReducer.selectedDates,
     filterToUpload: state.uploadReducer.filterToUpload       // TEMPORARY
-
   }
 }
-
-
 
 const mapDispatchToProps = (dispatch) => {
   return {
@@ -372,12 +368,10 @@ const mapDispatchToProps = (dispatch) => {
       uploadActions.clearFenceProps(dispatch);
     },
     submitFence: (coords) => {
-     // console.log('coords in mapDispatch: ', coords);
       uploadActions.submitFenceCoordinates(dispatch, coords);
     }
   }
 }
-
 
 const Polygon = connect(mapStateToProps, mapDispatchToProps)(PolygonComponent);
 export default Polygon;

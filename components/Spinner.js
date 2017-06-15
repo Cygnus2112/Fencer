@@ -14,7 +14,6 @@ let screenWidth = width;
 class Spinner extends Component {
 	constructor(){
 		super();
-
 	}
 
 	render(){
@@ -22,8 +21,7 @@ class Spinner extends Component {
 			<View style={styles.container}>
 				<ActivityIndicator style={styles.spinner} size={75} color="blue" />
 			</View>
-
-			)
+		)
 	}
 
 }

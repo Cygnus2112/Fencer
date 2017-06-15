@@ -22,7 +22,6 @@ class InfoModal extends Component {
           modalVisible: this.props.modalVisible
       }
   }
-//<View style={styles.infoModal}>
   render(){
     return(
       <Modal

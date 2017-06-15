@@ -38,32 +38,17 @@ class UploadComponent extends Component {
 	}
 
   onBackPress(){
-  //  console.log('back button pressed in UPLOAD');
     return true;
   }
 
-  componentDidMount(){
-   // console.log('main UPLOAD component mounted.')
-    //  console.log('this.props.currentView in Upload: ', this.props.currentView);
-
-          
+  componentDidMount(){   
     BackAndroid.addEventListener('hardwareBackPress', this.onBackPress);
   }
 
   componentWillUnmount(){
-    //console.log('main UPLOAD component unmounting...')
-
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress);
-
-  }
-
-  componentWillReceiveProps(newProps){
-   // console.log('newProps.currentView: ', newProps.currentView);
   }
   
-
-	// trying it first without passing { ...this.props } to UploadNav:
-
 	render(){
     return(
 	  <View>

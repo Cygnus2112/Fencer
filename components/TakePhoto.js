@@ -11,13 +11,6 @@ import {
     Alert
 } from 'react-native';
 
-// WILL NEED TO TRACK CURRENT LOCATION AND END TIME/DATE IN CASE USER STAYS IN THIS VIEW AFTER EVENT EXPIRES
-
-// const FLASH_MODE_AUTO = "auto";
-// const FLASH_MODE_ON = "on";
-// const FLASH_MODE_OFF = "off";
-// const FLASH_MODE_TORCH = "torch";
-
 import Icon from 'react-native-vector-icons/Entypo';
 
 import Camera from 'react-native-camera';
@@ -66,15 +59,10 @@ class TakePhotoComponent extends Component {
 	}
 
   onBackPress(){
-  //  console.log('back button pressed in TAKEPHOTO???')
-
     if(this.props.test){
-   //   console.log('this.props.test === true');
       Actions.pop();
     }
-
     if (this.state.applyFilter) {
-    //  console.log('back button pressed in TAKEPHOTO??? (filter applied)')
       this.setState({
         applyFilter: !this.state.applyFilter
       })
@@ -83,35 +71,28 @@ class TakePhotoComponent extends Component {
   }
 
   componentDidMount(){
-  //  console.log('TakePhoto mounted ... ');
     BackAndroid.addEventListener('hardwareBackPress', this.onBackPress );
   }
 
   componentWillReceiveProps(newProps){
     if(newProps.currentTime > this.props.endUTC && this.props.currentTime <= this.props.endUTC){
-
       Alert.alert('Geofilter Expired', "Sorry, but the Geofilter you are using has expired.", [{text: 'okay', onPress: () => {
         Actions.pop();
       }}])
-
     }
   }
 
   componentWillUnmount(){
-  //  console.log('TakePhoto un-mounting ... ');  
     BackAndroid.removeEventListener('hardwareBackPress', this.onBackPress );
   }
 
   handleTrash() {
- //   console.log('back pressed'); 
     Actions.pop()
   }
       
 	takePicture() {
 	  	this.camera.capture()
 	      .then((data) => {                
-	      	//Actions.applyfilter({photoURI: data.path, filterURI: this.props.filterImage})
-
           this.setState({
             applyFilter: !this.state.applyFilter,
             photo: data.path
@@ -179,52 +160,40 @@ class TakePhotoComponent extends Component {
   }
 
   onCancel() {
-   // console.log("CANCEL")
-    //this.setState({visible:false});
+
   }
 
   share(platform){
 
     let start = Date.now();
 
-                RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
-                  format: "jpeg",
-                  quality: 1.0,
-                  result: 'data-uri'
-                })
-                .then(
-                    uri => {
-                   //   console.log("Image saved to uri. Time to complete: ", Date.now()-start);
-                   //   console.log("----------------------------------------")
-                    if(platform) {
-
-                      let shareImage = {
-                      //  title: "React Native",
-                        message: "",
-                        url: uri,
-                        social: platform
-                      };
- 
-                      Share.shareSingle(shareImage).catch(err => {
-                        console.log('Error in TakePhoto share:', err);
-                      })
-                    } else {
-                      let shareImage = {
-                        message: "",
-                        url: uri,
-                        subject: "Check out my pic" //  for email
-                      };
-                      Share.open(shareImage);
-                    }
-                },
-                error => console.error("Oops, snapshot failed", error)
-              )
-
+      RNViewShot.takeSnapshot(this.refs["photoAndFilter"], {
+        format: "jpeg",
+        quality: 1.0,
+        result: 'data-uri'
+      })
+      .then(uri => {
+        if(platform) {
+          let shareImage = {
+            message: "",
+            url: uri,
+            social: platform
+          };
+          Share.shareSingle(shareImage).catch(err => {
+            console.log('Error in TakePhoto share:', err);
+          })
+        } else {
+          let shareImage = {
+            message: "",
+            url: uri,
+            subject: "Check out my pic" //  for email
+          };
+          Share.open(shareImage);
+        }
+      },error => console.error("Oops, snapshot failed", error))
   }
 
   render() {
-  //  let filterURI = "data:image/png;base64,"+this.props.filterImage;
-
     let filterURI = "data:image/png;base64,"+this.props.filterURI;   
 
     return (<View >
@@ -256,15 +225,6 @@ class TakePhotoComponent extends Component {
               </TouchableOpacity>)
             }
 
-           {/*   COULDN'T MAKE THIS WORK DUE TO PREVIEW IMAGE INEXPLICABLY REMAINING ON SCREEN
-                <TouchableOpacity onPress={()=>{
-                  //console.log('filter button pressed');
-                  this.setState({ filterInPreview: !this.state.filterInPreview });
-                } }
-                style={{position: 'absolute',top: 10, zIndex:5, left:(screenWidth *.9)/2 - 15} }>
-                <Icon name="image" size={30} color="rgba(255,255,255, 0.7)"/>
-              </TouchableOpacity> */}
-
             {!this.props.test &&
               (<TouchableOpacity onPress={this.takePicture} style={styles.takePictureButton}>
                 <View style={{width: 50, height: 50,
@@ -282,7 +242,7 @@ class TakePhotoComponent extends Component {
 
         <Camera
             ref={(cam) => {
-              this.camera = cam;              //  the new (correct) callback refs style
+              this.camera = cam;           
             }}
             style={styles.preview}
             orientation={"portrait"}
@@ -517,12 +477,6 @@ const mapStateToProps = (state) => {
     currentTime: state.authReducer.currentTime
   }
 }
-
-// const mapDispatchToProps = (dispatch) => {
-//   return {
-
-//   }
-// }
 
 const TakePhoto = connect(mapStateToProps, null)(TakePhotoComponent);
 export default TakePhoto;

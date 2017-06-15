@@ -40,8 +40,8 @@ class CreateMapComponent extends Component{
 
     this.state = {
       polygon: false,
-      lat: this.props.newMapRegion.latitude || this.props.currentPosition.lat || 37.78825,
-      lng: this.props.newMapRegion.longitude || this.props.currentPosition.lng || -122.4324,
+      lat: props.newMapRegion.latitude || props.currentPosition.lat || 37.78825,
+      lng: props.newMapRegion.longitude || props.currentPosition.lng || -122.4324,
       infoPressed: !this.props.mapModalDismissed,
       placeSelected: false,
       blurAutocomp: false
@@ -71,16 +71,13 @@ class CreateMapComponent extends Component{
           </View>
 
           <View style={styles.searchBoxContainer}>
-        {/*    <View style={styles.searchBox}>
-              <Text style={{fontFamily: 'RobotoCondensed-Regular',fontSize: 16}}>Search Nearby Places</Text>
-            </View>   */}
 
           <GooglePlacesAutocomplete
             blurAutocomp={this.state.blurAutocomp}
             placeholder='Search Places'
             minLength={2} // minimum length of text to search
             autoFocus={false}
-            listViewDisplayed='auto'    // true/false/undefined
+            listViewDisplayed='auto'   
             fetchDetails={true}
             renderDescription={(row) => { 
 
@@ -104,7 +101,6 @@ class CreateMapComponent extends Component{
                   lng: details.geometry.location.lng,
                   placeSelected: true
                 })
-               // console.log('-----------------------------------');
               }}
               getDefaultValue={() => {
                 return ''; // text input default value
@@ -112,8 +108,7 @@ class CreateMapComponent extends Component{
               query={{
                 // available options: https://developers.google.com/places/web-service/autocomplete
                 key: 'AIzaSyDT_EUBiOzMqTtcOmndgzbJ-vBYlRpFu1k',
-                language: 'en', 
-                //types: '(cities)', // default: 'geocode'
+                language: 'en'
               }}
               styles={{
                 container: {
@@ -157,18 +152,13 @@ class CreateMapComponent extends Component{
                 }
               }}
 
-              nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-
-              GoogleReverseGeocodingQuery={{
-                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-              }}
+              nearbyPlacesAPI='GooglePlacesSearch' 
 
               GooglePlacesSearchQuery={{
-                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
                 rankby: 'distance'
               }}
 
-              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
+              filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} 
           />
           </View>
 
@@ -189,10 +179,9 @@ class CreateMapComponent extends Component{
 class InfoModal extends Component {
   constructor(props){
     super(props);
-    
     this.state = {
-          modalVisible: this.props.modalVisible
-      }
+          modalVisible: props.modalVisible
+    }
   }
 
   render(){
@@ -256,13 +245,9 @@ const styles = StyleSheet.create({
     top: 0,
     left: 50,
     right: 50,
-   // width: screenWidth,
     marginTop: 2,
- //   flexDirection: 'column',
- //   justifyContent: 'center',
- //   alignItems: 'center',
-     borderColor: 'black',
-   borderWidth: 1,
+    borderColor: 'black',
+    borderWidth: 1,
   },
   searchBox: {
     height: 40,
